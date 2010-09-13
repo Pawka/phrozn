@@ -4,6 +4,5 @@
     <property file="configs/build.properties" />
     <target name="version" description="Display build version info">
         <echo>Phrozen ${app.version} by ${app.credits}</echo>
-
     </target>
 </project>
