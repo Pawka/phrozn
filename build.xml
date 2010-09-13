@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Phrozen" basedir="." default="version">
+<project name="Phrozn" basedir="." default="version">
     <!-- Load properties -->
     <property file="configs/build.properties" />
     <target name="version" description="Display build version info">
-        <echo>Phrozen ${app.version} by ${app.credits}</echo>
+        <echo>${app.name} ${app.version} by ${app.credits}</echo>
     </target>
 </project>
