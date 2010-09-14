@@ -52,8 +52,4 @@ class Phrozn_Runner_CommandLine extends Phrozn_Runner_Abstract
         }
     }
 
-    public function execute()
-    {
-        print_r($this);
-    }
 }

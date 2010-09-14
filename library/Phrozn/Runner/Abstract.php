@@ -22,6 +22,8 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
+require_once 'phing/Phing.php';
+
 /**
  * Base class for framework invoker instances.
  *
@@ -50,16 +52,39 @@ abstract class Phrozn_Runner_Abstract
      */
     private $opts;
 
+    /**
+     * Path to folder containing command builds
+     * @var string
+     */
+    private $buildPath;
+
     protected function __construct($command, $args = null, $opts = null)
     {
         $this->command = $command;
         $this->args = $args;
         $this->opts = $opts;
+        $this->buildPath = realpath(
+            dirname(__FILE__) . '/Commands/');
     }
 
     /**
-     * Fire the passed command execution
+     * Locate build-file and execute specified target
      */
-    abstract public function execute();
+    public function execute()
+    {
+        $userArgs = array(
+            'args' => $this->args,
+            'opts' => $this->opts
+        );
+        $phingArgs = array(
+            '-f', $this->buildPath . '/' . $this->command . '.xml'
+        );
+
+        // @todo - refactor
+        Phing::setProperty('host.fstype', 'UNIX');
+        Phing::setOutputStream(new OutputStream(fopen('php://stdout', 'w')));
+        Phing::setErrorStream(new OutputStream(fopen('php://stderr', 'w')));
+        Phing::start($phingArgs, $userArgs);
+    }
 
 }
