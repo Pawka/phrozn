@@ -9,29 +9,28 @@
        <action>StoreTrue</action>
    </option>
    <command>
-       <name>foo</name>
-       <description>output the given string with a foo prefix</description>
-       <option name="reverse">
-           <short_name>-r</short_name>
-           <long_name>--reverse</long_name>
-           <description>reverse the string before echoing it</description>
-           <action>StoreTrue</action>
-       </option>
-       <argument name="text">
-           <description>the text to output</description>
-       </argument>
-   </command>
-   <command>
-       <name>bar</name>
-       <description>output the given string with a bar prefix</description>
-       <option name="reverse">
-           <short_name>-r</short_name>
-           <long_name>--reverse</long_name>
-           <description>reverse the string before echoing it</description>
-           <action>StoreTrue</action>
-       </option>
-       <argument name="text">
-           <description>the text to output</description>
-       </argument>
+       <name>site</name>
+       <description>Site management tools</description>
+       <command>
+           <name>compile</name>
+           <description>Compile static site</description>
+           <aliases>
+               <alias>build</alias>
+               <alias>freeze</alias>
+               <alias>update</alias>
+               <alias>up</alias>
+           </aliases>
+       </command>
+       <command>
+           <name>create</name>
+           <description>Create empty phrozn site</description>
+           <aliases>
+               <alias>setup</alias>
+           </aliases>
+           <argument name="directory">
+               <description>Destination directory</description>
+               <optional>true</optional>
+           </argument>
+       </command>
    </command>
 </command>

@@ -35,10 +35,19 @@ require_once 'phing/Phing.php';
 abstract class Phrozn_Runner_Abstract
 {
     /**
-     * phrozn command/target to invoke
+     * phrozn command to invoke
+     * Internally amounts to build file to pass to phing
+     *
      * @var string
      */
     private $command;
+
+    /**
+     * phing target to execute
+     *
+     * @var string
+     */
+    private $target;
 
     /**
      * Target arguments
@@ -58,13 +67,13 @@ abstract class Phrozn_Runner_Abstract
      */
     private $buildPath;
 
-    protected function __construct($command, $args = null, $opts = null)
+    protected function __construct($command, $target, $opts = null, $args = null)
     {
         $this->command = $command;
+        $this->target = $target;
         $this->args = $args;
         $this->opts = $opts;
-        $this->buildPath = realpath(
-            dirname(__FILE__) . '/Commands/');
+        $this->buildPath = realpath(dirname(__FILE__) . '/Commands/');
     }
 
     /**
@@ -72,18 +81,23 @@ abstract class Phrozn_Runner_Abstract
      */
     public function execute()
     {
-        $userArgs = array(
-            'args' => $this->args,
-            'opts' => $this->opts
-        );
+        $userArgs = array();
+        foreach ($this->args as $arg => $val) {
+            $userArgs['args.' . $arg] = $val;
+        }
+        foreach ($this->opts as $opt => $val) {
+            $userArgs['opts.' . $opt] = $val;
+        }
         $phingArgs = array(
-            '-f', $this->buildPath . '/' . $this->command . '.xml'
+            '-f', $this->buildPath . '/' . $this->command . '.xml',
+            $this->target
         );
 
         // @todo - refactor
         Phing::setProperty('host.fstype', 'UNIX');
         Phing::setOutputStream(new OutputStream(fopen('php://stdout', 'w')));
         Phing::setErrorStream(new OutputStream(fopen('php://stderr', 'w')));
+        print_r($userArgs);
         Phing::start($phingArgs, $userArgs);
     }
 

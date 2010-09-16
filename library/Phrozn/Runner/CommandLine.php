@@ -42,11 +42,21 @@ class Phrozn_Runner_CommandLine extends Phrozn_Runner_Abstract
 
         try {
             $result = $parser->parse();
-            $command = new self(
-                $result->command_name, 
-                $result->command->options,
-                $result->command->args);
-            $command->execute();
+            $opts = isset($result->command->command->options) 
+                  ? $result->command->command->options 
+                  : array();
+            $args = isset($result->command->command->args) 
+                  ? $result->command->command->args 
+                  : array();
+            $command = ($result->command_name === false) 
+                     ? 'site' 
+                     : $result->command_name;
+            $target = isset($result->command->command_name)
+                    ? $result->command->command_name
+                    : 'help';
+
+            $build = new self($command, $target,  $opts, $args);
+            $build->execute();
         } catch (Exception $e) {
             $parser->displayError($e->getMessage());
         }
