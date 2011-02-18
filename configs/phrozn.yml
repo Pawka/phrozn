@@ -1,0 +1,10 @@
+# Meta information about Phrozn
+---
+name: Phrozn
+version: &ver "0.1 alpha"
+credits: Vic Farazdagi
+
+command:
+    name: "/usr/bin/phrozn"
+    description: "Phrozn - static web-site generator for PHP"
+    version: *ver
