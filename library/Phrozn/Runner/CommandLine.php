@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010 Victor Farazdagi
+ * Copyright 2011 Victor Farazdagi
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License.
@@ -15,51 +15,62 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn_Runner
- * @version     $Id$
+ * @package     Phrozn\Runner
  * @author      Victor Farazdagi
  * @copyright   2010 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-require_once 'Console/CommandLine.php';
-require_once('Phrozn/Runner/Abstract.php');
+namespace Phrozn\Runner;
+use Symfony\Component\Yaml\Yaml,
+    Console_CommandLine as CommandParser;
 
 /**
  * CLI version of framework invoker.
  *
  * @category    Phrozn
- * @package     Phrozn_Runner
- * @version     $Id$
+ * @package     Phrozn\Runner
  * @author      Victor Farazdagi
  */
-class Phrozn_Runner_CommandLine extends Phrozn_Runner_Abstract
+class CommandLine 
+    extends \Phrozn\Runner\BaseRunner
+    implements \Phrozn\Runner
 {
-    public static function run()
+    /**
+     * Process the request
+     *
+     * @param \Zend\Loader\SplAutoloader $loader Instance of auto-loader
+     *
+     * @return void
+     */
+    public static function run(\Zend\Loader\SplAutoloader $loader)
     {
-        $path = dirname(__FILE__) . '/CommandLine/CommandDefinition.xml';
-        $parser = Console_CommandLine::fromXmlFile($path);
+        $parser = self::createParser($loader);
 
         try {
             $result = $parser->parse();
-            $opts = isset($result->command->command->options) 
-                  ? $result->command->command->options 
-                  : array();
-            $args = isset($result->command->command->args) 
-                  ? $result->command->command->args 
-                  : array();
-            $command = ($result->command_name === false) 
-                     ? 'site' 
-                     : $result->command_name;
-            $target = isset($result->command->command_name)
-                    ? $result->command->command_name
-                    : 'help';
-
-            $build = new self($command, $target,  $opts, $args);
-            $build->execute();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $parser->displayError($e->getMessage());
         }
+
+        $runner = new self($parser, $result);
+        $runner->execute();
     }
 
+    private static function createParser($loader)
+    {
+        $meta = Yaml::load(PHROZN_PATH_CONFIGS . 'cli/phrozn.yml');
+
+        $parser = new CommandParser($meta['command']);
+        foreach ($meta['command']['options'] as $name => $option) {
+            // update callback with full class name
+            if (isset($option['callback'])) {
+                list($class, $method) = $option['callback'];
+                $class = 'Phrozn\\Runner\\CommandLine\\Callback\\' . $class;
+                $option['callback'] = array($class, $method);
+            }
+            $parser->addOption($name, $option);
+        }
+        return $parser;
+    }
 }

@@ -1,1 +1,5 @@
+# Sub-commands available via phrozn executable
+---
 command:
+    name: "site"
+    description: "Site management tools"
