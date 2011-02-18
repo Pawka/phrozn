@@ -33,9 +33,11 @@ namespace Phrozn;
 interface Runner 
 {
     /**
-     * Invoke given phrozn interface
+     * Process the request
+     *
+     * @param \Zend\Loader\SplAutoloader $loader Instance of auto-loader
      *
      * @return void
      */
-    public static function run();
+    public static function run(\Zend\Loader\SplAutoloader $loader);
 }

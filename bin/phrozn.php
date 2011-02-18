@@ -19,5 +19,5 @@ $loader
     ->setFallbackAutoloader(true)
     ->register();
 
-Runner::run();
+Runner::run($loader);
 
