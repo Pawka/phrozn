@@ -1,12 +1,13 @@
 # Meta information about Phrozn
 ---
 name: Phrozn
-version: &ver "0.1 alpha"
-credits: Vic Farazdagi
+description: &desc Phrozn is extremely flexible static site generator for PHP.
+version: &ver "0.1.0"
+author: Victor Farazdagi
 
 command:
     name: /usr/bin/phrozn
-    description: Phrozn - static site generator for PHP
+    description: *desc
     version: *ver
     add_help_option: false
     options:

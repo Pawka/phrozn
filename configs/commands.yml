@@ -2,6 +2,8 @@
 ---
 help:
     name: help
+    aliases: [h, ?]
+    short_name: ?, h
     description: Phrozn usage manual
     arguments:
         topic:

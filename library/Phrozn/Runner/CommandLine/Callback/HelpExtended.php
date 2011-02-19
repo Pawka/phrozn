@@ -34,7 +34,6 @@ use Console_Color as Color,
  */
 class HelpExtended 
 {
-
     /**
      * Executes the action with the value entered by the user.
      *
@@ -48,11 +47,13 @@ class HelpExtended
      */
     public static function execute($value, $option, $result, $parser, $params = array())
     {
+        $meta = Yaml::load(PHROZN_PATH_CONFIGS . 'phrozn.yml');
+        self::header($parser, $meta);
+
         $topic = isset($result->command->args) ? $result->command->args['topic'] : null;
 
         if (null === $topic) {
-            $parser->outputter->stdout(Color::convert('%P' . $parser->description . '%n') . "\n\n");
-            return self::displayUsage($value, $option, $result, $parser, $params);
+            self::displayUsage($value, $option, $result, $parser, $params);
         } else {
             $callback = array('Phrozn\Runner\CommandLine\Callback\HelpExtended', 'display' . ucfirst($topic));
             if (is_callable($callback)) {
@@ -62,6 +63,7 @@ class HelpExtended
                 $parser->outputter->stdout($error);
             }
         }
+        self::footer($parser, $meta);
     }
 
     private static function displayInit($value, $option, $result, $parser, $params = array())
@@ -73,9 +75,22 @@ class HelpExtended
     private static function displayUsage($value, $option, $result, $parser, $params = array())
     {
         if (isset($params['use_colors']) && $params['use_colors'] === true) {
-            $out = "Usage:\n  phrozn command [option]";
-            $out .= "\n";
-            $parser->outputter->stdout($out);
+            $commands = Yaml::load(PHROZN_PATH_CONFIGS . 'commands.yml');
+            
+            $out = "usage: %bphrozn%n %g<subcommand>%n [options] [args]\n\n";
+            $out .= "Type 'phrozn help <subcommand>' for help on a specific subcommand.\n";
+            $out .= "Type 'phrozn --version' to see the program version and installed plugins.\n";
+
+            $out .= "\nAvailable subcommands:\n";
+            foreach ($commands as $name => $command) {
+                $out .= '    ' . $name;
+                if (null !== $command['short_name']) {
+                    $out .= " (${command['short_name']})";
+                }
+                $out .= "\n";
+            }
+
+            $parser->outputter->stdout(Color::convert($out));
         } else {
             return $parser->displayUsage();
         }
@@ -88,9 +103,23 @@ class HelpExtended
 
         $out = '';
         $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
-        $out .= '%bUsage:%n ' . $docs['usage'] . "\n";
+        $out .= '%busage:%n ' . $docs['usage'] . "\n";
         $out .= "\n  " . implode("\n  ", explode("\n", $docs['description'])) . "\n";
 
         return $out;
     }
+
+    private static function header($parser, $meta)
+    {
+        $out = "%P{$meta['name']} {$meta['version']} by {$meta['author']}\n%n";
+        $parser->outputter->stdout(Color::convert($out));
+    }
+
+    private static function footer($parser, $meta)
+    {
+        $out = "\n{$meta['description']}\n";
+        $out .= "For additional information, see %9http://phrozn.info%n\n";
+        $parser->outputter->stdout(Color::convert($out));
+    }
+
 }
