@@ -76,7 +76,10 @@ class CommandLine
         // sub-commands
         $commands = Yaml::load(PHROZN_PATH_CONFIGS . 'commands.yml');
         foreach ($commands as $name => $command) {
-            $parser->addCommand($name, $command);
+            $cmd = $parser->addCommand($name, $command);
+            foreach ($command['arguments'] as $name => $argument) {
+                $cmd->addArgument($name, $argument);
+            }
         }
 
         return $parser;

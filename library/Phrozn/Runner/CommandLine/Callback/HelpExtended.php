@@ -47,9 +47,32 @@ class HelpExtended
      */
     public static function execute($value, $option, $result, $parser, $params = array())
     {
+        $topic = isset($result->command->args) ? $result->command->args['topic'] : null;
+
+        $parser->outputter->stdout(Color::convert('%P' . $parser->description . '%n') . "\n\n");
+
+        if (null === $topic) {
+            return self::displayUsage($value, $option, $result, $parser, $params);
+        } else {
+            $callback = array('Phrozn\Runner\CommandLine\Callback\HelpExtended', 'display' . ucfirst($topic));
+            if (is_callable($callback)) {
+                var_dump($topic);
+            } else {
+                $error = Color::convert("%rHelp topic '$topic' not found..%n\n");
+                $parser->outputter->stdout($error);
+            }
+        }
+    }
+
+    private static function displayInit($value, $option, $result, $parser, $params = array())
+    {
+        $parser->outputter->stdout('init help');
+    }
+
+    private static function displayUsage($value, $option, $result, $parser, $params = array())
+    {
         if (isset($params['use_colors']) && $params['use_colors'] === true) {
-            $out = Color::convert('%P' . $parser->description . '%n');
-            $out .= "\nUsage:\n  phrozn command [option]";
+            $out = "Usage:\n  phrozn command [option]";
             $out .= "\n";
             $parser->outputter->stdout($out);
         } else {

@@ -3,3 +3,8 @@
 help:
     name: help
     description: Phrozn usage manual
+    arguments:
+        topic:
+            help_name: sub-command
+            description: Help topic
+            optional: true
