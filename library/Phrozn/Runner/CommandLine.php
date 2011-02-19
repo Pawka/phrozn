@@ -59,9 +59,10 @@ class CommandLine
 
     private static function createParser($loader)
     {
-        $meta = Yaml::load(PHROZN_PATH_CONFIGS . 'cli/phrozn.yml');
-
+        $meta = Yaml::load(PHROZN_PATH_CONFIGS . 'phrozn.yml');
         $parser = new CommandParser($meta['command']);
+
+        // options
         foreach ($meta['command']['options'] as $name => $option) {
             // update callback with full class name
             if (isset($option['callback'])) {
@@ -71,6 +72,13 @@ class CommandLine
             }
             $parser->addOption($name, $option);
         }
+
+        // sub-commands
+        $commands = Yaml::load(PHROZN_PATH_CONFIGS . 'commands.yml');
+        foreach ($commands as $name => $command) {
+            $parser->addCommand($name, $command);
+        }
+
         return $parser;
     }
 }

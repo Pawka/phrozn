@@ -57,6 +57,14 @@ abstract class BaseRunner
     public function execute()
     {
         $opts = $this->result->options;
+        $command = $this->result->command_name;
+        $optionSet = $argumentSet = false;
+
+        switch ($command) {
+            case 'help':
+                $opts['help'] = true;
+                break;
+        }
 
         foreach ($opts as $name => $value) {
             if ($value === true) {
@@ -68,8 +76,13 @@ abstract class BaseRunner
                         $this->result, $this->parser, 
                         $option->action_params);
                 }
+                $optionSet = true;
                 break;
             }
+        }
+
+        if ($command === false && $optionSet === false && $argumentSet === false) {
+            $this->parser->outputter->stdout("Type 'phrozn help' for usage.\n");
         }
     }
 
