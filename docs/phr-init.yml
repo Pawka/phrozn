@@ -1,0 +1,7 @@
+# phrozn init command reference
+---
+name: %binitialize (init)%n
+summary: Initialize Phrozn project
+description: |
+    if output directory PATH not provided, current directory is used.
+usage: phrozn init [PATH]

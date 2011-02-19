@@ -22,7 +22,8 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
-use Console_Color as Color;
+use Console_Color as Color,
+    Symfony\Component\Yaml\Yaml;
 
 /**
  * Extended help messages
@@ -49,14 +50,13 @@ class HelpExtended
     {
         $topic = isset($result->command->args) ? $result->command->args['topic'] : null;
 
-        $parser->outputter->stdout(Color::convert('%P' . $parser->description . '%n') . "\n\n");
-
         if (null === $topic) {
+            $parser->outputter->stdout(Color::convert('%P' . $parser->description . '%n') . "\n\n");
             return self::displayUsage($value, $option, $result, $parser, $params);
         } else {
             $callback = array('Phrozn\Runner\CommandLine\Callback\HelpExtended', 'display' . ucfirst($topic));
             if (is_callable($callback)) {
-                var_dump($topic);
+                call_user_func($callback, $value, $option, $result, $parser, $params);
             } else {
                 $error = Color::convert("%rHelp topic '$topic' not found..%n\n");
                 $parser->outputter->stdout($error);
@@ -66,7 +66,8 @@ class HelpExtended
 
     private static function displayInit($value, $option, $result, $parser, $params = array())
     {
-        $parser->outputter->stdout('init help');
+        $help = self::combine('init');
+        $parser->outputter->stdout(Color::convert($help));
     }
 
     private static function displayUsage($value, $option, $result, $parser, $params = array())
@@ -78,5 +79,18 @@ class HelpExtended
         } else {
             return $parser->displayUsage();
         }
+    }
+
+    private static function combine($file)
+    {
+        $file = PHROZN_PATH_DOCS . 'phr-' . $file . '.yml';
+        $docs = Yaml::load($file);
+
+        $out = '';
+        $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
+        $out .= '%bUsage:%n ' . $docs['usage'] . "\n";
+        $out .= "\n  " . implode("\n  ", explode("\n", $docs['description'])) . "\n";
+
+        return $out;
     }
 }
