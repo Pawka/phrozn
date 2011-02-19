@@ -103,11 +103,16 @@ class HelpExtended
 
         $out = '';
         $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
-        $out .= '%busage:%n ' . $docs['usage'] . "\n";
-        $out .= "\n  " . implode("\n  ", explode("\n", $docs['description'])) . "\n";
+        $out .= 'usage: ' . $docs['usage'] . "\n";
+        $out .= "\n  " . self::pre($docs['description']) . "\n";
 
         return $out;
     }
+    private static function pre($arr)
+    {
+        return implode("\n  ", explode("\n", $arr));
+    }
+
 
     private static function header($parser, $meta)
     {
