@@ -1,0 +1,29 @@
+# phr init 
+---
+command:
+    name: &name initialize
+    aliases: [init]
+    description: Phrozn usage manual
+    arguments:
+        topic:
+            help_name: sub-command
+            description: Help topic
+            optional: true
+# documentation
+docs:
+    name: initialize (init) 
+    summary: Initialize Phrozn project
+    description: |
+        This command creates empty phrozn site.
+
+        If output PATH not provided, current directory is assumed.
+    usage: %bphrozn%n %ginit%n [PATH]
+    examples: |
+        To create project in current directory:
+        $phrozn init
+
+        To create project in specified directory PATH:
+        phrozn init PATH
+
+        To create project in current directory (path specified explicitly):
+        phrozn init .

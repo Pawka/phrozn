@@ -1,8 +1,0 @@
-# phrozn init command reference
----
-name: initialize (init)
-summary: Initialize Phrozn project
-description: |
-    If output PATH not provided, current directory is assumed.
-    phrozn init # phrozn init .
-usage: %bphrozn%n %ginit%n [PATH]

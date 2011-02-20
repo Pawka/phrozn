@@ -23,7 +23,8 @@
 
 namespace Phrozn\Runner\CommandLine\Callback;
 use Console_Color as Color,
-    Symfony\Component\Yaml\Yaml;
+    Symfony\Component\Yaml\Yaml,
+    Phrozn\Runner\CommandLine\Commands;
 
 /**
  * Extended help messages
@@ -55,37 +56,36 @@ class HelpExtended
         if (null === $topic) {
             self::displayUsage($value, $option, $result, $parser, $params);
         } else {
-            $callback = array('Phrozn\Runner\CommandLine\Callback\HelpExtended', 'display' . ucfirst($topic));
-            if (is_callable($callback)) {
-                call_user_func($callback, $value, $option, $result, $parser, $params);
-            } else {
-                $error = Color::convert("%rHelp topic '$topic' not found..%n\n");
-                $parser->outputter->stdout($error);
-            }
+            self::displayTopic($topic, $value, $option, $result, $parser, $params);
         }
         self::footer($parser, $meta);
     }
 
-    private static function displayInit($value, $option, $result, $parser, $params = array())
+    private static function displayTopic($topic, $value, $option, $result, $parser, $params = array())
     {
-        $help = self::combine('init');
-        $parser->outputter->stdout(Color::convert($help));
+        if ($help = self::combine($topic, $result->command->options['verbose'])) {
+            return $parser->outputter->stdout(Color::convert($help));
+        }
+        $error = Color::convert("%rHelp topic '$topic' not found..%n\n");
+        $parser->outputter->stdout($error);
     }
 
     private static function displayUsage($value, $option, $result, $parser, $params = array())
     {
         if (isset($params['use_colors']) && $params['use_colors'] === true) {
-            $commands = Yaml::load(PHROZN_PATH_CONFIGS . 'commands.yml');
+            $commands = Commands::getInstance();
             
-            $out = "usage: %bphrozn%n %g<subcommand>%n [options] [args]\n\n";
-            $out .= "Type 'phrozn help <subcommand>' for help on a specific subcommand.\n";
+            $out = "usage: %bphrozn%n %g<command>%n [options] [args]\n\n";
+            $out .= "Type 'phrozn help <command>' for help on a specific command.\n";
+            $out .= "Type 'phrozn ? help' for help on using help.\n";
             $out .= "Type 'phrozn --version' to see the program version and installed plugins.\n";
 
-            $out .= "\nAvailable subcommands:\n";
-            foreach ($commands as $name => $command) {
+            $out .= "\nAvailable commands:\n";
+            foreach ($commands as $name => $data) {
+                $command = $data['command'];
                 $out .= '    ' . $name;
-                if (null !== $command['short_name']) {
-                    $out .= " (${command['short_name']})";
+                if (null !== $command['aliases']) {
+                    $out .= ' (' . implode(', ', $command['aliases']) . ')';
                 }
                 $out .= "\n";
             }
@@ -96,15 +96,33 @@ class HelpExtended
         }
     }
 
-    private static function combine($file)
+    private static function combine($file, $verbose = false)
     {
-        $file = PHROZN_PATH_DOCS . 'phr-' . $file . '.yml';
-        $docs = Yaml::load($file);
+        $file = PHROZN_PATH_CONFIGS . 'commands/' . $file . '.yml';
+        $data = Yaml::load($file);
+
+        if ($data === $file) {
+            return false;
+        }
+        $docs = $data['docs'];
+        $command = $data['command'];
 
         $out = '';
         $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
         $out .= 'usage: ' . $docs['usage'] . "\n";
         $out .= "\n  " . self::pre($docs['description']) . "\n";
+        if ($verbose && isset($docs['examples'])) {
+            $out .= 'eg:';
+            $out .= "\n  " . self::pre($docs['examples']) . "\n";
+        }
+
+        if (isset($command['options']) && count($command['options'])) {
+            $out .= "Available options:\n";
+            foreach ($command['options'] as $opt) {
+                $spaces = str_repeat(' ', 30 - strlen($opt['doc_name']));
+                $out .= "  {$opt['doc_name']} {$spaces} : {$opt['description']}\n";
+            }
+        }
 
         return $out;
     }

@@ -8,7 +8,6 @@ defined('PHROZN_PATH_APP') or define('PHROZN_PATH_APP', realpath(dirname(__FILE_
 defined('PHROZN_PATH_BIN') or define('PHROZN_PATH_BIN', PHROZN_PATH_APP . 'bin/');
 defined('PHROZN_PATH_LIB') or define('PHROZN_PATH_LIB', PHROZN_PATH_APP . 'library/');
 defined('PHROZN_PATH_CONFIGS') or define('PHROZN_PATH_CONFIGS', PHROZN_PATH_APP . 'configs/');
-defined('PHROZN_PATH_DOCS') or define('PHROZN_PATH_DOCS', PHROZN_PATH_APP . 'docs/');
 
 // auto-loader
 require_once PHROZN_PATH_LIB . 'Zend/Loader/StandardAutoloader.php';

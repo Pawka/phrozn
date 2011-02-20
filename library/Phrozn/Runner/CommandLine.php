@@ -23,7 +23,8 @@
 
 namespace Phrozn\Runner;
 use Symfony\Component\Yaml\Yaml,
-    Console_CommandLine as CommandParser;
+    Console_CommandLine as CommandParser,
+    Phrozn\Runner\CommandLine\Commands;
 
 /**
  * CLI version of framework invoker.
@@ -74,11 +75,19 @@ class CommandLine
         }
 
         // sub-commands
-        $commands = Yaml::load(PHROZN_PATH_CONFIGS . 'commands.yml');
-        foreach ($commands as $name => $command) {
+        $commands = Commands::getInstance();
+        foreach ($commands as $name => $data) {
+            $command = $data['command'];
             $cmd = $parser->addCommand($name, $command);
-            foreach ($command['arguments'] as $name => $argument) {
+            // command arguments
+            $args = isset($command['arguments']) ? $command['arguments'] : array();
+            foreach ($args as $name => $argument) {
                 $cmd->addArgument($name, $argument);
+            }
+            // command options
+            $opts = isset($command['options']) ? $command['options'] : array();
+            foreach ($opts as $name => $option) {
+                $cmd->addOption($name, $option);
             }
         }
 

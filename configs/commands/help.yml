@@ -1,0 +1,25 @@
+# phr ?
+---
+command:
+    name: &name help
+    aliases: [h, ?]
+    description: Phrozn usage manual
+    options:
+        verbose:
+           short_name: -v 
+           long_name: --verbose
+           doc_name: -v [--verbose]
+           action: StoreTrue
+           description: Turn on verbose output
+    arguments:
+        topic:
+            help_name: sub-command
+            description: Help topic
+            optional: true
+# documentation
+docs:
+    name: *name
+    summary: Phrozn help reference
+    description: |
+        Type 'phrozn help <command>' for help on a specific command.
+    usage: %bphrozn%n %ghelp%n <command>
