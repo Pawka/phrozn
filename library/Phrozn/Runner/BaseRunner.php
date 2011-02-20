@@ -17,13 +17,14 @@
  * @category    Phrozn
  * @package     Phrozn\Runner
  * @author      Victor Farazdagi
- * @copyright   2010 Victor Farazdagi
+ * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
 namespace Phrozn\Runner;
 use \Console_CommandLine as Parser,
-    \Console_CommandLine_Result as ParseResult;
+    \Console_CommandLine_Result as ParseResult,
+    Phrozn\Runner\CommandLine\Command;
 
 /**
  * Base class for framework invoker instances.
@@ -57,13 +58,16 @@ abstract class BaseRunner
     public function execute()
     {
         $opts = $this->result->options;
-        $command = $this->result->command_name;
+        $commandName = $this->result->command_name;
+        $command = null;
         $optionSet = $argumentSet = false;
 
-        switch ($command) {
+        switch ($commandName) {
             case 'help':
                 $opts['help'] = true;
                 break;
+            default:
+                $command = new Command($commandName);
         }
 
         foreach ($opts as $name => $value) {
@@ -71,8 +75,7 @@ abstract class BaseRunner
                 $option = $this->parser->options[$name];
                 if (isset($option->callback) && is_callable($option->callback)) {
                     call_user_func($option->callback, 
-                        $value, 
-                        $option, 
+                        $value, $option, 
                         $this->result, $this->parser, 
                         $option->action_params);
                 }
@@ -81,8 +84,27 @@ abstract class BaseRunner
             }
         }
 
-        if ($command === false && $optionSet === false && $argumentSet === false) {
+        // fire up subcommand
+        if (isset($command['callback'])) {
+            $this->invoke($command['callback'], $command);
+        }
+
+        if ($commandName === false && $optionSet === false && $argumentSet === false) {
             $this->parser->outputter->stdout("Type 'phrozn help' for usage.\n");
+        }
+    }
+
+    /**
+     * Invoke callback
+     */
+    private function invoke($callback, $data)
+    {
+        list($class, $method) = $callback;
+        $class = 'Phrozn\\Runner\\CommandLine\\Callback\\' . $class;
+        $callback = array($class, $method);
+
+        if (is_callable($callback)) {
+            call_user_func($callback, $data, $this->result, $this->parser);
         }
     }
 

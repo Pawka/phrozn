@@ -17,7 +17,7 @@
  * @category    Phrozn
  * @package     Phrozn\Runner
  * @author      Victor Farazdagi
- * @copyright   2010 Victor Farazdagi
+ * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 

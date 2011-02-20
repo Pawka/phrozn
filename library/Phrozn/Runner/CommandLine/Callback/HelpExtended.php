@@ -15,9 +15,9 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Runner
+ * @package     Phrozn\Runner\CommandLine
  * @author      Victor Farazdagi
- * @copyright   2010 Victor Farazdagi
+ * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -30,10 +30,11 @@ use Console_Color as Color,
  * Extended help messages
  *
  * @category    Phrozn
- * @package     Phrozn\Runner
+ * @package     Phrozn\Runner\CommandLine
  * @author      Victor Farazdagi
  */
 class HelpExtended 
+    extends Base
 {
     /**
      * Executes the action with the value entered by the user.
@@ -95,54 +96,4 @@ class HelpExtended
             return $parser->displayUsage();
         }
     }
-
-    private static function combine($file, $verbose = false)
-    {
-        $file = PHROZN_PATH_CONFIGS . 'commands/' . $file . '.yml';
-        $data = Yaml::load($file);
-
-        if ($data === $file) {
-            return false;
-        }
-        $docs = $data['docs'];
-        $command = $data['command'];
-
-        $out = '';
-        $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
-        $out .= 'usage: ' . $docs['usage'] . "\n";
-        $out .= "\n  " . self::pre($docs['description']) . "\n";
-        if ($verbose && isset($docs['examples'])) {
-            $out .= 'eg:';
-            $out .= "\n  " . self::pre($docs['examples']) . "\n";
-        }
-
-        if (isset($command['options']) && count($command['options'])) {
-            $out .= "Available options:\n";
-            foreach ($command['options'] as $opt) {
-                $spaces = str_repeat(' ', 30 - strlen($opt['doc_name']));
-                $out .= "  {$opt['doc_name']} {$spaces} : {$opt['description']}\n";
-            }
-        }
-
-        return $out;
-    }
-    private static function pre($arr)
-    {
-        return implode("\n  ", explode("\n", $arr));
-    }
-
-
-    private static function header($parser, $meta)
-    {
-        $out = "%P{$meta['name']} {$meta['version']} by {$meta['author']}\n%n";
-        $parser->outputter->stdout(Color::convert($out));
-    }
-
-    private static function footer($parser, $meta)
-    {
-        $out = "\n{$meta['description']}\n";
-        $out .= "For additional information, see %9http://phrozn.info%n\n";
-        $parser->outputter->stdout(Color::convert($out));
-    }
-
 }

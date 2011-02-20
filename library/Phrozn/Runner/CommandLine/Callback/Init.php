@@ -15,29 +15,41 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Runner
+ * @package     Phrozn\Runner\CommandLine
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn;
+namespace Phrozn\Runner\CommandLine\Callback;
+use Console_Color as Color,
+    Symfony\Component\Yaml\Yaml,
+    Phrozn\Runner\CommandLine\Commands;
 
 /**
- * Phrozn invoker
+ * phrozn init command
  *
  * @category    Phrozn
- * @package     Phrozn\Runner
+ * @package     Phrozn\Runner\CommandLine
  * @author      Victor Farazdagi
  */
-interface Runner 
+class Init 
+    extends Base
+    implements Command
 {
     /**
-     * Process the request
+     * Executes the callback action 
      *
-     * @param \Zend\Loader\SplAutoloader $loader Instance of auto-loader
+     * @param array $data Loaded command config
+     * @param Console_CommandLine $parser CLI Parser instance
+     * @param Console_CommandLine_Result $result Parser's result
      *
-     * @return void
+     * @return string
      */
-    public static function run(\Zend\Loader\SplAutoloader $loader);
+    public static function execute($data, $result, $parser)
+    {
+        $meta = Yaml::load(PHROZN_PATH_CONFIGS . 'phrozn.yml');
+        self::header($parser, $meta);
+        self::footer($parser, $meta);
+    }
 }

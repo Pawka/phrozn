@@ -9,6 +9,10 @@ command:
             help_name: sub-command
             description: Help topic
             optional: true
+
+# callback
+callback: [Init, execute]
+
 # documentation
 docs:
     name: initialize (init) 
@@ -20,10 +24,10 @@ docs:
     usage: %bphrozn%n %ginit%n [PATH]
     examples: |
         To create project in current directory:
-        $phrozn init
+        %bphrozn%n %ginit%n 
 
         To create project in specified directory PATH:
-        phrozn init PATH
+        %bphrozn%n %ginit%n PATH
 
         To create project in current directory (path specified explicitly):
-        phrozn init .
+        %bphrozn%n %ginit%n .
