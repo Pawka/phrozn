@@ -35,9 +35,7 @@ interface Runner
     /**
      * Process the request
      *
-     * @param \Zend\Loader\SplAutoloader $loader Instance of auto-loader
-     *
      * @return void
      */
-    public static function run(\Zend\Loader\SplAutoloader $loader);
+    public function run();
 }

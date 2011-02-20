@@ -24,7 +24,7 @@
 namespace Phrozn\Runner\CommandLine\Callback;
 use Console_Color as Color,
     Symfony\Component\Yaml\Yaml,
-    Phrozn\Runner\CommandLine\Commands;
+    Phrozn\Runner\CommandLine;
 
 /**
  * phrozn init command
@@ -34,22 +34,22 @@ use Console_Color as Color,
  * @author      Victor Farazdagi
  */
 class Init 
-    extends Base
-    implements Command
+    extends BaseCallback
+    implements CommandLine\Callback
 {
     /**
      * Executes the callback action 
      *
-     * @param array $data Loaded command config
-     * @param Console_CommandLine $parser CLI Parser instance
-     * @param Console_CommandLine_Result $result Parser's result
-     *
      * @return string
      */
-    public static function execute($data, $result, $parser)
+    public function execute()
     {
-        $meta = Yaml::load(PHROZN_PATH_CONFIGS . 'phrozn.yml');
-        self::header($parser, $meta);
-        self::footer($parser, $meta);
+        $out = '';
+
+        $path = isset($this->getParseResult()->command->args['path'])
+               ? $this->getParseResult()->command->args['path'] : \getcwd();
+        $out .= sprintf("Create project: %s \n", $path);
+
+        $this->display($out);
     }
 }

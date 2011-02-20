@@ -46,6 +46,11 @@ class Commands
     private $it;
 
     /**
+     * Path where commands configs are stored
+     */
+    private $path;
+
+    /**
      * @var \Phrozn\Runner\CommandLine\Commands
      */
     private static $instance;
@@ -61,8 +66,19 @@ class Commands
         if (null === self::$instance) {
             self::$instance = new self;
         }
-        self::$instance->rewind(); // make sure we reset instance
         return self::$instance;
+    }
+
+    public function setPath($path) 
+    {
+        $this->path = $path;
+        self::$instance->rewind(); // make sure we reset instance
+        return $this;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
     }
 
     public function current()
@@ -127,8 +143,11 @@ class Commands
      */
     private function getIterator()
     {
+        if (null === $this->getPath()) {
+            throw new \Exception('Commands config path not set');
+        }
         if (null === $this->it) {
-            $this->it =  new \DirectoryIterator(PHROZN_PATH_CONFIGS . 'commands');
+            $this->it =  new \DirectoryIterator($this->getPath());
         }
         return $this->it;
     }

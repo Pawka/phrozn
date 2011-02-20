@@ -5,6 +5,9 @@ description: &desc Phrozn is extremely flexible static site generator for PHP.
 version: &ver "0.1.0"
 author: Victor Farazdagi
 
+# executable customization
+use_ansi_colors: true
+
 command:
     name: /usr/bin/phrozn
     description: *desc
@@ -16,6 +19,3 @@ command:
             long_name:      --help
             description:    Show this help message
             action:         StoreTrue
-            callback:       [HelpExtended, execute]
-            action_params: 
-                use_colors: true

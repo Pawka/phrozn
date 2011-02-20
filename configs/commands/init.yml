@@ -5,9 +5,9 @@ command:
     aliases: [init]
     description: Phrozn usage manual
     arguments:
-        topic:
-            help_name: sub-command
-            description: Help topic
+        path:
+            help_name: path
+            description: Destination directory
             optional: true
 
 # callback

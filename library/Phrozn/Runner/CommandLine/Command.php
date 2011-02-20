@@ -39,9 +39,9 @@ class Command
      */
     private $command;
 
-    public function __construct($command)
+    public function __construct($file)
     {
-        $this->load($command);
+        $this->load($file);
     }
     public function offsetExists($offset)
     {
@@ -67,30 +67,15 @@ class Command
      * Load configuration for a given command.
      * Loading happens only once, after that cached info is returned
      *
-     * @param string $file  Config file name
+     * @param string $file  Config file path
      *
      * @return array Array of loaded config data
      */
     private function load($file)
     {
         if (null === $this->command) {
-            $this->command = Yaml::load(PHROZN_PATH_CONFIGS . 'commands/' . $file . '.yml');
+            $this->command = Yaml::load($file);
         }
         return $this->command;
     }
-
-    /**
-     * Get DirecotryIterator to commands config path
-     *
-     * @return \DirectoryIterator
-     */
-    private function getIterator()
-    {
-        if (null === $this->it) {
-            $this->it =  new \DirectoryIterator(PHROZN_PATH_CONFIGS . 'commands');
-        }
-        return $this->it;
-    }
-
-
 }

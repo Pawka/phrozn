@@ -16,6 +16,10 @@ command:
             help_name: sub-command
             description: Help topic
             optional: true
+
+# callback
+callback: [Help, execute]
+
 # documentation
 docs:
     name: *name

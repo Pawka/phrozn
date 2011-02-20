@@ -21,7 +21,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Runner\CommandLine\Callback;
+namespace Phrozn\Runner\CommandLine;
 
 /**
  * Subcommand interface
@@ -30,16 +30,61 @@ namespace Phrozn\Runner\CommandLine\Callback;
  * @package     Phrozn\Runner\CommandLine\Callback
  * @author      Victor Farazdagi
  */
-interface Command
+interface Callback
 {
     /**
      * Executes the callback action 
      *
-     * @param array $data Loaded command config
-     * @param Console_CommandLine $parser CLI Parser instance
-     * @param Console_CommandLine_Result $result Parser's result
-     *
      * @return string
      */
-    public static function execute($data, $result, $parser);
+    public function execute();
+
+    /**
+     * Main command line parser object
+     *
+     * @param Console_CommandLine $parser CLI Parser instance
+     *
+     * @return Phrozn\Runner\CommandLine\Callback
+     */
+    public function setParser($parser);
+
+    /**
+     * Get command line parser
+     *
+     * @return Console_CommandLine CLI Parser instance
+     */
+    public function getParser();
+
+    /**
+     * Result object of CLI input parsing
+     *
+     * @param Console_CommandLine_Result $result Parser's result
+     *
+     * @return Phrozn\Runner\CommandLine\Callback
+     */
+    public function setParseResult($result);
+
+    /**
+     * Get parsed result object
+     *
+     * @return Console_CommandLine_Result 
+     */
+    public function getParseResult();
+
+    /**
+     * Set config data for a given callback
+     *
+     * @param array $config Config array
+     *
+     * @return Phrozn\Runner\CommandLine\Callback
+     */
+    public function setConfig($config);
+
+    /**
+     * Get command config array
+     *
+     * @return array
+     */
+    public function getConfig();
+
 }

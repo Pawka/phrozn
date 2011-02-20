@@ -24,7 +24,8 @@
 namespace Phrozn\Runner;
 use Symfony\Component\Yaml\Yaml,
     Console_CommandLine as CommandParser,
-    Phrozn\Runner\CommandLine\Commands;
+    Phrozn\Runner\CommandLine\Commands,
+    Phrozn\Runner\CommandLine\Command;
 
 /**
  * CLI version of framework invoker.
@@ -34,48 +35,118 @@ use Symfony\Component\Yaml\Yaml,
  * @author      Victor Farazdagi
  */
 class CommandLine 
-    extends \Phrozn\Runner\BaseRunner
     implements \Phrozn\Runner
 {
     /**
-     * Process the request
+     * System paths
+     */
+    private $paths = array(
+        'app'       => null,
+        'bin'       => null,
+        'lib'       => null,
+        'configs'   => null,
+    );
+
+    /**
+     * @var \Console_CommandLine
+     */
+    private $parser;
+
+    /**
+     * @var \Console_CommandLine_Result
+     */
+    private $result;
+
+    /**
+     * Contents of phrozn.yml is loaded into this attribute on startup
+     */
+    private $config;
+
+    /**
+     * Create runner
      *
      * @param \Zend\Loader\SplAutoloader $loader Instance of auto-loader
+     * @param array $paths Folder paths
+     */
+    public function __construct($loader, $paths)
+    {
+        $this->paths = $paths;
+        $this->loader = $loader;
+
+        // load main config
+        $this->config = Yaml::load($paths['configs'] . 'phrozn.yml');
+    }
+
+    /**
+     * Process the request
      *
      * @return void
      */
-    public static function run(\Zend\Loader\SplAutoloader $loader)
+    public function run()
     {
-        $parser = self::createParser($loader);
+        $this->parser = self::createParser();
 
         try {
-            $result = $parser->parse();
+            $this->result = $this->parser->parse();
         } catch (\Exception $e) {
-            $parser->displayError($e->getMessage());
+            $this->parser->displayError($e->getMessage());
         }
 
-        $runner = new self($parser, $result);
-        $runner->execute();
+        $this->process();
     }
 
-    private static function createParser($loader)
+    /**
+     * Parse input and invoke necessary processor callback
+     */
+    private function process()
     {
-        $meta = Yaml::load(PHROZN_PATH_CONFIGS . 'phrozn.yml');
-        $parser = new CommandParser($meta['command']);
+        $opts = $this->result->options;
+        $commandName = $this->result->command_name;
+        $command = null;
+        $optionSet = $argumentSet = false;
+
+        // special treatment for -h --help main command options
+        if ($opts['help'] === true) {
+            $commandName = 'help';
+        }
+
+        if ($commandName) {
+            $configFile = $this->paths['configs'] . 'commands/' . $commandName . '.yml';
+            $command = new Command($configFile);
+        }
+
+        // check if any option is set
+        // basically check for --version -v --help -h options
+        foreach ($opts as $name => $value) {
+            if ($value === true) {
+                $optionSet = true;
+                break;
+            }
+        }
+
+        // fire up subcommand
+        if (isset($command['callback'])) {
+            $this->invoke($command['callback'], $command);
+        }
+
+        if ($commandName === false && $optionSet === false && $argumentSet === false) {
+            $this->parser->outputter->stdout("Type 'phrozn help' for usage.\n");
+        }
+    }
+
+    private function createParser()
+    {
+
+        $parser = new CommandParser($this->config['command']);
 
         // options
-        foreach ($meta['command']['options'] as $name => $option) {
-            // update callback with full class name
-            if (isset($option['callback'])) {
-                list($class, $method) = $option['callback'];
-                $class = 'Phrozn\\Runner\\CommandLine\\Callback\\' . $class;
-                $option['callback'] = array($class, $method);
-            }
+        foreach ($this->config['command']['options'] as $name => $option) {
             $parser->addOption($name, $option);
         }
 
         // sub-commands
-        $commands = Commands::getInstance();
+        $commands = Commands::getInstance()
+                            ->setPath($this->paths['configs'] . 'commands');
         foreach ($commands as $name => $data) {
             $command = $data['command'];
             $cmd = $parser->addCommand($name, $command);
@@ -92,5 +163,26 @@ class CommandLine
         }
 
         return $parser;
+    }
+
+    /**
+     * Invoke callback
+     */
+    private function invoke($callback, $data)
+    {
+        list($class, $method) = $callback;
+        $class = 'Phrozn\\Runner\\CommandLine\\Callback\\' . $class;
+
+
+        $runner = new $class;
+        $data['paths'] = $this->paths; // inject paths
+        $runner
+            ->setParser($this->parser)
+            ->setParseResult($this->result)
+            ->setConfig($data);
+        $callback = array($runner, $method);
+        if (is_callable($callback)) {
+            call_user_func($callback);
+        }
     }
 }
