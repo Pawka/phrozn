@@ -51,7 +51,7 @@ class Twig
     public function __construct($options = array())
     {
         if (count($options)) {
-            $this->setConfig($optsions)
+            $this->setConfig($options)
                  ->getEnvironment();
         }
     }

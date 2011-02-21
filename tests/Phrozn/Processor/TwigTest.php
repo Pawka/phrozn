@@ -32,25 +32,16 @@ use Phrozn\Processor\Twig as Processor;
 class TwigTest 
     extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \Phrozn\Processor\Twig
-     */
-    private $proc;
-
-    public function setup()
+    public function testRender()
     {
-        $this->proc = new Processor();
-        $this->proc->setConfig(array(
+        $processor = new Processor();
+        $processor->setConfig(array(
             'cache' => dirname(__FILE__) . '/templates/',
             'loader_paths'  => array(
                 dirname(__FILE__) . '/templates/'
             )
         ));
-    }
-
-    public function testRender()
-    {
-        $rendered = $this->proc->render('tpl1.twig', array(
+        $rendered = $processor->render('tpl1.twig', array(
             'a_variable' => 'Aha!',
             'navigation' => array(
                 array(
@@ -66,6 +57,39 @@ class TwigTest
         
         $static = file_get_contents(dirname(__FILE__) . '/templates/tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
+    }
+
+    public function testRenderConstructorInjection()
+    {
+        $processor = new Processor(array(
+            'cache' => dirname(__FILE__) . '/templates/',
+            'loader_paths'  => array(
+                dirname(__FILE__) . '/templates/'
+            )
+        ));
+        $rendered = $processor->render('tpl1.twig', array(
+            'a_variable' => 'Aha!',
+            'navigation' => array(
+                array(
+                    'href'      => 'link1',
+                    'caption'   => 'caption1'
+                ),
+                array(
+                    'href'      => 'link1',
+                    'caption'   => 'caption1'
+                )
+            )
+        ));
+        
+        $static = file_get_contents(dirname(__FILE__) . '/templates/tpl1.html');
+        $this->assertSame(trim($static), trim($rendered));
+    }
+
+    public function testNoLoaderTemplatesException()
+    {
+        $this->setExpectedException('Exception', 'Twig loader paths not set');
+        $processor = new Processor();
+        $processor->render('test', array());
     }
 
 }
