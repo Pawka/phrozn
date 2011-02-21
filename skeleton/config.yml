@@ -1,0 +1,4 @@
+# Site configuration
+---
+views:
+    layout: default.twig
