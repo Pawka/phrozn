@@ -1,4 +1,23 @@
-Deps:
+h1. Phrozn
+Phrozn is extremely flexible static site generator for PHP.
 
-PEAR::Console_CommandLine
-PEAR::Console_Color
+h2. Philosophy
+
+* Configurable: you should be able to tune it to your needs
+* SCM-Enabled: not extra work to make your site git-enabled
+
+h2. Dev Notes
+
+* Unit tested (100% code coverage)
+* API Documentation
+* User manual
+* Relies on SPL, Zend Framework 2, Symfony 2
+
+h2. Dependencies:
+
+* PEAR::Console_CommandLine
+* PEAR::Console_Color
+
+h2. License
+
+See LICENSE
