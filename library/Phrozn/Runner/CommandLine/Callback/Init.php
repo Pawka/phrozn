@@ -77,7 +77,6 @@ class Init
             }
         }
 
-
         $skeletonPath = $config['paths']['skeleton'];
         $dir = new \RecursiveDirectoryIterator($skeletonPath);
         $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
