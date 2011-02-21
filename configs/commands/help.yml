@@ -3,7 +3,7 @@
 command:
     name: &name help
     aliases: [h, ?]
-    description: Phrozn usage manual
+    description: &desc Phrozn usage manual
     options:
         verbose:
            short_name: -v 
@@ -23,7 +23,7 @@ callback: [Help, execute]
 # documentation
 docs:
     name: *name
-    summary: Phrozn help reference
+    summary: *desc
     description: |
         Type 'phrozn help <command>' for help on a specific command.
     usage: %bphrozn%n %ghelp%n <command>

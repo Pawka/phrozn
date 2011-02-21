@@ -2,7 +2,8 @@
 ---
 command:
     name: &name clobber
-    description: Purge Phrozn project directory
+    aliases: 
+    description: &desc Purge Phrozn project directory
     arguments:
         path:
             help_name: path
@@ -15,7 +16,7 @@ callback: [Clobber, execute]
 # documentation
 docs:
     name: clobber
-    summary: Delete project directory
+    summary: *desc
     description: |
         This command locates and removes Phrozon project directory, effectively
         deleting all user generated content.

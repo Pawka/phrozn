@@ -1,0 +1,44 @@
+# phr up 
+---
+command:
+    name: &name update
+    aliases: [build, up]
+    description: &desc Phrozn usage manual
+    options:
+        regen:
+            short_name:  -R
+            long_name:   --regen
+            doc_name:    -R [--regen]
+            description: Re-generate the site from scratch removing any previous content
+            action:      StoreTrue 
+    arguments:
+        in:
+            help_name: "[SRC]"
+            description: Source directory
+            optional: true
+        out:
+            help_name: "[DEST]"
+            description: Destination directory
+            optional: true
+
+# callback
+callback: [Up, execute]
+
+# documentation
+docs:
+    name: update (up) 
+    summary: *desc
+    description: |
+        This command compiles/updates static site.
+
+        If output PATH not provided, current directory is assumed.
+    usage: %bphrozn%n %gup%n [SRC] [DEST]
+    examples: |
+        To compile project in current directory:
+        %bphrozn%n %gup%n 
+
+        To compile project to specified directory DEST:
+        %bphrozn%n %ginit%n DEST
+
+        To compile project located in current directory to directory DEST:
+        %bphrozn%n %ginit%n .

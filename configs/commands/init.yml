@@ -3,7 +3,7 @@
 command:
     name: &name initialize
     aliases: [init]
-    description: Phrozn usage manual
+    description: &desc Initialize Phrozn project
     arguments:
         path:
             help_name: path
@@ -16,7 +16,7 @@ callback: [Init, execute]
 # documentation
 docs:
     name: initialize (init) 
-    summary: Initialize Phrozn project
+    summary: *desc
     description: |
         This command creates empty phrozn site.
 
