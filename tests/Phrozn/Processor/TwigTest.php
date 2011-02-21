@@ -41,9 +41,9 @@ class TwigTest
     {
         $this->proc = new Processor();
         $this->proc->setConfig(array(
-            'cache' => dirname(__FILE__) . '/_files/',
+            'cache' => dirname(__FILE__) . '/templates/',
             'loader_paths'  => array(
-                dirname(__FILE__) . '/_files/'
+                dirname(__FILE__) . '/templates/'
             )
         ));
     }
@@ -64,7 +64,7 @@ class TwigTest
             )
         ));
         
-        $static = file_get_contents(dirname(__FILE__) . '/_files/tpl1.html');
+        $static = file_get_contents(dirname(__FILE__) . '/templates/tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
     }
 
