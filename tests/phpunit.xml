@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="true"
+         bootstrap="./bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
+         processIsolation="true"
+         stopOnFailure="true"
+         syntaxCheck="false"
+         verbose="true"
+         strict="true">
+    <testsuites>
+        <testsuite name="Phrozn Test Suite">
+            <directory>./</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <exclude>
+            <group>disable</group>
+        </exclude>
+    </groups>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../library/Phrozn</directory>
+        </whitelist>
+    </filter>
+</phpunit>
