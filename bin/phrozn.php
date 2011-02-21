@@ -4,7 +4,6 @@ namespace Phrozn;
 use Phrozn\Runner\CommandLine as Runner,
     Zend\Loader\StandardAutoloader as Autoloader;
 
-
 // paths
 $base = realpath(dirname(__FILE__) . '/../') . '/';
 $paths = array(

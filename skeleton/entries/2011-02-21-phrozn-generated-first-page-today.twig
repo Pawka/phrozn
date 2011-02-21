@@ -1,0 +1,10 @@
+layout: default.twig
+---
+{{"2011-02-21"|date("d M, y")}} is the day when first static file was produced
+by Phrozn
+
+In Twig it is easy:
+{% for i in 0..10 %}
+    {{ cycle(['odd', 'even'], i) }}
+{% endfor %}
+
