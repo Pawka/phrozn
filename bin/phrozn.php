@@ -12,6 +12,7 @@ $paths = array(
     'bin'       => $base . 'bin/',
     'lib'       => $base . 'library/',
     'configs'   => $base . 'configs/',
+    'skeleton'  => $base . 'skeleton/',
 );
 
 // auto-loader

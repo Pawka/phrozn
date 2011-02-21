@@ -44,12 +44,63 @@ class Init
      */
     public function execute()
     {
-        $out = '';
-
-        $path = isset($this->getParseResult()->command->args['path'])
-               ? $this->getParseResult()->command->args['path'] : \getcwd();
-        $out .= sprintf("Create project: %s \n", $path);
+        $out = $this->initializeNewProject();
 
         $this->display($out);
     }
+
+    private function initializeNewProject()
+    {
+        $path = isset($this->getParseResult()->command->args['path'])
+               ? $this->getParseResult()->command->args['path'] : \getcwd();
+
+        $config = $this->getConfig();
+
+        if ($path[0] != '/') { // not an absolute path
+            $path = \getcwd() . '/./' . $path;
+        }
+        $path = realpath($path);
+
+        $path .= '/_phrozn/'; // where to copy skeleton
+
+        ob_start();
+        echo "\nInitializing new project: {$path} \n";
+
+        if (is_dir($path)) {
+            echo self::STATUS_FAIL . "Project directory '_phrozn' already exists..\n";
+            echo $this->pad(self::STATUS_FAIL) . "Type 'phrozn help clobber' to get help on removing existing project.\n";
+            return ob_get_clean();
+        } else {
+            if (!mkdir($path)) {
+                echo self::STATUS_FAIL . "Error creating project directory..\n";
+                return ob_get_clean();
+            }
+        }
+
+
+        $skeletonPath = $config['paths']['skeleton'];
+        $dir = new \RecursiveDirectoryIterator($skeletonPath);
+        $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
+        $dirname = '';
+        foreach ($it as $item) {
+            $baseName = $item->getBaseName();
+            if ($baseName != '.' && $baseName != '..') {
+                if ($item->isFile()) {
+                    $destPath= $dirname . $item->getBaseName();
+                    if (@copy($item->getPathname(), $path . $destPath)) {
+                        echo self::STATUS_ADDED . "{$destPath}\n";
+                    } else {
+                        echo self::STATUS_FAIL . "{$destPath}\n";
+                    }
+                    //echo 'copy ' . $item->getPathname() . ' -> ' . $path . $destPath . "\n";
+                } else if ($item->isDir()) {
+                    $dirname = str_replace($skeletonPath, '', $item->getRealPath()) . '/';
+                    mkdir($path . $dirname);
+                }
+            }
+        }
+
+        return ob_get_clean();
+    }
+
 }

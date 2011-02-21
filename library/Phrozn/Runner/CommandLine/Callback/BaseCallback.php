@@ -35,6 +35,10 @@ use Console_Color as Color,
  */
 class BaseCallback
 {
+    const STATUS_FAIL       = '  [%rFAIL%n]    ';
+    const STATUS_ADDED      = '  [%gADDED%n]   ';
+    const STATUS_DELETED    = '  [%gDELETED%n] ';
+
     /**
      * @var \Console_CommandLine
      */
@@ -50,12 +54,19 @@ class BaseCallback
      */
     private $config;
 
-    public function display($content)
+    public function display($content, $header = true, $footer = true)
     {
         $config = $this->getConfig();
         $meta = Yaml::load($config['paths']['configs'] . 'phrozn.yml');
 
-        $out = $this->header($meta) . $content . $this->footer($meta);
+        $out = '';
+        if ($header) {
+            $out .= $this->header($meta);
+        }
+        $out .= $content;
+        if ($footer) {
+            $out .= $this->footer($meta);
+        }
 
         $out = Color::convert($out);
         if ($meta['use_ansi_colors'] === false) {
@@ -181,6 +192,11 @@ class BaseCallback
         $out = "\n{$meta['description']}\n";
         $out .= "For additional information, see %9http://phrozn.info%n\n";
         return $out;
+    }
+
+    protected function pad($str)
+    {
+        return str_repeat(' ', strlen(Color::strip(Color::convert($str))));
     }
 
 }

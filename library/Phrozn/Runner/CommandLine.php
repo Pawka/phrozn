@@ -40,12 +40,7 @@ class CommandLine
     /**
      * System paths
      */
-    private $paths = array(
-        'app'       => null,
-        'bin'       => null,
-        'lib'       => null,
-        'configs'   => null,
-    );
+    private $paths = array();
 
     /**
      * @var \Console_CommandLine
