@@ -9,7 +9,7 @@ h2. Philosophy
 
 h2. Dev Notes
 
-* Unit tested (100% code coverage)
+* "Unit tested":http://test.phrozn.info (100% code coverage)
 * API Documentation
 * User manual
 * Relies on SPL, Zend Framework 2, Symfony 2
