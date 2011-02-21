@@ -14,10 +14,15 @@ h2. Dev Notes
 * User manual
 * Relies on SPL, Zend Framework 2, Symfony 2
 
-h2. Dependencies:
+h2. Runtime Dependencies:
 
 * PEAR::Console_CommandLine
 * PEAR::Console_Color
+
+h2. Developer Dependencies
+
+* PHPUnit
+* PHPDocumentator 2
 
 h2. License
 
