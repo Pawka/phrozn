@@ -1,0 +1,32 @@
+# phr clobber 
+---
+command:
+    name: &name clobber
+    description: Purge Phrozn project directory
+    arguments:
+        path:
+            help_name: path
+            description: Path to search Phrozn directories in
+            optional: true
+
+# callback
+callback: [Clobber, execute]
+
+# documentation
+docs:
+    name: clobber
+    summary: Delete project directory
+    description: |
+        This command locates and removes Phrozon project directory, effectively
+        deleting all user generated content.
+
+        Use with caution.
+
+        If output PATH not provided, current directory is assumed.
+    usage: %bphrozn%n %gclobber%n [PATH]
+    examples: |
+        To remove project directory in a current folder:
+        %bphrozn%n %gclobber%n 
+
+        To remove project directory in specified folder PATH:
+        %bphrozn%n %gclobber%n PATH
