@@ -160,17 +160,28 @@ class BaseCallback
         $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
         $out .= 'usage: ' . $docs['usage'] . "\n";
         $out .= "\n  " . $this->pre($docs['description']) . "\n";
-        if ($verbose && isset($docs['examples'])) {
-            $out .= 'examples:';
-            $out .= "\n  " . $this->pre($docs['examples']) . "\n";
-        }
 
+        $hasOptions = false;
         if (isset($command['options']) && count($command['options'])) {
             $out .= "Available options:\n";
             foreach ($command['options'] as $opt) {
                 $spaces = str_repeat(' ', 30 - strlen($opt['doc_name']));
                 $out .= "  {$opt['doc_name']} {$spaces} : {$opt['description']}\n";
             }
+            $hasOptions = true;
+        }
+        if (isset($command['arguments']) && count($command['arguments'])) {
+            $out .= $hasOptions ? "\n": "";
+            $out .= "Valid arguments:\n";
+            foreach ($command['arguments'] as $arg) {
+                $spaces = str_repeat(' ', 30 - strlen($arg['help_name']));
+                $out .= "  {$arg['help_name']} {$spaces} : {$arg['description']}\n";
+            }
+        }
+
+        if ($verbose && isset($docs['examples'])) {
+            $out .= "\nExamples:";
+            $out .= "\n  " . $this->pre($docs['examples']) . "\n";
         }
 
         return $out;
