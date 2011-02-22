@@ -22,7 +22,8 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
-use Console_Color as Color,
+use Phrozn\Runner\CommandLine,
+    Console_Color as Color,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine\Commands;
 
@@ -33,7 +34,8 @@ use Console_Color as Color,
  * @package     Phrozn\Runner
  * @author      Victor Farazdagi
  */
-class BaseCallback
+abstract class BaseCallback
+    implements CommandLine\Callback
 {
     /**
      * Status constants
@@ -49,9 +51,9 @@ class BaseCallback
     private $useAnsiColors;
 
     /**
-     * @var \Console_CommandLine
+     * @var \Console_CommandLine_Outputter
      */
-    private $parser;
+    private $outputter;
 
     /**
      * @var \Console_CommandLine_Result
@@ -90,30 +92,30 @@ class BaseCallback
         if ($meta['use_ansi_colors'] === false) {
             $out = Color::strip($out);
         }
-        $this->getParser()->outputter->stdout($out);
+        $this->getOutputter()->stdout($out);
     }
 
     /**
-     * Main command line parser object
+     * Set CLI outputter
      *
-     * @param Console_CommandLine $parser CLI Parser instance
+     * @param Console_CommandLine_Outputter $outputter Where to forward output
      *
      * @return Phrozn\Runner\CommandLine\Callback
      */
-    public function setParser($parser)
+    public function setOutputter($out)
     {
-        $this->parser = $parser;
+        $this->outputter = $out;
         return $this;
     }
 
     /**
-     * Get command line parser
+     * Get CLI outputter
      *
-     * @return Console_CommandLine CLI Parser instance
+     * @return Console_CommandLine_Outputter CLI outputter instance
      */
-    public function getParser()
+    public function getOutputter()
     {
-        return $this->parser;
+        return $this->outputter;
     }
 
     /**
@@ -266,7 +268,7 @@ class BaseCallback
         if ($this->useAnsiColors() === false) {
             $str = Color::strip($str);
         }
-        $this->getParser()->outputter->stdout($str . "\n");
+        $this->getOutputter()->stdout($str . "\n");
         if (count(\ob_get_status()) !== 0) {
             ob_flush();
         }

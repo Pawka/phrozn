@@ -40,20 +40,20 @@ interface Callback
     public function execute();
 
     /**
-     * Main command line parser object
+     * Set CLI outputter
      *
-     * @param Console_CommandLine $parser CLI Parser instance
+     * @param Console_CommandLine_Outputter $outputter Where to forward output
      *
      * @return Phrozn\Runner\CommandLine\Callback
      */
-    public function setParser($parser);
+    public function setOutputter($out);
 
     /**
-     * Get command line parser
+     * Get CLI outputter
      *
-     * @return Console_CommandLine CLI Parser instance
+     * @return Console_CommandLine_Outputter CLI outputter instance
      */
-    public function getParser();
+    public function getOutputter();
 
     /**
      * Result object of CLI input parsing

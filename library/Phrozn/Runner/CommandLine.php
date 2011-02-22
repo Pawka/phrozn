@@ -23,8 +23,7 @@
 
 namespace Phrozn\Runner;
 use Symfony\Component\Yaml\Yaml,
-    Console_CommandLine as CommandParser,
-    Phrozn\Runner\CommandLine\Commands,
+    Phrozn\Runner\CommandLine\Parser,
     Phrozn\Runner\CommandLine\Command;
 
 /**
@@ -79,7 +78,7 @@ class CommandLine
      */
     public function run()
     {
-        $this->parser = self::createParser();
+        $this->parser = new Parser($this->paths);
 
         try {
             $this->result = $this->parser->parse();
@@ -87,13 +86,15 @@ class CommandLine
             $this->parser->displayError($e->getMessage());
         }
 
-        $this->process();
+        $this->parse();
     }
 
     /**
      * Parse input and invoke necessary processor callback
+     *
+     * @return void
      */
-    private function process()
+    private function parse()
     {
         $opts = $this->result->options;
         $commandName = $this->result->command_name;
@@ -129,37 +130,6 @@ class CommandLine
         }
     }
 
-    private function createParser()
-    {
-
-        $parser = new CommandParser($this->config['command']);
-
-        // options
-        foreach ($this->config['command']['options'] as $name => $option) {
-            $parser->addOption($name, $option);
-        }
-
-        // sub-commands
-        $commands = Commands::getInstance()
-                            ->setPath($this->paths['configs'] . 'commands');
-        foreach ($commands as $name => $data) {
-            $command = $data['command'];
-            $cmd = $parser->addCommand($name, $command);
-            // command arguments
-            $args = isset($command['arguments']) ? $command['arguments'] : array();
-            foreach ($args as $name => $argument) {
-                $cmd->addArgument($name, $argument);
-            }
-            // command options
-            $opts = isset($command['options']) ? $command['options'] : array();
-            foreach ($opts as $name => $option) {
-                $cmd->addOption($name, $option);
-            }
-        }
-
-        return $parser;
-    }
-
     /**
      * Invoke callback
      */
@@ -172,7 +142,7 @@ class CommandLine
         $runner = new $class;
         $data['paths'] = $this->paths; // inject paths
         $runner
-            ->setParser($this->parser)
+            ->setOutputter($this->parser->outputter)
             ->setParseResult($this->result)
             ->setConfig($data);
         $callback = array($runner, $method);
