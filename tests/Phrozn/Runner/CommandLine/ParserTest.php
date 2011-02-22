@@ -22,7 +22,8 @@
  */
 
 namespace PhroznTest\Runner\CommandLine;
-use Phrozn\Runner\CommandLine\Parser;
+use Phrozn\Runner\CommandLine\Parser,
+    Phrozn\Runner\CommandLine\Command;
 
 /**
  * @category    Phrozn
@@ -48,6 +49,56 @@ class ParserTest
     }
     public function testParser()
     {
-        $command = new Parser($this->paths);
+        $parser = new Parser($this->paths);
+        $this->assertTrue(isset($parser->name));
+        $this->assertTrue(isset($parser->description));
+        $this->assertTrue(isset($parser->options));
+        $this->assertTrue(isset($parser->version));
+        $this->assertTrue(isset($parser->commands));
+    }
+
+   
+    public function testSubcommands()
+    {
+        $this->subcommand('initialize');
+        $this->subcommand('clobber');
+        $this->subcommand('update');
+        $this->subcommand('help');
+    }
+
+    private function subcommand($commandName)
+    {
+        $parser = new Parser($this->paths);
+        $this->assertTrue(isset($parser->commands));
+        $this->assertTrue(isset($parser->commands[$commandName]));
+        $cmdParsed = $parser->commands[$commandName];
+
+        // phr init
+        $this->assertSame($commandName, $cmdParsed->name);
+        $configFile = $this->paths['configs'] . 'commands/' . $commandName . '.yml';
+        $cmdConfig = new Command($configFile);
+        $cmdConfig = $cmdConfig['command'];
+
+        // unset incompatible properties
+        $excludedOptions = array('doc_name');
+
+        if (isset($cmdConfig['options'])) {
+            foreach ($cmdConfig['options'] as $argName => $argVals) {
+                $this->assertTrue(isset($cmdParsed->options[$argName]));
+                foreach ($argVals as $name => $val) {
+                    if (!in_array($name, $excludedOptions)) {
+                        $this->assertSame($val, $cmdParsed->options[$argName]->{$name});
+                    }
+                }
+            }
+        }
+        if (isset($cmdConfig['arguments'])) {
+            foreach ($cmdConfig['arguments'] as $argName => $argVals) {
+                $this->assertTrue(isset($cmdParsed->args[$argName]));
+                foreach ($argVals as $name => $val) {
+                    $this->assertSame($val, $cmdParsed->args[$argName]->{$name});
+                }
+            }
+        }
     }
 }
