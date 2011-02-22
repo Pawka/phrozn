@@ -10,6 +10,7 @@ $loader = new Autoloader();
 $loader
     ->registerNamespace('Zend', $path . 'Zend')
     ->registerNamespace('Phrozn', $path . 'Phrozn')
+    ->registerNamespace('PhroznTest', dirname(__FILE__) . '/Phrozn')
     ->registerNamespace('Symfony', $path . 'Symfony')
     ->registerNamespace('Twig', $path . 'Twig')
     ->setFallbackAutoloader(true)
