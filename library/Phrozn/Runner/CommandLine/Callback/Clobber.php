@@ -61,21 +61,22 @@ class Clobber
 
         $path .= '/_phrozn/'; // where to copy skeleton
 
-
-        $out = '';
-        $out .=  "\nLocated project folder: {$path} \n";
-        $out .= "Project folder is to be removed.\nThis operation %rCAN NOT%n be undone.\n\n";
-        $this->display($out, true, false);
+        $this->display('', true, false);
+        $this->out("\nPurging project data..");
+        $this->out(
+            "\nLocated project folder: {$path}");
+        $this->out( 
+            "Project folder is to be removed.\n" .
+            "This operation %rCAN NOT%n be undone.\n");
 
         $confirm = readline("Type 'yes' to continue: ");
-        $out = '';
         if ($confirm === 'yes') {
             `rm -rf $path`;
-            $out .= self::STATUS_DELETED . " {$path}\n";
+            $this->out(self::STATUS_DELETED . " {$path}");
         } else {
-            $out .= self::STATUS_FAIL . " Aborted..\n";
+            $this->out(self::STATUS_FAIL . " Aborted..");
         }
-        $this->display($out, false, true);
+        $this->display('', false, true);
     }
 
 }

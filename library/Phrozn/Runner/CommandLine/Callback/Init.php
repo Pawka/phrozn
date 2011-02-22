@@ -44,9 +44,7 @@ class Init
      */
     public function execute()
     {
-        $out = $this->initializeNewProject();
-
-        $this->display($out);
+        $this->initializeNewProject();
     }
 
     private function initializeNewProject()
@@ -64,16 +62,18 @@ class Init
         $path .= '/_phrozn/'; // where to copy skeleton
 
         ob_start();
-        echo "\nInitializing new project: {$path} \n";
+        $this->display('', true, false);
+        $this->out("\nInitializing new project");
+        $this->out("\n  Project path: {$path}");
 
         if (is_dir($path)) {
-            echo self::STATUS_FAIL . "Project directory '_phrozn' already exists..\n";
-            echo $this->pad(self::STATUS_FAIL) . "Type 'phrozn help clobber' to get help on removing existing project.\n";
-            return ob_get_clean();
+            $this->out(self::STATUS_FAIL . "Project directory '_phrozn' already exists..");
+            $this->out($this->pad(self::STATUS_FAIL) . "Type 'phrozn help clobber' to get help on removing existing project.");
+            return $this->display('', false, true);
         } else {
             if (!mkdir($path)) {
-                echo self::STATUS_FAIL . "Error creating project directory..\n";
-                return ob_get_clean();
+                $this->out(self::STATUS_FAIL . "Error creating project directory..");
+                return $this->display('', false, true);
             }
         }
 
@@ -87,9 +87,9 @@ class Init
                 if ($item->isFile()) {
                     $destPath= $dirname . $item->getBaseName();
                     if (@copy($item->getPathname(), $path . $destPath)) {
-                        echo self::STATUS_ADDED . "{$destPath}\n";
+                        $this->out(self::STATUS_ADDED . "{$destPath}");
                     } else {
-                        echo self::STATUS_FAIL . "{$destPath}\n";
+                        $this->out(self::STATUS_FAIL . "{$destPath}");
                     }
                     //echo 'copy ' . $item->getPathname() . ' -> ' . $path . $destPath . "\n";
                 } else if ($item->isDir()) {
@@ -99,7 +99,7 @@ class Init
             }
         }
 
-        return ob_get_clean();
+        return $this->display('', false, true);
     }
 
 }

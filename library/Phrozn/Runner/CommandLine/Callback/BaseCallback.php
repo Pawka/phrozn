@@ -35,9 +35,18 @@ use Console_Color as Color,
  */
 class BaseCallback
 {
+    /**
+     * Status constants
+     */
     const STATUS_FAIL       = '  [%rFAIL%n]    ';
     const STATUS_ADDED      = '  [%gADDED%n]   ';
     const STATUS_DELETED    = '  [%gDELETED%n] ';
+    const STATUS_OK         = '  [%gOK%n]      ';
+
+    /**
+     * Whether to spice output with ANSI colors
+     */
+    private $useAnsiColors;
 
     /**
      * @var \Console_CommandLine
@@ -54,6 +63,15 @@ class BaseCallback
      */
     private $config;
 
+    /**
+     * Display command with Phrozn header and footer
+     *
+     * @param string $content Content body
+     * @param boolean $header Whether to output header
+     * @param boolean $footer Whether to output footer
+     *
+     * @return void
+     */
     public function display($content, $header = true, $footer = true)
     {
         $config = $this->getConfig();
@@ -144,6 +162,14 @@ class BaseCallback
         return $this->config;
     }
 
+    /**
+     * Combine command documentation
+     *
+     * @param string $file Command file to combine
+     * @param boolean $verbose Whether to provide full documentation or just summary
+     *
+     * @return string
+     */
     protected function combine($file, $verbose = false)
     {
         $config = $this->getConfig();
@@ -187,17 +213,34 @@ class BaseCallback
         return $out;
     }
 
+    /**
+     * Prepend all lines in array with intendation
+     *
+     * @param array $arr Array to combine
+     *
+     * @return string
+     */
     protected function pre($arr)
     {
         return implode("\n  ", explode("\n", $arr));
     }
 
 
+    /**
+     * Phrozn CLI header
+     *
+     * @return string
+     */
     protected function header($meta)
     {
         return $out = "%P{$meta['name']} {$meta['version']} by {$meta['author']}\n%n";
     }
 
+    /**
+     * Phrozn CLI footer
+     *
+     * @return string
+     */
     protected function footer($meta)
     {
         $out = "\n{$meta['description']}\n";
@@ -210,4 +253,32 @@ class BaseCallback
         return str_repeat(' ', strlen(Color::strip(Color::convert($str))));
     }
 
+    /**
+     * Output string to stdout (flushes output)
+     *
+     * @param string $str String to output
+     *
+     * @return \Phrozn\Runner\CommandLine\Callback
+     */
+    protected function out($str)
+    {
+        $str = Color::convert($str);
+        if ($this->useAnsiColors() === false) {
+            $str = Color::strip($str);
+        }
+        $this->getParser()->outputter->stdout($str . "\n");
+        if (count(\ob_get_status()) !== 0) {
+            ob_flush();
+        }
+    }
+
+    private function useAnsiColors()
+    {
+        if (null === $this->useAnsiColors) {
+            $config = $this->getConfig();
+            $meta = Yaml::load($config['paths']['configs'] . 'phrozn.yml');
+            $this->useAnsiColors = (bool)$meta['use_ansi_colors'];
+        }
+        return $this->useAnsiColors;
+    }
 }
