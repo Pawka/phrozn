@@ -4,6 +4,13 @@ command:
     name: &name initialize
     aliases: [init]
     description: &desc Initialize Phrozn project
+    options:
+        verbose:
+           short_name: -v 
+           long_name: --verbose
+           doc_name: -v [--verbose]
+           action: StoreTrue
+           description: Turn on verbose output
     arguments:
         path:
             help_name: path
