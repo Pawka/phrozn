@@ -53,7 +53,7 @@ class InitTest
         // purge project directory
         $this->removeProjectDirectory();
         
-        $this->outputter = new Outputter();
+        $this->outputter = new Outputter($this);
         $runner = new Callback();
         $data['paths'] = $paths; // inject paths
         $runner
@@ -73,6 +73,8 @@ class InitTest
 
     public function testInitWithExplicitPath()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
 
         $result = $this->getParseResult("phr init {$path}");
@@ -85,16 +87,11 @@ class InitTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains(
-            'Initializing new project'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   config.yml'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   site/README'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   views/layouts/default.twig'));
-        $this->assertTrue($this->outputter->contains(
-            "Project path: {$path}"));
+        $out->assertInLogs('Initializing new project');
+        $out->assertInLogs('[ADDED]   config.yml');
+        $out->assertInLogs('[ADDED]   site/README');
+        $out->assertInLogs('[ADDED]   views/layouts/default.twig');
+        $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/_phrozn'));
         $this->assertTrue(is_dir($path . '/_phrozn/site'));
@@ -103,6 +100,8 @@ class InitTest
 
     public function testInitWithImplicitPath()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
         $this->assertTrue(chdir($path));
 
@@ -116,16 +115,11 @@ class InitTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains(
-            'Initializing new project'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   config.yml'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   site/README'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   views/layouts/default.twig'));
-        $this->assertTrue($this->outputter->contains(
-            "Project path: {$path}"));
+        $out->assertInLogs('Initializing new project');
+        $out->assertInLogs('[ADDED]   config.yml');
+        $out->assertInLogs('[ADDED]   site/README');
+        $out->assertInLogs('[ADDED]   views/layouts/default.twig');
+        $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/_phrozn'));
         $this->assertTrue(is_dir($path . '/_phrozn/site'));
@@ -134,6 +128,8 @@ class InitTest
 
     public function testInitWithExplicitNonAbsolutePath()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/';
         $this->assertTrue(chdir($path));
 
@@ -148,16 +144,11 @@ class InitTest
             ->execute();
 
 
-        $this->assertTrue($this->outputter->contains(
-            'Initializing new project'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   config.yml'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   site/README'));
-        $this->assertTrue($this->outputter->contains(
-            '[ADDED]   views/layouts/default.twig'));
-        $this->assertTrue($this->outputter->contains(
-            "Project path: {$path}"));
+        $out->assertInLogs('Initializing new project');
+        $out->assertInLogs('[ADDED]   config.yml');
+        $out->assertInLogs('[ADDED]   site/README');
+        $out->assertInLogs('[ADDED]   views/layouts/default.twig');
+        $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/project/_phrozn'));
         $this->assertTrue(is_dir($path . '/project/_phrozn/site'));
@@ -166,6 +157,8 @@ class InitTest
 
     public function testInitFailed()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
 
         $this->assertTrue(is_dir($path));
@@ -180,14 +173,14 @@ class InitTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains(
-            'Initializing new project'));
-        $this->assertTrue($this->outputter->contains(
-            "[FAIL]    Project directory '_phrozn' already exists.."));
+        $out->assertInLogs('Initializing new project');
+        $out->assertInLogs("[FAIL]    Project directory '_phrozn' already exists..");
     }
 
     public function testInitFailedPermissions()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
         $this->assertTrue(chmod($path, 0555));
 
@@ -201,10 +194,8 @@ class InitTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains(
-            'Initializing new project'));
-        $this->assertTrue($this->outputter->contains(
-            "[FAIL]    Error creating project directory.."));
+        $out->assertInLogs('Initializing new project');
+        $out->assertInLogs("[FAIL]    Error creating project directory..");
 
     }
 

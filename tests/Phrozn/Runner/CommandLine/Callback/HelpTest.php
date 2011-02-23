@@ -52,7 +52,7 @@ class HelpTest
             'skeleton'  => $base . 'skeleton/',
         );
 
-        $this->outputter = new Outputter();
+        $this->outputter = new Outputter($this);
         $runner = new Callback();
         $data['paths'] = $paths; // inject paths
         $runner
@@ -66,6 +66,8 @@ class HelpTest
 
     public function testHelpInitialize()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('initialize');
 
         $result = $this->getParseResult("phr help initialize");
@@ -74,12 +76,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testHelpInit()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('init');
 
         $result = $this->getParseResult("phr help init");
@@ -88,12 +92,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testHelpClobber()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('clobber');
 
         $result = $this->getParseResult("phr help clobber");
@@ -102,12 +108,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testHelpUpdate()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('update');
 
         $result = $this->getParseResult("phr help update");
@@ -116,12 +124,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testHelpUp()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('up');
 
         $result = $this->getParseResult("phr help up");
@@ -130,12 +140,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testQuestionInit()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('init');
 
         $result = $this->getParseResult("phr ? init");
@@ -144,12 +156,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testQuestionInitialize()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('initialize');
 
         $result = $this->getParseResult("phr ? initialize");
@@ -158,12 +172,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testQuestionClobber()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('clobber');
 
         $result = $this->getParseResult("phr ? clobber");
@@ -172,12 +188,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testQuestionUp()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('up');
 
         $result = $this->getParseResult("phr ? up");
@@ -186,12 +204,14 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testQuestionUpdate()
     {
+        $out = $this->outputter;
+
         $config = $this->getConfigData('update');
 
         $result = $this->getParseResult("phr ? update");
@@ -200,43 +220,50 @@ class HelpTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains($config['name']));
-        $this->assertTrue($this->outputter->contains($config['summary']));
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
     }
 
     public function testMainQuestion()
     {
+        $out = $this->outputter;
+
         $result = $this->getParseResult("phr ?");
 
         $this->runner
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains("Type 'phrozn help <command>' for help on a specific command."));
-        $this->assertTrue($this->outputter->contains("Type 'phrozn ? help' for help on using help."));
+        $out->assertInLogs("Type 'phrozn help <command>' for help on a specific command.");
+        $out->assertInLogs("Type 'phrozn ? help' for help on using help.");
     }
 
     public function testMainHelpOption()
     {
+        $out = $this->outputter;
+
         $result = $this->getParseResult("phr --help");
 
         $this->runner
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains("Type 'phrozn help <command>' for help on a specific command."));
-        $this->assertTrue($this->outputter->contains("Type 'phrozn ? help' for help on using help."));
+        $out->assertInLogs("Type 'phrozn help <command>' for help on a specific command.");
+        $out->assertInLogs("Type 'phrozn ? help' for help on using help.");
     }
+
     public function testMainHOption()
     {
+        $out = $this->outputter;
+
         $result = $this->getParseResult("phr -h");
 
         $this->runner
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains("Type 'phrozn help <command>' for help on a specific command."));
-        $this->assertTrue($this->outputter->contains("Type 'phrozn ? help' for help on using help."));
+        $out->assertInLogs("Type 'phrozn help <command>' for help on a specific command.");
+        $out->assertInLogs("Type 'phrozn ? help' for help on using help.");
     }
 
     private function getConfigData($commandName)

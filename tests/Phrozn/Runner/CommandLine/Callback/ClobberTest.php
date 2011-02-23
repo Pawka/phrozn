@@ -53,7 +53,7 @@ class ClobberTest
         // purge project directory
         $this->removeProjectDirectory();
         
-        $this->outputter = new Outputter();
+        $this->outputter = new Outputter($this);
         $runner = new Callback();
         $data['paths'] = $paths; // inject paths
         $runner
@@ -73,6 +73,8 @@ class ClobberTest
 
     public function testClobberYesWithExplicitPath()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
         mkdir($path . '/_phrozn');
         touch($path . '/_phrozn/config.yml');
@@ -88,9 +90,9 @@ class ClobberTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains('Purging project data'));
-        $this->assertTrue($this->outputter->contains("Located project folder: {$path}/_phrozn"));
-        $this->assertTrue($this->outputter->contains("[DELETED]  {$path}/_phrozn"));
+        $out->assertInLogs('Purging project data');
+        $out->assertInLogs("Located project folder: {$path}/_phrozn");
+        $out->assertInLogs("[DELETED]  {$path}/_phrozn");
 
 
         $this->assertFalse(is_dir($path . '/_phrozn'));
@@ -99,6 +101,8 @@ class ClobberTest
 
     public function testClobberNoWithExplicitPath()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
         mkdir($path . '/_phrozn');
         touch($path . '/_phrozn/config.yml');
@@ -114,10 +118,9 @@ class ClobberTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains('Purging project data'));
-        $this->assertTrue($this->outputter->contains("Located project folder: {$path}/_phrozn"));
-        $this->assertTrue($this->outputter->contains("[FAIL]     Aborted.."));
-
+        $out->assertInLogs('Purging project data');
+        $out->assertInLogs("Located project folder: {$path}/_phrozn");
+        $out->assertInLogs("[FAIL]     Aborted..");
 
         $this->assertTrue(is_dir($path . '/_phrozn'));
         $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
@@ -125,6 +128,8 @@ class ClobberTest
 
     public function testClobberYesWithImplicitPath()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
         $this->assertTrue(chdir($path));
         mkdir($path . '/_phrozn');
@@ -141,10 +146,9 @@ class ClobberTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains('Purging project data'));
-        $this->assertTrue($this->outputter->contains("Located project folder: {$path}/_phrozn"));
-        $this->assertTrue($this->outputter->contains("[DELETED]  {$path}/_phrozn"));
-
+        $out->assertInLogs('Purging project data');
+        $out->assertInLogs("Located project folder: {$path}/_phrozn");
+        $out->assertInLogs("[DELETED]  {$path}/_phrozn");
 
         $this->assertFalse(is_dir($path . '/_phrozn'));
         $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
@@ -152,6 +156,8 @@ class ClobberTest
 
     public function testClobberYesWithNonAbsolutePath()
     {
+        $out = $this->outputter;
+
         $path = dirname(__FILE__) . '/project';
         $this->assertTrue(chdir($path . '/../'));
         mkdir($path . '/_phrozn');
@@ -168,10 +174,9 @@ class ClobberTest
             ->setParseResult($result)
             ->execute();
 
-        $this->assertTrue($this->outputter->contains('Purging project data'));
-        $this->assertTrue($this->outputter->contains("Located project folder: {$path}/_phrozn"));
-        $this->assertTrue($this->outputter->contains("[DELETED]  {$path}/_phrozn"));
-
+        $out->assertInLogs('Purging project data');
+        $out->assertInLogs("Located project folder: {$path}/_phrozn");
+        $out->assertInLogs("[DELETED]  {$path}/_phrozn");
 
         $this->assertFalse(is_dir($path . '/_phrozn'));
         $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
