@@ -101,4 +101,15 @@ class ParserTest
             }
         }
     }
+
+    public function testToString()
+    {
+        ob_start();
+        $parser = new Parser($this->paths);
+        echo $parser;
+        $out = ob_get_clean();
+        $this->assertTrue(strpos($out, 'OPTIONS:') !== false);
+        $this->assertTrue(strpos($out, 'ARGUMENTS:') !== false);
+        $this->assertTrue(strpos($out, 'COMMANDS:') !== false);
+    }
 }
