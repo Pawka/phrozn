@@ -52,7 +52,7 @@ class Up
         list($in, $out) = $this->getPaths();
 
         ob_start();
-        $this->display('', true, false); // display headers
+        $this->out($this->getHeader());
         $this->out("\nStarting Phrozn compilation\n");
 
         $proceed = true;
@@ -61,39 +61,22 @@ class Up
                 self::STATUS_FAIL . "Source directory '{$in}' not found.");
             $proceed = false;
         } else {
-            $this->out(self::STATUS_OK . "Source directory located: '{$in}'");
+            $this->out(self::STATUS_OK . "Source directory located: {$in}");
         }
         if (!is_dir($out)) {
             $this->out(
                 self::STATUS_FAIL . "Destination directory '{$out}' not found.");
             $proceed = false;
         } else {
-            $this->out(self::STATUS_OK . "Destination directory located: '{$out}'");
+            $this->out(self::STATUS_OK . "Destination directory located: {$out}");
         }
 
         if ($proceed === false) {
-            $this->display('', false, true);
+            $this->out($this->getFooter());
             return;
         }
 
-        $this->display('', false, true);
-
-        exit;
-        $config = $this->getConfig();
-
-        $out = '';
-        $out .=  "\nLocated project folder: {$path} \n";
-        $out .= "Project folder is to be removed.\nThis operation %rCAN NOT%n be undone.\n\n";
-
-        $confirm = readline("Type 'yes' to continue: ");
-        $out = '';
-        if ($confirm === 'yes') {
-            `rm -rf $path`;
-            $out .= self::STATUS_DELETED . " {$path}\n";
-        } else {
-            $out .= self::STATUS_FAIL . " Aborted..\n";
-        }
-        $this->display($out, false, true);
+        $this->out($this->getFooter());
 
         ob_end_clean();
     }
