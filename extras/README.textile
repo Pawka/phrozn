@@ -1,8 +1,4 @@
 h2. Contents
 
-<<<<<<< HEAD
 * metanoia.zip - Great "Metanoia":http://www.fontspace.com/lutz-baar/baar-metanoia font created by Lutz Baar
 
-=======
-- metanoia.zip - Great "Metanoia":http://www.fontspace.com/lutz-baar/baar-metanoia font created by Lutz Baar
->>>>>>> a8df77d7b9a505e7985298036af317b5665086a6
