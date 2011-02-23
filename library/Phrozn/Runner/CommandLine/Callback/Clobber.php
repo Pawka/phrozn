@@ -38,6 +38,12 @@ class Clobber
     implements CommandLine\Callback
 {
     /**
+     * Data to be used as an answer to confirmation in UTs
+     * @var string
+     */
+    private $unitTestData;
+
+    /**
      * Executes the callback action 
      *
      * @return string
@@ -69,14 +75,40 @@ class Clobber
             "Project folder is to be removed.\n" .
             "This operation %rCAN NOT%n be undone.\n");
 
-        $confirm = readline("Type 'yes' to continue: ");
-        if ($confirm === 'yes') {
+        if ($this->readLine() === 'yes') {
             `rm -rf $path`;
             $this->out(self::STATUS_DELETED . " {$path}");
         } else {
             $this->out(self::STATUS_FAIL . " Aborted..");
         }
         $this->display('', false, true);
+    }
+
+    /**
+     * Decide whether we are faking getting data from STDIN
+     *
+     * @return string
+     */
+    public function readLine()
+    {
+        if (null !== $this->unitTestData) {
+            return $this->unitTestData;
+        } else {
+            return readline("Type 'yes' to continue: ");
+        }
+    }
+
+    /**
+     * Since Unit Testing readline can be tricky, confirm answer is exposed
+     * to unit test via this method. Simply pass the string you want to be used
+     * in place of readline() result.
+     *
+     * @return \Phrozn\Runner\CommandLine\Callback
+     */
+    public function setUnitTestData($data)
+    {
+        $this->unitTestData = $data;
+        return $this;
     }
 
 }

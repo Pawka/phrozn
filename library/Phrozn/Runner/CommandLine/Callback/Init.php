@@ -71,7 +71,7 @@ class Init
             $this->out($this->pad(self::STATUS_FAIL) . "Type 'phrozn help clobber' to get help on removing existing project.");
             return $this->display('', false, true);
         } else {
-            if (!mkdir($path)) {
+            if (!@mkdir($path)) {
                 $this->out(self::STATUS_FAIL . "Error creating project directory..");
                 return $this->display('', false, true);
             }
