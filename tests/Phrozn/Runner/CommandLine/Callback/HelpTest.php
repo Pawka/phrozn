@@ -80,6 +80,54 @@ class HelpTest
         $out->assertInLogs($config['summary']);
     }
 
+    public function testHelpInitializeVerbose()
+    {
+        $out = $this->outputter;
+
+        $config = $this->getConfigData('initialize');
+
+        $result = $this->getParseResult("phr help initialize --verbose");
+
+        $this->runner
+            ->setParseResult($result)
+            ->execute();
+
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
+        $out->assertInLogs('Examples:');
+    }
+
+    public function testHelpInitializeV()
+    {
+        $out = $this->outputter;
+
+        $config = $this->getConfigData('initialize');
+
+        $result = $this->getParseResult("phr help initialize -v");
+
+        $this->runner
+            ->setParseResult($result)
+            ->execute();
+
+        $out->assertInLogs($config['name']);
+        $out->assertInLogs($config['summary']);
+        $out->assertInLogs('Examples:');
+    }
+
+    public function testHelpTopicNotFound()
+    {
+        $out = $this->outputter;
+
+        $topic = 'superduper';
+        $result = $this->getParseResult("phr help {$topic}");
+
+        $this->runner
+            ->setParseResult($result)
+            ->execute();
+
+        $out->assertInLogs("Help topic '$topic' not found");
+    }
+
     public function testHelpInit()
     {
         $out = $this->outputter;
