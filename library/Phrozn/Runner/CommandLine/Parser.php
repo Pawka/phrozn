@@ -95,7 +95,7 @@ class Parser
     {
         $out = get_class($this) . "\n";
         $out .= "OPTIONS: " . print_r($this->options, true);
-        $out .= "ARGS: " . print_r($this->args, true);
+        $out .= "ARGUMENTS: " . print_r($this->args, true);
         $out .= "COMMANDS: " . print_r(array_keys($this->commands), true);
         return $out;
     }
