@@ -62,18 +62,18 @@ class Init
         $path .= '/_phrozn/'; // where to copy skeleton
 
         ob_start();
-        $this->display('', true, false);
+        $this->out($this->getHeader());
         $this->out("\nInitializing new project");
         $this->out("\n  Project path: {$path}");
 
         if (is_dir($path)) {
             $this->out(self::STATUS_FAIL . "Project directory '_phrozn' already exists..");
             $this->out($this->pad(self::STATUS_FAIL) . "Type 'phrozn help clobber' to get help on removing existing project.");
-            return $this->display('', false, true);
+            return $this->out($this->getFooter());
         } else {
             if (!@mkdir($path)) {
                 $this->out(self::STATUS_FAIL . "Error creating project directory..");
-                return $this->display('', false, true);
+                return $this->out($this->getFooter());
             }
         }
 
@@ -99,7 +99,7 @@ class Init
             }
         }
 
-        return $this->display('', false, true);
+        return $this->out($this->getFooter());
     }
 
 }

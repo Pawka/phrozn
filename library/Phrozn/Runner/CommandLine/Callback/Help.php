@@ -54,7 +54,9 @@ class Help
             $out = $this->getTopicHelp($topic);
         }
 
-        $this->display($out);
+        $this->out($this->getHeader());
+        $this->out($out);
+        $this->out($this->getFooter());
     }
 
     private function getTopicHelp($topic)

@@ -67,7 +67,7 @@ class Clobber
 
         $path .= '/_phrozn/'; // where to copy skeleton
 
-        $this->display('', true, false);
+        $this->out($this->getHeader());
         $this->out("\nPurging project data..");
         $this->out(
             "\nLocated project folder: {$path}");
@@ -81,7 +81,7 @@ class Clobber
         } else {
             $this->out(self::STATUS_FAIL . " Aborted..");
         }
-        $this->display('', false, true);
+        $this->out($this->getFooter());
     }
 
     /**

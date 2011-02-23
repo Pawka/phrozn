@@ -66,34 +66,11 @@ abstract class BaseCallback
     private $config;
 
     /**
-     * Display command with Phrozn header and footer
+     * Loaded phrozn.yml
      *
-     * @param string $content Content body
-     * @param boolean $header Whether to output header
-     * @param boolean $footer Whether to output footer
-     *
-     * @return void
+     * @array
      */
-    public function display($content, $header = true, $footer = true)
-    {
-        $config = $this->getConfig();
-        $meta = Yaml::load($config['paths']['configs'] . 'phrozn.yml');
-
-        $out = '';
-        if ($header) {
-            $out .= $this->header($meta);
-        }
-        $out .= $content;
-        if ($footer) {
-            $out .= $this->footer($meta);
-        }
-
-        $out = Color::convert($out);
-        if ($meta['use_ansi_colors'] === false) {
-            $out = Color::strip($out);
-        }
-        $this->getOutputter()->stdout($out);
-    }
+    private $commandMeta;
 
     /**
      * Set CLI outputter
@@ -233,8 +210,9 @@ abstract class BaseCallback
      *
      * @return string
      */
-    protected function header($meta)
+    protected function getHeader()
     {
+        $meta = $this->getCommandMeta();
         return $out = "%P{$meta['name']} {$meta['version']} by {$meta['author']}\n%n";
     }
 
@@ -243,8 +221,9 @@ abstract class BaseCallback
      *
      * @return string
      */
-    protected function footer($meta)
+    protected function getFooter()
     {
+        $meta = $this->getCommandMeta();
         $out = "\n{$meta['description']}\n";
         $out .= "For additional information, see %9http://phrozn.info%n\n";
         return $out;
@@ -282,5 +261,14 @@ abstract class BaseCallback
             $this->useAnsiColors = (bool)$meta['use_ansi_colors'];
         }
         return $this->useAnsiColors;
+    }
+
+    private function getCommandMeta()
+    {
+        if (null === $this->commandMeta) {
+            $config = $this->getConfig();
+            $this->commandMeta = Yaml::load($config['paths']['configs'] . 'phrozn.yml');
+        }
+        return $this->commandMeta;
     }
 }
