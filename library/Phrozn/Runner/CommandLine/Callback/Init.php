@@ -85,7 +85,7 @@ class Init
             $baseName = $item->getBaseName();
             if ($baseName != '.' && $baseName != '..') {
                 if ($item->isFile()) {
-                    $destPath= $dirname . $item->getBaseName();
+                    $destPath = $dirname . $item->getBaseName();
                     if (@copy($item->getPathname(), $path . $destPath)) {
                         $this->out(self::STATUS_ADDED . "{$destPath}");
                     } else {
