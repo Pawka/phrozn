@@ -36,8 +36,8 @@ class DefaultOutputterTest
     {
         $outputter = new Outputter();
         ob_start();
-        $outputter->stdout('sending output');
-        $out = ob_get_clean();
+        $outputter->stdout('sending output', '');
+        $out = trim(ob_get_clean());
 
         $this->assertSame('sending output', $out);
     }
@@ -46,8 +46,8 @@ class DefaultOutputterTest
     {
         $outputter = new Outputter();
         ob_start();
-        $outputter->stderr('sending output');
-        $out = ob_get_clean();
+        $outputter->stderr('sending output', '');
+        $out = trim(ob_get_clean());
 
         $this->assertSame('sending output', $out);
     }
@@ -59,9 +59,9 @@ class DefaultOutputterTest
         fclose($fp);
 
         $outputter = new Outputter();
-        $outputter->stdout('sending output');
+        $outputter->stdout('sending output', '');
 
-        $this->assertSame('sending output', file_get_contents('/tmp/stdout'));
+        $this->assertSame('sending output', trim(file_get_contents('/tmp/stdout')));
     }
 
     public function testStdErrWithResource()
@@ -71,8 +71,8 @@ class DefaultOutputterTest
         fclose($fp);
 
         $outputter = new Outputter();
-        $outputter->stderr('sending output');
+        $outputter->stderr('sending output', '');
 
-        $this->assertSame('sending output', file_get_contents('/tmp/stderr'));
+        $this->assertSame('sending output', trim(file_get_contents('/tmp/stderr')));
     }
 }
