@@ -23,7 +23,8 @@
 
 namespace Phrozn\Site;
 use Phrozn\Site\Page,
-    Phrozn\Outputter\DefaultOutputter as Outputter;
+    Phrozn\Outputter\DefaultOutputter as Outputter,
+    Symfony\Component\Yaml\Yaml;
 
 /**
  * Base implementation of Phrozn Site 
@@ -58,6 +59,12 @@ abstract class BaseSite
      * @var \Phrozn\Outputter
      */
     private $outputter;
+
+    /**
+     * Loaded content of site/config.yml
+     * @var array
+     */
+    private $siteConfig;
 
     /**
      * Initialize site object
@@ -136,6 +143,14 @@ abstract class BaseSite
             throw new \Exception('Entries folder not found');
         }
 
+        $config = $this->parseConfig();
+
+        if (isset($config['site']['output'])) {
+            $destinationPath = $config['site']['output'];
+        } else {
+            $destinationPath = $this->getDestinationPath();
+        }
+
         $dir = new \RecursiveDirectoryIterator($basePath . '/entries');
         $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
         $dirname = '';
@@ -146,7 +161,7 @@ abstract class BaseSite
                     try {
                         $factory = new PageFactory($item->getRealPath());
                         $page = $factory->createPage();
-                        $page->setDestinationPath($this->getDestinationPath());
+                        $page->setDestinationPath($destinationPath);
                         $this->pages[] = $page;
                     } catch (\Exception $e) {
                         $this->getOutputter()
@@ -192,5 +207,19 @@ abstract class BaseSite
             $this->outputter = new Outputter();
         }
         return $this->outputter;
+    }
+
+    /**
+     * Load site config
+     *
+     * @return array
+     */
+    protected function parseConfig()
+    {
+        if (null === $this->siteConfig) {
+            $configFile = realpath($this->getSourcePath() . '/config.yml');
+            $this->siteConfig = Yaml::load($configFile);
+        }
+        return $this->siteConfig;
     }
 }
