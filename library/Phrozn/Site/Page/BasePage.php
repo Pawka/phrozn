@@ -86,7 +86,7 @@ abstract class BasePage
     {
         $out = $this->render($vars);
 
-        $path = $this->getDestinationPath() 
+        $path = $this->getDestinationPath() . '/'
               . basename($this->getSourcePath(), '.twig') . '.html';
         file_put_contents($path, $out);
 
@@ -173,6 +173,16 @@ abstract class BasePage
     public function getProcessor()
     {
         return $this->processor;
+    }
+
+    /**
+     * Get page name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return basename($this->getSourcePath());
     }
 
     /**

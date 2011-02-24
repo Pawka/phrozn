@@ -54,4 +54,11 @@ interface Page
      * @return string
      */
     public function render($vars);
+
+    /**
+     * Get page name
+     *
+     * @return string
+     */
+    public function getName();
 }
