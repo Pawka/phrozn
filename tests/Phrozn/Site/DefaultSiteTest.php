@@ -149,6 +149,7 @@ class DefaultSiteTest
         if (is_dir($path)) {
             `rm -rf {$path}`;
             mkdir($path);
+            touch($path . '/README');
         }
     }
 }
