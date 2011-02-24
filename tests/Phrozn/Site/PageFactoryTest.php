@@ -23,7 +23,6 @@
 
 namespace PhroznTest\Site;
 use Phrozn\Site\PageFactory as Factory,
-    Zend\Loader\StandardAutoloader as Autoloader,
     Phrozn\Page;
 
 /**
@@ -34,12 +33,6 @@ use Phrozn\Site\PageFactory as Factory,
 class PageFactoryTest 
     extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @var \Zend\Loader\StandardAutoloader
-     */
-    private $loader;
-
     public function setUp()
     {}
 
@@ -55,7 +48,7 @@ class PageFactoryTest
 
         $page->setDestinationPath($output);
 
-        $this->assertInstanceOf('\Phrozn\Site\Page\Html', $page);
+        $this->assertInstanceOf('\Phrozn\Site\Page\Twig', $page);
     }
 
     public function testNoFrontMatter()

@@ -39,13 +39,19 @@ class PageFactory
     /**
      * Page\Html page is initialized by default
      */
-    const DEFAULT_PAGE_TYPE = 'html';
+    const DEFAULT_PAGE_TYPE = 'twig';
 
     /**
      * Path to input file
      * @var string
      */
     private $sourcePath;
+
+    /**
+     * Template source text
+     * @var string
+     */
+    private $source;
 
     /**
      * Initialize factory by providing input file path
@@ -106,18 +112,14 @@ class PageFactory
     }
 
     /**
-     * Extract YAML front matter from page's source file
+     * Extract page template content
      *
-     * @return array
+     * @return string
      */
     private function getFrontMatter()
     {
-        $path = $this->getSourcePath();
-        if (null === $path) {
-            throw new \Exception("Page's source file not specified.");
-        }
+        $source = $this->readSourceFile();
 
-        $source = \file_get_contents($path);
         $pos = strpos($source, '---');
         if ($pos === false) {
             return null;
@@ -127,6 +129,24 @@ class PageFactory
         $parsed = Yaml::load($frontMatter);
 
         return $parsed;
+    }
+
+    /**
+     * Read input file
+     *
+     * @return string
+     */
+    private function readSourceFile()
+    {
+        if (null == $this->source) {
+            $path = $this->getSourcePath();
+            if (null === $path) {
+                throw new \Exception("Page's source file not specified.");
+            }
+
+            $this->source = \file_get_contents($path);
+        }
+        return $this->source;
     }
 
     /**
@@ -143,9 +163,7 @@ class PageFactory
             throw new \Exception("Page of type '{$type}' not found..");
         }
         $object = new $class;
-        $object
-            ->setFrontMatter($this->getFrontMatter())
-            ->setSourcePath($this->getSourcePath());
+        $object->setSourcePath($this->getSourcePath());
         return $object;
     }
 }
