@@ -50,6 +50,11 @@ class Twig
      */
     public function __construct($options = array())
     {
+        // Twig uses perverted file naming (due to absense of NSs at a time it was written)
+        // so fire up its own autoloader
+        require_once dirname(__FILE__) . '/../../Twig/Autoloader.php';
+        \Twig_Autoloader::register();
+
         if (count($options)) {
             $this->setConfig($options)
                  ->getEnvironment();

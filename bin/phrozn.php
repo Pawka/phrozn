@@ -21,6 +21,7 @@ $loader
     ->registerNamespace('Zend', $paths['lib'] . 'Zend')
     ->registerNamespace('Phrozn', $paths['lib'] . 'Phrozn')
     ->registerNamespace('Symfony', $paths['lib'] . 'Symfony')
+    ->registerNamespace('Twig', $paths['lib'] . 'Twig')
     ->setFallbackAutoloader(true)
     ->register();
 
