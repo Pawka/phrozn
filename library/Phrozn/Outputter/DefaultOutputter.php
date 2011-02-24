@@ -22,6 +22,7 @@
  */
 
 namespace Phrozn\Outputter;
+use Console_Color as Color;
 
 /**
  * Default outputter 
@@ -31,6 +32,7 @@ namespace Phrozn\Outputter;
  * @author      Victor Farazdagi
  */
 class DefaultOutputter 
+    implements \Phrozn\Outputter
 {
     /**
      * Writes the message $msg to STDOUT.
@@ -39,13 +41,15 @@ class DefaultOutputter
      *
      * @return \Phrozn\Outputter
      */
-    public function stdout($msg)
+    public function stdout($msg, $status = self::STATUS_OK)
     {
+        $msg = Color::convert($status . $msg . "\n");
         if (defined('STDOUT')) {
             fwrite(STDOUT, $msg);
         } else {
             echo $msg;
         }
+        return $this;
     }
 
     /**
@@ -55,12 +59,14 @@ class DefaultOutputter
      *
      * @return \Phrozn\Outputter
      */
-    public function stderr($msg)
+    public function stderr($msg, $status = self::STATUS_FAIL)
     {
+        $msg = Color::convert($status . $msg . "\n");
         if (defined('STDERR')) {
             fwrite(STDERR, $msg);
         } else {
             echo $msg;
         }
+        return $this;
     }
 }

@@ -33,13 +33,21 @@ namespace Phrozn;
 interface Outputter 
 {
     /**
+     * Status constants
+     */
+    const STATUS_FAIL       = '  [%rFAIL%n]    ';
+    const STATUS_ADDED      = '  [%gADDED%n]   ';
+    const STATUS_DELETED    = '  [%gDELETED%n] ';
+    const STATUS_OK         = '  [%gOK%n]      ';
+
+    /**
      * Processes the output for a message that should be displayed on STDOUT.
      *
      * @param string $msg The message to output
      *
      * @return \Phrozn\Outputter
      */
-    public function stdout($msg);
+    public function stdout($msg, $status = self::STATUS_OK);
 
     /**
      * Processes the output for a message that should be displayed on STDERR.
@@ -48,5 +56,5 @@ interface Outputter
      *
      * @return \Phrozn\Outputter
      */
-    public function stderr($msg);
+    public function stderr($msg, $status = self::STATUS_FAIL);
 }
