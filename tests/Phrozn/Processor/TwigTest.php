@@ -32,16 +32,21 @@ use Phrozn\Processor\Twig as Processor;
 class TwigTest 
     extends \PHPUnit_Framework_TestCase
 {
+    private $path;
+
+    public function setUp()
+    {
+        $this->path = dirname(__FILE__) . '/templates/';
+    }
+
+    /**
+     * @group cur
+     */
     public function testRender()
     {
         $processor = new Processor();
-        $processor->setConfig(array(
-            'cache' => dirname(__FILE__) . '/templates/',
-            'loader_paths'  => array(
-                dirname(__FILE__) . '/templates/'
-            )
-        ));
-        $rendered = $processor->render('tpl1.twig', array(
+        $tpl = file_get_contents($this->path . 'tpl1.twig');
+        $rendered = $processor->render($tpl, array(
             'a_variable' => 'Aha!',
             'navigation' => array(
                 array(
@@ -54,8 +59,7 @@ class TwigTest
                 )
             )
         ));
-        
-        $static = file_get_contents(dirname(__FILE__) . '/templates/tpl1.html');
+        $static = file_get_contents($this->path . 'tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
     }
 
@@ -63,11 +67,9 @@ class TwigTest
     {
         $processor = new Processor(array(
             'cache' => dirname(__FILE__) . '/templates/',
-            'loader_paths'  => array(
-                dirname(__FILE__) . '/templates/'
-            )
         ));
-        $rendered = $processor->render('tpl1.twig', array(
+        $tpl = file_get_contents($this->path . 'tpl1.twig');
+        $rendered = $processor->render($tpl, array(
             'a_variable' => 'Aha!',
             'navigation' => array(
                 array(
@@ -83,13 +85,6 @@ class TwigTest
         
         $static = file_get_contents(dirname(__FILE__) . '/templates/tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
-    }
-
-    public function testNoLoaderTemplatesException()
-    {
-        $this->setExpectedException('Exception', 'Twig loader paths not set');
-        $processor = new Processor();
-        $processor->render('test', array());
     }
 
 }

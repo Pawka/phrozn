@@ -59,7 +59,7 @@ class Twig
     /**
      * Parse the incoming template
      *
-     * @param string $tpl Source template file
+     * @param string $tpl Source template content
      * @param array $vars List of variables passed to template engine
      *
      * @return string Processed template
@@ -83,12 +83,6 @@ class Twig
 
     private function getLoader()
     {
-        $config = $this->getConfig();
-        if (!isset($config['loader_paths'])) {
-            throw new \Exception('Twig loader paths not set');
-        }
-
-        $loader = new \Twig_Loader_Filesystem($config['loader_paths']);
-        return $loader;
+        return new \Twig_Loader_String();
     }
 }

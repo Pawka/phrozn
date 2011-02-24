@@ -35,7 +35,7 @@ interface Processor
     /**
      * Parse the incoming template
      *
-     * @param string $tpl Source template file
+     * @param string $tpl Source template content
      * @param array $vars List of variables passed to template engine
      *
      * @return string Processed template
