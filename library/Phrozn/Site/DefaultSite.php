@@ -60,7 +60,7 @@ class DefaultSite
         foreach ($this->getQueue() as $page) {
             try {
                 $page->compile($vars);
-                $this->getOutputter()->stdout($page->getName() . ' parsed.');
+                $this->getOutputter()->stdout('%b' . $page->getName() . '%n parsed');
             } catch (\Exception $e) {
                 $this->getOutputter()
                      ->stderr($page->getName() . ': ' . $e->getMessage());

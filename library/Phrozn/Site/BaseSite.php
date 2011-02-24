@@ -150,7 +150,7 @@ abstract class BaseSite
                         $this->pages[] = $page;
                     } catch (\Exception $e) {
                         $this->getOutputter()
-                             ->stderr($page->getName() . ': ' . $e->getMessage());
+                             ->stderr($item->getBaseName() . ': ' . $e->getMessage());
                     }
                 }
             }
