@@ -15,36 +15,52 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Has
+ * @package     Phrozn\Outputter
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Has;
+namespace Phrozn\Outputter;
 
 /**
- * Contract defining entity which has some instance of Phrozn outputter
+ * Default outputter 
  *
  * @category    Phrozn
- * @package     Phrozn\Has
+ * @package     Phrozn\Outputter
  * @author      Victor Farazdagi
  */
-interface Outputter 
+class DefaultOutputter 
 {
     /**
-     * Set outputter
+     * Writes the message $msg to STDOUT.
      *
-     * @param \Phrozn\Outputter $outputter Outputter instance
-     *
-     * @return \Phrozn\Has\Outputter
-     */
-    public function setOutputter($outputter);
-
-    /**
-     * Get outputter instance
+     * @param string $msg The message to output
      *
      * @return \Phrozn\Outputter
      */
-    public function getOutputter();
+    public function stdout($msg)
+    {
+        if (defined('STDOUT')) {
+            fwrite(STDOUT, $msg);
+        } else {
+            echo $msg;
+        }
+    }
+
+    /**
+     * Writes the message $msg to STDERR.
+     *
+     * @param string $msg The message to output
+     *
+     * @return \Phrozn\Outputter
+     */
+    public function stderr($msg)
+    {
+        if (defined('STDERR')) {
+            fwrite(STDERR, $msg);
+        } else {
+            echo $msg;
+        }
+    }
 }

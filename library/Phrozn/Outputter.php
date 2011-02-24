@@ -32,22 +32,21 @@ namespace Phrozn;
  */
 interface Outputter 
 {
-
     /**
-     * Send normal output (to stdout by default)
+     * Processes the output for a message that should be displayed on STDOUT.
      *
-     * @param string $message Output message
+     * @param string $msg The message to output
      *
      * @return \Phrozn\Outputter
      */
-    public function out($message);
+    public function stdout($msg);
 
     /**
-     * Send error output (to stderr by default)
+     * Processes the output for a message that should be displayed on STDERR.
      *
-     * @param string $message Output message
+     * @param string $msg The message to output
      *
      * @return \Phrozn\Outputter
      */
-    public function err($message);
+    public function stderr($msg);
 }
