@@ -48,6 +48,9 @@ class DefaultOutputter
             fwrite(STDOUT, $msg);
         } else {
             echo $msg;
+            if (count(\ob_get_status()) !== 0) {
+                ob_flush();
+            }
         }
         return $this;
     }
@@ -66,6 +69,9 @@ class DefaultOutputter
             fwrite(STDERR, $msg);
         } else {
             echo $msg;
+            if (count(\ob_get_status()) !== 0) {
+                ob_flush();
+            }
         }
         return $this;
     }
