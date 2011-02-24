@@ -24,7 +24,8 @@
 namespace Phrozn\Runner\CommandLine\Callback;
 use Console_Color as Color,
     Symfony\Component\Yaml\Yaml,
-    Phrozn\Runner\CommandLine;
+    Phrozn\Runner\CommandLine,
+    Phrozn\Site\DefaultSite as Site;
 
 /**
  * phrozn up command
@@ -75,6 +76,9 @@ class Up
             $this->out($this->getFooter());
             return;
         }
+
+        $site = new Site($in, $out);
+        $site->compile();
 
         $this->out($this->getFooter());
 
