@@ -65,6 +65,9 @@ class TwigTest
         $path = dirname(__FILE__) . '/out/'; 
         $page = new Page($twig, $path);
 
+        $this->assertSame('2011-02-24-compile.twig', $page->getName());
+
+        @unlink($path . '2011-02-24-compile.html');
         $this->assertFalse(is_readable($path . '2011-02-24-compile.html'));
 
         $vars = array('the_answer' => 42);
