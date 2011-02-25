@@ -24,7 +24,8 @@
 namespace Phrozn\Runner;
 use Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine\Parser,
-    Phrozn\Runner\CommandLine\Command;
+    Phrozn\Runner\CommandLine\Command,
+    Phrozn\Outputter\DefaultOutputter as Outputter;
 
 /**
  * CLI version of framework invoker.
@@ -142,7 +143,7 @@ class CommandLine
         $runner = new $class;
         $data['paths'] = $this->paths; // inject paths
         $runner
-            ->setOutputter($this->parser->outputter)
+            ->setOutputter(new Outputter())
             ->setParseResult($this->result)
             ->setConfig($data);
         $callback = array($runner, $method);

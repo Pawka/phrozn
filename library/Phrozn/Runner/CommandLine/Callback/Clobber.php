@@ -68,7 +68,7 @@ class Clobber
         $path .= '/_phrozn/'; // where to copy skeleton
 
         $this->out($this->getHeader());
-        $this->out("\nPurging project data..");
+        $this->out("Purging project data..");
         $this->out(
             "\nLocated project folder: {$path}");
         $this->out( 

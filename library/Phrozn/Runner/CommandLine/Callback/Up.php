@@ -54,7 +54,7 @@ class Up
 
         ob_start();
         $this->out($this->getHeader());
-        $this->out("\nStarting Phrozn compilation\n");
+        $this->out("Starting static site compilation.\n");
 
         $proceed = true;
         if (!is_dir($in)) {

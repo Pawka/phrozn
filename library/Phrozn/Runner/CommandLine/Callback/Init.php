@@ -63,7 +63,7 @@ class Init
 
         ob_start();
         $this->out($this->getHeader());
-        $this->out("\nInitializing new project");
+        $this->out("Initializing new project");
         $this->out("\n  Project path: {$path}");
 
         if (is_dir($path)) {

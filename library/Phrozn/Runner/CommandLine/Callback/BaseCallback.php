@@ -24,6 +24,7 @@
 namespace Phrozn\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine,
     Console_Color as Color,
+    Phrozn\Outputter\DefaultOutputter as Outputter,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine\Commands;
 
@@ -92,6 +93,9 @@ abstract class BaseCallback
      */
     public function getOutputter()
     {
+        if (null === $this->outputter) {
+            $this->outputter = new Outputter();
+        }
         return $this->outputter;
     }
 
@@ -225,7 +229,7 @@ abstract class BaseCallback
     {
         $meta = $this->getCommandMeta();
         $out = "\n{$meta['description']}\n";
-        $out .= "For additional information, see %9http://phrozn.info%n\n";
+        $out .= "For additional information, see %9http://phrozn.info%n";
         return $out;
     }
 
@@ -247,7 +251,7 @@ abstract class BaseCallback
         if ($this->useAnsiColors() === false) {
             $str = Color::strip($str);
         }
-        $this->getOutputter()->stdout($str . "\n");
+        $this->getOutputter()->stdout($str, '');
         if (count(\ob_get_status()) !== 0) {
             ob_flush();
         }
