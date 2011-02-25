@@ -51,11 +51,12 @@ class DefaultSiteTest
         $path = dirname(__FILE__) . '/project/_phrozn/';
         $site = new Site($path, $path . 'site');
 
-        ob_start();
+        $outputter = new TestOutputter($this);
         $this->assertFalse(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $site->compile();
+        $site
+            ->setOutputter($outputter)
+            ->compile();
         $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $out = ob_get_clean();
     }
 
     public function testSiteCompilationEntriesNotFound()
@@ -87,9 +88,7 @@ class DefaultSiteTest
         $this->assertTrue(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
 
-        $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig: Page front matter not found");
-        $outputter->assertInLogs("2011-02-24-factory-test.twig: Page front matter not found");
-        $outputter->assertInLogs("2011-02-24-factory-test.twig: Page of type 'wrong' not found");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: Page of type 'wrong' not found..");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
         $outputter->assertInLogs("2011-02-24-factory-test.twig parsed");
@@ -123,9 +122,7 @@ class DefaultSiteTest
         $this->assertTrue(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
 
-        $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig: Page front matter not found");
-        $outputter->assertInLogs("2011-02-24-factory-test.twig: Page front matter not found");
-        $outputter->assertInLogs("2011-02-24-factory-test.twig: Page of type 'wrong' not found");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: Page of type 'wrong' not found..");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
         $outputter->assertInLogs("2011-02-24-factory-test.twig parsed");

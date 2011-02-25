@@ -160,7 +160,7 @@ abstract class BaseSite
                 if ($item->isFile()) {
                     try {
                         $factory = new PageFactory($item->getRealPath());
-                        $page = $factory->createPage();
+                        $page = $factory->create();
                         $page->setDestinationPath($destinationPath);
                         $this->pages[] = $page;
                     } catch (\Exception $e) {
