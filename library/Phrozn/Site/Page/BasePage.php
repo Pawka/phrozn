@@ -22,7 +22,8 @@
  */
 
 namespace Phrozn\Site\Page;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Yaml,
+    Phrozn\Site\PageFactory;
 
 /**
  * Abstract baase implementation of Phrozn  Page
@@ -34,6 +35,11 @@ use Symfony\Component\Yaml\Yaml;
 abstract class BasePage 
     implements \Phrozn\Site\Page
 {
+    /**
+     * Default script if "layout" is not provided in front matter.
+     */
+    const DEFAULT_LAYOUT_SCRIPT = 'default.twig';
+
     /**
      * Input file
      * @var string
@@ -61,17 +67,17 @@ abstract class BasePage
     /**
      * Initialize page
      *
-     * @param string $source Page source file
-     * @param string $destination Page destination path
+     * @param string $sourcePath Path to page source file
+     * @param string $destinationPath Page destination path
      * @param \Phrozn\Process $processor Phrozn markup processor
      *
      * @return \Phrozn\Site\Page
      */
-    public function __construct($source = null, $destination = null, $processor = null)
+    public function __construct($sourcePath = null, $destinationPath = null, $processor = null)
     {
         $this
-            ->setSourcePath($source)
-            ->setDestinationPath($destination)
+            ->setSourcePath($sourcePath)
+            ->setDestinationPath($destinationPath)
             ->setProcessor($processor);
     }
 
@@ -102,9 +108,44 @@ abstract class BasePage
      */
     public function render($vars)
     {
+        // inject front matter options into template
         $vars = array_merge($vars, array('this' => $this->extractFrontMatter()));
-        return $this->getProcessor()
-                    ->render($this->extractTemplate(), $vars);
+
+        // parse page
+        $page = $this->getProcessor()
+                     ->render($this->extractTemplate(), $vars);
+
+        return $this->applyLayout($page);
+    }
+
+    /**
+     * Two step view is used. Layout is provided with content variable.
+     *
+     * @param string $content Page content to inject into layout
+     *
+     * @return string
+     */
+    private function applyLayout($content)
+    {
+        $config = $this->extractFrontMatter();
+
+        $vars = array(
+            'content' => $content
+        );
+
+        $layoutName = isset($config['layout']) ? $config['layout'] : self::DEFAULT_LAYOUT_SCRIPT;
+        $layoutPath = realpath(dirname($this->getSourcePath()) . '/../views/layouts/' . $layoutName);
+        $factory = new PageFactory();
+        $page = $factory->setSourcePath($layoutPath)->create();
+        var_dump($page);
+        exit;
+        $layout = $factory
+                        ->setSourcePath($layoutPath)
+                        ->create()
+                        ->render($vars);
+        var_dump($layout);
+        exit;
+        unset($factory);
     }
 
     /**
