@@ -44,24 +44,11 @@ class PageFactoryTest
         $factory = new Factory();
         $page = $factory
                     ->setSourcePath($input)
-                    ->createPage();
+                    ->create();
 
         $page->setDestinationPath($output);
 
         $this->assertInstanceOf('\Phrozn\Site\Page\Twig', $page);
-    }
-
-    public function testNoFrontMatter()
-    {
-        $this->setExpectedException('Exception', 'Page front matter not found');
-
-        $path = dirname(__FILE__) . '/project/_phrozn/entries/';
-        $input = $path . '2011-02-24-no-front-matter.twig';
-
-        $factory = new Factory();
-        $page = $factory
-                    ->setSourcePath($input)
-                    ->createPage();
     }
 
     public function testSourceFileCanNotBeRead()
@@ -75,20 +62,7 @@ class PageFactoryTest
         $factory = new Factory();
         $page = $factory
                     ->setSourcePath($input)
-                    ->createPage();
-    }
-
-    public function testNoSourceFileSpecified()
-    {
-        $path = dirname(__FILE__) . '/project/_phrozn/entries/';
-        $input = $path . 'not-found.twig';
-
-        $this->setExpectedException('Exception',
-            "Page's source file not specified");
-
-        $factory = new Factory();
-        $page = $factory
-                    ->createPage();
+                    ->create();
     }
 
     public function testWrongFileType()
@@ -97,12 +71,12 @@ class PageFactoryTest
            "Page of type 'wrong' not found");
 
         $path = dirname(__FILE__) . '/project/_phrozn/entries/';
-        $input = $path . '2011-02-24-wrong-file-type.twig';
+        $input = $path . '2011-02-24-wrong-file-type.wrong';
 
         $factory = new Factory();
         $page = $factory
                     ->setSourcePath($input)
-                    ->createPage();
+                    ->create();
     }
 
 }

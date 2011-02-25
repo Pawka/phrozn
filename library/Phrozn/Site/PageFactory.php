@@ -37,7 +37,7 @@ class PageFactory
     implements Has\Source
 {
     /**
-     * Page\Html page is initialized by default
+     * Page\Twig is default page type
      */
     const DEFAULT_PAGE_TYPE = 'twig';
 
@@ -46,12 +46,6 @@ class PageFactory
      * @var string
      */
     private $sourcePath;
-
-    /**
-     * Template source text
-     * @var string
-     */
-    private $source;
 
     /**
      * Initialize factory by providing input file path
@@ -70,14 +64,11 @@ class PageFactory
      *
      * return \Phrozn\Site\Page
      */
-    public function createPage()
+    public function create()
     {
-        $fm = $this->getFrontMatter();
-        if ($fm === null) {
-            throw new \Exception('Page front matter not found');
-        }
+        $ext = pathinfo($this->getSourcePath(), PATHINFO_EXTENSION);
 
-        $type = isset($fm['type']) ? $fm['type'] : self::DEFAULT_PAGE_TYPE;
+        $type = $ext ? : self::DEFAULT_PAGE_TYPE;
 
         return $this->constructPage($type);
     }
@@ -109,44 +100,6 @@ class PageFactory
     public function getSourcePath()
     {
         return $this->sourcePath;
-    }
-
-    /**
-     * Extract page template content
-     *
-     * @return string
-     */
-    private function getFrontMatter()
-    {
-        $source = $this->readSourceFile();
-
-        $pos = strpos($source, '---');
-        if ($pos === false) {
-            return null;
-        }
-
-        $frontMatter = substr($source, 0, $pos);
-        $parsed = Yaml::load($frontMatter);
-
-        return $parsed;
-    }
-
-    /**
-     * Read input file
-     *
-     * @return string
-     */
-    private function readSourceFile()
-    {
-        if (null == $this->source) {
-            $path = $this->getSourcePath();
-            if (null === $path) {
-                throw new \Exception("Page's source file not specified.");
-            }
-
-            $this->source = \file_get_contents($path);
-        }
-        return $this->source;
     }
 
     /**
