@@ -24,7 +24,8 @@
 namespace PhroznTest\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine\Callback\Up as Callback,
     Phrozn\Runner\CommandLine as Runner,
-    Phrozn\Runner\CommandLine\Parser;
+    Phrozn\Runner\CommandLine\Parser,
+    Phrozn\Outputter\TestOutputter as Outputter;
 
 /**
  * @category    Phrozn
@@ -90,6 +91,7 @@ class UpTest
         $result = $this->getParseResult("phr up {$path} {$path}");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 

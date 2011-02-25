@@ -24,7 +24,8 @@
 namespace PhroznTest\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine\Callback\Clobber as Callback,
     Phrozn\Runner\CommandLine as Runner,
-    Phrozn\Runner\CommandLine\Parser;
+    Phrozn\Runner\CommandLine\Parser,
+    Phrozn\Outputter\TestOutputter as Outputter;
 
 /**
  * @category    Phrozn

@@ -25,6 +25,7 @@ namespace PhroznTest\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine\Callback\Help as Callback,
     Phrozn\Runner\CommandLine as Runner,
     Phrozn\Runner\CommandLine\Parser,
+    Phrozn\Outputter\TestOutputter as Outputter,
     Phrozn\Runner\CommandLine\Command;
 
 /**
@@ -73,6 +74,7 @@ class HelpTest
         $result = $this->getParseResult("phr help initialize");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -89,6 +91,7 @@ class HelpTest
         $result = $this->getParseResult("phr help initialize --verbose");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -106,6 +109,7 @@ class HelpTest
         $result = $this->getParseResult("phr help initialize -v");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -122,6 +126,7 @@ class HelpTest
         $result = $this->getParseResult("phr help {$topic}");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -137,6 +142,7 @@ class HelpTest
         $result = $this->getParseResult("phr help init");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -153,6 +159,7 @@ class HelpTest
         $result = $this->getParseResult("phr help clobber");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -169,6 +176,7 @@ class HelpTest
         $result = $this->getParseResult("phr help update");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -185,6 +193,7 @@ class HelpTest
         $result = $this->getParseResult("phr help up");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -201,6 +210,7 @@ class HelpTest
         $result = $this->getParseResult("phr ? init");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -217,6 +227,7 @@ class HelpTest
         $result = $this->getParseResult("phr ? initialize");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -233,6 +244,7 @@ class HelpTest
         $result = $this->getParseResult("phr ? clobber");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -249,6 +261,7 @@ class HelpTest
         $result = $this->getParseResult("phr ? up");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -265,6 +278,7 @@ class HelpTest
         $result = $this->getParseResult("phr ? update");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -279,6 +293,7 @@ class HelpTest
         $result = $this->getParseResult("phr ?");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -293,6 +308,7 @@ class HelpTest
         $result = $this->getParseResult("phr --help");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 
@@ -307,6 +323,7 @@ class HelpTest
         $result = $this->getParseResult("phr -h");
 
         $this->runner
+            ->setOutputter($out)
             ->setParseResult($result)
             ->execute();
 

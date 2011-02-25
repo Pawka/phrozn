@@ -78,7 +78,9 @@ class Up
         }
 
         $site = new Site($in, $out);
-        $site->compile();
+        $site
+            ->setOutputter($this->getOutputter())
+            ->compile();
 
         $this->out($this->getFooter());
 
