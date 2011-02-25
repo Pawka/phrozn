@@ -47,6 +47,16 @@ class ConfigTest
         $this->assertSame('updated', $config['phrozn']);
         unset($config['phrozn']);
         $this->assertFalse(isset($config['phrozn']));
+
+
+        $this->assertTrue(isset($config['paths']));
+        $this->assertTrue(isset($config['paths']['bin']));
+        $this->assertTrue(isset($config['paths']['configs']));
+        $this->assertTrue(isset($config['paths']['app']));
+        $this->assertTrue(isset($config['paths']['lib']));
+
+
     }
+
 
 }

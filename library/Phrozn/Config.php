@@ -58,25 +58,70 @@ class Config
                 }
             }
         }
+        $this->updatePaths(); // make sure that config.yml paths are absolute
     }
 
+    /**
+     * Check whether specified config section exists
+     *
+     * @return boolean
+     */
     public function offsetExists($offset)
     {
         return isset($this->configs[$offset]);
     }
 
+    /**
+     * Get loaded configuration identified by $offset
+     *
+     * @param string $offset Configuration file basename (w/o extension)
+     *
+     * @return array
+     */
     public function offsetGet($offset)
     {
         return $this->configs[$offset];
     }
 
+    /**
+     * Set config file identified by $offset
+     *
+     * @param string $offset Configuration file basename (w/o extension)
+     * @param array $value
+     *
+     * @return \Phrozn\Config
+     */
     public function offsetSet($offset, $value)
     {
         $this->configs[$offset] = $value;
+        return $this;
     }
 
+    /**
+     * Unset config file specified by $offset
+     *
+     * @param string $offset Configuration item to unset
+     *
+     * @return \Phrozn\Config
+     */
     public function offsetUnset($offset)
     {
         unset($this->configs[$offset]);
+        return $this;
+    }
+
+    /**
+     * Make sure that absolute application path is prepended to config paths
+     *
+     * @return \Phrozn\Config
+     */
+    public function updatePaths()
+    {
+        foreach ($this->configs['paths'] as $key => $file) {
+            $this->configs['paths'][$key] = 
+                realpath(dirname(__FILE__) . '/../../' . $file);
+        }
+
+        return $this;
     }
 }
