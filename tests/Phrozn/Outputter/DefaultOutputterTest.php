@@ -32,24 +32,26 @@ use Phrozn\Outputter\DefaultOutputter as Outputter;
 class DefaultOutputterTest 
     extends \PHPUnit_Framework_TestCase
 {
+    private $out;
+
     public function testStdOut()
     {
         $outputter = new Outputter();
-        ob_start();
+        ob_start(array($this, 'setOutput'));
         $outputter->stdout('sending output', '');
         $out = trim(ob_get_clean());
 
-        $this->assertSame('sending output', $out);
+        $this->assertSame('sending output', trim($this->out));
     }
 
     public function testStdErr()
     {
         $outputter = new Outputter();
-        ob_start();
+        ob_start(array($this, 'setOutput'));
         $outputter->stderr('sending output', '');
         $out = trim(ob_get_clean());
 
-        $this->assertSame('sending output', $out);
+        $this->assertSame('sending output', trim($this->out));
     }
 
     public function testStdOutWithResource()
@@ -74,5 +76,13 @@ class DefaultOutputterTest
         $outputter->stderr('sending output', '');
 
         $this->assertSame('sending output', trim(file_get_contents('/tmp/stderr')));
+    }
+
+    public function setOutput($out)
+    {
+        if ($out) {
+            $this->out = $out;
+        }
+        return ''; // silence
     }
 }
