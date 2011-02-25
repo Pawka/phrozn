@@ -23,7 +23,8 @@
 
 namespace Phrozn\Site\Page;
 use Symfony\Component\Yaml\Yaml,
-    Phrozn\Site\PageFactory;
+    Phrozn\Site\PageFactory,
+    Phrozn\Site\Layout\DefaultLayout as Layout;
 
 /**
  * Abstract baase implementation of Phrozn  Page
@@ -35,11 +36,6 @@ use Symfony\Component\Yaml\Yaml,
 abstract class BasePage 
     implements \Phrozn\Site\Page
 {
-    /**
-     * Default script if "layout" is not provided in front matter.
-     */
-    const DEFAULT_LAYOUT_SCRIPT = 'default.twig';
-
     /**
      * Input file
      * @var string
@@ -115,37 +111,7 @@ abstract class BasePage
         $page = $this->getProcessor()
                      ->render($this->extractTemplate(), $vars);
 
-        return $this->applyLayout($page);
-    }
-
-    /**
-     * Two step view is used. Layout is provided with content variable.
-     *
-     * @param string $content Page content to inject into layout
-     *
-     * @return string
-     */
-    private function applyLayout($content)
-    {
-        $config = $this->extractFrontMatter();
-
-        $vars = array(
-            'content' => $content
-        );
-
-        $layoutName = isset($config['layout']) ? $config['layout'] : self::DEFAULT_LAYOUT_SCRIPT;
-        $layoutPath = realpath(dirname($this->getSourcePath()) . '/../views/layouts/' . $layoutName);
-        $factory = new PageFactory();
-        $page = $factory->setSourcePath($layoutPath)->create();
-        var_dump($page);
-        exit;
-        $layout = $factory
-                        ->setSourcePath($layoutPath)
-                        ->create()
-                        ->render($vars);
-        var_dump($layout);
-        exit;
-        unset($factory);
+        return $this->applyLayout($page, $vars);
     }
 
     /**
@@ -224,6 +190,25 @@ abstract class BasePage
     public function getName()
     {
         return basename($this->getSourcePath());
+    }
+
+    /**
+     * Two step view is used. Layout is provided with content variable.
+     *
+     * @param string $content Page content to inject into layout
+     * @param array $vars List of variables passed to template engine
+     *
+     * @return string
+     */
+    private function applyLayout($content, $vars)
+    {
+        $layoutName = isset($vars['this']['layout']) 
+                    ? $vars['this']['layout'] : Layout::DEFAULT_LAYOUT_SCRIPT;
+        $layoutPath = realpath(dirname($this->getSourcePath()) . '/../layouts/' . $layoutName);
+
+        $layout = new Layout($layoutPath, $this->getProcessor());
+
+        return $layout->render(array('content' => $content));
     }
 
     /**
