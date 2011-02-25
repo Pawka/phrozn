@@ -44,6 +44,7 @@ interface Outputter
      * Processes the output for a message that should be displayed on STDOUT.
      *
      * @param string $msg The message to output
+     * @param string $status Output status
      *
      * @return \Phrozn\Outputter
      */
@@ -53,6 +54,7 @@ interface Outputter
      * Processes the output for a message that should be displayed on STDERR.
      *
      * @param string $msg The message to output
+     * @param string $status Output status
      *
      * @return \Phrozn\Outputter
      */

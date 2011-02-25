@@ -55,6 +55,7 @@ class TestOutputter
      * Add line to output
      *
      * @param string $str Line to add
+     * @param string $status Output status
      *
      * @return \Phrozn\Outputter
      */
@@ -73,6 +74,7 @@ class TestOutputter
      * Writes the message $msg to STDERR.
      *
      * @param string $msg The message to output
+     * @param string $status Output status
      *
      * @return \Phrozn\Outputter
      */

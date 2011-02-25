@@ -38,6 +38,7 @@ class DefaultOutputter
      * Writes the message $msg to STDOUT.
      *
      * @param string $msg The message to output
+     * @param string $status Output status
      *
      * @return \Phrozn\Outputter
      */
@@ -59,6 +60,7 @@ class DefaultOutputter
      * Writes the message $msg to STDERR.
      *
      * @param string $msg The message to output
+     * @param string $status Output status
      *
      * @return \Phrozn\Outputter
      */
