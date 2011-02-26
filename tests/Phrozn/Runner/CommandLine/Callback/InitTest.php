@@ -91,7 +91,7 @@ class InitTest
         $out->assertInLogs('Initializing new project');
         $out->assertInLogs('[ADDED]   config.yml');
         $out->assertInLogs('[ADDED]   site/README');
-        $out->assertInLogs('[ADDED]   views/layouts/default.twig');
+        $out->assertInLogs('[ADDED]   layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/_phrozn'));
@@ -119,7 +119,7 @@ class InitTest
         $out->assertInLogs('Initializing new project');
         $out->assertInLogs('[ADDED]   config.yml');
         $out->assertInLogs('[ADDED]   site/README');
-        $out->assertInLogs('[ADDED]   views/layouts/default.twig');
+        $out->assertInLogs('[ADDED]   layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/_phrozn'));
@@ -148,7 +148,7 @@ class InitTest
         $out->assertInLogs('Initializing new project');
         $out->assertInLogs('[ADDED]   config.yml');
         $out->assertInLogs('[ADDED]   site/README');
-        $out->assertInLogs('[ADDED]   views/layouts/default.twig');
+        $out->assertInLogs('[ADDED]   layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/project/_phrozn'));
