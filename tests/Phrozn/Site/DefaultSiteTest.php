@@ -88,7 +88,7 @@ class DefaultSiteTest
         $this->assertTrue(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
 
-        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: Page of type 'wrong' not found..");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: File of type 'wrong' not found..");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
         $outputter->assertInLogs("2011-02-24-factory-test.twig parsed");
@@ -122,7 +122,7 @@ class DefaultSiteTest
         $this->assertTrue(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
 
-        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: Page of type 'wrong' not found..");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: File of type 'wrong' not found..");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
         $outputter->assertInLogs("2011-02-24-factory-test.twig parsed");

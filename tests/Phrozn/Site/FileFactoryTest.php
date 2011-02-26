@@ -22,21 +22,21 @@
  */
 
 namespace PhroznTest\Site;
-use Phrozn\Site\PageFactory as Factory,
-    Phrozn\Page;
+use Phrozn\Site\FileFactory as Factory,
+    Phrozn\File;
 
 /**
  * @category    Phrozn
  * @package     Phrozn\Site
  * @author      Victor Farazdagi
  */
-class PageFactoryTest 
+class FileFactoryTest 
     extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {}
 
-    public function testImplicitHtmlPageCreation()
+    public function testImplicitHtmlFileCreation()
     {
         $path = dirname(__FILE__) . '/project/_phrozn/entries/';
         $input = $path . '2011-02-24-factory-test.twig';
@@ -48,7 +48,7 @@ class PageFactoryTest
 
         $page->setDestinationPath($output);
 
-        $this->assertInstanceOf('\Phrozn\Site\Page\Twig', $page);
+        $this->assertInstanceOf('\Phrozn\Site\File\Twig', $page);
     }
 
     public function testSourceFileCanNotBeRead()
@@ -57,7 +57,7 @@ class PageFactoryTest
         $input = $path . 'not-found.twig';
 
         $this->setExpectedException('Exception',
-            "Page source file cannot be read: {$input}");
+            "File source file cannot be read: {$input}");
 
         $factory = new Factory();
         $page = $factory
@@ -68,7 +68,7 @@ class PageFactoryTest
     public function testWrongFileType()
     {
         $this->setExpectedException('Exception',
-           "Page of type 'wrong' not found");
+           "File of type 'wrong' not found");
 
         $path = dirname(__FILE__) . '/project/_phrozn/entries/';
         $input = $path . '2011-02-24-wrong-file-type.wrong';

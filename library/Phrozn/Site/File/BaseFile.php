@@ -15,26 +15,26 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site\Page
+ * @package     Phrozn\Site\File
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site\Page;
+namespace Phrozn\Site\File;
 use Symfony\Component\Yaml\Yaml,
-    Phrozn\Site\PageFactory,
+    Phrozn\Site\FileFactory,
     Phrozn\Site\Layout\DefaultLayout as Layout;
 
 /**
- * Abstract baase implementation of Phrozn  Page
+ * Abstract base implementation of Phrozn  File
  *
  * @category    Phrozn
- * @package     Phrozn\Site\Page
+ * @package     Phrozn\Site\File
  * @author      Victor Farazdagi
  */
-abstract class BasePage 
-    implements \Phrozn\Site\Page
+abstract class BaseFile 
+    implements \Phrozn\Site\File
 {
     /**
      * Input file
@@ -64,10 +64,10 @@ abstract class BasePage
      * Initialize page
      *
      * @param string $sourcePath Path to page source file
-     * @param string $destinationPath Page destination path
+     * @param string $destinationPath File destination path
      * @param \Phrozn\Process $processor Phrozn markup processor
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
     public function __construct($sourcePath = null, $destinationPath = null, $processor = null)
     {
@@ -82,7 +82,7 @@ abstract class BasePage
      *
      * @param array $vars List of variables passed to template engine
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
     public function compile($vars)
     {
@@ -119,7 +119,7 @@ abstract class BasePage
      *
      * @param string $file Path to source file
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
     public function setSourcePath($path)
     {
@@ -165,7 +165,7 @@ abstract class BasePage
      *
      * @param \Phrozn\Processor
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
     public function setProcessor($processor)
     {
@@ -195,7 +195,7 @@ abstract class BasePage
     /**
      * Two step view is used. Layout is provided with content variable.
      *
-     * @param string $content Page content to inject into layout
+     * @param string $content File content to inject into layout
      * @param array $vars List of variables passed to template engine
      *
      * @return string
@@ -258,7 +258,7 @@ abstract class BasePage
         if (null == $this->source) {
             $path = $this->getSourcePath();
             if (null === $path) {
-                throw new \Exception("Page's source file not specified.");
+                throw new \Exception("File's source file not specified.");
             }
 
             $this->source = \file_get_contents($path);

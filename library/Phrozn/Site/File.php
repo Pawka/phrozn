@@ -25,13 +25,13 @@ namespace Phrozn\Site;
 use Phrozn\Has;
 
 /**
- * Phrozn Page Abstraction
+ * Phrozn File Abstraction
  *
  * @category    Phrozn
  * @package     Phrozn\Site
  * @author      Victor Farazdagi
  */
-interface Page 
+interface File 
     extends 
         Has\Source, 
         Has\Destination, 
@@ -42,7 +42,7 @@ interface Page
      *
      * @param array $vars List of variables passed to template engine
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
     public function compile($vars);
 

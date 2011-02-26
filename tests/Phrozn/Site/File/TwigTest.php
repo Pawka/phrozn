@@ -15,18 +15,18 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site\Page
+ * @package     Phrozn\Site\File
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace PhroznTest\Site\Page;
-use Phrozn\Site\Page\Twig as Page;
+namespace PhroznTest\Site\File;
+use Phrozn\Site\File\Twig as File;
 
 /**
  * @category    Phrozn
- * @package     Phrozn\Site\Page
+ * @package     Phrozn\Site\File
  * @author      Victor Farazdagi
  */
 class TwigTest 
@@ -35,20 +35,20 @@ class TwigTest
     public function setUp()
     {}
 
-    public function testPageCreation()
+    public function testFileCreation()
     {
         $in = dirname(__FILE__) . '/entries/2011-02-24-create.twig';
         $out = dirname(__FILE__) . '/out';
-        $page = new Page($in , $out);
+        $page = new File($in , $out);
 
-        $this->assertInstanceOf('\Phrozn\Site\Page\Twig', $page);
+        $this->assertInstanceOf('\Phrozn\Site\File\Twig', $page);
     }
 
-    public function testPageRendering()
+    public function testFileRendering()
     {
         $twig = dirname(__FILE__) . '/entries/2011-02-24-render.twig';
         $html = dirname(__FILE__) . '/entries/2011-02-24-render.html';
-        $page = new Page($twig);
+        $page = new File($twig);
 
         $vars = array('the_answer' => 42);
         $rendered = $page->render($vars);
@@ -58,12 +58,12 @@ class TwigTest
         $this->assertSame(trim($loaded), trim($rendered));
     }
 
-    public function testPageCompiling()
+    public function testFileCompiling()
     {
         $twig = dirname(__FILE__) . '/entries/2011-02-24-compile.twig';
         $html = dirname(__FILE__) . '/entries/2011-02-24-compile.html';
         $path = dirname(__FILE__) . '/out/'; 
-        $page = new Page($twig, $path);
+        $page = new File($twig, $path);
 
         $this->assertSame('2011-02-24-compile.twig', $page->getName());
 
@@ -90,7 +90,7 @@ class TwigTest
     {
         $twig = dirname(__FILE__) . '/entries/2011-02-24-no-front-matter.twig';
         $html = dirname(__FILE__) . '/entries/2011-02-24-no-front-matter.html';
-        $page = new Page($twig);
+        $page = new File($twig);
 
         $vars = array('the_answer' => 42);
         $rendered = $page->render($vars);
@@ -102,8 +102,8 @@ class TwigTest
 
     public function testNoSourcePathSpecified()
     {
-        $this->setExpectedException('Exception', "Page's source file not specified");
-        $page = new Page();
+        $this->setExpectedException('Exception', "File's source file not specified");
+        $page = new File();
 
         $rendered = $page->render(array());
 

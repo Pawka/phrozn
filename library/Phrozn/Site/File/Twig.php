@@ -15,35 +15,35 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site\Page
+ * @package     Phrozn\Site\File
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site\Page;
+namespace Phrozn\Site\File;
 use Phrozn\Site,
     Phrozn\Processor\Twig as Processor;
 
 /**
- * Phrozn Page in Twig format
+ * Phrozn File in Twig format
  *
  * @category    Phrozn
- * @package     Phrozn\Site\Page
+ * @package     Phrozn\Site\File
  * @author      Victor Farazdagi
  */
 class Twig 
-    extends BasePage
-    implements Site\Page
+    extends BaseFile
+    implements Site\File
 {
     /**
      * Initialize page
      *
-     * @param string $source Page source file
-     * @param string $destination Page destination path
+     * @param string $source File source path
+     * @param string $destination File destination path
      * @param \Phrozn\Process $processor Phrozn markup processor
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
     public function __construct($source = null, $destination = null)
     {

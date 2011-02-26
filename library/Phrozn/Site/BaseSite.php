@@ -22,7 +22,7 @@
  */
 
 namespace Phrozn\Site;
-use Phrozn\Site\Page,
+use Phrozn\Site\File,
     Phrozn\Outputter\DefaultOutputter as Outputter,
     Symfony\Component\Yaml\Yaml;
 
@@ -159,7 +159,7 @@ abstract class BaseSite
             if ($baseName != '.' && $baseName != '..') {
                 if ($item->isFile()) {
                     try {
-                        $factory = new PageFactory($item->getRealPath());
+                        $factory = new FileFactory($item->getRealPath());
                         $page = $factory->create();
                         $page->setDestinationPath($destinationPath);
                         $this->pages[] = $page;

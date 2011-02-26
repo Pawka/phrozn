@@ -22,22 +22,22 @@
  */
 
 namespace Phrozn\Site;
-use Phrozn\Site\Page,
+use Phrozn\Site\File,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Has;
 
 /**
- * Page producing factory
+ * File producing factory
  *
  * @category    Phrozn
  * @package     Phrozn\Site
  * @author      Victor Farazdagi
  */
-class PageFactory 
+class FileFactory 
     implements Has\Source
 {
     /**
-     * Page\Twig is default page type
+     * File\Twig is default page type
      */
     const DEFAULT_PAGE_TYPE = 'twig';
 
@@ -62,7 +62,7 @@ class PageFactory
     /**
      * Depending on internal configuration and concrete type, create page
      *
-     * return \Phrozn\Site\Page
+     * return \Phrozn\Site\File
      */
     public function create()
     {
@@ -70,7 +70,7 @@ class PageFactory
 
         $type = $ext ? : self::DEFAULT_PAGE_TYPE;
 
-        return $this->constructPage($type);
+        return $this->constructFile($type);
     }
 
     /**
@@ -78,13 +78,13 @@ class PageFactory
      *
      * @param string $path Path to source file
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
     public function setSourcePath($path)
     {
         if (null !== $path) {
             if (!is_readable($path)) {
-                throw new \Exception("Page source file cannot be read: {$path}");
+                throw new \Exception("File source file cannot be read: {$path}");
             }
             $this->sourcePath = $path;
         }
@@ -105,15 +105,15 @@ class PageFactory
     /**
      * Create and return page of a given type
      *
-     * @param string $type Page type to load
+     * @param string $type File type to load
      *
-     * @return \Phrozn\Site\Page
+     * @return \Phrozn\Site\File
      */
-    private function constructPage($type)
+    private function constructFile($type)
     {
-        $class = 'Phrozn\\Site\\Page\\' . ucfirst($type);
+        $class = 'Phrozn\\Site\\File\\' . ucfirst($type);
         if (!class_exists($class)) {
-            throw new \Exception("Page of type '{$type}' not found..");
+            throw new \Exception("File of type '{$type}' not found..");
         }
         $object = new $class;
         $object->setSourcePath($this->getSourcePath());

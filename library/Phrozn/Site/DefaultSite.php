@@ -22,7 +22,7 @@
  */
 
 namespace Phrozn\Site;
-use Phrozn\Site\Page;
+use Phrozn\Site\File;
 
 /**
  * Default implementation of Phrozn Site 
