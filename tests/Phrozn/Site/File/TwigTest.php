@@ -102,7 +102,7 @@ class TwigTest
 
     public function testNoSourcePathSpecified()
     {
-        $this->setExpectedException('Exception', "File's source file not specified");
+        $this->setExpectedException('Exception', "Source file not specified");
         $page = new File();
 
         $rendered = $page->render(array());

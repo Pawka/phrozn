@@ -84,13 +84,13 @@ abstract class BaseFile
      *
      * @return \Phrozn\Site\File
      */
-    public function compile($vars)
+    public function compile($vars = array())
     {
         $out = $this->render($vars);
 
-        $path = $this->getDestinationPath() . '/'
-              . basename($this->getSourcePath(), '.twig') . '.html';
-        file_put_contents($path, $out);
+        // getDestinationPath() is template method, 
+        // overriden by concrete class
+        file_put_contents($this->getDestinationPath(), $out);
 
         return $out;
     }
@@ -102,7 +102,7 @@ abstract class BaseFile
      *
      * @return string
      */
-    public function render($vars)
+    public function render($vars = array())
     {
         // inject front matter options into template
         $vars = array_merge($vars, array('this' => $this->extractFrontMatter()));
@@ -200,7 +200,7 @@ abstract class BaseFile
      *
      * @return string
      */
-    private function applyLayout($content, $vars)
+    protected function applyLayout($content, $vars)
     {
         $layoutName = isset($vars['this']['layout']) 
                     ? $vars['this']['layout'] : Layout::DEFAULT_LAYOUT_SCRIPT;
@@ -258,7 +258,7 @@ abstract class BaseFile
         if (null == $this->source) {
             $path = $this->getSourcePath();
             if (null === $path) {
-                throw new \Exception("File's source file not specified.");
+                throw new \Exception("Source file not specified.");
             }
 
             $this->source = \file_get_contents($path);

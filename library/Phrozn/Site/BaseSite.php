@@ -151,12 +151,14 @@ abstract class BaseSite
             $destinationPath = $this->getDestinationPath();
         }
 
-        $dir = new \RecursiveDirectoryIterator($basePath . '/entries');
-        $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
-        $dirname = '';
-        foreach ($it as $item) {
-            $baseName = $item->getBaseName();
-            if ($baseName != '.' && $baseName != '..') {
+        $folders = array(
+            'entries', 'styles'
+        );
+        foreach ($folders as $folder) {
+            $dir = new \RecursiveDirectoryIterator($basePath . '/' . $folder);
+            $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($it as $item) {
+                $baseName = $item->getBaseName();
                 if ($item->isFile()) {
                     try {
                         $factory = new FileFactory($item->getRealPath());
@@ -165,11 +167,12 @@ abstract class BaseSite
                         $this->pages[] = $page;
                     } catch (\Exception $e) {
                         $this->getOutputter()
-                             ->stderr($item->getBaseName() . ': ' . $e->getMessage());
+                                ->stderr($item->getBaseName() . ': ' . $e->getMessage());
                     }
                 }
             }
         }
+
         return $this;
     }
 

@@ -44,7 +44,7 @@ interface File
      *
      * @return \Phrozn\Site\File
      */
-    public function compile($vars);
+    public function compile($vars = array());
 
     /**
      * Render input template
@@ -53,7 +53,7 @@ interface File
      *
      * @return string
      */
-    public function render($vars);
+    public function render($vars = array());
 
     /**
      * Get page name

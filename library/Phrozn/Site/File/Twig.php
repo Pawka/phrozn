@@ -52,4 +52,16 @@ class Twig
         $processor = new Processor();
         $this->setProcessor(new Processor());
     }
+
+    /**
+     * Get site output path
+     *
+     * @return string
+     */
+    public function getDestinationPath()
+    {
+        $path = parent::getDestinationPath() . '/'
+              . basename($this->getSourcePath(), '.twig') . '.html';
+        return $path;
+    }
 }
