@@ -40,7 +40,7 @@ interface Processor
      *
      * @return string Processed template
      */
-    public function render($tpl, $vars);
+    public function render($tpl, $vars = array());
 
     /**
      * Gateway to pass concrete Processor some configuration options

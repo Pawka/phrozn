@@ -69,7 +69,7 @@ class Twig
      *
      * @return string Processed template
      */
-    public function render($tpl, $vars)
+    public function render($tpl, $vars = array())
     {
         return $this->getEnvironment()
                     ->loadTemplate($tpl)
