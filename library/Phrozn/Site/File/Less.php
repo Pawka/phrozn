@@ -60,7 +60,7 @@ class Less
      */
     public function getDestinationPath()
     {
-        $path = parent::getDestinationPath() . '/'
+        $path = parent::getDestinationPath() . '/styles/'
               . basename($this->getSourcePath(), '.less') . '.css';
         return $path;
     }
