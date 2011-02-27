@@ -59,10 +59,14 @@ class DefaultSite
 
         foreach ($this->getQueue() as $page) {
             try {
+                $destinationDir = dirname($page->getDestinationPath());
+                if (!is_dir($destinationDir)) {
+                    mkdir($destinationDir);
+                }
                 $page->compile($vars);
                 $this->getOutputter()
                     ->stdout('%b' . $page->getName() . '%n parsed')
-                    ->stdout('%b' . $page->getDestinationPath() . $page->getName() . '%n written');
+                    ->stdout('%b' . str_replace(getcwd(), '.', $page->getDestinationPath()) . '%n written');
             } catch (\Exception $e) {
                 $this->getOutputter()
                      ->stderr($page->getName() . ': ' . $e->getMessage());

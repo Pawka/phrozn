@@ -60,9 +60,16 @@ class Less
      */
     public function getDestinationPath()
     {
-        $path = parent::getDestinationPath() . '/styles/'
-              . basename($this->getSourcePath(), '.less') . '.css';
-        return $path;
+        // find relative path, wrt to styles
+        $pos = strpos($this->getSourcePath(), '/styles');
+        if ($pos !== false) {
+            $path = parent::getDestinationPath() 
+                  . substr($this->getSourcePath(), $pos);
+        } else {
+            $path = parent::getDestinationPath() . '/styles/'
+                  . basename($this->getSourcePath());
+        }
+        return dirname($path) . '/' . basename($path, '.less') . '.css';
     }
 
     /**
