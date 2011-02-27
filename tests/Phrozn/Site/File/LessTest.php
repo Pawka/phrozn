@@ -60,27 +60,27 @@ class LessTest
     {
         $less = dirname(__FILE__) . '/styles/style.less';
         $css = dirname(__FILE__) . '/styles/style.css';
-        $path = dirname(__FILE__) . '/out/'; 
+        $path = dirname(__FILE__) . '/out'; 
         $page = new File($less, $path);
 
         $this->assertSame('style.less', $page->getName());
 
-        @unlink($path . 'style.css');
-        $this->assertFalse(is_readable($path . 'style.css'));
+        @unlink($path . '/styles/style.css');
+        $this->assertFalse(is_readable($path . '/styles/style.css'));
 
         $rendered = $page->compile();
 
-        $this->assertTrue(is_readable($path . 'style.css'));
+        $this->assertTrue(is_readable($path . '/styles/style.css'));
 
         $loaded = file_get_contents($css);
         $this->assertSame(trim($loaded), trim($rendered));
 
         // load from out
-        $loaded = file_get_contents($path . 'style.css');
+        $loaded = file_get_contents($path . '/styles/style.css');
         $this->assertSame(trim($loaded), trim($rendered));
 
         // cleanup
-        unlink($path . 'style.css');
+        unlink($path . '/styles/style.css');
     }
 
     public function testNoFrontMatter()
