@@ -34,7 +34,7 @@ use Console_Color as Color,
  * @author      Victor Farazdagi
  */
 class Help 
-    extends BaseCallback
+    extends Base
     implements CommandLine\Callback
 {
     /**

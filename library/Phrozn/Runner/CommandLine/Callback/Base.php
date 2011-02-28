@@ -35,7 +35,7 @@ use Phrozn\Runner\CommandLine,
  * @package     Phrozn\Runner
  * @author      Victor Farazdagi
  */
-abstract class BaseCallback
+abstract class Base
     implements CommandLine\Callback
 {
     /**

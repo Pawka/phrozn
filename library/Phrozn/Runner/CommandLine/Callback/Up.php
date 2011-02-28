@@ -35,7 +35,7 @@ use Console_Color as Color,
  * @author      Victor Farazdagi
  */
 class Up 
-    extends BaseCallback
+    extends Base
     implements CommandLine\Callback
 {
     /**
