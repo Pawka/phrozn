@@ -23,6 +23,7 @@
 
 namespace Phrozn\Site\View;
 use Phrozn\Site,
+    Phrozn\Site\View\OutputPath\Entry as OutputFile,
     Phrozn\Processor\Twig as Processor;
 
 /**
@@ -77,12 +78,7 @@ class Twig
      */
     public function getOutputFile()
     {
-        $path = parent::getOutputFile();
-        if (null === $path) { // override only if not explicitly set
-            $path = $this->getOutputDir() . '/'
-                . basename($this->getInputFile(), '.twig') . '.html';
-            $this->setOutputFile($path);
-        }
-        return $path;
+        $path = new OutputFile($this);
+        return $path->get();
     }
 }

@@ -15,53 +15,36 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site\View
+ * @package     Phrozn\Has
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site\View;
-use Phrozn\Site,
-    Phrozn\Site\View\OutputPath\Style as OutputFile,
-    Phrozn\Processor\Less as Processor;
+namespace Phrozn\Has;
 
 /**
- * LESS View
+ * Entity has view property
  *
  * @category    Phrozn
- * @package     Phrozn\Site\View
+ * @package     Phrozn\Has
  * @author      Victor Farazdagi
  */
-class Less 
-    extends Base
-    implements Site\View  
+interface View
 {
     /**
-     * Initialize view
+     * Set view
      *
-     * @param string $inputFile Path to view source file
-     * @param string $outputDir File destination path
+     * @param \Phrozn\Site\View $view View object
+     *
+     * @return \Phrozn\Has\View
+     */
+    public function setView($view);
+
+    /**
+     * Get view
      *
      * @return \Phrozn\Site\View
      */
-    public function __construct($inputFile = null, $outputDir = null)
-    {
-        parent::__construct($inputFile, $outputDir);
-
-        $processor = new Processor();
-        $this->addProcessor(new Processor());
-    }
-
-    /**
-     * Get output file path
-     *
-     * @return string
-     */
-    public function getOutputFile()
-    {
-        $path = new OutputFile($this);
-        return $path->get();
-    }
-
+    public function getView();
 }

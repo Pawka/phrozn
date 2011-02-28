@@ -22,46 +22,32 @@
  */
 
 namespace Phrozn\Site\View;
-use Phrozn\Site,
-    Phrozn\Site\View\OutputPath\Style as OutputFile,
-    Phrozn\Processor\Less as Processor;
+use Phrozn\Has;
 
 /**
- * LESS View
+ * Output path builder for different types of views
  *
  * @category    Phrozn
  * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class Less 
-    extends Base
-    implements Site\View  
+interface OutputPath
+    extends 
+        Has\View
 {
     /**
-     * Initialize view
+     * Initialize path builder
      *
-     * @param string $inputFile Path to view source file
-     * @param string $outputDir File destination path
+     * @param \Phrozn\Site\View View for which output path needs to be determined
      *
-     * @return \Phrozn\Site\View
+     * @return void
      */
-    public function __construct($inputFile = null, $outputDir = null)
-    {
-        parent::__construct($inputFile, $outputDir);
-
-        $processor = new Processor();
-        $this->addProcessor(new Processor());
-    }
+    public function __construct(\Phrozn\Site\View $view);
 
     /**
-     * Get output file path
+     * Get calculated path
      *
      * @return string
      */
-    public function getOutputFile()
-    {
-        $path = new OutputFile($this);
-        return $path->get();
-    }
-
+    public function get();
 }

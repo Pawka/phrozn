@@ -21,47 +21,40 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site\View;
-use Phrozn\Site,
-    Phrozn\Site\View\OutputPath\Style as OutputFile,
-    Phrozn\Processor\Less as Processor;
+namespace Phrozn\Site\View\OutputPath;
+use Phrozn\Site\View;
 
 /**
- * LESS View
+ * Output path builder for site entries
  *
  * @category    Phrozn
  * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class Less 
+class Entry 
     extends Base
-    implements Site\View  
 {
     /**
-     * Initialize view
-     *
-     * @param string $inputFile Path to view source file
-     * @param string $outputDir File destination path
-     *
-     * @return \Phrozn\Site\View
-     */
-    public function __construct($inputFile = null, $outputDir = null)
-    {
-        parent::__construct($inputFile, $outputDir);
-
-        $processor = new Processor();
-        $this->addProcessor(new Processor());
-    }
-
-    /**
-     * Get output file path
+     * Get calculated path
      *
      * @return string
      */
-    public function getOutputFile()
+    public function get()
     {
-        $path = new OutputFile($this);
-        return $path->get();
-    }
+        // get rid of extension
+        $inputFile = $this->getView()->getInputFile();
+        $pos = strrpos($inputFile, '.');
+        if (false !== $pos) {
+            $inputFile = substr($inputFile, 0, $pos); 
+        }
 
+        // find relative path, wrt to entries
+        $pos = strpos($inputFile, '/entries');
+        if ($pos !== false) {
+            $inputFile = substr($inputFile, $pos + 8);
+        } else {
+            $inputFile = '/' . basename($inputFile);
+        }
+        return $this->getView()->getOutputDir() . $inputFile . '.html';
+    }
 }

@@ -49,7 +49,7 @@ class DefaultSite
     }
 
     /**
-     * Process page by page compilation
+     * Process view by view compilation
      *
      * @return \Phrozn\Sitee
      */
@@ -57,19 +57,21 @@ class DefaultSite
     {
         $vars = array();
 
-        foreach ($this->getQueue() as $page) {
+        foreach ($this->getQueue() as $view) {
+            $inputFile = str_replace(getcwd(), '.', $view->getInputFile());
+            $outputFile = str_replace(getcwd(), '.', $view->getOutputFile());
             try {
-                $destinationDir = dirname($page->getOutputFile());
+                $destinationDir = dirname($view->getOutputFile());
                 if (!is_dir($destinationDir)) {
-                    mkdir($destinationDir);
+                    mkdir($destinationDir, 0777, true);
                 }
-                $page->compile($vars);
+                $view->compile($vars);
                 $this->getOutputter()
-                    ->stdout('%b' . str_replace(getcwd(), '.', $page->getInputFile()) . '%n parsed')
-                    ->stdout('%b' . str_replace(getcwd(), '.', $page->getOutputFile()) . '%n written');
+                    ->stdout('%b' . $inputFile . '%n parsed')
+                    ->stdout('%b' . $outputFile . '%n written');
             } catch (\Exception $e) {
                 $this->getOutputter()
-                     ->stderr($page->getName() . ': ' . $e->getMessage());
+                     ->stderr($inputFile . ': ' . $e->getMessage());
             }
         }
         return $this;

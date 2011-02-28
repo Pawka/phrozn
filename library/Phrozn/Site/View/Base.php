@@ -241,7 +241,14 @@ abstract class Base
     {
         $layoutName = isset($vars['this']['layout']) 
                     ? $vars['this']['layout'] : Factory::DEFAULT_LAYOUT_SCRIPT;
-        $layoutPath = realpath(dirname($this->getInputFile()) . '/../layouts/' . $layoutName);
+        $inputFile = $this->getInputFile();
+        $pos = strpos($inputFile, '/entries');
+        // make sure that input path is normalized to root entries directory 
+        if (false !== $pos) {
+            $inputFile = substr($inputFile, 0, $pos + 8) . '/entry';
+        }
+        $layoutPath = realpath(dirname($inputFile) . '/../layouts/' . $layoutName);
+
         $factory = new Factory($layoutPath);
         $layout = $factory->create(); // essentially layout is Site\View as well
         $layout->hasLayout(false); // no nested layouts

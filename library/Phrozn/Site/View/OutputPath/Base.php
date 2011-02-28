@@ -21,47 +21,57 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site\View;
-use Phrozn\Site,
-    Phrozn\Site\View\OutputPath\Style as OutputFile,
-    Phrozn\Processor\Less as Processor;
+namespace Phrozn\Site\View\OutputPath;
+use Phrozn\Site\View;
 
 /**
- * LESS View
+ * Base implementation of output path builder
  *
  * @category    Phrozn
  * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class Less 
-    extends Base
-    implements Site\View  
+abstract class Base
+    implements View\OutputPath
 {
     /**
-     * Initialize view
+     * Reference to \Phrozn\Site\View object
+     * @var \Phrozn\Site\View
+     */
+    private $view;
+
+    /**
+     * Initialize path builder
      *
-     * @param string $inputFile Path to view source file
-     * @param string $outputDir File destination path
+     * @param \Phrozn\Site\View View for which output path needs to be determined
+     *
+     * @return void
+     */
+    public function __construct(\Phrozn\Site\View $view)
+    {
+        $this->setView($view);
+    }
+
+    /**
+     * Set view
+     *
+     * @param \Phrozn\Site\View $view View object
+     *
+     * @return \Phrozn\Site\View\OutputPath
+     */
+    public function setView($view)
+    {
+        $this->view = $view;
+        return $this;
+    }
+
+    /**
+     * Get view
      *
      * @return \Phrozn\Site\View
      */
-    public function __construct($inputFile = null, $outputDir = null)
+    public function getView()
     {
-        parent::__construct($inputFile, $outputDir);
-
-        $processor = new Processor();
-        $this->addProcessor(new Processor());
+        return $this->view;
     }
-
-    /**
-     * Get output file path
-     *
-     * @return string
-     */
-    public function getOutputFile()
-    {
-        $path = new OutputFile($this);
-        return $path->get();
-    }
-
 }
