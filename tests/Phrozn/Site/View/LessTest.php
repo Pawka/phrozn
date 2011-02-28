@@ -15,18 +15,18 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site\File
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace PhroznTest\Site\File;
-use Phrozn\Site\File\Less as File;
+namespace PhroznTest\Site\View;
+use Phrozn\Site\View\Less as View;
 
 /**
  * @category    Phrozn
- * @package     Phrozn\Site\File
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
 class LessTest 
@@ -35,40 +35,41 @@ class LessTest
     public function setUp()
     {}
 
-    public function testFileCreation()
+    public function testViewCreation()
     {
         $in = dirname(__FILE__) . '/styles/style.less';
         $out = dirname(__FILE__) . '/out';
-        $page = new File($in , $out);
+        $view = new View($in , $out);
 
-        $this->assertInstanceOf('\Phrozn\Site\File\Less', $page);
+        $this->assertInstanceOf('\Phrozn\Site\View\Less', $view);
     }
 
-    public function testFileRendering()
+    public function testViewRendering()
     {
         $less = dirname(__FILE__) . '/styles/style.less';
         $css = dirname(__FILE__) . '/styles/style.css';
-        $page = new File($less);
+        $view = new View($less);
 
-        $rendered = $page->render();
+        $rendered = $view->render();
         $loaded = file_get_contents($css);
 
         $this->assertSame(trim($loaded), trim($rendered));
     }
 
-    public function testFileCompiling()
+    public function testViewCompiling()
     {
         $less = dirname(__FILE__) . '/styles/style.less';
         $css = dirname(__FILE__) . '/styles/style.css';
         $path = dirname(__FILE__) . '/out'; 
-        $page = new File($less, $path);
+        $view = new View($less, $path);
 
-        $this->assertSame('style.less', $page->getName());
+        $this->assertSame('style.less', basename($view->getInputFile()));
+        $this->assertSame('style.css', basename($view->getOutputFile()));
 
         @unlink($path . '/styles/style.css');
         $this->assertFalse(is_readable($path . '/styles/style.css'));
 
-        $rendered = $page->compile();
+        $rendered = $view->compile();
 
         $this->assertTrue(is_readable($path . '/styles/style.css'));
 
@@ -87,9 +88,9 @@ class LessTest
     {
         $less = dirname(__FILE__) . '/styles/style.less';
         $css = dirname(__FILE__) . '/styles/style.css';
-        $page = new File($less);
+        $view = new View($less);
 
-        $rendered = $page->render();
+        $rendered = $view->render();
         $loaded = file_get_contents($css);
 
         $this->assertSame(trim($loaded), trim($rendered));
@@ -97,10 +98,10 @@ class LessTest
 
     public function testNoSourcePathSpecified()
     {
-        $this->setExpectedException('Exception', "Source file not specified");
-        $page = new File();
+        $this->setExpectedException('Exception', "View input file not specified");
+        $view = new View();
 
-        $rendered = $page->render();
+        $rendered = $view->render();
     }
 
 
