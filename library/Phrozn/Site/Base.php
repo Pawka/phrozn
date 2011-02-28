@@ -153,7 +153,7 @@ abstract class Base
         }
 
         $folders = array(
-            'entries', 'styles'
+            'entries', 'styles', 'scripts'
         );
         foreach ($folders as $folder) {
             $dir = new \RecursiveDirectoryIterator($basePath . '/' . $folder);
@@ -168,7 +168,7 @@ abstract class Base
                         $this->views[] = $view;
                     } catch (\Exception $e) {
                         $this->getOutputter()
-                                ->stderr($item->getBaseName() . ': ' . $e->getMessage());
+                                ->stderr(str_replace($basePath, '', $item->getRealPath()) . ': ' . $e->getMessage());
                     }
                 }
             }

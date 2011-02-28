@@ -97,8 +97,6 @@ abstract class Base
     {
         $out = $this->render($vars);
 
-        // getOutputFile() is template method, 
-        // overriden by concrete class
         file_put_contents($this->getOutputFile(), $out);
 
         return $out;
