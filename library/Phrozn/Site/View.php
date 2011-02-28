@@ -25,40 +25,36 @@ namespace Phrozn\Site;
 use Phrozn\Has;
 
 /**
- * Phrozn File Abstraction
+ * Basic atom of site compilation process.
+ * Site basically composed of number of views, which load 
+ * configuration and tempaltes and get compiled into HTML.
  *
  * @category    Phrozn
  * @package     Phrozn\Site
  * @author      Victor Farazdagi
  */
-interface File 
+interface View 
     extends 
-        Has\Source, 
-        Has\Destination, 
-        Has\Processor
+        Has\InputFile, 
+        Has\OutputFile, 
+        Has\OutputDir, 
+        Has\Processors
 {
     /**
-     * Render and save static version of a concrete page
+     * Render and save static version of a concrete view
      *
-     * @param array $vars List of variables passed to template engine
+     * @param array $vars List of variables passed to text processors
      *
-     * @return \Phrozn\Site\File
+     * @return \Phrozn\Site\View
      */
     public function compile($vars = array());
 
     /**
      * Render input template
      *
-     * @param array $vars List of variables passed to template engine
+     * @param array $vars List of variables passed to text processors
      *
      * @return string
      */
     public function render($vars = array());
-
-    /**
-     * Get page name
-     *
-     * @return string
-     */
-    public function getName();
 }
