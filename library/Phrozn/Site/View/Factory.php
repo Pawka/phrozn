@@ -15,37 +15,36 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site;
-use Phrozn\Site\File,
-    Symfony\Component\Yaml\Yaml,
+namespace Phrozn\Site\View;
+use Symfony\Component\Yaml\Yaml,
     Phrozn\Has;
 
 /**
- * File producing factory
+ * View producing factory
  *
  * @category    Phrozn
- * @package     Phrozn\Site
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class FileFactory 
-    implements Has\Source
+class Factory 
+    implements Has\InputFile
 {
     /**
-     * File\Twig is default page type
+     * Site\View\Html is default page type
      */
-    const DEFAULT_PAGE_TYPE = 'twig';
+    const DEFAULT_VIEW_TYPE = 'html';
 
     /**
      * Path to input file
      * @var string
      */
-    private $sourcePath;
+    private $inputFile;
 
     /**
      * Initialize factory by providing input file path
@@ -56,17 +55,17 @@ class FileFactory
      */
     public function __construct($path = null)
     {
-        $this->setSourcePath($path);
+        $this->setInputFile($path);
     }
 
     /**
-     * Depending on internal configuration and concrete type, create page
+     * Depending on internal configuration and concrete type, create view
      *
-     * return \Phrozn\Site\File
+     * return \Phrozn\Site\View\Factory
      */
     public function create()
     {
-        $ext = pathinfo($this->getSourcePath(), PATHINFO_EXTENSION);
+        $ext = pathinfo($this->getInputFile(), PATHINFO_EXTENSION);
 
         $type = $ext ? : self::DEFAULT_PAGE_TYPE;
 
@@ -74,49 +73,49 @@ class FileFactory
     }
 
     /**
-     * Set page input file path
+     * Set input file path
      *
-     * @param string $path Path to source file
+     * @param string $path Path to file
      *
-     * @return \Phrozn\Site\File
+     * @return \Phrozn\Site\View\Factory
      */
-    public function setSourcePath($path)
+    public function setInputFile($path)
     {
         if (null !== $path) {
             if (!is_readable($path)) {
-                throw new \Exception("File source file cannot be read: {$path}");
+                throw new \Exception("View source file cannot be read: {$path}");
             }
-            $this->sourcePath = $path;
+            $this->inputFile = $path;
         }
 
         return $this;
     }
 
     /**
-     * Get page input file path
+     * Get input file path
      *
      * @return string
      */
-    public function getSourcePath()
+    public function getInputFile()
     {
-        return $this->sourcePath;
+        return $this->inputFile;
     }
 
     /**
-     * Create and return page of a given type
+     * Create and return view of a given type
      *
      * @param string $type File type to load
      *
-     * @return \Phrozn\Site\File
+     * @return \Phrozn\Site\View
      */
     private function constructFile($type)
     {
-        $class = 'Phrozn\\Site\\File\\' . ucfirst($type);
+        $class = 'Phrozn\\Site\\View\\' . ucfirst($type);
         if (!class_exists($class)) {
-            throw new \Exception("File of type '{$type}' not found..");
+            throw new \Exception("View of type '{$type}' not found..");
         }
         $object = new $class;
-        $object->setSourcePath($this->getSourcePath());
+        $object->setInputFile($this->getInputFile());
         return $object;
     }
 }

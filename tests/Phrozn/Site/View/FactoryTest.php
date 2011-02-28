@@ -15,22 +15,22 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace PhroznTest\Site;
-use Phrozn\Site\FileFactory as Factory,
-    Phrozn\File;
+namespace PhroznTest\Site\View;
+use Phrozn\Site\View\Factory as Factory,
+    Phrozn\Site\View;
 
 /**
  * @category    Phrozn
- * @package     Phrozn\Site
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class FileFactoryTest 
+class FactoryTest 
     extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -38,44 +38,42 @@ class FileFactoryTest
 
     public function testImplicitHtmlFileCreation()
     {
-        $path = dirname(__FILE__) . '/project/_phrozn/entries/';
+        $path = dirname(__FILE__) . '/entries/';
         $input = $path . '2011-02-24-factory-test.twig';
         $output = realpath($path . '/../site');
         $factory = new Factory();
-        $page = $factory
-                    ->setSourcePath($input)
+        $view = $factory
+                    ->setInputFile($input)
                     ->create();
 
-        $page->setDestinationPath($output);
-
-        $this->assertInstanceOf('\Phrozn\Site\File\Twig', $page);
+        $this->assertInstanceOf('\Phrozn\Site\View\Twig', $view);
     }
 
     public function testSourceFileCanNotBeRead()
     {
-        $path = dirname(__FILE__) . '/project/_phrozn/entries/';
+        $path = dirname(__FILE__) . '/entries/';
         $input = $path . 'not-found.twig';
 
         $this->setExpectedException('Exception',
-            "File source file cannot be read: {$input}");
+            "View source file cannot be read: {$input}");
 
         $factory = new Factory();
-        $page = $factory
-                    ->setSourcePath($input)
+        $view = $factory
+                    ->setInputFile($input)
                     ->create();
     }
 
     public function testWrongFileType()
     {
         $this->setExpectedException('Exception',
-           "File of type 'wrong' not found");
+           "View of type 'wrong' not found");
 
-        $path = dirname(__FILE__) . '/project/_phrozn/entries/';
+        $path = dirname(__FILE__) . '/entries/';
         $input = $path . '2011-02-24-wrong-file-type.wrong';
 
         $factory = new Factory();
-        $page = $factory
-                    ->setSourcePath($input)
+        $view = $factory
+                    ->setInputFile($input)
                     ->create();
     }
 
