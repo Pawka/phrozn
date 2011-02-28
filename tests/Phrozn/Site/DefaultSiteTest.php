@@ -79,26 +79,19 @@ class DefaultSiteTest
         $outputter = new TestOutputter($this);
 
         $this->assertFalse(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertFalse(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertFalse(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
         $site
             ->setOutputter($outputter)
             ->compile();
         $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertTrue(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
 
-        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: File of type 'wrong' not found..");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: View of type 'wrong' not found..");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
-        $outputter->assertInLogs("2011-02-24-factory-test.twig parsed");
 
         $parsed = file_get_contents($path .  'site/2011-02-24-default-site.html');
         $loaded = file_get_contents($path .  'test/2011-02-24-default-site.html');
-        $this->assertSame($loaded, $parsed);
-
-        $parsed = file_get_contents($path .  'site/2011-02-24-factory-test.html');
-        $loaded = file_get_contents($path .  'test/2011-02-24-factory-test.html');
         $this->assertSame($loaded, $parsed);
 
         $parsed = file_get_contents($path .  'site/2011-02-21-phrozn-generated-first-page-today.html');
@@ -113,26 +106,19 @@ class DefaultSiteTest
         $outputter = new TestOutputter($this);
 
         $this->assertFalse(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertFalse(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertFalse(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
         $site
             ->setOutputter($outputter)
             ->compile();
         $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertTrue(is_readable($path . 'site/2011-02-24-factory-test.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
 
-        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: File of type 'wrong' not found..");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong: View of type 'wrong' not found..");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
-        $outputter->assertInLogs("2011-02-24-factory-test.twig parsed");
 
         $parsed = file_get_contents($path .  'site/2011-02-24-default-site.html');
         $loaded = file_get_contents($path .  'test/2011-02-24-default-site.html');
-        $this->assertSame($loaded, $parsed);
-
-        $parsed = file_get_contents($path .  'site/2011-02-24-factory-test.html');
-        $loaded = file_get_contents($path .  'test/2011-02-24-factory-test.html');
         $this->assertSame($loaded, $parsed);
 
         $parsed = file_get_contents($path .  'site/2011-02-21-phrozn-generated-first-page-today.html');

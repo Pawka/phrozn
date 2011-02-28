@@ -240,7 +240,7 @@ abstract class Base
     protected function applyLayout($content, $vars)
     {
         $layoutName = isset($vars['this']['layout']) 
-                    ? $vars['this']['layout'] : Layout::DEFAULT_LAYOUT_SCRIPT;
+                    ? $vars['this']['layout'] : Factory::DEFAULT_LAYOUT_SCRIPT;
         $layoutPath = realpath(dirname($this->getInputFile()) . '/../layouts/' . $layoutName);
         $factory = new Factory($layoutPath);
         $layout = $factory->create(); // essentially layout is Site\View as well

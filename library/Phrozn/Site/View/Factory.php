@@ -41,6 +41,11 @@ class Factory
     const DEFAULT_VIEW_TYPE = 'html';
 
     /**
+     * By default assume default.twig as layout input file
+     */
+    const DEFAULT_LAYOUT_SCRIPT = 'default.twig';
+
+    /**
      * Path to input file
      * @var string
      */
@@ -67,7 +72,7 @@ class Factory
     {
         $ext = pathinfo($this->getInputFile(), PATHINFO_EXTENSION);
 
-        $type = $ext ? : self::DEFAULT_PAGE_TYPE;
+        $type = $ext ? : self::DEFAULT_VIEW_TYPE;
 
         return $this->constructFile($type);
     }

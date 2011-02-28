@@ -33,8 +33,8 @@ use Phrozn\Has;
  */
 interface Site 
     extends 
-        Has\Source, 
-        Has\Destination, 
+        Has\InputDir, 
+        Has\OutputDir, 
         Has\Outputter
 {
     /**

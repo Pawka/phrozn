@@ -22,7 +22,7 @@
  */
 
 namespace Phrozn\Site;
-use Phrozn\Site\File,
+use Phrozn\Site\View,
     Phrozn\Outputter\DefaultOutputter as Outputter,
     Symfony\Component\Yaml\Yaml;
 
@@ -33,26 +33,27 @@ use Phrozn\Site\File,
  * @package     Phrozn\Site
  * @author      Victor Farazdagi
  */
-abstract class BaseSite 
+abstract class Base
     implements \Phrozn\Site
 {
     /**
-     * List of pages to process
+     * List of views to process
      * @var array
      */
-    private $pages = array();
+    private $views = array();
 
     /**
-     * Path with Phrozn project
+     * Input directory path. 
+     * Generally is a path with Phrozn project or Phrozn project directory itself.
      * @var string
      */
-    private $sourcePath;
+    private $inputDir;
 
     /**
-     * Site output path
+     * Site output directory path
      * @var string
      */
-    private $destinationPath;
+    private $outputDir;
 
     /**
      * Phrozn outputter
@@ -69,72 +70,72 @@ abstract class BaseSite
     /**
      * Initialize site object
      *
-     * @param string $sourcePath Path to source file
-     * @param string $destinationPath Path to destination file
+     * @param string $inputDir Input directory path
+     * @param string $outputDir Output directory path
      *
      * @return void
      */
-    public function __construct($sourcePath = null, $destinationPath = null)
+    public function __construct($inputDir = null, $outputDir = null)
     {
         $this
-            ->setSourcePath($sourcePath)
-            ->setDestinationPath($destinationPath);
+            ->setInputDir($inputDir)
+            ->setOutputDir($outputDir);
     }
 
     /**
-     * Set path of source Phrozn project to compile
+     * Set input directory path
      *
-     * @param string $path Phrozn source path
+     * @param string $path Directory path
      *
      * @return \Phrozn\Site
      */
-    public function setSourcePath($path)
+    public function setInputDir($path)
     {
-        $this->sourcePath = $path;
+        $this->inputDir = $path;
         return $this;
     }
 
     /**
-     * Get path of source Phrozn project
+     * Get input directory path
      *
      * @return string
      */
-    public function getSourcePath() 
+    public function getInputDir()
     {
-        return $this->sourcePath;
+        return $this->inputDir;
     }
 
     /**
-     * Set where to compile site into
+     * Set output directory path
      *
-     * @param string $path Destination/output path
+     * @param string $path Directory path
      *
      * @return \Phrozn\Site
      */
-    public function setDestinationPath($path)
+    public function setOutputDir($path)
     {
-        $this->destinationPath = $path;
+        $this->outputDir = $path;
         return $this;
     }
 
     /**
-     * Get site output path
+     * Get output directory path
      *
      * @return string
      */
-    public function getDestinationPath()
+    public function getOutputDir()
     {
-        return $this->destinationPath;
+        return $this->outputDir;
     }
 
     /**
-     * Create list of pages to be created
+     * Create list of views to be created
      *
      * @return \Phrozn\Site
      */
     protected function buildQueue()
     {
-        $basePath = rtrim($this->getSourcePath(), '/');
+        $basePath = rtrim($this->getInputDir(), '/');
         if (is_dir($basePath . '/_phrozn')) {
             $basePath .= '/_phrozn/';
         } 
@@ -146,9 +147,9 @@ abstract class BaseSite
         $config = $this->parseConfig();
 
         if (isset($config['site']['output'])) {
-            $destinationPath = $config['site']['output'];
+            $outputDir = $config['site']['output'];
         } else {
-            $destinationPath = $this->getDestinationPath();
+            $outputDir = $this->getOutputDir();
         }
 
         $folders = array(
@@ -161,10 +162,10 @@ abstract class BaseSite
                 $baseName = $item->getBaseName();
                 if ($item->isFile()) {
                     try {
-                        $factory = new FileFactory($item->getRealPath());
-                        $page = $factory->create();
-                        $page->setDestinationPath($destinationPath);
-                        $this->pages[] = $page;
+                        $factory = new View\Factory($item->getRealPath());
+                        $view = $factory->create();
+                        $view->setOutputDir($outputDir);
+                        $this->views[] = $view;
                     } catch (\Exception $e) {
                         $this->getOutputter()
                                 ->stderr($item->getBaseName() . ': ' . $e->getMessage());
@@ -177,13 +178,13 @@ abstract class BaseSite
     }
 
     /**
-     * Return list of queued pages
+     * Return list of queued views ready to be processed
      *
      * @return array 
      */
     public function getQueue()
     {
-        return $this->pages;
+        return $this->views;
     }
 
     /**
@@ -191,7 +192,7 @@ abstract class BaseSite
      *
      * @param \Phrozn\Outputter $outputter Outputter instance
      *
-     * @return \Phrozn\Has\Outputter
+     * @return \Phrozn\Site
      */
     public function setOutputter($outputter)
     {
@@ -207,7 +208,7 @@ abstract class BaseSite
     public function getOutputter()
     {
         if (null === $this->outputter) {
-            $this->outputter = new Outputter();
+            $this->outputter = new Outputter;
         }
         return $this->outputter;
     }
@@ -220,7 +221,7 @@ abstract class BaseSite
     protected function parseConfig()
     {
         if (null === $this->siteConfig) {
-            $configFile = realpath($this->getSourcePath() . '/config.yml');
+            $configFile = realpath($this->getInputDir() . '/config.yml');
             $this->siteConfig = Yaml::load($configFile);
         }
         return $this->siteConfig;

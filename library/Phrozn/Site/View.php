@@ -40,6 +40,7 @@ interface View
         Has\OutputDir, 
         Has\Processors
 {
+
     /**
      * Render and save static version of a concrete view
      *

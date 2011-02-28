@@ -22,7 +22,7 @@
  */
 
 namespace Phrozn\Site;
-use Phrozn\Site\File;
+use Phrozn\Site\View;
 
 /**
  * Default implementation of Phrozn Site 
@@ -32,7 +32,7 @@ use Phrozn\Site\File;
  * @author      Victor Farazdagi
  */
 class DefaultSite 
-    extends BaseSite
+    extends Base
     implements \Phrozn\Site
 {
     /**
@@ -59,14 +59,14 @@ class DefaultSite
 
         foreach ($this->getQueue() as $page) {
             try {
-                $destinationDir = dirname($page->getDestinationPath());
+                $destinationDir = dirname($page->getOutputFile());
                 if (!is_dir($destinationDir)) {
                     mkdir($destinationDir);
                 }
                 $page->compile($vars);
                 $this->getOutputter()
-                    ->stdout('%b' . $page->getName() . '%n parsed')
-                    ->stdout('%b' . str_replace(getcwd(), '.', $page->getDestinationPath()) . '%n written');
+                    ->stdout('%b' . str_replace(getcwd(), '.', $page->getInputFile()) . '%n parsed')
+                    ->stdout('%b' . str_replace(getcwd(), '.', $page->getOutputFile()) . '%n written');
             } catch (\Exception $e) {
                 $this->getOutputter()
                      ->stderr($page->getName() . ': ' . $e->getMessage());
