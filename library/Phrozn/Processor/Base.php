@@ -24,13 +24,13 @@
 namespace Phrozn\Processor;
 
 /**
- * Base implementation of templates processor
+ * Base implementation of text processor
  *
  * @category    Phrozn
  * @package     Phrozn\Processor
  * @author      Victor Farazdagi
  */
-abstract class BaseProcessor
+abstract class Base
     implements \Phrozn\Processor 
 {
     /**

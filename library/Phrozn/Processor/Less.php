@@ -31,7 +31,7 @@ namespace Phrozn\Processor;
  * @author      Victor Farazdagi
  */
 class Less
-    extends BaseProcessor
+    extends Base
     implements \Phrozn\Processor 
 {
     /**
