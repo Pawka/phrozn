@@ -33,7 +33,7 @@ namespace Phrozn\Has;
 interface Processor
 {
     /**
-     * Set markup processor
+     * Set text processor
      *
      * @param \Phrozn\Processor
      *
@@ -42,7 +42,7 @@ interface Processor
     public function setProcessor($processor);
 
     /**
-     * Get markup processor
+     * Get text processor
      *
      * @return \Phrozn\Processor
      */
