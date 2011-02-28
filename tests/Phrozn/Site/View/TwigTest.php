@@ -15,18 +15,18 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site\File
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace PhroznTest\Site\File;
-use Phrozn\Site\File\Twig as File;
+namespace PhroznTest\Site\View;
+use Phrozn\Site\View\Twig as View;
 
 /**
  * @category    Phrozn
- * @package     Phrozn\Site\File
+ * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
 class TwigTest 
@@ -35,43 +35,44 @@ class TwigTest
     public function setUp()
     {}
 
-    public function testFileCreation()
+    public function testViewCreation()
     {
         $in = dirname(__FILE__) . '/entries/2011-02-24-create.twig';
         $out = dirname(__FILE__) . '/out';
-        $page = new File($in , $out);
+        $view = new View($in , $out);
 
-        $this->assertInstanceOf('\Phrozn\Site\File\Twig', $page);
+        $this->assertInstanceOf('\Phrozn\Site\View\Twig', $view);
     }
 
-    public function testFileRendering()
+    public function testViewRendering()
     {
         $twig = dirname(__FILE__) . '/entries/2011-02-24-render.twig';
         $html = dirname(__FILE__) . '/entries/2011-02-24-render.html';
-        $page = new File($twig);
+        $view = new View($twig);
 
         $vars = array('the_answer' => 42);
-        $rendered = $page->render($vars);
+        $rendered = $view->render($vars);
 
         $loaded = file_get_contents($html);
 
         $this->assertSame(trim($loaded), trim($rendered));
     }
 
-    public function testFileCompiling()
+    public function testViewCompiling()
     {
         $twig = dirname(__FILE__) . '/entries/2011-02-24-compile.twig';
         $html = dirname(__FILE__) . '/entries/2011-02-24-compile.html';
         $path = dirname(__FILE__) . '/out/'; 
-        $page = new File($twig, $path);
+        $view = new View($twig, $path);
 
-        $this->assertSame('2011-02-24-compile.twig', $page->getName());
+        $this->assertSame('2011-02-24-compile.twig', basename($view->getInputFile()));
+        $this->assertSame('2011-02-24-compile.html', basename($view->getOutputFile()));
 
         @unlink($path . '2011-02-24-compile.html');
         $this->assertFalse(is_readable($path . '2011-02-24-compile.html'));
 
         $vars = array('the_answer' => 42);
-        $rendered = $page->compile($vars);
+        $rendered = $view->compile($vars);
 
         $this->assertTrue(is_readable($path . '2011-02-24-compile.html'));
 
@@ -90,10 +91,10 @@ class TwigTest
     {
         $twig = dirname(__FILE__) . '/entries/2011-02-24-no-front-matter.twig';
         $html = dirname(__FILE__) . '/entries/2011-02-24-no-front-matter.html';
-        $page = new File($twig);
+        $view = new View($twig);
 
         $vars = array('the_answer' => 42);
-        $rendered = $page->render($vars);
+        $rendered = $view->render($vars);
 
         $loaded = file_get_contents($html);
 
@@ -102,10 +103,10 @@ class TwigTest
 
     public function testNoSourcePathSpecified()
     {
-        $this->setExpectedException('Exception', "Source file not specified");
-        $page = new File();
+        $this->setExpectedException('Exception', "View input file not specified");
+        $view = new View();
 
-        $rendered = $page->render(array());
+        $rendered = $view->render(array());
 
     }
 
