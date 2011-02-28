@@ -24,27 +24,27 @@
 namespace Phrozn\Has;
 
 /**
- * Contract defining entity which has destination path
+ * Entity has input dir property
  *
  * @category    Phrozn
  * @package     Phrozn\Has
  * @author      Victor Farazdagi
  */
-interface Destination 
+interface InputDir 
 {
     /**
-     * Set where to compile site into
+     * Set input directory path
      *
-     * @param string $path Destination/output path
+     * @param string $path Directory path
      *
-     * @return \Phrozn\Has\Destination
+     * @return \Phrozn\Has\InputDir
      */
-    public function setDestinationPath($path);
+    public function setInputDir($path);
 
     /**
-     * Get site output path
+     * Get input directory path
      *
      * @return string
      */
-    public function getDestinationPath();
+    public function getInputDir();
 }

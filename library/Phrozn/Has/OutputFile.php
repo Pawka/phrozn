@@ -24,27 +24,27 @@
 namespace Phrozn\Has;
 
 /**
- * Contract defining entity which has source path
+ * Entity has output file property
  *
  * @category    Phrozn
  * @package     Phrozn\Has
  * @author      Victor Farazdagi
  */
-interface Source
+interface OutputFile 
 {
     /**
-     * Set page input file path
+     * Set output file path
      *
-     * @param string $file Path to source file
+     * @param string $path File path
      *
-     * @return \Phrozn\Has\Source
+     * @return \Phrozn\Has\OutputFile
      */
-    public function setSourcePath($path);
+    public function setOutputFile($path);
 
     /**
-     * Get page input file path
+     * Get output file path
      *
      * @return string
      */
-    public function getSourcePath();
+    public function getOutputFile();
 }
