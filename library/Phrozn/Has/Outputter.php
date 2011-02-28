@@ -24,7 +24,7 @@
 namespace Phrozn\Has;
 
 /**
- * Contract defining entity which has some instance of Phrozn outputter
+ * Entity has outputter propety
  *
  * @category    Phrozn
  * @package     Phrozn\Has

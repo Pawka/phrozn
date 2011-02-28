@@ -24,7 +24,7 @@
 namespace Phrozn\Has;
 
 /**
- * Contract defining entity which has front matter property
+ * Entity has front matter property
  *
  * @category    Phrozn
  * @package     Phrozn\Has
@@ -33,7 +33,7 @@ namespace Phrozn\Has;
 interface FrontMatter 
 {
     /**
-     * Set page front matter
+     * Set front matter
      *
      * @param array $frontMatter Array of options
      *

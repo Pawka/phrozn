@@ -24,7 +24,7 @@
 namespace Phrozn\Has;
 
 /**
- * Contract defining entity which has markup processer property
+ * Entity has text processor property
  *
  * @category    Phrozn
  * @package     Phrozn\Has
