@@ -45,18 +45,20 @@ class DefaultSite
     {
         $this
             ->buildQueue()
-            ->processQueue();
+            ->processQueue()
+            ->processMedia();
     }
 
     /**
      * Process view by view compilation
      *
-     * @return \Phrozn\Sitee
+     * @return \Phrozn\Site
      */
     private function processQueue()
     {
         $vars = array();
 
+        // render textual (markup, css, templates) files 
         foreach ($this->getQueue() as $view) {
             $inputFile = str_replace(getcwd(), '.', $view->getInputFile());
             $outputFile = str_replace(getcwd(), '.', $view->getOutputFile());
@@ -74,6 +76,55 @@ class DefaultSite
                      ->stderr($inputFile . ': ' . $e->getMessage());
             }
         }
+
         return $this;
+    }
+
+    /**
+     * Media files are just copied over w/o any additional processing
+     *
+     * @return \Phrozn\Site
+     */
+    private function processMedia()
+    {
+        $projectDir = $this->getProjectDir();
+        $outputDir = $this->getOutputDir();
+
+        $dir = new \RecursiveDirectoryIterator($projectDir . '/media');
+        $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
+        foreach ($it as $item) {
+            $baseName = $item->getBaseName();
+            if ($item->isFile()) {
+                $inputFile = $item->getRealPath(); 
+
+                $outputFile = '/media/' . basename($inputFile);
+                // find relative path, wrt to media
+                $pos = strpos($inputFile, '/media');
+                if ($pos !== false) {
+                    $outputFile = substr($inputFile, $pos);
+                }
+                $outputFile = $outputDir . $outputFile;
+
+                // copy media file
+                try {
+                    $destinationDir = dirname($outputFile);
+                    if (!is_dir($destinationDir)) {
+                        mkdir($destinationDir, 0777, true);
+                    }
+                    if (!copy($inputFile, $outputFile)) {
+                        throw new \Exception(sprintf('Failed transfering "%s" from media folder', $inputFile));
+                    }
+                    $inputFile = str_replace(getcwd(), '.', $inputFile);
+                    $outputFile = str_replace(getcwd(), '.', $outputFile);
+                    $this->getOutputter()
+                         //->stdout('%b' . $inputFile . '%n copied')
+                         ->stdout('%b' . $outputFile . '%n copied');
+                } catch (\Exception $e) {
+                    $this->getOutputter()
+                         ->stderr($inputFile . ': ' . $e->getMessage());
+                }
+            }
+        }
+
     }
 }

@@ -125,56 +125,12 @@ abstract class Base
      */
     public function getOutputDir()
     {
-        return $this->outputDir;
-    }
-
-    /**
-     * Create list of views to be created
-     *
-     * @return \Phrozn\Site
-     */
-    protected function buildQueue()
-    {
-        $basePath = rtrim($this->getInputDir(), '/');
-        if (is_dir($basePath . '/_phrozn')) {
-            $basePath .= '/_phrozn/';
-        } 
-
-        if (!is_dir($basePath . '/entries')) {
-            throw new \Exception('Entries folder not found');
-        }
-
+        // override output directory using site config file
         $config = $this->parseConfig();
-
         if (isset($config['site']['output'])) {
-            $outputDir = $config['site']['output'];
-        } else {
-            $outputDir = $this->getOutputDir();
+            $this->setOutputDir($config['site']['output']);
         }
-
-        $folders = array(
-            'entries', 'styles', 'scripts'
-        );
-        foreach ($folders as $folder) {
-            $dir = new \RecursiveDirectoryIterator($basePath . '/' . $folder);
-            $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
-            foreach ($it as $item) {
-                $baseName = $item->getBaseName();
-                if ($item->isFile()) {
-                    try {
-                        $factory = new View\Factory($item->getRealPath());
-                        $view = $factory->create();
-                        $view->setOutputDir($outputDir);
-                        $this->views[] = $view;
-                    } catch (\Exception $e) {
-                        $this->getOutputter()
-                                ->stderr(str_replace($basePath, '', $item->getRealPath()) . ': ' . $e->getMessage());
-                    }
-                }
-            }
-        }
-
-        return $this;
+        return $this->outputDir;
     }
 
     /**
@@ -212,6 +168,62 @@ abstract class Base
         }
         return $this->outputter;
     }
+
+    /**
+     * Create list of views to be created
+     *
+     * @return \Phrozn\Site
+     */
+    protected function buildQueue()
+    {
+        // guess the base path with Phrozn project
+        $projectDir = $this->getProjectDir();
+        $outputDir = $this->getOutputDir();
+
+        $folders = array(
+            'entries', 'styles', 'scripts'
+        );
+        foreach ($folders as $folder) {
+            $dir = new \RecursiveDirectoryIterator($projectDir . '/' . $folder);
+            $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($it as $item) {
+                $baseName = $item->getBaseName();
+                if ($item->isFile()) {
+                    try {
+                        $factory = new View\Factory($item->getRealPath());
+                        $view = $factory->create();
+                        $view->setOutputDir($outputDir);
+                        $this->views[] = $view;
+                    } catch (\Exception $e) {
+                        $this->getOutputter()
+                             ->stderr(str_replace($projectDir, '', $item->getRealPath()) . ': ' . $e->getMessage());
+                    }
+                }
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Guess directory with Phrozn project using input directory
+     *
+     * @return string
+     */
+    protected function getProjectDir()
+    {
+        $dir = rtrim($this->getInputDir(), '/');
+        if (is_dir($dir . '/_phrozn')) {
+            $dir .= '/_phrozn/';
+        } 
+
+        // see if we have entries folder present
+        if (!is_dir($dir . '/entries')) {
+            throw new \Exception('Entries folder not found');
+        }
+        return $dir;
+    }
+
 
     /**
      * Load site config
