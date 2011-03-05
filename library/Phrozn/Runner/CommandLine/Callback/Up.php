@@ -94,10 +94,17 @@ class Up
         $in = $this->extractPath('in');
         $out = $this->extractPath('in');
 
-        return array(
-            $in . '/_phrozn/', 
-            $out . '/_phrozn/site'
-        );
+        if (strpos($in, '_phrozn') === false) {
+            return array(
+                $in . '/_phrozn/', 
+                $out . '/_phrozn/site'
+            );
+        } else {
+            return array(
+                $in . '/', 
+                $out . '/site'
+            );
+        }
     }
 
     private function extractPath($type)
