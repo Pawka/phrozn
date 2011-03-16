@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<f xmlns="http://pear.php.net/dtd/rest.categorypackageinfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://pear.php.net/dtd/rest.categorypackageinfo     http://pear.php.net/dtd/rest.categorypackageinfo.xsd">
+    <pi>
+        <p>
+            <n>Phrozn</n>
+            <c>pear.phrozn.info</c>
+            <ca xlink:href="/rest/c/Default">Default</ca>
+            <l>Apache License, Version 2.0</l>
+            <s>Static web-site generator in PHP.</s>
+            <d>Phrozn is static web-site generator written in PHP.</d>
+            <r xlink:href="/rest/r/phrozn" />
+        </p>
+
+        <a>
+            <r>
+                <v>0.1.0</v>
+                <s>beta</s>
+            </r>
+
+        </a>
+
+        <deps>
+            <v>0.1.0</v>
+            <d>a:1:{s:8:"required";a:3:{s:3:"php";a:2:{s:3:"min";s:3:"5.3";s:3:"max";s:5:"6.0.0";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}s:2:"os";a:2:{s:4:"name";s:7:"windows";s:9:"conflicts";s:0:"";}}}</d>
+        </deps>
+
+    </pi>
+</f>

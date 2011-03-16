@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Phrozn</name>
+ <channel>pear.phrozn.info</channel>
+ <summary>Static web-site generator in PHP.</summary>
+ <description>Phrozn is static web-site generator written in PHP.</description>
+ <lead>
+  <name>Victor Farazdagi</name>
+  <user>victor</user>
+  <email>simple.square@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-03-16</date>
+ <time>19:47:17</time>
+ <version>
+  <release>0.1.0</release>
+  <api>0.1.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</license>
+ <notes>
+* The first public release of Phrozn
+ </notes>
+ <contents>
+  <dir name="/">
+   <file md5sum="ea57fee3343c8a63dd04d10eabe3683f" name="tests/bootstrap.php" role="test" />
+   <file md5sum="d41d8cd98f00b204e9800998ecf8427e" name="LICENSE" role="doc" />
+   <file md5sum="0461d40e6145a484468357d4f0068760" name="README.textile" role="doc" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3</min>
+    <max>6.0.0</max>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+   <os>
+    <name>windows</name>
+    <conflicts />
+   </os>
+  </required>
+ </dependencies>
+ <phprelease />
+</package>

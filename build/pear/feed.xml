@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="http://pear.phrozn.info">
+    <title>Phrozn Project: PEAR channel Latest Releases</title>
+    <link href="http://pear.phrozn.info" />
+    <author>
+        <name>http://pear.phrozn.info</name>
+    </author>
+
+    <entry>
+        <title>Phrozn 0.1.0 (beta)</title>
+        <link href="http://pear.phrozn.info/get/Phrozn-0.1.0.tgz" />
+        <id>Phrozn-0.1.0</id>
+        <author>
+            <name>victor</name>
+        </author>
+        <updated>2011-03-16T19:47:17+03:00</updated>
+        <content>
+            Phrozn is static web-site generator written in PHP.
+        </content>
+    </entry>
+</feed>
