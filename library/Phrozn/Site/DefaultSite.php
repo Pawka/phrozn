@@ -105,7 +105,7 @@ class DefaultSite
                 }
                 $outputFile = $outputDir . $outputFile;
 
-                // copy media file
+                // copy media files
                 try {
                     $destinationDir = dirname($outputFile);
                     if (!is_dir($destinationDir)) {
@@ -117,7 +117,6 @@ class DefaultSite
                     $inputFile = str_replace(getcwd(), '.', $inputFile);
                     $outputFile = str_replace(getcwd(), '.', $outputFile);
                     $this->getOutputter()
-                         //->stdout('%b' . $inputFile . '%n copied')
                          ->stdout('%b' . $outputFile . '%n copied');
                 } catch (\Exception $e) {
                     $this->getOutputter()
