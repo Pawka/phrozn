@@ -74,4 +74,45 @@ abstract class Base
     {
         return $this->view;
     }
+
+    /**
+     * Extract input file from view (remove extension)
+     *
+     * @return string
+     */
+    protected function getInputFileWithoutExt()
+    {
+        // get rid of extension
+        $inputFile = $this->getView()->getInputFile();
+        $pos = strrpos($inputFile, '.');
+        if (false !== $pos) {
+            $inputFile = substr($inputFile, 0, $pos); 
+        }
+
+        return $inputFile;
+    }
+
+    /**
+     * Detect relative file path with respect to $base folder
+     *
+     * @param string $base Base folder name from which to start
+     * @param boolean $prepend Whether to prepend base folder name to result
+     *
+     * @return string
+     */
+    protected function getRelativeFile($base, $prepend = true)
+    {
+        // find file path w/o extension
+        $inputFile = $this->getInputFileWithoutExt();
+
+        // find relative path, wrt to scripts
+        $pos = strpos($inputFile, '/' . $base);
+        if ($pos !== false) {
+            $inputFile = substr($inputFile, $pos + ($prepend ? 0 : 1 + strlen($base)));
+        } else {
+            $inputFile = ($prepend ? '/' . $base : ''). '/' . basename($inputFile);
+        }
+
+        return $inputFile;
+    }
 }
