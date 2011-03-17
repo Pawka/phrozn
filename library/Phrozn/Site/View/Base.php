@@ -72,6 +72,18 @@ abstract class Base
     private $hasLayout = true;
 
     /**
+     * Cache object for extracted template
+     * @var string
+     */
+    private $extractedTemplate;
+
+    /**
+     * Cache object for extracted FM
+     * @var array
+     */
+    private $extractedFrontMatter;
+
+    /**
      * Initialize page
      *
      * @param string $inputFile Path to page source file
@@ -276,6 +288,10 @@ abstract class Base
      */
     protected function extractTemplate()
     {
+        if (null !== $this->extractedTemplate) {
+            return $this->extractedTemplate;
+        }
+
         $source = $this->readSourceFile();
 
         $pos = strpos($source, '---');
@@ -293,6 +309,10 @@ abstract class Base
      */
     protected function extractFrontMatter()
     {
+        if (null !== $this->extractedFrontMatter) {
+            return $this->extractedFrontMatter;
+        }
+
         $source = $this->readSourceFile();
 
         $pos = strpos($source, '---');
