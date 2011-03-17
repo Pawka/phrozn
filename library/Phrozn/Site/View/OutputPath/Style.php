@@ -41,20 +41,7 @@ class Style
      */
     public function get()
     {
-        // get rid of extension
-        $inputFile = $this->getView()->getInputFile();
-        $pos = strrpos($inputFile, '.');
-        if (false !== $pos) {
-            $inputFile = substr($inputFile, 0, $pos); 
-        }
-
-        // find relative path, wrt to styles
-        $pos = strpos($inputFile, '/styles');
-        if ($pos !== false) {
-            $inputFile = substr($inputFile, $pos);
-        } else {
-            $inputFile = '/styles/' . basename($inputFile);
-        }
-        return $this->getView()->getOutputDir() . $inputFile . '.css';
+        return $this->getView()->getOutputDir() 
+             . $this->getRelativeFile('styles') . '.css';
     }
 }

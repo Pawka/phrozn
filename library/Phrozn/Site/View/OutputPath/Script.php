@@ -41,20 +41,7 @@ class Script
      */
     public function get()
     {
-        // get rid of extension
-        $inputFile = $this->getView()->getInputFile();
-        $pos = strrpos($inputFile, '.');
-        if (false !== $pos) {
-            $inputFile = substr($inputFile, 0, $pos); 
-        }
-
-        // find relative path, wrt to scripts
-        $pos = strpos($inputFile, '/scripts');
-        if ($pos !== false) {
-            $inputFile = substr($inputFile, $pos);
-        } else {
-            $inputFile = '/scripts/' . basename($inputFile);
-        }
-        return $this->getView()->getOutputDir() . $inputFile . '.js';
+        return $this->getView()->getOutputDir() 
+             . $this->getRelativeFile('scripts') . '.js';
     }
 }
