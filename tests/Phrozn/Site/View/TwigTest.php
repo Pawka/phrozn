@@ -87,6 +87,68 @@ class TwigTest
         unlink($path . '2011-02-24-compile.html');
     }
 
+    /**
+     * @group cur
+     */
+    public function testViewCompilingPermalinkSetParametrizedIndexAdded()
+    {
+        $twig = dirname(__FILE__) . '/entries/compile-permalink-append-index.twig';
+        $html = dirname(__FILE__) . '/entries/compile-permalink.html';
+        $path = dirname(__FILE__) . '/out/'; 
+        $view = new View($twig, $path);
+
+        $this->assertSame('compile-permalink-append-index.twig', basename($view->getInputFile()));
+        $this->assertSame('index.html', basename($view->getOutputFile()));
+
+        @unlink($path . '/2011/03/17/testing-permalink-generation/index.html');
+        $this->assertFalse(is_readable($path . '/2011/03/17/testing-permalink-generation/index.html'));
+
+        $vars = array('the_answer' => 42);
+        $rendered = $view->compile($vars);
+
+        $this->assertTrue(is_readable($path . '/2011/03/17/testing-permalink-generation/index.html'));
+
+        $loaded = file_get_contents($html);
+        $this->assertSame(trim($loaded), trim($rendered));
+
+        // load from out
+        $loaded = file_get_contents($path . '/2011/03/17/testing-permalink-generation/index.html');
+        $this->assertSame(trim($loaded), trim($rendered));
+
+        // cleanup
+        @unlink($path . '/2011/03/17/testing-permalink-generation/index.html');
+    }
+
+    public function testViewCompilingPermalinkSetParametrized()
+    {
+        $twig = dirname(__FILE__) . '/entries/compile-permalink-parametrized.twig';
+        $html = dirname(__FILE__) . '/entries/compile-permalink.html';
+        $path = dirname(__FILE__) . '/out/'; 
+        $view = new View($twig, $path);
+
+        $this->assertSame('compile-permalink-parametrized.twig', basename($view->getInputFile()));
+        $this->assertSame('testing-permalink-generation.html', basename($view->getOutputFile()));
+
+        @unlink($path . '/2011/03/17/testing-permalink-generation.html');
+        $this->assertFalse(is_readable($path . '/2011/03/17/testing-permalink-generation.html'));
+
+        $vars = array('the_answer' => 42);
+        $rendered = $view->compile($vars);
+
+        $this->assertTrue(is_readable($path . '/2011/03/17/testing-permalink-generation.html'));
+
+        $loaded = file_get_contents($html);
+        $this->assertSame(trim($loaded), trim($rendered));
+
+        // load from out
+        $loaded = file_get_contents($path . '/2011/03/17/testing-permalink-generation.html');
+        $this->assertSame(trim($loaded), trim($rendered));
+
+        // cleanup
+        @unlink($path . '/2011/03/17/testing-permalink-generation.html');
+    }
+
+
     public function testNoFrontMatter()
     {
         $twig = dirname(__FILE__) . '/entries/2011-02-24-no-front-matter.twig';

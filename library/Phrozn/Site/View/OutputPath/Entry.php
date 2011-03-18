@@ -41,20 +41,19 @@ class Entry
      */
     public function get()
     {
-        // get rid of extension
-        $inputFile = $this->getView()->getInputFile();
-        $pos = strrpos($inputFile, '.');
-        if (false !== $pos) {
-            $inputFile = substr($inputFile, 0, $pos); 
+        $permalink = $this->getView()->getParam('permalink', null);
+
+        if ($permalink === null) {
+            return $this->getView()->getOutputDir() 
+                . $this->getRelativeFile('entries', false) . '.html';
+        } 
+
+        $class = 'Phrozn\\Site\\View\\OutputPath\\Entry\\' . ucfirst($permalink);
+        if (!class_exists($class)) {
+            $class = 'Phrozn\\Site\\View\\OutputPath\\Entry\\Parametrized';
         }
 
-        // find relative path, wrt to entries
-        $pos = strpos($inputFile, '/entries');
-        if ($pos !== false) {
-            $inputFile = substr($inputFile, $pos + 8);
-        } else {
-            $inputFile = '/' . basename($inputFile);
-        }
-        return $this->getView()->getOutputDir() . $inputFile . '.html';
+        $object = new $class($this->getView());
+        return $object->get();
     }
 }
