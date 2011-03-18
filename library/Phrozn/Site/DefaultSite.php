@@ -63,10 +63,6 @@ class DefaultSite
             $inputFile = str_replace(getcwd(), '.', $view->getInputFile());
             $outputFile = str_replace(getcwd(), '.', $view->getOutputFile());
             try {
-                $destinationDir = dirname($view->getOutputFile());
-                if (!is_dir($destinationDir)) {
-                    mkdir($destinationDir, 0777, true);
-                }
                 $view->compile($vars);
                 $this->getOutputter()
                     ->stdout('%b' . $inputFile . '%n parsed')
