@@ -15,48 +15,40 @@
  * limitations under the License. 
  *
  * @category    Phrozn
- * @package     Phrozn\Site
+ * @package     Phrozn\Has
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site;
-use Phrozn\Has;
+namespace Phrozn\Has;
 
 /**
- * Basic atom of site compilation process.
- * Site basically composed of number of views, which load 
- * configuration and tempaltes and get compiled into HTML.
+ * Entity has parameter
  *
  * @category    Phrozn
- * @package     Phrozn\Site
+ * @package     Phrozn\Has
  * @author      Victor Farazdagi
  */
-interface View 
-    extends 
-        Has\InputFile, 
-        Has\OutputFile, 
-        Has\OutputDir, 
-        Has\Param, 
-        Has\Processors
+interface Param 
 {
+    /**
+     * Set param
+     *
+     * @param string $param Name of the parameter to set
+     * @param mixed $value Value of the parameter
+     *
+     * @return \Phrozn\Has\Param
+     */
+    public function setParam($param, $value);
 
     /**
-     * Render and save static version of a concrete view
+     * Get param value
      *
-     * @param array $vars List of variables passed to text processors
+     * @param string $param Parameter name to obtain value for
+     * @param mixed $default Default parameter value, if non found in FM
      *
-     * @return \Phrozn\Site\View
+     * @return mixed
      */
-    public function compile($vars = array());
-
-    /**
-     * Render input template
-     *
-     * @param array $vars List of variables passed to text processors
-     *
-     * @return string
-     */
-    public function render($vars = array());
+    public function getParam($param, $default = null);
 }
