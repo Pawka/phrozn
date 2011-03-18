@@ -109,6 +109,11 @@ abstract class Base
     {
         $out = $this->render($vars);
 
+        $destinationDir = dirname($this->getOutputFile());
+        if (!is_dir($destinationDir)) {
+            mkdir($destinationDir, 0777, true);
+        }
+
         file_put_contents($this->getOutputFile(), $out);
 
         return $out;
@@ -240,6 +245,60 @@ abstract class Base
     }
 
     /**
+     * Set param
+     *
+     * @param string $param Name of the parameter to set
+     * @param mixed $value Value of the parameter
+     *
+     * @return \Phrozn\Has\Param
+     */
+    public function setParam($param, $value)
+    {
+        $this->extractFrontMatter();
+        $this->extractedFrontMatter[$param] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get param value
+     *
+     * @param string $param Parameter name to obtain value for
+     * @param mixed $default Default parameter value, if non found in FM
+     *
+     * @return mixed
+     */
+    public function getParam($param, $default = null)
+    {
+        try {
+            $this->extractFrontMatter();
+        } catch (\Exception $e) {
+            // skip error on file read problems, just return default value
+        }
+        if (isset($this->extractedFrontMatter[$param])) {
+            return $this->extractedFrontMatter[$param];
+        } else {
+            return $default;
+        }
+    }
+
+    /**
+     * Get view parameters from both front matter and general site options
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        $params = $this->extractFrontMatter();
+        // @todo - add merge with general site options
+        
+        if (is_array($params) === false) {
+            return array();
+        }
+        return $params;
+    }
+
+    /**
      * Two step view is used. View to wrap is provided with content variable.
      *
      * @param string $content View text to wrap into layout
@@ -299,7 +358,7 @@ abstract class Base
             return $source;
         }
 
-        return substr($source, $pos + 3);
+        return $this->extractedTemplate = substr($source, $pos + 3);
     }
 
     /**
@@ -321,9 +380,9 @@ abstract class Base
         }
 
         $frontMatter = substr($source, 0, $pos);
-        $parsed = Yaml::load($frontMatter);
+        $this->extractedFrontMatter = Yaml::load($frontMatter);
 
-        return $parsed;
+        return $this->extractedFrontMatter;
     }
 
     /**
@@ -338,7 +397,11 @@ abstract class Base
             if (null === $path) {
                 throw new \Exception("View input file not specified.");
             }
-            $this->source = \file_get_contents($path);
+            try {
+                $this->source = \file_get_contents($path);
+            } catch (\Exception $e) {
+                throw new \Exception(sprintf('View "%s" file can not be read', $path));
+            }
         }
         return $this->source;
     }
