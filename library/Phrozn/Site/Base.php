@@ -208,6 +208,10 @@ abstract class Base
         // guess the base path with Phrozn project
         $projectDir = $this->getProjectDir();
         $outputDir = $this->getOutputDir();
+        $config = $this->getSiteConfig();
+
+        // configure skip files options
+        $skipToken = '-!SKIP!-';
 
         $folders = array(
             'entries', 'styles', 'scripts'
@@ -217,6 +221,12 @@ abstract class Base
             $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
             foreach ($it as $item) {
                 $baseName = $item->getBaseName();
+                if (isset($config['skip'])) {
+                    $baseName = preg_replace($config['skip'], array_fill(0, count($config['skip']), $skipToken), $baseName);
+                    if (strpos($baseName, $skipToken) !== false) {
+                        continue;
+                    }
+                }
                 if ($item->isFile()) {
                     try {
                         $factory = new View\Factory($item->getRealPath());
