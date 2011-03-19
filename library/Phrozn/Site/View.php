@@ -35,11 +35,14 @@ use Phrozn\Has;
  */
 interface View 
     extends 
+        Has\SiteConfig,
         Has\InputFile, 
         Has\OutputFile, 
         Has\OutputDir, 
         Has\Param, 
-        Has\Processors
+        Has\Processors,
+        Has\FrontMatter,
+        Has\Template
 {
 
     /**

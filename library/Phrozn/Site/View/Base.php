@@ -75,13 +75,19 @@ abstract class Base
      * Cache object for extracted template
      * @var string
      */
-    private $extractedTemplate;
+    private $template;
 
     /**
      * Cache object for extracted FM
      * @var array
      */
-    private $extractedFrontMatter;
+    private $frontMatter;
+
+    /**
+     * Loaded content of site/config.yml
+     * @var array
+     */
+    private $siteConfig;
 
     /**
      * Initialize page
@@ -129,13 +135,14 @@ abstract class Base
     public function render($vars = array())
     {
         // inject front matter options into template
-        $vars = array_merge($vars, array('this' => $this->extractFrontMatter()));
+        $vars = array_merge($vars, $this->getParams());
 
         // convert view into static representation
-        $view = $this->extractTemplate();
+        $view = $this->getTemplate();
         foreach ($this->getProcessors() as $processor) {
             $view = $processor->render($view, $vars);
         }
+
         return $view;
     }
 
@@ -254,8 +261,8 @@ abstract class Base
      */
     public function setParam($param, $value)
     {
-        $this->extractFrontMatter();
-        $this->extractedFrontMatter[$param] = $value;
+        $this->parse();
+        $this->frontMatter[$param] = $value;
 
         return $this;
     }
@@ -271,12 +278,13 @@ abstract class Base
     public function getParam($param, $default = null)
     {
         try {
-            $this->extractFrontMatter();
+            $this->parse();
+            $value = $this->getParams($param, null);
         } catch (\Exception $e) {
             // skip error on file read problems, just return default value
         }
-        if (isset($this->extractedFrontMatter[$param])) {
-            return $this->extractedFrontMatter[$param];
+        if (isset($value)) {
+            return $value;
         } else {
             return $default;
         }
@@ -285,17 +293,130 @@ abstract class Base
     /**
      * Get view parameters from both front matter and general site options
      *
+     * @param string $param Parameter to get value for. Levels are separated with dots
+     * @param string $default Default value to fetch if param is not found
+     *
      * @return array
      */
-    public function getParams()
+    public function getParams($param = null, $default = array())
     {
-        $params = $this->extractFrontMatter();
-        // @todo - add merge with general site options
-        
-        if (is_array($params) === false) {
-            return array();
+        $params['page'] = $this->getFrontMatter();
+        $params['site'] = $this->getSiteConfig();
+        // also create merged configuration
+        if (isset($params['page'], $params['site'])) {
+            $params['this'] = array_merge($params['page'], $params['site']);
+        } else {
+            $params['this'] = array();
         }
-        return $params;
+
+        if (null !== $param) {
+            $params = $this->locateParam($params, $param);
+        }
+        
+        return isset($params) ? $params : $default;
+    }
+
+    /**
+     * Locate nested param (levels separated with dot) in params array
+     *
+     * @return mixed
+     */
+    private function locateParam($params, $param) 
+    {
+        $value = null;
+        $keys = explode('.', $param);
+        for ($i = 0, $mx = count($keys); $i < $mx; $i++) {
+            $key = $keys[$i];
+            if (isset($params[$key])) {
+                $value = $params[$key];
+                if ((($i + 1) < $mx) && is_array($value)) {
+                    return $this->locateParam($value, implode('.', array_slice($keys, $i)));
+                }
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Set site configuration
+     *
+     * @param array $config Array of options
+     *
+     * @return \Phrozn\Has\SiteConfig
+     */
+    public function setSiteConfig($config)
+    {
+        $this->siteConfig = $config;
+        return $this;
+    }
+
+    /**
+     * Get site configuration
+     *
+     * @return array
+     */
+    public function getSiteConfig()
+    {
+        if (null === $this->siteConfig) {
+            $this->siteConfig = array();
+        }
+        return $this->siteConfig;
+    }
+
+    /**
+     * Set front matter
+     *
+     * @param array $frontMatter Array of options
+     *
+     * @return \Phrozn\Has\FrontMatter
+     */
+    public function setFrontMatter($frontMatter)
+    {
+        $this->frontMatter = $frontMatter;
+        return $this;
+    }
+
+    /**
+     * Get YAML front matter from input view
+     *
+     * @return array
+     */
+    public function getFrontMatter()
+    {
+        if (null === $this->frontMatter) {
+            $this->parse();
+        }
+        if (null === $this->frontMatter) {
+            $this->frontMatter = array();
+        }
+        return $this->frontMatter;
+    }
+
+    /**
+     * Set template
+     *
+     * @param string $template Source template
+     *
+     * @return \Phrozn\Has\Template
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+        return $this;
+    }
+
+    /**
+     * Get template content from input view
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        if (null === $this->template) {
+            $this->parse();
+        }
+
+        return $this->template;
     }
 
     /**
@@ -308,8 +429,8 @@ abstract class Base
      */
     protected function applyLayout($content, $vars)
     {
-        $layoutName = isset($vars['this']['layout']) 
-                    ? $vars['this']['layout'] : Factory::DEFAULT_LAYOUT_SCRIPT;
+        $layoutName = $this->getParam('page.layout', Factory::DEFAULT_LAYOUT_SCRIPT);
+
         $inputFile = $this->getInputFile();
         $pos = strpos($inputFile, '/entries');
         // make sure that input path is normalized to root entries directory 
@@ -340,49 +461,32 @@ abstract class Base
         return $this->hasLayout;
     }
 
+
     /**
-     * Extract template part, from view input file
+     * Parses input file into front matter and actual template content
      *
-     * @return string
+     * @return \Phrozn\Site\View
      */
-    protected function extractTemplate()
+    private function parse()
     {
-        if (null !== $this->extractedTemplate) {
-            return $this->extractedTemplate;
+        if (isset($this->template, $this->frontMatter)) {
+            return $this;
         }
 
         $source = $this->readSourceFile();
 
         $pos = strpos($source, '---');
-        if ($pos === false) {
-            return $source;
+        if ($pos !== false) {
+            $this->template = trim(substr($source, $pos + 3));
+
+            $frontMatter = substr($source, 0, $pos);
+            $this->frontMatter = Yaml::load($frontMatter);
+        } else {
+            $this->template = $source;
+            $this->forntMatter = 0;
         }
 
-        return $this->extractedTemplate = substr($source, $pos + 3);
-    }
-
-    /**
-     * Extract YAML front matter from view input file
-     *
-     * @return array
-     */
-    protected function extractFrontMatter()
-    {
-        if (null !== $this->extractedFrontMatter) {
-            return $this->extractedFrontMatter;
-        }
-
-        $source = $this->readSourceFile();
-
-        $pos = strpos($source, '---');
-        if ($pos === false) {
-            return null;
-        }
-
-        $frontMatter = substr($source, 0, $pos);
-        $this->extractedFrontMatter = Yaml::load($frontMatter);
-
-        return $this->extractedFrontMatter;
+        return $this;
     }
 
     /**

@@ -41,7 +41,7 @@ class Entry
      */
     public function get()
     {
-        $permalink = $this->getView()->getParam('permalink', null);
+        $permalink = $this->getView()->getParam('this.permalink', null);
 
         if ($permalink === null) {
             return $this->getView()->getOutputDir() 

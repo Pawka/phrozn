@@ -64,8 +64,8 @@ class Twig
     {
         $view = parent::render($vars);
         if ($this->hasLayout()) {
-            // inject front matter options into template
-            $vars = array_merge($vars, array('this' => $this->extractFrontMatter()));
+            // inject global site and front matter options into template
+            $vars = array_merge($vars, $this->getParams());
             $view = $this->applyLayout($view, $vars);
         }
         return $view;

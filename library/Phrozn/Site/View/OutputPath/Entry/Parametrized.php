@@ -41,9 +41,15 @@ class Parametrized
      */
     public function get()
     {
-        $path = $this->getView()->getParam('permalink');
-        foreach ($this->getView()->getParams() as $name => $param) {
-            $path = str_replace(':' . $name, $this->normalize($param), $path);
+        $path = $this->getView()->getParam('this.permalink');
+        $params = $this->getView()->getParams();
+
+        $params = array_merge($params['site'], $params['page']);
+        foreach ($params as $name => $param) {
+            // apply only scalar params
+            if (is_scalar($param)) {
+                $path = str_replace(':' . $name, $this->normalize($param), $path);
+            }
         }
 
         $path = rtrim($this->getView()->getOutputDir(), '/') . '/' 
