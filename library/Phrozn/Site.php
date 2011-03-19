@@ -35,7 +35,8 @@ interface Site
     extends 
         Has\InputDir, 
         Has\OutputDir, 
-        Has\Outputter
+        Has\Outputter,
+        Has\SiteConfig
 {
     /**
      * Create static version of site.
