@@ -90,6 +90,12 @@ abstract class Base
     private $siteConfig;
 
     /**
+     * Loaded content of configs/phrozn.yml
+     * @var array
+     */
+    private $appConfig;
+
+    /**
      * Initialize page
      *
      * @param string $inputFile Path to page source file
@@ -302,6 +308,7 @@ abstract class Base
     {
         $params['page'] = $this->getFrontMatter();
         $params['site'] = $this->getSiteConfig();
+        $params['phr'] = $this->getAppConfig();
         // also create merged configuration
         if (isset($params['page'], $params['site'])) {
             $params['this'] = array_merge($params['page'], $params['site']);
@@ -508,5 +515,15 @@ abstract class Base
             }
         }
         return $this->source;
+    }
+
+    private function getAppConfig()
+    {
+        if (null === $this->appConfig) {
+            $path = dirname(__FILE__) . '/../../../../configs/phrozn.yml';
+            $this->appConfig = Yaml::load(file_get_contents($path));
+        }
+
+        return $this->appConfig;
     }
 }
