@@ -63,10 +63,15 @@ class DefaultSite
             $inputFile = str_replace(getcwd(), '.', $view->getInputFile());
             $outputFile = str_replace(getcwd(), '.', $view->getOutputFile());
             try {
-                $view->compile($vars);
-                $this->getOutputter()
-                    ->stdout('%b' . $inputFile . '%n parsed')
-                    ->stdout('%b' . $outputFile . '%n written');
+                if ($view->getParam('page.skip', false)) {
+                    $this->getOutputter()
+                        ->stdout('%b' . $inputFile . '%n %rSKIPPED%n');
+                } else {
+                    $view->compile($vars);
+                    $this->getOutputter()
+                        ->stdout('%b' . $inputFile . '%n parsed')
+                        ->stdout('%b' . $outputFile . '%n written');
+                }
             } catch (\Exception $e) {
                 $this->getOutputter()
                      ->stderr($inputFile . ': ' . $e->getMessage());
