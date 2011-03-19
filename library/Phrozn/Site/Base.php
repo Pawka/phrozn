@@ -72,14 +72,16 @@ abstract class Base
      *
      * @param string $inputDir Input directory path
      * @param string $outputDir Output directory path
+     * @param array  $config Configuration options with which site generation should run
      *
      * @return void
      */
-    public function __construct($inputDir = null, $outputDir = null)
+    public function __construct($inputDir = null, $outputDir = null, $config = null)
     {
         $this
             ->setInputDir($inputDir)
-            ->setOutputDir($outputDir);
+            ->setOutputDir($outputDir)
+            ->setSiteConfig($config);
     }
 
     /**
@@ -126,7 +128,7 @@ abstract class Base
     public function getOutputDir()
     {
         // override output directory using site config file
-        $config = $this->parseConfig();
+        $config = $this->getSiteConfig();
         if (isset($config['site']['output'])) {
             $this->setOutputDir($config['site']['output']);
         }
@@ -170,6 +172,33 @@ abstract class Base
     }
 
     /**
+     * Set site configuration
+     *
+     * @param array $config Array of options
+     *
+     * @return \Phrozn\Has\SiteConfig
+     */
+    public function setSiteConfig($config)
+    {
+        $this->siteConfig = $config;
+        return $this;
+    }
+
+    /**
+     * Get site configuration
+     *
+     * @return array
+     */
+    public function getSiteConfig()
+    {
+        if (null === $this->siteConfig) {
+            $configFile = realpath($this->getInputDir() . '/config.yml');
+            $this->siteConfig = Yaml::load($configFile);
+        }
+        return $this->siteConfig;
+    }
+
+    /**
      * Create list of views to be created
      *
      * @return \Phrozn\Site
@@ -192,7 +221,9 @@ abstract class Base
                     try {
                         $factory = new View\Factory($item->getRealPath());
                         $view = $factory->create();
-                        $view->setOutputDir($outputDir);
+                        $view
+                            ->setSiteConfig($this->getSiteConfig())
+                            ->setOutputDir($outputDir);
                         $this->views[] = $view;
                     } catch (\Exception $e) {
                         $this->getOutputter()
@@ -224,18 +255,4 @@ abstract class Base
         return $dir;
     }
 
-
-    /**
-     * Load site config
-     *
-     * @return array
-     */
-    protected function parseConfig()
-    {
-        if (null === $this->siteConfig) {
-            $configFile = realpath($this->getInputDir() . '/config.yml');
-            $this->siteConfig = Yaml::load($configFile);
-        }
-        return $this->siteConfig;
-    }
 }
