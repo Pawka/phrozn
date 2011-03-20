@@ -1,4 +1,4 @@
 # Site configuration
 ---
-views:
+entries:
     layout: default.twig
