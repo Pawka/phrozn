@@ -3,4 +3,4 @@ entries:
     layout: default.twig
 
 # Files to skip - list of preg expressions is expected
-skip: [/\.swp$/, /\.bak/]
+skip: [/\.swp$/, /\.bak$/]
