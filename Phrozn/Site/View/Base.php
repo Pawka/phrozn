@@ -24,7 +24,8 @@
 namespace Phrozn\Site\View;
 use Symfony\Component\Yaml\Yaml,
     Phrozn\Site\View\Factory,
-    Phrozn\Site\Layout\DefaultLayout as Layout;
+    Phrozn\Site\Layout\DefaultLayout as Layout,
+    Phrozn\Autoloader as Loader;
 
 /**
  * Base implementation of Phrozn view
@@ -520,7 +521,7 @@ abstract class Base
     private function getAppConfig()
     {
         if (null === $this->appConfig) {
-            $path = dirname(__FILE__) . '/../../../../configs/phrozn.yml';
+            $path = Loader::getInstance()->getPath('configs'). '/phrozn.yml';
             $this->appConfig = Yaml::load(file_get_contents($path));
         }
 

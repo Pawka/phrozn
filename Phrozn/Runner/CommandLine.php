@@ -58,18 +58,23 @@ class CommandLine
     private $config;
 
     /**
+     * @var \Phrozn\Autoloader
+     */
+    private $loader;
+
+    /**
      * Create runner
      *
-     * @param \Zend\Loader\SplAutoloader $loader Instance of auto-loader
+     * @param \Phrozn\Autoloader $loader Instance of auto-loader
      * @param array $paths Folder paths
      */
-    public function __construct($loader, $paths)
+    public function __construct($loader)
     {
-        $this->paths = $paths;
+        $this->paths = $loader->getPaths();
         $this->loader = $loader;
 
         // load main config
-        $this->config = Yaml::load($paths['configs'] . 'phrozn.yml');
+        $this->config = Yaml::load($this->paths['configs'] . 'phrozn.yml');
     }
 
     /**
