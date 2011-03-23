@@ -14,7 +14,7 @@
   <active>yes</active>
  </lead>
  <date>2011-03-23</date>
- <time>02:37:29</time>
+ <time>04:36:06</time>
  <version>
   <release>0.1.0</release>
   <api>0.1.0</api>
@@ -121,6 +121,9 @@
      <file baseinstalldir="/" name="View.php" role="php" />
     </dir> <!-- /Phrozn/Site -->
     <dir name="Vendor">
+     <dir name="Extra">
+      <file baseinstalldir="/" name="lessc.inc.php" role="php" />
+     </dir> <!-- /Phrozn/Vendor/Extra -->
      <dir name="Symfony">
       <dir name="Component">
        <dir name="Yaml">
