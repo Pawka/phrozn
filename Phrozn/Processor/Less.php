@@ -22,6 +22,7 @@
  */
 
 namespace Phrozn\Processor;
+use Phrozn\Autoloader as Loader;
 
 /**
  * LESS styles processor
@@ -50,7 +51,8 @@ class Less
      */
     public function __construct($options = array())
     {
-        require_once dirname(__FILE__) . '/../../Extras/lessc.inc.php';
+        $path = Loader::getInstance()->getPath('library');
+        require_once $path . '/Vendor/Extra/lessc.inc.php';
 
         if (count($options)) {
             $this->setConfig($options)
