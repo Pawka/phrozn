@@ -4,17 +4,17 @@
     <c>pear.phrozn.info</c>
     <v>0.1.0</v>
     <a>0.1.0</a>
-    <mp>5.3</mp>
+    <mp>5.3.0</mp>
     <st>beta</st>
     <l>Apache License, Version 2.0</l>
     <m>victor</m>
     <s>Static web-site generator in PHP.</s>
     <d>Phrozn is static web-site generator written in PHP.</d>
-    <da>2011-03-16 19:47:17</da>
+    <da>2011-03-23 03:47:37</da>
     <n>
 * The first public release of Phrozn
  </n>
-    <f>1515</f>
+    <f>86753</f>
     <g>http://pear.phrozn.info/get/Phrozn-0.1.0</g>
     <x xlink:href="package.0.1.0.xml"/>
 </r>
