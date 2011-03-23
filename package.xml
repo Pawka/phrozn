@@ -1,66 +1,383 @@
-<?xml version="1.0"?>
-<package version="2.0" xmlns="http://pear.php.net/dtd/package-2.0"
-    xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-http://pear.php.net/dtd/tasks-1.0.xsd
-http://pear.php.net/dtd/package-2.0
-http://pear.php.net/dtd/package-2.0.xsd">
-    <name>Phrozn</name>
-    <channel>pear.phrozn.info</channel>
-    <summary>Static web-site generator in PHP.</summary>
-    <description>Phrozn is static web-site generator written in PHP.</description>
-
-    <lead>
-        <name>Victor Farazdagi</name>
-        <user>victor</user>
-        <email>simple.square@gmail.com</email>
-        <active>yes</active>
-    </lead>
-
-    <date>2011-03-16</date>
-
-    <version>
-        <release>0.1.0</release>
-        <api>0.1.0</api>
-    </version>
-
-    <stability>
-        <release>beta</release>
-        <api>beta</api>
-    </stability>
-
-    <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</license>
-    <notes>
-        * The first public release of Phrozn
-    </notes>
-
-    <contents> 
-        <dir name="/">
-            <file name="LICENSE" role="doc" />
-            <file name="README.textile" role="doc" />
-            <dir name="tests">
-                <file name="bootstrap.php" role="test" />
-            </dir>
-        </dir>
-    </contents>
-
-    <dependencies>
-        <required>
-            <php>
-                <min>5.3</min>
-                <max>6.0.0</max>
-            </php>
-            <pearinstaller>
-                <min>1.4.0</min>
-            </pearinstaller>
-            <os>
-                <name>windows</name>
-                <conflicts/>
-            </os>
-        </required>
-    </dependencies>
-
-    <phprelease />
-
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Phrozn</name>
+ <channel>pear.phrozn.info</channel>
+ <summary>Static web-site generator in PHP.</summary>
+ <description>Phrozn is static web-site generator written in PHP.</description>
+ <lead>
+  <name>Victor Farazdagi</name>
+  <user>victor</user>
+  <email>simple.square@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2011-03-23</date>
+ <time>02:37:29</time>
+ <version>
+  <release>0.1.0</release>
+  <api>0.1.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</license>
+ <notes>
+* The first public release of Phrozn
+ </notes>
+ <contents>
+  <dir baseinstalldir="/" name="/">
+   <dir name="bin">
+    <file baseinstalldir="/" name="phr.php" role="script">
+     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
+     <tasks:replace from="@PHP-BIN@" to="php_bin" type="pear-config" />
+     <tasks:replace from="@DATA-DIR@" to="data_dir" type="pear-config" />
+     <tasks:replace from="@PEAR-DIR@" to="php_dir" type="pear-config" />
+    </file>
+    <file baseinstalldir="/" name="phrozn.php" role="script">
+     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config" />
+     <tasks:replace from="@PHP-BIN@" to="php_bin" type="pear-config" />
+     <tasks:replace from="@DATA-DIR@" to="data_dir" type="pear-config" />
+     <tasks:replace from="@PEAR-DIR@" to="php_dir" type="pear-config" />
+    </file>
+   </dir> <!-- /bin -->
+   <dir name="configs">
+    <dir name="commands">
+     <file baseinstalldir="/" name="build.yml" role="data" />
+     <file baseinstalldir="/" name="clobber.yml" role="data" />
+     <file baseinstalldir="/" name="help.yml" role="data" />
+     <file baseinstalldir="/" name="init.yml" role="data" />
+     <file baseinstalldir="/" name="initialize.yml" role="data" />
+     <file baseinstalldir="/" name="up.yml" role="data" />
+     <file baseinstalldir="/" name="update.yml" role="data" />
+    </dir> <!-- /configs/commands -->
+    <file baseinstalldir="/" name="paths.yml" role="data" />
+    <file baseinstalldir="/" name="phrozn.yml" role="data" />
+    <file baseinstalldir="/" name="processors.yml" role="data" />
+   </dir> <!-- /configs -->
+   <dir name="Phrozn">
+    <dir name="Has">
+     <file baseinstalldir="/" name="FrontMatter.php" role="php" />
+     <file baseinstalldir="/" name="InputDir.php" role="php" />
+     <file baseinstalldir="/" name="InputFile.php" role="php" />
+     <file baseinstalldir="/" name="OutputDir.php" role="php" />
+     <file baseinstalldir="/" name="OutputFile.php" role="php" />
+     <file baseinstalldir="/" name="Outputter.php" role="php" />
+     <file baseinstalldir="/" name="Param.php" role="php" />
+     <file baseinstalldir="/" name="Processor.php" role="php" />
+     <file baseinstalldir="/" name="Processors.php" role="php" />
+     <file baseinstalldir="/" name="SiteConfig.php" role="php" />
+     <file baseinstalldir="/" name="Template.php" role="php" />
+     <file baseinstalldir="/" name="View.php" role="php" />
+    </dir> <!-- /Phrozn/Has -->
+    <dir name="Outputter">
+     <file baseinstalldir="/" name="DefaultOutputter.php" role="php" />
+     <file baseinstalldir="/" name="TestOutputter.php" role="php" />
+    </dir> <!-- /Phrozn/Outputter -->
+    <dir name="Processor">
+     <file baseinstalldir="/" name="Base.php" role="php" />
+     <file baseinstalldir="/" name="Dumb.php" role="php" />
+     <file baseinstalldir="/" name="Less.php" role="php" />
+     <file baseinstalldir="/" name="Twig.php" role="php" />
+    </dir> <!-- /Phrozn/Processor -->
+    <dir name="Runner">
+     <dir name="CommandLine">
+      <dir name="Callback">
+       <file baseinstalldir="/" name="Base.php" role="php" />
+       <file baseinstalldir="/" name="Clobber.php" role="php" />
+       <file baseinstalldir="/" name="Help.php" role="php" />
+       <file baseinstalldir="/" name="Init.php" role="php" />
+       <file baseinstalldir="/" name="Up.php" role="php" />
+      </dir> <!-- /Phrozn/Runner/CommandLine/Callback -->
+      <file baseinstalldir="/" name="Callback.php" role="php" />
+      <file baseinstalldir="/" name="Command.php" role="php" />
+      <file baseinstalldir="/" name="Commands.php" role="php" />
+      <file baseinstalldir="/" name="Parser.php" role="php" />
+     </dir> <!-- /Phrozn/Runner/CommandLine -->
+     <file baseinstalldir="/" name="CommandLine.php" role="php" />
+    </dir> <!-- /Phrozn/Runner -->
+    <dir name="Site">
+     <dir name="View">
+      <dir name="OutputPath">
+       <dir name="Entry">
+        <file baseinstalldir="/" name="Parametrized.php" role="php" />
+       </dir> <!-- /Phrozn/Site/View/OutputPath/Entry -->
+       <file baseinstalldir="/" name="Base.php" role="php" />
+       <file baseinstalldir="/" name="Entry.php" role="php" />
+       <file baseinstalldir="/" name="Script.php" role="php" />
+       <file baseinstalldir="/" name="Style.php" role="php" />
+      </dir> <!-- /Phrozn/Site/View/OutputPath -->
+      <file baseinstalldir="/" name="Base.php" role="php" />
+      <file baseinstalldir="/" name="Factory.php" role="php" />
+      <file baseinstalldir="/" name="Js.php" role="php" />
+      <file baseinstalldir="/" name="Less.php" role="php" />
+      <file baseinstalldir="/" name="OutputPath.php" role="php" />
+      <file baseinstalldir="/" name="Twig.php" role="php" />
+     </dir> <!-- /Phrozn/Site/View -->
+     <file baseinstalldir="/" name="Base.php" role="php" />
+     <file baseinstalldir="/" name="DefaultSite.php" role="php" />
+     <file baseinstalldir="/" name="View.php" role="php" />
+    </dir> <!-- /Phrozn/Site -->
+    <dir name="Vendor">
+     <dir name="Symfony">
+      <dir name="Component">
+       <dir name="Yaml">
+        <file baseinstalldir="/" name="Dumper.php" role="php" />
+        <file baseinstalldir="/" name="Exception.php" role="php" />
+        <file baseinstalldir="/" name="Inline.php" role="php" />
+        <file baseinstalldir="/" name="LICENSE" role="php" />
+        <file baseinstalldir="/" name="Parser.php" role="php" />
+        <file baseinstalldir="/" name="ParserException.php" role="php" />
+        <file baseinstalldir="/" name="Yaml.php" role="php" />
+       </dir> <!-- /Phrozn/Vendor/Symfony/Component/Yaml -->
+      </dir> <!-- /Phrozn/Vendor/Symfony/Component -->
+     </dir> <!-- /Phrozn/Vendor/Symfony -->
+     <dir name="Twig">
+      <dir name="Extension">
+       <file baseinstalldir="/" name="Core.php" role="php" />
+       <file baseinstalldir="/" name="Escaper.php" role="php" />
+       <file baseinstalldir="/" name="I18n.php" role="php" />
+       <file baseinstalldir="/" name="Sandbox.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Extension -->
+      <dir name="Filter">
+       <file baseinstalldir="/" name="Function.php" role="php" />
+       <file baseinstalldir="/" name="Method.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Filter -->
+      <dir name="Grammar">
+       <file baseinstalldir="/" name="Arguments.php" role="php" />
+       <file baseinstalldir="/" name="Array.php" role="php" />
+       <file baseinstalldir="/" name="Body.php" role="php" />
+       <file baseinstalldir="/" name="Boolean.php" role="php" />
+       <file baseinstalldir="/" name="Constant.php" role="php" />
+       <file baseinstalldir="/" name="Expression.php" role="php" />
+       <file baseinstalldir="/" name="Number.php" role="php" />
+       <file baseinstalldir="/" name="Optional.php" role="php" />
+       <file baseinstalldir="/" name="Tag.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Grammar -->
+      <dir name="Loader">
+       <file baseinstalldir="/" name="Array.php" role="php" />
+       <file baseinstalldir="/" name="Filesystem.php" role="php" />
+       <file baseinstalldir="/" name="String.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Loader -->
+      <dir name="Node">
+       <dir name="Expression">
+        <dir name="Binary">
+         <file baseinstalldir="/" name="Add.php" role="php" />
+         <file baseinstalldir="/" name="And.php" role="php" />
+         <file baseinstalldir="/" name="Concat.php" role="php" />
+         <file baseinstalldir="/" name="Div.php" role="php" />
+         <file baseinstalldir="/" name="FloorDiv.php" role="php" />
+         <file baseinstalldir="/" name="Mod.php" role="php" />
+         <file baseinstalldir="/" name="Mul.php" role="php" />
+         <file baseinstalldir="/" name="Or.php" role="php" />
+         <file baseinstalldir="/" name="Sub.php" role="php" />
+        </dir> <!-- /Phrozn/Vendor/Twig/Node/Expression/Binary -->
+        <dir name="Unary">
+         <file baseinstalldir="/" name="Neg.php" role="php" />
+         <file baseinstalldir="/" name="Not.php" role="php" />
+         <file baseinstalldir="/" name="Pos.php" role="php" />
+        </dir> <!-- /Phrozn/Vendor/Twig/Node/Expression/Unary -->
+        <file baseinstalldir="/" name="Array.php" role="php" />
+        <file baseinstalldir="/" name="AssignName.php" role="php" />
+        <file baseinstalldir="/" name="Binary.php" role="php" />
+        <file baseinstalldir="/" name="Compare.php" role="php" />
+        <file baseinstalldir="/" name="Conditional.php" role="php" />
+        <file baseinstalldir="/" name="Constant.php" role="php" />
+        <file baseinstalldir="/" name="Filter.php" role="php" />
+        <file baseinstalldir="/" name="GetAttr.php" role="php" />
+        <file baseinstalldir="/" name="Name.php" role="php" />
+        <file baseinstalldir="/" name="Test.php" role="php" />
+        <file baseinstalldir="/" name="Unary.php" role="php" />
+       </dir> <!-- /Phrozn/Vendor/Twig/Node/Expression -->
+       <file baseinstalldir="/" name="AutoEscape.php" role="php" />
+       <file baseinstalldir="/" name="Block.php" role="php" />
+       <file baseinstalldir="/" name="BlockReference.php" role="php" />
+       <file baseinstalldir="/" name="Expression.php" role="php" />
+       <file baseinstalldir="/" name="For.php" role="php" />
+       <file baseinstalldir="/" name="If.php" role="php" />
+       <file baseinstalldir="/" name="Import.php" role="php" />
+       <file baseinstalldir="/" name="Include.php" role="php" />
+       <file baseinstalldir="/" name="Macro.php" role="php" />
+       <file baseinstalldir="/" name="Module.php" role="php" />
+       <file baseinstalldir="/" name="Parent.php" role="php" />
+       <file baseinstalldir="/" name="Print.php" role="php" />
+       <file baseinstalldir="/" name="Sandbox.php" role="php" />
+       <file baseinstalldir="/" name="SandboxedModule.php" role="php" />
+       <file baseinstalldir="/" name="SandboxedPrint.php" role="php" />
+       <file baseinstalldir="/" name="Set.php" role="php" />
+       <file baseinstalldir="/" name="Text.php" role="php" />
+       <file baseinstalldir="/" name="Trans.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Node -->
+      <dir name="NodeVisitor">
+       <file baseinstalldir="/" name="Escaper.php" role="php" />
+       <file baseinstalldir="/" name="Sandbox.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/NodeVisitor -->
+      <dir name="Sandbox">
+       <file baseinstalldir="/" name="SecurityError.php" role="php" />
+       <file baseinstalldir="/" name="SecurityPolicy.php" role="php" />
+       <file baseinstalldir="/" name="SecurityPolicyInterface.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Sandbox -->
+      <dir name="Test">
+       <file baseinstalldir="/" name="Function.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Test -->
+      <dir name="TokenParser">
+       <file baseinstalldir="/" name="AutoEscape.php" role="php" />
+       <file baseinstalldir="/" name="Block.php" role="php" />
+       <file baseinstalldir="/" name="Display.php" role="php" />
+       <file baseinstalldir="/" name="Extends.php" role="php" />
+       <file baseinstalldir="/" name="Filter.php" role="php" />
+       <file baseinstalldir="/" name="For.php" role="php" />
+       <file baseinstalldir="/" name="If.php" role="php" />
+       <file baseinstalldir="/" name="Import.php" role="php" />
+       <file baseinstalldir="/" name="Include.php" role="php" />
+       <file baseinstalldir="/" name="Macro.php" role="php" />
+       <file baseinstalldir="/" name="Parent.php" role="php" />
+       <file baseinstalldir="/" name="Sandbox.php" role="php" />
+       <file baseinstalldir="/" name="Set.php" role="php" />
+       <file baseinstalldir="/" name="Trans.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/TokenParser -->
+      <file baseinstalldir="/" name="Autoloader.php" role="php" />
+      <file baseinstalldir="/" name="Compiler.php" role="php" />
+      <file baseinstalldir="/" name="CompilerInterface.php" role="php" />
+      <file baseinstalldir="/" name="Environment.php" role="php" />
+      <file baseinstalldir="/" name="Error.php" role="php" />
+      <file baseinstalldir="/" name="ExpressionParser.php" role="php" />
+      <file baseinstalldir="/" name="Extension.php" role="php" />
+      <file baseinstalldir="/" name="ExtensionInterface.php" role="php" />
+      <file baseinstalldir="/" name="Filter.php" role="php" />
+      <file baseinstalldir="/" name="FilterInterface.php" role="php" />
+      <file baseinstalldir="/" name="Grammar.php" role="php" />
+      <file baseinstalldir="/" name="GrammarInterface.php" role="php" />
+      <file baseinstalldir="/" name="Lexer.php" role="php" />
+      <file baseinstalldir="/" name="LexerInterface.php" role="php" />
+      <file baseinstalldir="/" name="LoaderInterface.php" role="php" />
+      <file baseinstalldir="/" name="Node.php" role="php" />
+      <file baseinstalldir="/" name="NodeInterface.php" role="php" />
+      <file baseinstalldir="/" name="NodeTraverser.php" role="php" />
+      <file baseinstalldir="/" name="NodeVisitorInterface.php" role="php" />
+      <file baseinstalldir="/" name="Parser.php" role="php" />
+      <file baseinstalldir="/" name="ParserInterface.php" role="php" />
+      <file baseinstalldir="/" name="RuntimeError.php" role="php" />
+      <file baseinstalldir="/" name="SimpleTokenParser.php" role="php" />
+      <file baseinstalldir="/" name="SyntaxError.php" role="php" />
+      <file baseinstalldir="/" name="Template.php" role="php" />
+      <file baseinstalldir="/" name="TemplateInterface.php" role="php" />
+      <file baseinstalldir="/" name="TestInterface.php" role="php" />
+      <file baseinstalldir="/" name="Token.php" role="php" />
+      <file baseinstalldir="/" name="TokenParser.php" role="php" />
+      <file baseinstalldir="/" name="TokenParserInterface.php" role="php" />
+      <file baseinstalldir="/" name="TokenStream.php" role="php" />
+     </dir> <!-- /Phrozn/Vendor/Twig -->
+     <dir name="Zend">
+      <dir name="Loader">
+       <dir name="Exception">
+        <file baseinstalldir="/" name="BadMethodCallException.php" role="php" />
+        <file baseinstalldir="/" name="DomainException.php" role="php" />
+        <file baseinstalldir="/" name="InvalidArgumentException.php" role="php" />
+        <file baseinstalldir="/" name="InvalidPathException.php" role="php" />
+        <file baseinstalldir="/" name="MissingResourceNamespaceException.php" role="php" />
+        <file baseinstalldir="/" name="PluginLoaderException.php" role="php" />
+        <file baseinstalldir="/" name="RuntimeException.php" role="php" />
+        <file baseinstalldir="/" name="SecurityException.php" role="php" />
+       </dir> <!-- /Phrozn/Vendor/Zend/Loader/Exception -->
+       <file baseinstalldir="/" name="AutoloaderFactory.php" role="php" />
+       <file baseinstalldir="/" name="Broker.php" role="php" />
+       <file baseinstalldir="/" name="ClassMapAutoloader.php" role="php" />
+       <file baseinstalldir="/" name="Exception.php" role="php" />
+       <file baseinstalldir="/" name="LazyLoadingBroker.php" role="php" />
+       <file baseinstalldir="/" name="PluginBroker.php" role="php" />
+       <file baseinstalldir="/" name="PluginClassLoader.php" role="php" />
+       <file baseinstalldir="/" name="PluginClassLocater.php" role="php" />
+       <file baseinstalldir="/" name="PluginSpecBroker.php" role="php" />
+       <file baseinstalldir="/" name="PrefixPathLoader.php" role="php" />
+       <file baseinstalldir="/" name="PrefixPathMapper.php" role="php" />
+       <file baseinstalldir="/" name="ResourceAutoloader.php" role="php" />
+       <file baseinstalldir="/" name="ShortNameLocater.php" role="php" />
+       <file baseinstalldir="/" name="SplAutoloader.php" role="php" />
+       <file baseinstalldir="/" name="StandardAutoloader.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Zend/Loader -->
+      <file baseinstalldir="/" name="Loader.php" role="php" />
+     </dir> <!-- /Phrozn/Vendor/Zend -->
+    </dir> <!-- /Phrozn/Vendor -->
+    <file baseinstalldir="/" name="Autoloader.php" role="php">
+     <tasks:replace from="@PHP-BIN@" to="php_bin" type="pear-config" />
+     <tasks:replace from="@DATA-DIR@" to="data_dir" type="pear-config" />
+     <tasks:replace from="@PEAR-DIR@" to="php_dir" type="pear-config" />
+    </file>
+    <file baseinstalldir="/" name="Config.php" role="php" />
+    <file baseinstalldir="/" name="Outputter.php" role="php" />
+    <file baseinstalldir="/" name="Processor.php" role="php" />
+    <file baseinstalldir="/" name="Runner.php" role="php" />
+    <file baseinstalldir="/" name="Site.php" role="php" />
+   </dir> <!-- /Phrozn -->
+   <dir name="skeleton">
+    <dir name="archive">
+     <file baseinstalldir="/" name="README" role="data" />
+    </dir> <!-- /skeleton/archive -->
+    <dir name="entries">
+     <file baseinstalldir="/" name="2011-02-21-phrozn-generated-first-page-today.twig" role="data" />
+     <file baseinstalldir="/" name="index.twig" role="data" />
+    </dir> <!-- /skeleton/entries -->
+    <dir name="layouts">
+     <file baseinstalldir="/" name="default.twig" role="data" />
+    </dir> <!-- /skeleton/layouts -->
+    <dir name="media">
+     <dir name="img">
+      <file baseinstalldir="/" name="README" role="data" />
+     </dir> <!-- /skeleton/media/img -->
+     <file baseinstalldir="/" name="README" role="data" />
+    </dir> <!-- /skeleton/media -->
+    <dir name="scripts">
+     <file baseinstalldir="/" name="default.js" role="data" />
+    </dir> <!-- /skeleton/scripts -->
+    <dir name="site">
+     <dir name="styles">
+      <file baseinstalldir="/" name="README" role="data" />
+     </dir> <!-- /skeleton/site/styles -->
+     <file baseinstalldir="/" name="README" role="data" />
+    </dir> <!-- /skeleton/site -->
+    <dir name="styles">
+     <file baseinstalldir="/" name="default.less" role="data" />
+    </dir> <!-- /skeleton/styles -->
+    <file baseinstalldir="/" name="config.yml" role="data" />
+   </dir> <!-- /skeleton -->
+   <file baseinstalldir="/" name="LICENSE" role="doc" />
+   <file baseinstalldir="/" name="README.textile" role="doc" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.6</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease>
+  <filelist>
+   <install as="phr" name="bin/phr.php" />
+   <install as="phrozn" name="bin/phrozn.php" />
+  </filelist>
+ </phprelease>
+ <changelog>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-03-23</date>
+   <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</license>
+   <notes>
+* The first public release of Phrozn
+   </notes>
+  </release>
+ </changelog>
 </package>
