@@ -24,7 +24,11 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">../library/Phrozn</directory>
+            <directory suffix=".php">../Phrozn</directory>
+            <exclude>
+                <directory suffix=".php">../Phrozn/Vendor</directory>
+                <file>../Phrozn/Autoloader.php</file>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
