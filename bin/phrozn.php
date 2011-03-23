@@ -1,31 +1,18 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 namespace Phrozn;
 use Phrozn\Runner\CommandLine as Runner,
-    Zend\Loader\StandardAutoloader as Autoloader;
+    Phrozn\Autoloader as Loader;
 
-// paths
-$base = realpath(dirname(__FILE__) . '/../') . '/';
-$paths = array(
-    'app'       => $base,
-    'bin'       => $base . 'bin/',
-    'lib'       => $base . 'library/',
-    'configs'   => $base . 'configs/',
-    'skeleton'  => $base . 'skeleton/',
-);
+if (strpos('@PHP-BIN@', '@PHP-BIN') === 0) { // stand-alone version is running
+    $base = dirname(__FILE__) . '/../';
+    set_include_path($base . PATH_SEPARATOR . get_include_path());
+}
 
-// auto-loader
-require_once $paths['lib'] . 'Zend/Loader/StandardAutoloader.php';
-$loader = new Autoloader();
-$loader
-    ->registerNamespace('Zend', $paths['lib'] . 'Zend')
-    ->registerNamespace('Phrozn', $paths['lib'] . 'Phrozn')
-    ->registerNamespace('Symfony', $paths['lib'] . 'Symfony')
-    ->registerNamespace('Twig', $paths['lib'] . 'Twig')
-    ->setFallbackAutoloader(true)
-    ->register();
-
-$runner = new Runner($loader, $paths);
+require_once 'Phrozn/Autoloader.php';
+$loader = Loader::getInstance();
+$runner = new Runner($loader);
 $runner->run();
-unset($runner, $loader, $paths, $base);
+
+unset($runner, $loader);
 
