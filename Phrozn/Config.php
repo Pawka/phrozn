@@ -23,7 +23,8 @@
 
 namespace Phrozn;
 use Symfony\Component\Yaml\Yaml,
-    Phrozn\Has;
+    Phrozn\Has,
+    Phrozn\Autoloader as Loader;
 
 /**
  * Phozn configuration reader and aggregator
@@ -117,11 +118,14 @@ class Config
      */
     public function updatePaths()
     {
-        foreach ($this->configs['paths'] as $key => $file) {
-            $this->configs['paths'][$key] = 
-                realpath(dirname(__FILE__) . '/../../' . $file);
+        if (isset($this->configs['paths'])) {
+            $paths = Loader::getInstance()->getPaths();
+            foreach ($this->configs['paths'] as $key => $file) {
+                $file = str_replace('@PEAR-DIR@', $paths['php_dir'], $file);
+                $file = str_replace('@DATA-DIR@', $paths['data_dir'], $file);
+                $this->configs['paths'][$key] = $file;
+            }
         }
-
         return $this;
     }
 }
