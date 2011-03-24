@@ -5,16 +5,16 @@
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Phrozn</name>
  <channel>pear.phrozn.info</channel>
- <summary>Static web-site generator in PHP.</summary>
- <description>Phrozn is static web-site generator written in PHP.</description>
+ <summary>Static web-site generator for PHP.</summary>
+ <description>Phrozn is extremely flexible static site generator for PHP.</description>
  <lead>
   <name>Victor Farazdagi</name>
   <user>victor</user>
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-03-23</date>
- <time>04:36:06</time>
+ <date>2011-03-24</date>
+ <time>05:36:40</time>
  <version>
   <release>0.1.0</release>
   <api>0.1.0</api>
@@ -42,6 +42,7 @@
      <tasks:replace from="@DATA-DIR@" to="data_dir" type="pear-config" />
      <tasks:replace from="@PEAR-DIR@" to="php_dir" type="pear-config" />
     </file>
+    <file baseinstalldir="/" name="release.sh" role="data" />
    </dir> <!-- /bin -->
    <dir name="configs">
     <dir name="commands">
@@ -358,6 +359,16 @@
    <pearinstaller>
     <min>1.4.6</min>
    </pearinstaller>
+   <package>
+    <name>Console_CommandLine</name>
+    <channel>pear.php.net</channel>
+    <min>1.1.3</min>
+   </package>
+   <package>
+    <name>Console_Color</name>
+    <channel>pear.php.net</channel>
+    <min>1.0.3</min>
+   </package>
   </required>
  </dependencies>
  <phprelease>
@@ -366,21 +377,4 @@
    <install as="phrozn" name="bin/phrozn.php" />
   </filelist>
  </phprelease>
- <changelog>
-  <release>
-   <version>
-    <release>0.1.0</release>
-    <api>0.1.0</api>
-   </version>
-   <stability>
-    <release>beta</release>
-    <api>beta</api>
-   </stability>
-   <date>2011-03-23</date>
-   <license uri="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</license>
-   <notes>
-* The first public release of Phrozn
-   </notes>
-  </release>
- </changelog>
 </package>
