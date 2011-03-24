@@ -1,2 +1,3 @@
 *.swp
 __TwigTemplate*
+/build/pear/*
