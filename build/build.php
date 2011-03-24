@@ -1,16 +1,24 @@
 <?php
+use Phrozn\Autoloader as Loader;
+
+// rely on configuration files
+require_once dirname(__FILE__) . '/../Phrozn/Autoloader.php';
+$loader = Loader::getInstance()->getLoader();
+$config = new \Phrozn\Config(dirname(__FILE__) . '/../configs/');
+
 require_once('PEAR/PackageFileManager2.php');
 PEAR::setErrorHandling(PEAR_ERROR_DIE);
 
 $pack = new PEAR_PackageFileManager2;
 $outputDir = realpath(dirname(__FILE__) . '/../') . '/';
+$inputDir = realpath(dirname(__FILE__) . '/../');
 
 $e = $pack->setOptions(array(
     'baseinstalldir' => '/',
-    'packagedirectory' => dirname(__FILE__) . '/../',
+    'packagedirectory' => $inputDir,
     'ignore' => array(
         'build/', 'tests/', 'extras/', 'plugin/',  
-        'phrozn.png', '*.tgz',
+        'phrozn.png', '*.tgz', 'bin/release'
     ),
     'outputdirectory' => $outputDir,
     'simpleoutput' => true,
@@ -29,21 +37,22 @@ $e = $pack->setOptions(array(
         'LICENSE' => 'doc',
     ),
     'installexceptions' => array(
-    )
+    ),
+    'clearchangelog' => true,
 ));
 
 $pack->setPackage('Phrozn');
-$pack->setSummary('Static web-site generator in PHP.');
-$pack->setDescription('Phrozn is static web-site generator written in PHP.');
+$pack->setSummary($config['phrozn']['summary']);
+$pack->setDescription($config['phrozn']['description']);
 
 $pack->setChannel('pear.phrozn.info');
 $pack->setPackageType('php'); // this is a PEAR-style php script package
 
-$pack->setReleaseVersion('0.1.0');
-$pack->setAPIVersion('0.1.0');
+$pack->setReleaseVersion($config['phrozn']['version']);
+$pack->setAPIVersion($config['phrozn']['version']);
 
-$pack->setReleaseStability('beta');
-$pack->setAPIStability('beta');
+$pack->setReleaseStability($config['phrozn']['stability']);
+$pack->setAPIStability($config['phrozn']['stability']);
 
 $pack->setNotes('
     * The first public release of Phrozn
@@ -56,8 +65,13 @@ $pack->addRelease();
 $pack->addInstallAs('bin/phr.php', 'phr');
 $pack->addInstallAs('bin/phrozn.php', 'phrozn');
 
+// core dependencies
 $pack->setPhpDep('5.3.0');
 $pack->setPearinstallerDep('1.4.6');
+
+// package dependencies
+$pack->addPackageDepWithChannel('required', 'Console_CommandLine', 'pear.php.net', '1.1.3');
+$pack->addPackageDepWithChannel('required', 'Console_Color', 'pear.php.net', '1.0.3');
 
 $pack->addReplacement('bin/phrozn.php', 'pear-config', '/usr/bin/env php', 'php_bin');
 $pack->addReplacement('bin/phrozn.php', 'pear-config', '@PHP-BIN@', 'php_bin');
@@ -75,5 +89,5 @@ $pack->addReplacement('Phrozn/Autoloader.php', 'pear-config', '@PEAR-DIR@', 'php
 
 $pack->generateContents();
 
-echo $pack->writePackageFile();
-echo 'Package file created: ' . $outputDir . 'package.xml';
+$pack->writePackageFile();
+echo 'Package file created: ' . $outputDir . 'package.xml' . "\n";
