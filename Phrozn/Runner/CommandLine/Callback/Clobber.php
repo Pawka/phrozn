@@ -24,7 +24,9 @@
 namespace Phrozn\Runner\CommandLine\Callback;
 use Console_Color as Color,
     Symfony\Component\Yaml\Yaml,
-    Phrozn\Runner\CommandLine;
+    Phrozn\Runner\CommandLine,
+    Phrozn\Outputter,
+    Phrozn\Runner\CommandLine\Reader;
 
 /**
  * phrozn clobber command
@@ -94,7 +96,11 @@ class Clobber
         if (null !== $this->unitTestData) {
             return $this->unitTestData;
         } else {
-            return readline("Type 'yes' to continue: ");
+            $outputter = new Outputter\PlainOutputter();
+            $reader = new Reader();
+            return $reader
+                ->setOutputter($outputter)
+                ->readLine("Type 'yes' to continue: ");
         }
     }
 
