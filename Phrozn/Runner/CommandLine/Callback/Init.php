@@ -77,29 +77,60 @@ class Init
             }
         }
 
+        // copy skeleton to newly inited project
         $skeletonPath = $config['paths']['skeleton'];
-        $dir = new \RecursiveDirectoryIterator($skeletonPath);
-        $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
-        $dirname = '';
-        foreach ($it as $item) {
-            $baseName = $item->getBaseName();
-            if ($baseName != '.' && $baseName != '..') {
-                if ($item->isFile()) {
-                    $destPath = $dirname . $item->getBaseName();
-                    if (@copy($item->getPathname(), $path . $destPath)) {
-                        $this->out(self::STATUS_ADDED . "{$destPath}");
-                    } else {
-                        $this->out(self::STATUS_FAIL . "{$destPath}");
-                    }
-                    //echo 'copy ' . $item->getPathname() . ' -> ' . $path . $destPath . "\n";
-                } else if ($item->isDir()) {
-                    $dirname = str_replace($skeletonPath, '', $item->getRealPath()) . '/';
-                    mkdir($path . $dirname);
-                }
+        $this->copy($skeletonPath, $path, function ($that, $destPath, $status) use ($path) {
+            $destPath = str_replace('//', '/', $destPath);
+            $destPath = str_replace($path, '', $destPath);
+            if ($status) {
+                $that->out(Base::STATUS_ADDED . "{$destPath}");
+            } else {
+                $that->out(Base::STATUS_FAIL . "{$destPath}");
             }
-        }
+        });
 
         return $this->out($this->getFooter());
+    }
+
+    /**
+     * Copy a file, or recursively copy a folder and its contents
+     *
+     * @link http://aidanlister.com/2004/04/recursively-copying-directories-in-php/
+     * @param string $source Source path
+     * @param string $dest Destination path
+     * @return bool Returns TRUE on success, FALSE on failure
+     */
+    private function copy($source, $dest, $callback)
+    {
+        // Check for symlinks
+        if (is_link($source)) {
+            return symlink(readlink($source), $dest);
+        }
+    
+        // Simple copy for a file
+        if (is_file($source)) {
+            $result = @copy($source, $dest);
+            $callback($this, $dest, $result);
+            return $result;
+        }
+    
+        // Make destination directory
+        if (!is_dir($dest)) {
+            mkdir($dest);
+        }
+    
+        // Loop through the folder
+        $dir = dir($source);
+        while (false !== $entry = $dir->read()) {
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+            $this->copy("$source/$entry", "$dest/$entry", $callback);
+        }
+    
+        // Clean up
+        $dir->close();
+        return true;
     }
 
 }

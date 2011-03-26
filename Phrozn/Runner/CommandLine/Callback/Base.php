@@ -146,6 +146,26 @@ abstract class Base
     }
 
     /**
+     * Output string to stdout (flushes output). Wrapper around Outputter
+     *
+     * @param string $str String to output
+     *
+     * @return \Phrozn\Runner\CommandLine\Callback
+     */
+    public function out($str)
+    {
+        $str = Color::convert($str);
+        if ($this->useAnsiColors() === false) {
+            $str = Color::strip($str);
+        }
+        $this->getOutputter()->stdout($str, '');
+        if (count(\ob_get_status()) !== 0) {
+            ob_flush();
+        }
+    }
+
+
+    /**
      * Combine command documentation
      *
      * @param string $file Command file to combine
@@ -236,25 +256,6 @@ abstract class Base
     protected function pad($str)
     {
         return str_repeat(' ', strlen(Color::strip(Color::convert($str))));
-    }
-
-    /**
-     * Output string to stdout (flushes output)
-     *
-     * @param string $str String to output
-     *
-     * @return \Phrozn\Runner\CommandLine\Callback
-     */
-    protected function out($str)
-    {
-        $str = Color::convert($str);
-        if ($this->useAnsiColors() === false) {
-            $str = Color::strip($str);
-        }
-        $this->getOutputter()->stdout($str, '');
-        if (count(\ob_get_status()) !== 0) {
-            ob_flush();
-        }
     }
 
     private function useAnsiColors()
