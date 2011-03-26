@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-03-26</date>
- <time>04:38:24</time>
+ <date>2011-03-27</date>
+ <time>00:32:17</time>
  <version>
-  <release>0.1.22</release>
-  <api>0.1.22</api>
+  <release>0.1.23</release>
+  <api>0.1.23</api>
  </version>
  <stability>
   <release>beta</release>
@@ -82,6 +82,8 @@
      <file baseinstalldir="/" name="Base.php" role="php" />
      <file baseinstalldir="/" name="Dumb.php" role="php" />
      <file baseinstalldir="/" name="Less.php" role="php" />
+     <file baseinstalldir="/" name="Markdown.php" role="php" />
+     <file baseinstalldir="/" name="Textile.php" role="php" />
      <file baseinstalldir="/" name="Twig.php" role="php" />
     </dir> <!-- /Phrozn/Processor -->
     <dir name="Runner">
@@ -125,7 +127,14 @@
     </dir> <!-- /Phrozn/Site -->
     <dir name="Vendor">
      <dir name="Extra">
+      <dir name="Processor">
+       <file baseinstalldir="/" name="Textile.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Extra/Processor -->
+      <dir name="textile-2.0.0">
+       <file baseinstalldir="/" name="example.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Extra/textile-2.0.0 -->
       <file baseinstalldir="/" name="lessc.inc.php" role="php" />
+      <file baseinstalldir="/" name="markdown.php" role="php" />
      </dir> <!-- /Phrozn/Vendor/Extra -->
      <dir name="Symfony">
       <dir name="Component">
