@@ -1,0 +1,1 @@
+code coverage gets regenirated every time unit tests are run, so content of this folder is .gitignored
