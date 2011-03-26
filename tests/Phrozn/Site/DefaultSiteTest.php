@@ -53,10 +53,23 @@ class DefaultSiteTest
 
         $outputter = new TestOutputter($this);
         $this->assertFalse(is_readable($path . 'site/2011-02-24-default-site.html'));
+        $this->assertFalse(is_readable($path . 'site/markdown.html'));
+        $this->assertFalse(is_readable($path . 'site/textile.html'));
         $site
             ->setOutputter($outputter)
             ->compile();
         $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
+        $this->assertTrue(is_readable($path . 'site/markdown.html'));
+        $this->assertTrue(is_readable($path . 'site/textile.html'));
+
+        // test processor renderers
+        $static = file_get_contents($path . 'test/markdown.html');
+        $rendered = file_get_contents($path . 'site/markdown.html');
+        $this->assertSame($static, $rendered);
+
+        $static = file_get_contents($path . 'test/textile.html');
+        $rendered = file_get_contents($path . 'site/textile.html');
+        $this->assertSame($static, $rendered);
     }
 
     public function testSiteCompilationEntriesNotFound()
