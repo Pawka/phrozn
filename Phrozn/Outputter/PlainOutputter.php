@@ -47,7 +47,6 @@ class PlainOutputter
         if (defined('STDOUT')) {
             fwrite(STDOUT, $msg);
         } else {
-            var_dump($msg);
             echo $msg;
             if (count(\ob_get_status()) !== 0) {
                 ob_flush();
