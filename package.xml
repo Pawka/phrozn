@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-03-24</date>
- <time>06:14:05</time>
+ <date>2011-03-26</date>
+ <time>01:18:14</time>
  <version>
-  <release>0.1.0</release>
-  <api>0.1.0</api>
+  <release>0.1.1</release>
+  <api>0.1.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -75,6 +75,7 @@
     </dir> <!-- /Phrozn/Has -->
     <dir name="Outputter">
      <file baseinstalldir="/" name="DefaultOutputter.php" role="php" />
+     <file baseinstalldir="/" name="PlainOutputter.php" role="php" />
      <file baseinstalldir="/" name="TestOutputter.php" role="php" />
     </dir> <!-- /Phrozn/Outputter -->
     <dir name="Processor">
@@ -96,6 +97,7 @@
       <file baseinstalldir="/" name="Command.php" role="php" />
       <file baseinstalldir="/" name="Commands.php" role="php" />
       <file baseinstalldir="/" name="Parser.php" role="php" />
+      <file baseinstalldir="/" name="Reader.php" role="php" />
      </dir> <!-- /Phrozn/Runner/CommandLine -->
      <file baseinstalldir="/" name="CommandLine.php" role="php" />
     </dir> <!-- /Phrozn/Runner -->
