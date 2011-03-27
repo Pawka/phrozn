@@ -24,7 +24,7 @@
 namespace Phrozn\Site\View;
 use Phrozn\Site,
     Phrozn\Site\View\OutputPath\Entry as OutputFile,
-    Phrozn\Processor\Markdown as Processor;
+    Phrozn\Processor\Textile as Processor;
 
 /**
  * Textile View
