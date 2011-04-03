@@ -44,8 +44,9 @@ class Entry
         $permalink = $this->getView()->getParam('this.permalink', null);
 
         if ($permalink === null) {
-            return $this->getView()->getOutputDir() 
-                . $this->getRelativeFile('entries', false) . '.html';
+            return rtrim($this->getView()->getOutputDir(), '/')
+                . '/'
+                . ltrim($this->getRelativeFile('entries', false), '/') . '.html';
         } 
 
         $class = 'Phrozn\\Site\\View\\OutputPath\\Entry\\' . ucfirst($permalink);

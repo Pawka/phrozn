@@ -41,7 +41,8 @@ class Style
      */
     public function get()
     {
-        return $this->getView()->getOutputDir() 
-             . $this->getRelativeFile('styles') . '.css';
+        return rtrim($this->getView()->getOutputDir(), '/') 
+             . '/'
+             . ltrim($this->getRelativeFile('styles'), '/') . '.css';
     }
 }

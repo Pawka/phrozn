@@ -41,7 +41,8 @@ class Script
      */
     public function get()
     {
-        return $this->getView()->getOutputDir() 
-             . $this->getRelativeFile('scripts') . '.js';
+        return rtrim($this->getView()->getOutputDir(), '/') 
+             . '/'
+             . ltrim($this->getRelativeFile('scripts'), '/') . '.js';
     }
 }

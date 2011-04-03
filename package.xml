@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-03-27</date>
- <time>16:27:52</time>
+ <date>2011-04-03</date>
+ <time>17:24:54</time>
  <version>
-  <release>0.1.25</release>
-  <api>0.1.25</api>
+  <release>0.1.26</release>
+  <api>0.1.26</api>
  </version>
  <stability>
   <release>beta</release>
@@ -344,12 +344,6 @@
     <dir name="scripts">
      <file baseinstalldir="/" name="default.js" role="data" />
     </dir> <!-- /skeleton/scripts -->
-    <dir name="site">
-     <dir name="styles">
-      <file baseinstalldir="/" name="README" role="data" />
-     </dir> <!-- /skeleton/site/styles -->
-     <file baseinstalldir="/" name="README" role="data" />
-    </dir> <!-- /skeleton/site -->
     <dir name="styles">
      <file baseinstalldir="/" name="default.less" role="data" />
     </dir> <!-- /skeleton/styles -->

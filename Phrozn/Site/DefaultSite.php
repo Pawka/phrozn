@@ -116,7 +116,7 @@ class DefaultSite
                         throw new \Exception(sprintf('Failed transfering "%s" from media folder', $inputFile));
                     }
                     $inputFile = str_replace(getcwd(), '.', $inputFile);
-                    $outputFile = str_replace(getcwd(), '.', $outputFile);
+                    $outputFile = str_replace(getcwd(), '.', realpath($outputFile));
                     $this->getOutputter()
                          ->stdout('%b' . $outputFile . '%n copied');
                 } catch (\Exception $e) {
