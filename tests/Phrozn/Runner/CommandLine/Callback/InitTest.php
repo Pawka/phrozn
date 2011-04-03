@@ -80,9 +80,13 @@ class InitTest
 
         $result = $this->getParseResult("phr init {$path}");
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        $this->assertFalse(is_dir($path . '/_phrozn/site'));
-        $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(is_dir($path . '/.phrozn/entries'));
+        $this->assertFalse(is_dir($path . '/.phrozn/layouts'));
+        $this->assertFalse(is_dir($path . '/.phrozn/media'));
+        $this->assertFalse(is_dir($path . '/.phrozn/scripts'));
+        $this->assertFalse(is_dir($path . '/.phrozn/styles'));
+        $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
 
         $this->runner
             ->setParseResult($result)
@@ -90,13 +94,17 @@ class InitTest
 
         $out->assertInLogs('Initializing new project');
         $out->assertInLogs('[ADDED]   config.yml');
-        $out->assertInLogs('[ADDED]   site/README');
+        $out->assertInLogs('[ADDED]   entries/index.twig');
         $out->assertInLogs('[ADDED]   layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_dir($path . '/_phrozn/site'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_dir($path . '/.phrozn/entries'));
+        $this->assertTrue(is_dir($path . '/.phrozn/layouts'));
+        $this->assertTrue(is_dir($path . '/.phrozn/media'));
+        $this->assertTrue(is_dir($path . '/.phrozn/scripts'));
+        $this->assertTrue(is_dir($path . '/.phrozn/styles'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
     }
 
     public function testInitWithImplicitPath()
@@ -108,9 +116,13 @@ class InitTest
 
         $result = $this->getParseResult("phr init");
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        $this->assertFalse(is_dir($path . '/_phrozn/site'));
-        $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(is_dir($path . '/.phrozn/entries'));
+        $this->assertFalse(is_dir($path . '/.phrozn/layouts'));
+        $this->assertFalse(is_dir($path . '/.phrozn/media'));
+        $this->assertFalse(is_dir($path . '/.phrozn/scripts'));
+        $this->assertFalse(is_dir($path . '/.phrozn/styles'));
+        $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
 
         $this->runner
             ->setParseResult($result)
@@ -118,13 +130,17 @@ class InitTest
 
         $out->assertInLogs('Initializing new project');
         $out->assertInLogs('[ADDED]   config.yml');
-        $out->assertInLogs('[ADDED]   site/README');
+        $out->assertInLogs('[ADDED]   entries/index.twig');
         $out->assertInLogs('[ADDED]   layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_dir($path . '/_phrozn/site'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_dir($path . '/.phrozn/entries'));
+        $this->assertTrue(is_dir($path . '/.phrozn/layouts'));
+        $this->assertTrue(is_dir($path . '/.phrozn/media'));
+        $this->assertTrue(is_dir($path . '/.phrozn/scripts'));
+        $this->assertTrue(is_dir($path . '/.phrozn/styles'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
     }
 
     public function testInitWithExplicitNonAbsolutePath()
@@ -136,9 +152,13 @@ class InitTest
 
         $result = $this->getParseResult("phr init project");
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        $this->assertFalse(is_dir($path . '/_phrozn/site'));
-        $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertFalse(is_dir($path . '/project/.phrozn'));
+        $this->assertFalse(is_dir($path . '/project/.phrozn/entries'));
+        $this->assertFalse(is_dir($path . '/project/.phrozn/layouts'));
+        $this->assertFalse(is_dir($path . '/project/.phrozn/media'));
+        $this->assertFalse(is_dir($path . '/project/.phrozn/scripts'));
+        $this->assertFalse(is_dir($path . '/project/.phrozn/styles'));
+        $this->assertFalse(is_readable($path . '/project/.phrozn/config.yml'));
 
         $this->runner
             ->setParseResult($result)
@@ -147,13 +167,17 @@ class InitTest
 
         $out->assertInLogs('Initializing new project');
         $out->assertInLogs('[ADDED]   config.yml');
-        $out->assertInLogs('[ADDED]   site/README');
+        $out->assertInLogs('[ADDED]   entries/index.twig');
         $out->assertInLogs('[ADDED]   layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
-        $this->assertTrue(is_dir($path . '/project/_phrozn'));
-        $this->assertTrue(is_dir($path . '/project/_phrozn/site'));
-        $this->assertTrue(is_readable($path . '/project/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/project/.phrozn'));
+        $this->assertTrue(is_dir($path . '/project/.phrozn/entries'));
+        $this->assertTrue(is_dir($path . '/project/.phrozn/layouts'));
+        $this->assertTrue(is_dir($path . '/project/.phrozn/media'));
+        $this->assertTrue(is_dir($path . '/project/.phrozn/scripts'));
+        $this->assertTrue(is_dir($path . '/project/.phrozn/styles'));
+        $this->assertTrue(is_readable($path . '/project/.phrozn/config.yml'));
     }
 
     public function testInitFailed()
@@ -166,16 +190,16 @@ class InitTest
 
         $result = $this->getParseResult("phr init {$path}");
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        mkdir($path . '/_phrozn');
-        $this->assertTrue(is_dir($path . '/_phrozn'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
+        mkdir($path . '/.phrozn');
+        $this->assertTrue(is_dir($path . '/.phrozn'));
 
         $this->runner
             ->setParseResult($result)
             ->execute();
 
         $out->assertInLogs('Initializing new project');
-        $out->assertInLogs("[FAIL]    Project directory '_phrozn' already exists..");
+        $out->assertInLogs("[FAIL]    Project directory '.phrozn' already exists..");
     }
 
     public function testInitFailedPermissions()
@@ -189,7 +213,7 @@ class InitTest
 
         $result = $this->getParseResult("phr init {$path}");
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
 
         $this->runner
             ->setParseResult($result)
@@ -212,7 +236,7 @@ class InitTest
         $path = dirname(__FILE__) . '/project';
         chmod($path, 0777);
 
-        $path .= '/_phrozn';
+        $path .= '/.phrozn';
         if (is_dir($path)) {
             `rm -rf {$path}`;
         }

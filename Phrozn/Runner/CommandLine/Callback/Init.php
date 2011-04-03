@@ -59,7 +59,7 @@ class Init
         }
         $path = realpath($path);
 
-        $path .= '/_phrozn/'; // where to copy skeleton
+        $path .= '/.phrozn/'; // where to copy skeleton
 
         ob_start();
         $this->out($this->getHeader());
@@ -67,7 +67,7 @@ class Init
         $this->out("\n  Project path: {$path}");
 
         if (is_dir($path)) {
-            $this->out(self::STATUS_FAIL . "Project directory '_phrozn' already exists..");
+            $this->out(self::STATUS_FAIL . "Project directory '.phrozn' already exists..");
             $this->out($this->pad(self::STATUS_FAIL) . "Type 'phrozn help clobber' to get help on removing existing project.");
             return $this->out($this->getFooter());
         } else {

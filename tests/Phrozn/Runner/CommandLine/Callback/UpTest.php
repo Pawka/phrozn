@@ -80,13 +80,13 @@ class UpTest
         mkdir($path);
 
         // initialize project
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        $this->assertFalse(is_dir($path . '/_phrozn/site'));
-        $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(is_dir($path . '/.phrozn/entries'));
+        $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
         `phr init {$path}`;
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_dir($path . '/_phrozn/site'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_dir($path . '/.phrozn/entries'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
 
         $result = $this->getParseResult("phr up {$path} {$path}");
 
@@ -95,8 +95,8 @@ class UpTest
             ->setParseResult($result)
             ->execute();
 
-        $out->assertInLogs("[OK]      Source directory located: {$path}/_phrozn");
-        $out->assertInLogs("[OK]      Destination directory located: {$path}/_phrozn/site");
+        $out->assertInLogs("[OK]      Source directory located: {$path}/.phrozn");
+        $out->assertInLogs("[OK]      Destination directory located: {$path}/.phrozn/entries");
 
     }
 
@@ -114,7 +114,7 @@ class UpTest
             `rm -rf {$path}`;
         }
 
-        $path .= '/_phrozn';
+        $path .= '/.phrozn';
         if (is_dir($path)) {
             `rm -rf {$path}`;
         }

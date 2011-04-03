@@ -92,17 +92,17 @@ class Up
         $in = $out = null;
 
         $in = $this->extractPath('in');
-        $out = $this->extractPath('in');
+        $out = $this->extractPath('out');
 
-        if (strpos($in, '_phrozn') === false) {
+        if (strpos($in, '.phrozn') === false) {
             return array(
-                $in . '/_phrozn/', 
-                $out . '/_phrozn/site'
+                $in . '/.phrozn/', 
+                $out . '/'
             );
         } else {
             return array(
                 $in . '/', 
-                $out . '/site'
+                $out . '/../'
             );
         }
     }

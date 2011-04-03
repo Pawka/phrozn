@@ -77,14 +77,14 @@ class ClobberTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        mkdir($path . '/_phrozn');
-        touch($path . '/_phrozn/config.yml');
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
 
 
         $result = $this->getParseResult("phr clobber {$path}");
 
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
 
         $this->runner
             ->setUnitTestData('yes')
@@ -92,12 +92,12 @@ class ClobberTest
             ->execute();
 
         $out->assertInLogs('Purging project data');
-        $out->assertInLogs("Located project folder: {$path}/_phrozn");
-        $out->assertInLogs("[DELETED]  {$path}/_phrozn");
+        $out->assertInLogs("Located project folder: {$path}/.phrozn");
+        $out->assertInLogs("[DELETED]  {$path}/.phrozn");
 
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
     }
 
     public function testClobberNoWithExplicitPath()
@@ -105,14 +105,14 @@ class ClobberTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        mkdir($path . '/_phrozn');
-        touch($path . '/_phrozn/config.yml');
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
 
 
         $result = $this->getParseResult("phr clobber {$path}");
 
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
 
         $this->runner
             ->setUnitTestData('no')
@@ -120,11 +120,11 @@ class ClobberTest
             ->execute();
 
         $out->assertInLogs('Purging project data');
-        $out->assertInLogs("Located project folder: {$path}/_phrozn");
+        $out->assertInLogs("Located project folder: {$path}/.phrozn");
         $out->assertInLogs("[FAIL]     Aborted..");
 
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
     }
 
     public function testClobberYesWithImplicitPath()
@@ -133,14 +133,14 @@ class ClobberTest
 
         $path = dirname(__FILE__) . '/project';
         $this->assertTrue(chdir($path));
-        mkdir($path . '/_phrozn');
-        touch($path . '/_phrozn/config.yml');
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
 
 
         $result = $this->getParseResult("phr clobber");
 
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
 
         $this->runner
             ->setUnitTestData('yes')
@@ -148,11 +148,11 @@ class ClobberTest
             ->execute();
 
         $out->assertInLogs('Purging project data');
-        $out->assertInLogs("Located project folder: {$path}/_phrozn");
-        $out->assertInLogs("[DELETED]  {$path}/_phrozn");
+        $out->assertInLogs("Located project folder: {$path}/.phrozn");
+        $out->assertInLogs("[DELETED]  {$path}/.phrozn");
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
     }
 
     public function testClobberYesWithNonAbsolutePath()
@@ -161,14 +161,14 @@ class ClobberTest
 
         $path = dirname(__FILE__) . '/project';
         $this->assertTrue(chdir($path . '/../'));
-        mkdir($path . '/_phrozn');
-        touch($path . '/_phrozn/config.yml');
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
 
 
         $result = $this->getParseResult("phr clobber project");
 
-        $this->assertTrue(is_dir($path . '/_phrozn'));
-        $this->assertTrue(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertTrue(is_dir($path . '/.phrozn'));
+        $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
 
         $this->runner
             ->setUnitTestData('yes')
@@ -176,11 +176,11 @@ class ClobberTest
             ->execute();
 
         $out->assertInLogs('Purging project data');
-        $out->assertInLogs("Located project folder: {$path}/_phrozn");
-        $out->assertInLogs("[DELETED]  {$path}/_phrozn");
+        $out->assertInLogs("Located project folder: {$path}/.phrozn");
+        $out->assertInLogs("[DELETED]  {$path}/.phrozn");
 
-        $this->assertFalse(is_dir($path . '/_phrozn'));
-        $this->assertFalse(is_readable($path . '/_phrozn/config.yml'));
+        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
     }
 
     private function getParseResult($cmd)
@@ -195,7 +195,7 @@ class ClobberTest
         $path = dirname(__FILE__) . '/project';
         chmod($path, 0777);
 
-        $path .= '/_phrozn';
+        $path .= '/.phrozn';
         if (is_dir($path)) {
             `rm -rf {$path}`;
         }

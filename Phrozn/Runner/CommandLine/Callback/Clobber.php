@@ -67,7 +67,7 @@ class Clobber
 
         $config = $this->getConfig();
 
-        $path .= '/_phrozn/'; // where to copy skeleton
+        $path .= '/.phrozn/'; // where to find skeleton
 
         $this->out($this->getHeader());
         $this->out("Purging project data..");

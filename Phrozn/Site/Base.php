@@ -254,8 +254,8 @@ abstract class Base
     protected function getProjectDir()
     {
         $dir = rtrim($this->getInputDir(), '/');
-        if (is_dir($dir . '/_phrozn')) {
-            $dir .= '/_phrozn/';
+        if (is_dir($dir . '/.phrozn')) {
+            $dir .= '/.phrozn/';
         } 
 
         // see if we have entries folder present

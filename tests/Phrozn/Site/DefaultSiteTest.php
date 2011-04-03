@@ -48,7 +48,7 @@ class DefaultSiteTest
 
     public function testSiteCompilation()
     {
-        $path = dirname(__FILE__) . '/project/_phrozn/';
+        $path = dirname(__FILE__) . '/project/.phrozn/';
         $site = new Site($path, $path . 'site');
 
         $outputter = new TestOutputter($this);
@@ -87,7 +87,7 @@ class DefaultSiteTest
 
     public function testSiteCompilationWithCustomOutputter()
     {
-        $path = dirname(__FILE__) . '/project/_phrozn/';
+        $path = dirname(__FILE__) . '/project/.phrozn/';
         $site = new Site($path, $path . 'site');
         $outputter = new TestOutputter($this);
 
@@ -114,7 +114,7 @@ class DefaultSiteTest
 
     public function testSiteCompilationProjectGuess()
     {
-        $path = dirname(__FILE__) . '/project/_phrozn/';
+        $path = dirname(__FILE__) . '/project/.phrozn/';
         $site = new Site(realpath($path . '/../'), $path . 'site');
         $outputter = new TestOutputter($this);
 
@@ -147,7 +147,7 @@ class DefaultSiteTest
 
     private function cleanOutputDirectory()
     {
-        $path = dirname(__FILE__) . '/project/_phrozn/site';
+        $path = dirname(__FILE__) . '/project/.phrozn/site';
         if (is_dir($path)) {
             `rm -rf {$path}`;
             mkdir($path);
