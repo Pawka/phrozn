@@ -96,7 +96,7 @@ class UpTest
             ->execute();
 
         $out->assertInLogs("[OK]      Source directory located: {$path}/.phrozn");
-        $out->assertInLogs("[OK]      Destination directory located: {$path}/.phrozn/entries");
+        $out->assertInLogs("[OK]      Destination directory located: {$path}/");
 
     }
 
