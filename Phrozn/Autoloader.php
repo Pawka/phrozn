@@ -120,6 +120,17 @@ class Autoloader
             ->registerNamespace('Twig', $base . 'Vendor/Twig')
             ->setFallbackAutoloader(true)
             ->register();
+
+        // allow to use plugins from project's .phrozn/plugins
+        $plugins = getcwd();
+        if (strpos($plugins, '.phrozn') === false) {
+            $plugins .= '/.phrozn';
+        }
+        $plugins .= '/plugins/';
+        if (is_dir($plugins)) {
+            $loader->registerNamespace('PhroznPlugin', $plugins);
+        }
+
         $this->loader = $loader;
     }
 

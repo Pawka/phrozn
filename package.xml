@@ -13,8 +13,8 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-03</date>
- <time>17:24:54</time>
+ <date>2011-04-06</date>
+ <time>16:55:28</time>
  <version>
   <release>0.1.26</release>
   <api>0.1.26</api>
@@ -341,6 +341,9 @@
      </dir> <!-- /skeleton/media/img -->
      <file baseinstalldir="/" name="README" role="data" />
     </dir> <!-- /skeleton/media -->
+    <dir name="plugins">
+     <file baseinstalldir="/" name="README" role="data" />
+    </dir> <!-- /skeleton/plugins -->
     <dir name="scripts">
      <file baseinstalldir="/" name="default.js" role="data" />
     </dir> <!-- /skeleton/scripts -->

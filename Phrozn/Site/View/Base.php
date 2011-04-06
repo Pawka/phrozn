@@ -25,6 +25,7 @@ namespace Phrozn\Site\View;
 use Symfony\Component\Yaml\Yaml,
     Phrozn\Site\View\Factory,
     Phrozn\Site\Layout\DefaultLayout as Layout,
+    Phrozn\Site\View\OutputPath\Entry as OutputFile,
     Phrozn\Autoloader as Loader;
 
 /**
@@ -196,7 +197,8 @@ abstract class Base
      */
     public function getOutputFile()
     {
-        return $this->outputFile;
+        $path = new OutputFile($this);
+        return $path->get();
     }
 
     /**

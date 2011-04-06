@@ -117,7 +117,11 @@ class Factory
     {
         $class = 'Phrozn\\Site\\View\\' . ucfirst($type);
         if (!class_exists($class)) {
-            throw new \Exception("View of type '{$type}' not found..");
+            // try to see if we have user defined plugin
+            $class = 'PhroznPlugin\\Site\\View\\' . ucfirst($type);
+            if (!class_exists($class)) {
+                throw new \Exception("View of type '{$type}' not found..");
+            }
         }
         $object = new $class;
         $object->setInputFile($this->getInputFile());
