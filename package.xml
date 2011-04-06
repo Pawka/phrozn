@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-06</date>
- <time>17:01:04</time>
+ <date>2011-04-07</date>
+ <time>00:51:33</time>
  <version>
-  <release>0.1.27</release>
-  <api>0.1.27</api>
+  <release>0.1.30</release>
+  <api>0.1.30</api>
  </version>
  <stability>
   <release>beta</release>
@@ -115,6 +115,7 @@
        <file baseinstalldir="/" name="Style.php" role="php" />
       </dir> <!-- /Phrozn/Site/View/OutputPath -->
       <file baseinstalldir="/" name="Base.php" role="php" />
+      <file baseinstalldir="/" name="Css.php" role="php" />
       <file baseinstalldir="/" name="Factory.php" role="php" />
       <file baseinstalldir="/" name="Js.php" role="php" />
       <file baseinstalldir="/" name="Less.php" role="php" />
