@@ -70,6 +70,8 @@ class DefaultSiteTest
         $static = file_get_contents($path . 'test/textile.html');
         $rendered = file_get_contents($path . 'site/textile.html');
         $this->assertSame($static, $rendered);
+
+        $outputter->assertInLogs(str_replace(dirname(__FILE__), '', $path) . 'entries/skipped.twig SKIPPED'); 
     }
 
     public function testSiteCompilationEntriesNotFound()
