@@ -49,7 +49,6 @@ class Textile
     {
         parent::__construct($inputFile, $outputDir);
 
-        $processor = new Processor();
         $this->addProcessor(new Processor());
     }
 
