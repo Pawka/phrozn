@@ -7,7 +7,7 @@ php ./build/build.php
 pear package ./package.xml
 
 #cleanup pirum
-rm -f ./build/pear/get/*
+rm -f ./build/pear/get/Phrozn*
 cd ./build/pear
 pirum build .
 pirum add . ../../*.tgz
