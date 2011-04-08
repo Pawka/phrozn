@@ -18,7 +18,7 @@ docs:
     name: clobber
     summary: *desc
     description: |
-        This command locates and removes Phrozon project directory, effectively
+        This command locates and removes Phrozn project directory ".phrozn", effectively
         deleting all user generated content.
 
         Use with caution.
