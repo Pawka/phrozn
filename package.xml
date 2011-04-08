@@ -14,10 +14,10 @@
   <active>yes</active>
  </lead>
  <date>2011-04-08</date>
- <time>18:00:38</time>
+ <time>20:11:38</time>
  <version>
-  <release>0.1.33</release>
-  <api>0.1.33</api>
+  <release>0.1.34</release>
+  <api>0.1.34</api>
  </version>
  <stability>
   <release>beta</release>
@@ -330,7 +330,6 @@
      <file baseinstalldir="/" name="README" role="data" />
     </dir> <!-- /skeleton/archive -->
     <dir name="entries">
-     <file baseinstalldir="/" name="2011-02-21-phrozn-generated-first-page-today.twig" role="data" />
      <file baseinstalldir="/" name="index.twig" role="data" />
     </dir> <!-- /skeleton/entries -->
     <dir name="layouts">
