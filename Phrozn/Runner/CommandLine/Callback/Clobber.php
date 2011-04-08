@@ -52,7 +52,11 @@ class Clobber
      */
     public function execute()
     {
-        $this->purgeProject();
+        try {
+            $this->purgeProject();
+        } catch (\Exception $e) {
+            $this->out(self::STATUS_FAIL . $e->getMessage());
+        }
     }
 
     private function purgeProject()
@@ -76,6 +80,11 @@ class Clobber
         $this->out( 
             "Project folder is to be removed.\n" .
             "This operation %rCAN NOT%n be undone.\n");
+
+        if (is_dir($path) === false) {
+            throw new \Exception("No project found at {$path}");
+        }
+
 
         if ($this->readLine() === 'yes') {
             `rm -rf $path`;

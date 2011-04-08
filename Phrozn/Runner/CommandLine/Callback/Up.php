@@ -45,7 +45,11 @@ class Up
      */
     public function execute()
     {
-        $this->updateProject();
+        try {
+            $this->updateProject();
+        } catch (\Exception $e) {
+            $this->out(self::STATUS_FAIL . $e->getMessage());
+        }
     }
 
     private function updateProject()
