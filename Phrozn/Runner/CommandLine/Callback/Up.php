@@ -49,6 +49,7 @@ class Up
             $this->updateProject();
         } catch (\Exception $e) {
             $this->out(self::STATUS_FAIL . $e->getMessage());
+            $this->out($this->getFooter());
         }
     }
 

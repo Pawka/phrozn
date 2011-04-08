@@ -56,6 +56,7 @@ class Clobber
             $this->purgeProject();
         } catch (\Exception $e) {
             $this->out(self::STATUS_FAIL . $e->getMessage());
+            $this->out($this->getFooter());
         }
     }
 

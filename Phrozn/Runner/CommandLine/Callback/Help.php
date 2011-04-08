@@ -77,13 +77,18 @@ class Help
         $out .= "Type 'phrozn --version' to see the program version and installed plugins.\n";
 
         $out .= "\nAvailable commands:\n";
+        $displayed = array(); // array of already displayed comands
         foreach ($commands as $name => $data) {
+            if(isset($displayed[$name])) {
+                continue;
+            }
             $command = $data['command'];
             $out .= '    ' . $name;
             if (null !== $command['aliases']) {
                 $out .= ' (' . implode(', ', $command['aliases']) . ')';
             }
             $out .= "\n";
+            $displayed[$name] = $name;
         }
 
         return $out;
