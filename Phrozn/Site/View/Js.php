@@ -24,7 +24,7 @@
 namespace Phrozn\Site\View;
 use Phrozn\Site,
     Phrozn\Site\View\OutputPath\Script as OutputFile,
-    Phrozn\Processor\Dumb as Processor;
+    Phrozn\Processor\Plain as Processor;
 
 /**
  * JavaScript View

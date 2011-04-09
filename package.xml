@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-08</date>
- <time>20:11:38</time>
+ <date>2011-04-09</date>
+ <time>05:13:11</time>
  <version>
-  <release>0.1.34</release>
-  <api>0.1.34</api>
+  <release>0.1.35</release>
+  <api>0.1.35</api>
  </version>
  <stability>
   <release>beta</release>
@@ -80,9 +80,9 @@
     </dir> <!-- /Phrozn/Outputter -->
     <dir name="Processor">
      <file baseinstalldir="/" name="Base.php" role="php" />
-     <file baseinstalldir="/" name="Dumb.php" role="php" />
      <file baseinstalldir="/" name="Less.php" role="php" />
      <file baseinstalldir="/" name="Markdown.php" role="php" />
+     <file baseinstalldir="/" name="Plain.php" role="php" />
      <file baseinstalldir="/" name="Textile.php" role="php" />
      <file baseinstalldir="/" name="Twig.php" role="php" />
     </dir> <!-- /Phrozn/Processor -->
@@ -111,6 +111,7 @@
        </dir> <!-- /Phrozn/Site/View/OutputPath/Entry -->
        <file baseinstalldir="/" name="Base.php" role="php" />
        <file baseinstalldir="/" name="Entry.php" role="php" />
+       <file baseinstalldir="/" name="Plain.php" role="php" />
        <file baseinstalldir="/" name="Script.php" role="php" />
        <file baseinstalldir="/" name="Style.php" role="php" />
       </dir> <!-- /Phrozn/Site/View/OutputPath -->
@@ -121,6 +122,7 @@
       <file baseinstalldir="/" name="Less.php" role="php" />
       <file baseinstalldir="/" name="Markdown.php" role="php" />
       <file baseinstalldir="/" name="OutputPath.php" role="php" />
+      <file baseinstalldir="/" name="Plain.php" role="php" />
       <file baseinstalldir="/" name="Textile.php" role="php" />
       <file baseinstalldir="/" name="Twig.php" role="php" />
      </dir> <!-- /Phrozn/Site/View -->

@@ -23,19 +23,19 @@
 
 namespace Phrozn\Site\View;
 use Phrozn\Site,
-    Phrozn\Site\View\OutputPath\Style as OutputFile,
+    Phrozn\Site\View\OutputPath\Plain as OutputFile,
     Phrozn\Processor\Plain as Processor;
 
 /**
- * CSS View
+ * Plain View without any text transformations
  *
  * @category    Phrozn
  * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class Css 
+class Plain 
     extends Base
-    implements Site\View  
+    implements Site\View
 {
     /**
      * Initialize view
@@ -50,6 +50,18 @@ class Css
         parent::__construct($inputFile, $outputDir);
 
         $this->addProcessor(new Processor());
+    }
+
+    /**
+     * Render view. Twig views are rendered within layout.
+     *
+     * @param array $vars List of variables passed to text processors
+     *
+     * @return string
+     */
+    public function render($vars = array())
+    {
+        return parent::render($vars);
     }
 
     /**

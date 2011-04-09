@@ -63,10 +63,8 @@ class FactoryTest
                     ->create();
     }
 
-    public function testWrongFileType()
+    public function testNonExistantProcessor()
     {
-        $this->setExpectedException('Exception',
-           "View of type 'wrong' not found");
 
         $path = dirname(__FILE__) . '/entries/';
         $input = $path . '2011-02-24-wrong-file-type.wrong';
@@ -75,6 +73,7 @@ class FactoryTest
         $view = $factory
                     ->setInputFile($input)
                     ->create();
+        $this->assertInstanceOf('\Phrozn\Site\View\Plain', $view);
     }
 
 }

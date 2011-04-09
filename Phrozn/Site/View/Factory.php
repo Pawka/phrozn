@@ -120,7 +120,8 @@ class Factory
             // try to see if we have user defined plugin
             $class = 'PhroznPlugin\\Site\\View\\' . ucfirst($type);
             if (!class_exists($class)) {
-                throw new \Exception("View of type '{$type}' not found..");
+                //throw new \Exception("View of type '{$type}' not found..");
+                $class = 'Phrozn\\Site\\View\\Plain';
             }
         }
         $object = new $class;

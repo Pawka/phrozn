@@ -24,13 +24,13 @@
 namespace Phrozn\Processor;
 
 /**
- * Dumb processor - knows nothing, does nothing
+ * Plain processor - knows nothing, does nothing
  *
  * @category    Phrozn
  * @package     Phrozn\Processor
  * @author      Victor Farazdagi
  */
-class Dumb
+class Plain
     extends Base
     implements \Phrozn\Processor 
 {
