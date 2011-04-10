@@ -1,15 +1,15 @@
 h1. Phrozn
 
-Phrozn is extremely flexible static site generator for PHP.
+Phrozn is extremely flexible static site generator in PHP.
 
 h2. Philosophy
 
 * Configurable: you should be able to tune it to your needs
-* SCM-Enabled: not extra work to make your site git-enabled
+* SCM-Enabled: no extra work to make your site git-enabled
 
 h2. Dev Notes
 
-* "Unit tested":http://test.phrozn.info (at least 93% code coverage)
+* "Unit tested":http://test.phrozn.info
 * API Documentation
 * User manual
 * Relies on SPL, Zend Framework 2, Symfony 2
