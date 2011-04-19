@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-12</date>
- <time>00:44:24</time>
+ <date>2011-04-19</date>
+ <time>17:46:59</time>
  <version>
-  <release>0.1.36</release>
-  <api>0.1.36</api>
+  <release>0.1.37</release>
+  <api>0.1.37</api>
  </version>
  <stability>
   <release>beta</release>
