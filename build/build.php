@@ -18,7 +18,7 @@ $e = $pack->setOptions(array(
     'packagedirectory' => $inputDir,
     'ignore' => array(
         'build/', 'tests/', 'extras/', 'plugin/',  
-        'phrozn.png', '*.tgz', 'bin/release'
+        'phrozn.png', '*.tgz', 'bin/release', 'tags',
     ),
     'outputdirectory' => $outputDir,
     'simpleoutput' => true,
