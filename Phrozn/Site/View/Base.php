@@ -493,7 +493,7 @@ abstract class Base
             $this->frontMatter = Yaml::load($frontMatter);
         } else {
             $this->template = $source;
-            $this->frontMatter = 0;
+            $this->frontMatter = null;
         }
 
         return $this;
