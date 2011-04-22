@@ -28,7 +28,7 @@ use Zend\Loader\StandardAutoloader as Loader;
  * Phrozn autoloader
  *
  * @category    Phrozn
- * @package     Phrozn\Site
+ * @package     Phrozn
  * @author      Victor Farazdagi
  */
 class Autoloader
