@@ -25,7 +25,7 @@ namespace Phrozn;
 use Zend\Loader\StandardAutoloader as Loader;
 
 /**
- * Phozn configuration reader and aggregator
+ * Phrozn autoloader
  *
  * @category    Phrozn
  * @package     Phrozn\Site
