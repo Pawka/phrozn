@@ -35,7 +35,7 @@ class Autoloader
 {
     /**
      * Singleton instance
-     * @var \Phrozn\Autoload
+     * @var \Phrozn\Autoloader
      * @see self::getInstance();
      */
     private static $instance;
@@ -48,7 +48,7 @@ class Autoloader
     /**
      * Singleton instance
      *
-     * @return \Phrozn\Autoload
+     * @return \Phrozn\Autoloader
      */
     public static function getInstance()
     {
