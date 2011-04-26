@@ -1,0 +1,41 @@
+# phr bundle 
+---
+command:
+    name: &name bundle
+    aliases: 
+    description: &desc Phrozn bundles manager
+    commands:
+        add:
+            name: add
+            description: Apply given bundle to Phrozn project
+            arguments:
+                path:
+                    help_name: bundle
+                    description: Bundle name, path or URL
+                    optional: false
+
+# callback
+callback: [Bundle, execute]
+
+# documentation
+docs:
+    name: bundle
+    summary: *desc
+    description: |
+        For flexibility various parts of Phrozn ecosystem can be combined together
+        into so-called bundles, which can be applied to project.
+        Bundle manager allows you to add/remove/update bundles easily.
+
+        If BUNDLE is the name of the bundle, then officially supported bundle is 
+        assumed. Otherwise you can specify path (or URL) to bundle file.
+
+        Essentially bundles are directories with pre-defined structure packed into
+        Phar achrives.
+
+    usage: %bphrozn%n %gbundle%n COMMAND BUNDLE
+    examples: |
+        To remove project directory in a current folder:
+        %bphrozn%n %gclobber%n 
+
+        To remove project directory in specified folder PATH:
+        %bphrozn%n %gclobber%n PATH
