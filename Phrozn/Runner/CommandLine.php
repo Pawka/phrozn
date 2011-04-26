@@ -80,14 +80,17 @@ class CommandLine
     /**
      * Process the request
      *
+     * @param array $params Runner options
+     *
      * @return void
      */
-    public function run()
+    public function run($params = null)
     {
         $this->parser = new Parser($this->paths);
 
         try {
-            $this->result = $this->parser->parse();
+            $argc = ($params === null) ? null : count($params);
+            $this->result = $this->parser->parse($argc, $params);
         } catch (\Exception $e) {
             $this->parser->displayError($e->getMessage());
         }

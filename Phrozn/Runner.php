@@ -35,7 +35,9 @@ interface Runner
     /**
      * Process the request
      *
+     * @param array $params Runner options
+     *
      * @return void
      */
-    public function run();
+    public function run($params = null);
 }

@@ -70,22 +70,12 @@ class Parser
             $this->addOption($name, $option);
         }
 
-        // sub-commands
+        // commands
         $commands = CommandLine\Commands::getInstance()
                             ->setPath($paths['configs'] . 'commands');
         foreach ($commands as $name => $data) {
-            $command = $data['command'];
-            $cmd = $this->addCommand($name, $command);
-            // command arguments
-            $args = isset($command['arguments']) ? $command['arguments'] : array();
-            foreach ($args as $name => $argument) {
-                $cmd->addArgument($name, $argument);
-            }
-            // command options
-            $opts = isset($command['options']) ? $command['options'] : array();
-            foreach ($opts as $name => $option) {
-                $cmd->addOption($name, $option);
-            }
+            $this->registerCommand($name, $data);
+
         }
 
         return $this;
@@ -98,5 +88,40 @@ class Parser
         $out .= "ARGUMENTS: " . print_r($this->args, true);
         $out .= "COMMANDS: " . print_r(array_keys($this->commands), true);
         return $out;
+    }
+
+    /**
+     * Register given command using array of options
+     *
+     * @param string $name Command name
+     * @param array $data Array of command initializing options
+     * @param \Console_CommandLine_Command $parent If sub-command is being added, provide parent
+     *
+     * @return void
+     */
+    private function registerCommand(
+        $name, $data, \Console_CommandLine_Command $parent = null)
+    {
+        $command = isset($data['command']) ? $data['command'] : $data;
+        if (null === $parent) {
+            $cmd = $this->addCommand($name, $command);
+        } else {
+            $cmd = $parent->addCommand($name, $command);
+        }
+        // command arguments
+        $args = isset($command['arguments']) ? $command['arguments'] : array();
+        foreach ($args as $name => $argument) {
+            $cmd->addArgument($name, $argument);
+        }
+        // command options
+        $opts = isset($command['options']) ? $command['options'] : array();
+        foreach ($opts as $name => $option) {
+            $cmd->addOption($name, $option);
+        }
+        // commands actions (sub-commands)
+        $subs = isset($command['commands']) ? $command['commands'] : array();
+        foreach ($subs as $name => $data) {
+            $this->registerCommand($name, $data, $cmd);
+        }
     }
 }
