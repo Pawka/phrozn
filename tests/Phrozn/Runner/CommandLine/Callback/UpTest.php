@@ -83,12 +83,12 @@ class UpTest
         $this->assertFalse(is_dir($path . '/.phrozn'));
         $this->assertFalse(is_dir($path . '/.phrozn/entries'));
         $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
-        `phr init {$path}`;
+        `phr-dev init {$path}`;
         $this->assertTrue(is_dir($path . '/.phrozn'));
         $this->assertTrue(is_dir($path . '/.phrozn/entries'));
         $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
 
-        $result = $this->getParseResult("phr up {$path} {$path}");
+        $result = $this->getParseResult("phr-dev up {$path} {$path}");
 
         $this->runner
             ->setOutputter($out)
