@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-04-19</date>
- <time>17:46:59</time>
+ <date>2011-04-27</date>
+ <time>00:34:36</time>
  <version>
-  <release>0.1.37</release>
-  <api>0.1.37</api>
+  <release>0.1.38</release>
+  <api>0.1.38</api>
  </version>
  <stability>
   <release>beta</release>
@@ -74,6 +74,9 @@
      <file baseinstalldir="/" name="View.php" role="php" />
     </dir> <!-- /Phrozn/Has -->
     <dir name="Outputter">
+     <dir name="Console">
+      <file baseinstalldir="/" name="Color.php" role="php" />
+     </dir> <!-- /Phrozn/Outputter/Console -->
      <file baseinstalldir="/" name="DefaultOutputter.php" role="php" />
      <file baseinstalldir="/" name="PlainOutputter.php" role="php" />
      <file baseinstalldir="/" name="TestOutputter.php" role="php" />
