@@ -5,11 +5,34 @@ command:
     aliases: 
     description: &desc Phrozn bundles manager
     commands:
-        add:
-            name: add
+        list:
+            name: list
+            description: List bundles
+            options:
+                installed:
+                    short_name:  -i
+                    long_name:   --installed
+                    doc_name:    -i [--installed]
+                    description: List installed bundles
+                    action:      StoreTrue 
+            arguments:
+                bundle:
+                    help_name: bundle
+                    description: Bundle name, path or URL
+                    optional: true
+        info:
+            name: info
+            description: Display bundle information
+            arguments:
+                bundle:
+                    help_name: bundle
+                    description: Bundle name, path or URL
+                    optional: false
+        apply:
+            name: apply
             description: Apply given bundle to Phrozn project
             arguments:
-                path:
+                bundle:
                     help_name: bundle
                     description: Bundle name, path or URL
                     optional: false
@@ -22,20 +45,49 @@ docs:
     name: bundle
     summary: *desc
     description: |
-        For flexibility various parts of Phrozn ecosystem can be combined together
-        into so-called bundles, which can be applied to project.
+        For flexibility, various parts of Phrozn ecosystem 
+        can be combined together into so-called bundles, which can be 
+        applied to project.
+
         Bundle manager allows you to add/remove/update bundles easily.
 
         If BUNDLE is the name of the bundle, then officially supported bundle is 
         assumed. Otherwise you can specify path (or URL) to bundle file.
 
+    extradesc: |
         Essentially bundles are directories with pre-defined structure packed into
-        Phar achrives.
+        Phar achrives. Phrozn takes care to extract and copy files into the given
+        project. It also keeps track of installed bundles so that they can be 
+        easily removed.
 
-    usage: %bphrozn%n %gbundle%n COMMAND BUNDLE
+    usage: %bphrozn%n %gbundle%n COMMAND [BUNDLE]
     examples: |
-        To remove project directory in a current folder:
-        %bphrozn%n %gclobber%n 
+        Get information about given bundle:
+        %bphrozn%n %gbundle%n info BUNDLE
+       
+        List installed bundles:
+        %bphrozn%n %gbundle%n list
+        %bphrozn%n %gbundle%n list --i
+        %bphrozn%n %gbundle%n list --installed
 
-        To remove project directory in specified folder PATH:
-        %bphrozn%n %gclobber%n PATH
+        List all officially availble bundles:
+        %bphrozn%n %gbundle%n list -a
+        %bphrozn%n %gbundle%n list --all
+
+        List not installed (available) bundles:
+        %bphrozn%n %gbundle%n list -p
+        %bphrozn%n %gbundle%n list --not-installed
+
+        To apply bundle from official repository:
+        %bphrozn%n %gbundle%n apply BUNDLE
+
+        To apply test processor used in docs (http://bit.ly/icTc35):
+        %bphrozn%n %gbundle%n apply processor.test
+
+        To apply bundle located in archive:
+        %bphrozn%n %gbundle%n apply /path/to/processor.test.phar
+
+        To remove bundle:
+        %bphrozn%n %gbundle%n clobber BUNDLE
+
+
