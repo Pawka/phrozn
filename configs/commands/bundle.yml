@@ -9,12 +9,27 @@ command:
             name: list
             description: List bundles
             options:
+                all:
+                    short_name:  -a
+                    long_name:   --all
+                    doc_name:    -a [--all]
+                    description: List all bundles
+                    action:      StoreTrue 
+                    default:     false
                 installed:
                     short_name:  -i
                     long_name:   --installed
                     doc_name:    -i [--installed]
                     description: List installed bundles
                     action:      StoreTrue 
+                    default: false
+                notinstalled:
+                    short_name:  -p
+                    long_name:   --not-installed
+                    doc_name:    -p [--not-installed]
+                    description: List not installed (available) bundles
+                    action:      StoreTrue 
+                    default:     false
             arguments:
                 bundle:
                     help_name: bundle
