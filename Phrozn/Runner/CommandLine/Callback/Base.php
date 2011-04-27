@@ -224,6 +224,8 @@ abstract class Base
                 $out .= "\nExamples:";
                 $out .= "\n  " . $this->pre(trim($docs['examples'])) . "\n";
             }
+        } else {
+            $out .= "\nUse help with -v or --verbose option to get more information.\n";
         }
 
         return $out;
