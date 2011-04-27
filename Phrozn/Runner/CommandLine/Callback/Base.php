@@ -215,9 +215,15 @@ abstract class Base
             }
         }
 
-        if ($verbose && isset($docs['examples'])) {
-            $out .= "\nExamples:";
-            $out .= "\n  " . $this->pre($docs['examples']) . "\n";
+        if ($verbose) {
+            if (isset($docs['extradesc'])) {
+                $out .= "\nExtended Documentation:";
+                $out .= "\n  " . $this->pre(trim($docs['extradesc'])) . "\n";
+            }
+            if (isset($docs['examples'])) {
+                $out .= "\nExamples:";
+                $out .= "\n  " . $this->pre(trim($docs['examples'])) . "\n";
+            }
         }
 
         return $out;
