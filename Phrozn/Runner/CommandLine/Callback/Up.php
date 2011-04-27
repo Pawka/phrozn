@@ -117,7 +117,7 @@ class Up
         $path = isset($this->getParseResult()->command->args[$type])
                ? $this->getParseResult()->command->args[$type] : \getcwd();
 
-        if ($path[0] != '/') { // not an absolute path
+        if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
         $path = realpath($path);

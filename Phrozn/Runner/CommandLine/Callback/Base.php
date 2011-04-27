@@ -257,6 +257,15 @@ abstract class Base
     {
         return str_repeat(' ', strlen(Color::strip(Color::convert($str))));
     }
+    
+    protected function isAbsolute($path) {
+        if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32') {
+            $pattern = '/^[a-zA-z]:.*[^.lnk]$/';
+            return preg_match($pattern, $path);
+        } else {
+            return $path{0} == '/';
+        }
+    }
 
     private function useAnsiColors()
     {

@@ -65,7 +65,7 @@ class Clobber
         $path = isset($this->getParseResult()->command->args['path'])
                ? $this->getParseResult()->command->args['path'] : \getcwd();
 
-        if ($path[0] != '/') { // not an absolute path
+        if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
         $path = realpath($path);
