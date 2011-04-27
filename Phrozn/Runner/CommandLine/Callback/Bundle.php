@@ -22,6 +22,7 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
+use Phrozn\Runner\CommandLine;
 
 /**
  * phrozn bundle command
@@ -35,13 +36,55 @@ class Bundle
     implements CommandLine\Callback
 {
     /**
+     * List of available sub-commands
+     * @var array
+     */
+    private $availableCommands = array(
+        'apply', 'list', 'info', 'clobber'
+    );
+
+    /**
      * Executes the callback action 
      *
      * @return string
      */
     public function execute()
     {
-        var_dump($this->getParseResult()->command->command->args);
-        exit;
+        if (false === $this->getCommand()) {
+            $this->out($this->getHeader());
+            $this->out(self::STATUS_FAIL . "No sub-command specified. Use 'phr ? bundle' for more info.");
+            $this->out($this->getFooter());
+        }
+        if (isset($this->getParseResult()->command->command_name)) {
+            $command = $this->getParseResult()->command->command_name;
+            if (in_array($command, $this->availableCommands)) {
+                return $this->{'exec' . ucfirst($command)}();
+            }
+        }
+    }
+
+    private function execList()
+    {
+        $bundle = $this->getBundleName();
+        var_dump($bundle);
+    }
+
+    private function getBundleName()
+    {
+        $bundle = 'https://github.com/farazdagi/phrozn-bundles/'; // official bundle repository
+        if (null !== $this->getCommand()->args["bundle"]) {
+            $bundle = $this->getCommand()->args["bundle"];
+        }
+        return $bundle;
+    }
+
+    /**
+     * Handy short-cut to subcommand
+     *
+     * @return Console_CommandLine_Result
+     */
+    private function getCommand()
+    {
+        return $this->getParseResult()->command->command;
     }
 }
