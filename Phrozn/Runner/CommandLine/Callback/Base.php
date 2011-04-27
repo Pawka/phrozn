@@ -207,6 +207,13 @@ abstract class Base
                 $out .= "  {$arg['help_name']} {$spaces} : {$arg['description']}\n";
             }
         }
+        if (isset($command['commands']) && count($command['commands'])) {
+            $out .= "Valid commands:\n";
+            foreach ($command['commands'] as $subcommand) {
+                $spaces = str_repeat(' ', 30 - strlen($subcommand['name']));
+                $out .= "  {$subcommand['name']} {$spaces} : {$subcommand['description']}\n";
+            }
+        }
 
         if ($verbose && isset($docs['examples'])) {
             $out .= "\nExamples:";
