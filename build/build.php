@@ -72,6 +72,7 @@ $pack->setPearinstallerDep('1.4.6');
 // package dependencies
 $pack->addPackageDepWithChannel('required', 'Console_CommandLine', 'pear.php.net', '1.1.3');
 $pack->addPackageDepWithChannel('required', 'Console_Color', 'pear.php.net', '1.0.3');
+$pack->addPackageDepWithChannel('required', 'Console_Table', 'pear.php.net', '1.1.4');
 
 $pack->addReplacement('bin/phrozn.php', 'pear-config', '/usr/bin/env php', 'php_bin');
 $pack->addReplacement('bin/phrozn.php', 'pear-config', '@PHP-BIN@', 'php_bin');
