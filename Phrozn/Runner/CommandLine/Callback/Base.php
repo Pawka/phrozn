@@ -187,7 +187,7 @@ abstract class Base
 
         $out = '';
         $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
-        $out .= 'usage: ' . $docs['usage'] . "\n";
+        $out .= 'usage: ' . trim($docs['usage']) . "\n";
         $out .= "\n  " . $this->pre($docs['description']) . "\n";
 
         $hasOptions = false;
