@@ -128,7 +128,13 @@ abstract class Base
             mkdir($destinationDir, 0777, true);
         }
 
-        file_put_contents($this->getOutputFile(), $out);
+        $outputFile = $this->getOutputFile();
+        if (!is_dir($outputFile)) {
+            file_put_contents($outputFile, $out);
+        } else {
+            throw new \Exception(sprintf(
+                'Output path "%s" is directory.', $outputFile));
+        }
 
         return $out;
     }
