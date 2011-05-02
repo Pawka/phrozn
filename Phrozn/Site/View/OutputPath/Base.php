@@ -82,14 +82,10 @@ abstract class Base
      */
     protected function getInputFileWithoutExt()
     {
-        // get rid of extension
-        $inputFile = $this->getView()->getInputFile();
-        $pos = strrpos($inputFile, '.');
-        if (false !== $pos) {
-            $inputFile = substr($inputFile, 0, $pos); 
-        }
-
-        return $inputFile;
+        $info = pathinfo($this->getView()->getInputFile());
+        return $info['dirname'] 
+            . DIRECTORY_SEPARATOR 
+            . ($info['filename']?:$info['basename']); // allow dot files
     }
 
     /**
