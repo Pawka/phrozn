@@ -33,7 +33,7 @@ namespace Phrozn\Has;
 interface Config 
 {
     /**
-     * Set site configuration
+     * Set configuration
      *
      * @param array $config Array of options
      *
@@ -42,7 +42,7 @@ interface Config
     public function setConfig($config);
 
     /**
-     * Get site configuration
+     * Get configuration
      *
      * @return array
      */
