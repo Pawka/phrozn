@@ -1,0 +1,14 @@
+# List of availble bundles
+---
+processor.test:
+    name: Test
+    description: |
+        Test processor plugin - used to demonstrate how new text processor
+        might be added to Phrozn
+    version: "1.0"
+    author: Victor Farazdagi
+processor.hatena:
+    name: HatenaSyntax
+    description: HatenaSyntax - Japanese diary service syntax (like wiki).
+    version: "1.0"
+    author: Kazusuke Sasezaki
