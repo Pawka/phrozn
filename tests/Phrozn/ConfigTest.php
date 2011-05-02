@@ -41,7 +41,6 @@ class ConfigTest
         $this->assertTrue(isset($config['phrozn']));
         $this->assertTrue(isset($config['phrozn']['author']));
         $this->assertSame('Victor Farazdagi', $config['phrozn']['author']);
-        $this->assertTrue(isset($config['processors']['twig']));
 
         $config['phrozn'] = 'updated';
         $this->assertSame('updated', $config['phrozn']);
