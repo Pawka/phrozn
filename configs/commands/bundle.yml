@@ -51,6 +51,14 @@ command:
                     help_name: bundle
                     description: Bundle name, path or URL
                     optional: false
+        clobber:
+            name: clobber
+            description: Remove given bundle from the project
+            arguments:
+                bundle:
+                    help_name: bundle
+                    description: Bundle name, path or URL
+                    optional: false
 
 # callback
 callback: [Bundle, execute]
@@ -75,19 +83,24 @@ docs:
         project. It also keeps track of installed bundles so that they can be 
         easily removed.
 
-    usage: %bphrozn%n %gbundle%n COMMAND [BUNDLE]
+    usage: |
+        %bphrozn%n %gbundle%n COMMAND [BUNDLE]
+        %bphrozn%n %gbundle%n info BUNDLE
+        %bphrozn%n %gbundle%n list [-i|-a|-p] [BUNDLE]
+        %bphrozn%n %gbundle%n apply BUNDLE
+        %bphrozn%n %gbundle%n clobber BUNDLE
     examples: |
         Get information about given bundle:
         %bphrozn%n %gbundle%n info BUNDLE
        
-        List installed bundles:
-        %bphrozn%n %gbundle%n list
-        %bphrozn%n %gbundle%n list --i
-        %bphrozn%n %gbundle%n list --installed
-
         List all officially availble bundles:
+        %bphrozn%n %gbundle%n list
         %bphrozn%n %gbundle%n list -a
         %bphrozn%n %gbundle%n list --all
+
+        List installed bundles:
+        %bphrozn%n %gbundle%n list --i
+        %bphrozn%n %gbundle%n list --installed
 
         List not installed (available) bundles:
         %bphrozn%n %gbundle%n list -p
