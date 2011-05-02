@@ -108,6 +108,49 @@ class Bundle
     }
 
     /**
+     * Get info about specific bundle 
+     * 
+     * @return void
+     */
+    private function execInfo()
+    {
+        $que = $this->getBundleParam(); // user searches for a certain bundle
+
+        $tbl = new ConsoleTable();
+        $tbl->setHeaders(
+            array('Param', 'Value')
+        );
+        if ($bundle = $this->getBundleData($que)) {
+            foreach ($bundle as $param => $value) {
+                $tbl->addRow(array(
+                    $param, $value
+                ));
+            }
+            $this->out($tbl->getTable());
+        } else {
+            $this->out(sprintf('Bundle "%s" not found..', $que));
+        }
+
+    }
+
+    private function getBundleData($que)
+    {
+        $que = strtolower($que);
+        $config = $this->getConfig();
+        $bundles = Yaml::load($config['paths']['configs'] . 'bundles.yml');
+        if (isset($bundles[$que])) {
+            return $bundles[$que];
+        } else {
+            foreach ($bundles as $bundle) {
+                if (strtolower($bundle['name']) == $que) {
+                    return $bundle;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Extract bundle name/uri argument
      *
      * @return string
