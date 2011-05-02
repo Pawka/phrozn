@@ -22,7 +22,10 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
-use Phrozn\Runner\CommandLine;
+use Phrozn\Runner\CommandLine,
+    Phrozn\Outputter\Console\Color,
+    Symfony\Component\Yaml\Yaml,
+    Console_Table as ConsoleTable;
 
 /**
  * phrozn bundle command
@@ -35,6 +38,7 @@ class Bundle
     extends Base
     implements CommandLine\Callback
 {
+
     /**
      * List of available sub-commands
      * @var array
@@ -43,10 +47,11 @@ class Bundle
         'apply', 'list', 'info', 'clobber'
     );
 
+
     /**
      * Executes the callback action 
      *
-     * @return string
+     * @return void
      */
     public function execute()
     {
@@ -58,20 +63,58 @@ class Bundle
         if (isset($this->getParseResult()->command->command_name)) {
             $command = $this->getParseResult()->command->command_name;
             if (in_array($command, $this->availableCommands)) {
-                return $this->{'exec' . ucfirst($command)}();
+                $this->out($this->getHeader());
+                $this->{'exec' . ucfirst($command)}();
+                $this->out($this->getFooter());
             }
         }
     }
 
+    /**
+     * List bundles
+     *
+     * @return void
+     */
     private function execList()
     {
-        $bundle = $this->getBundleName();
-        var_dump($bundle);
+        $config = $this->getConfig();
+        $bundles = Yaml::load($config['paths']['configs'] . 'bundles.yml');
+        $que = $this->getBundleParam(); // user searches for a certain bundle
+
+
+        $tbl = new ConsoleTable();
+        $tbl->setHeaders(
+            array('S', 'Name', 'Version', 'Author', 'Description',)
+        );
+        foreach ($bundles as $bundle) {
+            if (strlen($que) && false === stripos($bundle['name'], $que)) {
+                continue;
+            } 
+            $tbl->addRow(array(
+                'p', 
+                $bundle['name'], 
+                $bundle['version'],
+                $bundle['author'],
+                $bundle['description'],
+            ));
+        }
+        if (strlen($que)) { // hi-light search results
+            $callback = array($this, 'highlightSearchTerm');
+            $tbl->addFilter(1, $callback);
+            $this->out(sprintf("Search bundles having \"%s\"..", $que));
+        }
+        $tbl->setAlign(2, CONSOLE_TABLE_ALIGN_CENTER);
+        $this->out($tbl->getTable()) ;
     }
 
-    private function getBundleName()
+    /**
+     * Extract bundle name/uri argument
+     *
+     * @return string
+     */
+    private function getBundleParam()
     {
-        $bundle = 'https://github.com/farazdagi/phrozn-bundles/'; // official bundle repository
+        $bundle = null;
         if (null !== $this->getCommand()->args["bundle"]) {
             $bundle = $this->getCommand()->args["bundle"];
         }
@@ -86,5 +129,20 @@ class Bundle
     private function getCommand()
     {
         return $this->getParseResult()->command->command;
+    }
+
+    /**
+     * Wraps Console color codes around $value,
+     * depending if its larger or smaller 0.
+     *
+     * @param float $value Value (column 1)
+     *
+     * @return string Colorful value
+     */
+    public function highlightSearchTerm($value)
+    {
+        $que = $this->getBundleParam();
+        $value = preg_replace('/(' . preg_quote($que). ')/si', '[\1]', $value);
+        return $value;
     }
 }
