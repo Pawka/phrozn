@@ -64,7 +64,11 @@ class Bundle
             $command = $this->getParseResult()->command->command_name;
             if (in_array($command, $this->availableCommands)) {
                 $this->out($this->getHeader());
-                $this->{'exec' . ucfirst($command)}();
+                try {
+                    $this->{'exec' . ucfirst($command)}();
+                } catch (\Exception $e) {
+                    $this->out(self::STATUS_FAIL . $e->getMessage());
+                }
                 $this->out($this->getFooter());
             }
         }
@@ -120,19 +124,31 @@ class Bundle
         $tbl->setHeaders(
             array('Param', 'Value')
         );
-        if ($bundle = $this->getBundleData($que)) {
-            foreach ($bundle as $param => $value) {
-                $tbl->addRow(array(
-                    $param, $value
-                ));
-            }
-            $this->out($tbl->getTable());
-        } else {
-            $this->out(sprintf('Bundle "%s" not found..', $que));
+        foreach ($this->getBundleData($que) as $param => $value) {
+            $tbl->addRow(array(
+                $param, $value
+            ));
         }
-
+        $this->out($tbl->getTable());
     }
 
+    /**
+     * Apply bundle 
+     * 
+     * @return void
+     */
+    private function execApply()
+    {
+        $que = $this->getBundleParam();
+    }
+
+    /**
+     * Try to fetch bundle info or throw exception if failed.
+     *
+     * @param string $que Bundle name/id
+     * @throws \Exception
+     * @return array
+     */
     private function getBundleData($que)
     {
         $que = strtolower($que);
@@ -147,7 +163,7 @@ class Bundle
                 }
             }
         }
-        return null;
+        throw new \Exception(sprintf('Bundle "%s" not found..', $que));
     }
 
     /**
