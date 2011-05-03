@@ -30,7 +30,9 @@ namespace Phrozn;
  * @package     Phrozn\Bundle
  * @author      Victor Farazdagi
  */
-interface Bundle
+class Bundle
 {
-    const REPO = 'https://github.com/farazdagi/phrozn-bundles/'; // official bundle repository
+    const TYPE_ALL = 'all';
+    const TYPE_AVAILABLE = 'available';
+    const TYPE_INSTALLED = 'installed';
 }
