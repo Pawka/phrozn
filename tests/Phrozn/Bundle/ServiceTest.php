@@ -95,4 +95,24 @@ class DefaultSiteTest
         $bundles = $this->service->getBundles('invalid-type', 'processor'); // list all processors
     }
 
+    /**
+     * @group cur
+     */
+    public function testApplyOfficialBundleByName()
+    {
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service->applyBundle($path, $bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+    }
+
+    public function testApplyBundleFromProjectDir()
+    {}
+
+    public function testApplyBundleFromPhroznDir()
+    {}
+
 }

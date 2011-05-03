@@ -23,7 +23,8 @@
 
 namespace Phrozn\Bundle;
 use Phrozn\Has,
-    Phrozn\Bundle;
+    Phrozn\Bundle,
+    Phrozn\Path\Project as ProjectPath;
 
 /**
  * Bundle service exposing bundle managing functionality
@@ -88,12 +89,16 @@ class Service
     /**
      * Apply given bundle
      *
+     * @param string $path Path where bundle is to be applied
      * @param string $bundle Bundle name, URI or filename
      *
      * @return \Phrozn\Bundle
      */
-    public function applyBundle($bundle)
-    {}
+    public function applyBundle($path, $bundle)
+    {
+        $path = new ProjectPath($path);
+        var_dump($path->get());
+    }
 
     /**
      * Get bundle info
