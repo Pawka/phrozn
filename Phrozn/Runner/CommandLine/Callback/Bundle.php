@@ -24,8 +24,10 @@
 namespace Phrozn\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine,
     Phrozn\Outputter\Console\Color,
+    Phrozn\Config,
     Symfony\Component\Yaml\Yaml,
-    Console_Table as ConsoleTable;
+    Console_Table as ConsoleTable,
+    Phrozn\Bundle\Service as BundleService;
 
 /**
  * phrozn bundle command
@@ -38,6 +40,10 @@ class Bundle
     extends Base
     implements CommandLine\Callback
 {
+    /**
+     * @var \Phrozn\Bundle\Service
+     */
+    private $service;
 
     /**
      * List of available sub-commands
@@ -47,6 +53,10 @@ class Bundle
         'apply', 'list', 'info', 'clobber'
     );
 
+    public function __construct()
+    {
+        $this->service = new BundleService();
+    }
 
     /**
      * Executes the callback action 
@@ -60,6 +70,12 @@ class Bundle
             $this->out(self::STATUS_FAIL . "No sub-command specified. Use 'phr ? bundle' for more info.");
             $this->out($this->getFooter());
         }
+
+        // setup service
+        $config = $this->getConfig();
+        $this->service->setConfig(
+            new Config($config['paths']['configs'] . 'bundles.yml'));
+
         if (isset($this->getParseResult()->command->command_name)) {
             $command = $this->getParseResult()->command->command_name;
             if (in_array($command, $this->availableCommands)) {
@@ -81,19 +97,15 @@ class Bundle
      */
     private function execList()
     {
-        $config = $this->getConfig();
-        $bundles = Yaml::load($config['paths']['configs'] . 'bundles.yml');
         $que = $this->getBundleParam(); // user searches for a certain bundle
-
+        $bundles = $this->service->getBundles(
+                $this->getTypeParam(), $this->getBundleParam());
 
         $tbl = new ConsoleTable();
         $tbl->setHeaders(
             array('S', 'Name', 'Version', 'Author', 'Description',)
         );
         foreach ($bundles as $bundle) {
-            if (strlen($que) && false === stripos($bundle['name'], $que)) {
-                continue;
-            } 
             $tbl->addRow(array(
                 'p', 
                 $bundle['name'], 
@@ -118,18 +130,37 @@ class Bundle
      */
     private function execInfo()
     {
-        $que = $this->getBundleParam(); // user searches for a certain bundle
-
         $tbl = new ConsoleTable();
         $tbl->setHeaders(
             array('Param', 'Value')
         );
-        foreach ($this->getBundleData($que) as $param => $value) {
-            $tbl->addRow(array(
-                $param, $value
-            ));
+        $bundle = $this->service
+                       ->getBundleInfo($this->getBundleParam());
+        if (is_array($bundle)) {
+            foreach ($bundle as $param => $value) {
+                $tbl->addRow(array(
+                    $param, $value
+                ));
+            }
         }
         $this->out($tbl->getTable());
+    }
+
+    /**
+     * Get type -i, -n, -a of bundles to work on
+     *
+     * @return string
+     */
+    private function getTypeParam()
+    {
+        $options = $this->getCommand()->options; 
+        $type = \Phrozn\Bundle::TYPE_ALL;
+        if ($options['installed']) {
+            $type = \Phrozn\Bundle::TYPE_INSTALLED;
+        } else if ($options['available']) {
+            $type = \Phrozn\Bundle::TYPE_AVAILABLE;
+        }
+        return $type;
     }
 
     /**
@@ -139,32 +170,11 @@ class Bundle
      */
     private function execApply()
     {
-        $que = $this->getBundleParam();
+        $bundle = $this->getBundleData($this->getBundleParam());
+        var_dump($bundle);
+        echo Bundle::REPO . $bundle['id'];
     }
 
-    /**
-     * Try to fetch bundle info or throw exception if failed.
-     *
-     * @param string $que Bundle name/id
-     * @throws \Exception
-     * @return array
-     */
-    private function getBundleData($que)
-    {
-        $que = strtolower($que);
-        $config = $this->getConfig();
-        $bundles = Yaml::load($config['paths']['configs'] . 'bundles.yml');
-        if (isset($bundles[$que])) {
-            return $bundles[$que];
-        } else {
-            foreach ($bundles as $bundle) {
-                if (strtolower($bundle['name']) == $que) {
-                    return $bundle;
-                }
-            }
-        }
-        throw new \Exception(sprintf('Bundle "%s" not found..', $que));
-    }
 
     /**
      * Extract bundle name/uri argument

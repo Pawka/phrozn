@@ -72,9 +72,62 @@ class BundleTest
         $this->removeProjectDirectory();
     }
 
-    public function testBundleAdd()
+    public function testBundleList()
     {
-        $this->markTestSkipped();
+        $out = $this->outputter;
+        $result = $this->getParseResult("phr-dev bundle list processor.test");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Test processor plugin - used to demonstrate how');
+    }
+
+    public function testBundleInfoById()
+    {
+        $out = $this->outputter;
+        $result = $this->getParseResult("phr-dev bundle info processor.test");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Test processor plugin - used to demonstrate how');
+    }
+
+    /**
+     * @group cur
+     */
+    public function testBundleInfoByQue()
+    {
+        $out = $this->outputter;
+        $result = $this->getParseResult("phr-dev bundle info test");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Test processor plugin - used to demonstrate how');
+    }
+    
+    public function testBundleInfoNotFound()
+    {
+        $out = $this->outputter;
+        $result = $this->getParseResult("phr-dev bundle info no-such-bundle");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('[FAIL]    Bundle "no-such-bundle" not found..');
+    }
+
+    public function testNoSubActionSpecified()
+    {
+        $out = $this->outputter;
+        $result = $this->getParseResult("phr-dev bundle");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs("[FAIL]    No sub-command specified. Use 'phr ? bundle' for more info.");
     }
 
     private function getParseResult($cmd)
