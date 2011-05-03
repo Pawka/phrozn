@@ -54,5 +54,12 @@ class ConfigTest
         $this->assertTrue(isset($config['paths']['configs']));
     }
 
+    public function testLoadFile()
+    {
+        $config = new Config(dirname(__FILE__) . '/../../configs/bundles.yml');
+        $this->assertInstanceOf('\Phrozn\Config', $config);
+        $this->assertTrue(isset($config['bundles']['processor.test']));
+    }
+
 
 }

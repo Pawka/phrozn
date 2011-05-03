@@ -51,15 +51,19 @@ class Config
      */
     public function __construct($path)
     {
-        $dir = new \DirectoryIterator($path);
-        foreach ($dir as $item) {
-            if ($item->isFile()) {
-                if (substr($item->getBasename(), -3) === 'yml') {
-                    $this->configs[$item->getBasename('.yml')] = Yaml::load($item->getRealPath());
+        if (is_file($path)) {
+            $this->configs[basename($path, '.yml')] = Yaml::load($path);
+        } else {
+            $dir = new \DirectoryIterator($path);
+            foreach ($dir as $item) {
+                if ($item->isFile()) {
+                    if (substr($item->getBasename(), -3) === 'yml') {
+                        $this->configs[$item->getBasename('.yml')] = Yaml::load($item->getRealPath());
+                    }
                 }
             }
+            $this->updatePaths(); // make sure that config.yml paths are absolute
         }
-        $this->updatePaths(); // make sure that config.yml paths are absolute
     }
 
     /**
