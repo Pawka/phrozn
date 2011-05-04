@@ -1,0 +1,3 @@
+Phrozn treats "archive" and "entries" folders the same way.
+The purpose of separate folder is to have less items in entries, thus keeping 
+it manageable even for sites having many entries.
