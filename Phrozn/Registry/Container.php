@@ -22,6 +22,8 @@
  */
 
 namespace Phrozn\Registry;
+use Phrozn\Registry\Has,
+    Phrozn\Registry\Dao\Yaml as DefaultDao;
 
 /**
  * Phrozn registry container
@@ -31,5 +33,70 @@ namespace Phrozn\Registry;
  * @author      Victor Farazdagi
  */
 class Container
+    implements Has\Dao
 {
+    /**
+     * @var \Phrozn\Registry\Dao
+     */
+    private $dao;
+
+    /**
+     * Initialize container
+     *
+     * @param \Phrozn\Registry\Dao $dao Data access object
+     *
+     * @return void
+     */
+    public function __construct($dao = null)
+    {
+        if (null === $dao) {
+            $this->setDao(new DefaultDao());
+        }
+    }
+
+    /**
+     * Persist current instance
+     *
+     * @return \Phrozn\Registry\Container
+     */
+    public function save()
+    {
+        $this->getDao()->save();
+        return $this;
+    }
+
+    /**
+     * (Re)read current container from DAO
+     *
+     * @return \Phrozn\Registry\Container
+     */
+    public function read()
+    {
+        $this->getDao()->read();
+        return $this;
+    }
+
+    /**
+     * Set DAO.
+     *
+     * @param \Phrozn\Registry\Dao $dao Data access object
+     *
+     * @return \Phrozn\Has\Dao
+     */
+    public function setDao(\Phrozn\Registry\Dao $dao)
+    {
+        $this->dao = $dao;
+        return $this;
+    }
+
+    /**
+     * Get DAO.
+     *
+     * @return \Phrozn\Has\Dao
+     */
+    public function getDao()
+    {
+        return $this->dao;
+    }
+
 }
