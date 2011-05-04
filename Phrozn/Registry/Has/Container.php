@@ -41,7 +41,7 @@ interface Container
      *
      * @return \Phrozn\Has\Container
      */
-    public function setContainer(\Phrozn\Registry\Container $container);
+    public function setContainer(\Phrozn\Registry\Container $container = null);
 
     /**
      * Get registry container.
