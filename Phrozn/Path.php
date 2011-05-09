@@ -47,4 +47,11 @@ interface Path
      * @return string
      */
     public function get();
+
+    /**
+     * Convert object to string
+     *
+     * @return string
+     */
+    public function __toString();
 }

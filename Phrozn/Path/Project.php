@@ -32,39 +32,9 @@ use Phrozn\Path;
  * @author      Victor Farazdagi
  */
 class Project
+    extends Base
     implements Path
 {
-    /**
-     * Source path
-     * @var
-     */
-    private $path;
-
-    /**
-     * Initialize path builder
-     *
-     * @param string $path Starting path to deduce where .phrozn is located
-     *
-     * @return void
-     */
-    public function __construct($path = null)
-    {
-        $this->set($path);
-    }
-
-    /**
-     * Set source path
-     *
-     * @param string $path Source path
-     *
-     * @return \Phrozn\Path
-     */
-    public function set($path)
-    {
-        $this->path = $path;
-        return $this;
-    }
-
     /**
      * Get calculated path
      *
@@ -82,6 +52,6 @@ class Project
             }
             $path =  dirname($path);
         }
-        return null;
+        return '';
     }
 }
