@@ -37,12 +37,6 @@ class Service
     implements Has\Config
 {
     /**
-     * Repository with bundles
-     * @var string
-     */
-    private $repo = 'https://github.com/farazdagi/phrozn-bundles/'; 
-
-    /**
      * Configuration object
      * @var \Phrozn\Config
      */
@@ -96,8 +90,9 @@ class Service
      */
     public function applyBundle($path, $bundle)
     {
-        $path = new ProjectPath($path);
-        var_dump($path->get());
+        $destinationPath = new ProjectPath($path);
+        $bundle = new Bundle($bundle, $destinationPath);
+        $bundle->apply();
     }
 
     /**
@@ -110,20 +105,8 @@ class Service
      */
     public function getBundleInfo($bundle)
     {
-        $bundle = strtolower($bundle);
-        $config = $this->getConfig();
-        $bundles = $config['bundles'];
-
-        if (isset($bundles[$bundle])) {
-            return $bundles[$bundle];
-        } else {
-            foreach ($bundles as $data) {
-                if (strtolower($data['name']) == $bundle) {
-                    return $data;
-                }
-            }
-        }
-        throw new \Exception(sprintf('Bundle "%s" not found..', $bundle));
+        $bundle = new Bundle($bundle);
+        return $bundle->getInfo();
     }
 
     /**
