@@ -65,7 +65,25 @@ class ProjectTest
             $basePath . 'sub/folder/subsub/.phrozn',
             $path->set($basePath . 'sub/folder/subsub/.phrozn/')->get());
 
-        $this->assertSame(null, $path->set("/var")->get());
+        $this->assertSame('', $path->set("/var")->get());
+    }
+
+    public function testPathToString()
+    {
+        $basePath = dirname(__FILE__) . '/project/';
+        $path = new ProjectPath($basePath);
+        $this->assertSame($basePath . '.phrozn', '' . $path);
+
+        $this->assertSame($basePath . '.phrozn', $path->set($basePath . 'sub') . '');
+        $this->assertSame($basePath . '.phrozn', $path->set($basePath . 'sub/') . '');
+        $this->assertSame($basePath . '.phrozn', $path->set($basePath . 'sub/folder') . '');
+        $this->assertSame($basePath . '.phrozn', $path->set($basePath . 'sub/folder/') . '');
+        $this->assertSame($basePath . 'sub/folder/subsub/.phrozn', $path->set($basePath . 'sub/folder/subsub') . '');
+        $this->assertSame($basePath . 'sub/folder/subsub/.phrozn', $path->set($basePath . 'sub/folder/subsub/') . '');
+        $this->assertSame($basePath . 'sub/folder/subsub/.phrozn', $path->set($basePath . 'sub/folder/subsub/.phrozn') . '');
+        $this->assertSame($basePath . 'sub/folder/subsub/.phrozn', $path->set($basePath . 'sub/folder/subsub/.phrozn/') . '');
+
+        $this->assertSame('', (string)$path->set("/var"));
     }
 
     public function testPathNotSetException()
