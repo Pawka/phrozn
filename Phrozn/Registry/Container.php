@@ -33,12 +33,20 @@ use Phrozn\Registry\Has,
  * @author      Victor Farazdagi
  */
 class Container
-    implements Has\Dao
+    implements \Serializable,
+               Has\Dao,
+               Has\Values
 {
     /**
      * @var \Phrozn\Registry\Dao
      */
     private $dao;
+
+    /**
+     * Registry values
+     * @var array
+     */
+    private $values;
 
     /**
      * Initialize container
@@ -50,7 +58,50 @@ class Container
     public function __construct($dao = null)
     {
         if (null === $dao) {
-            $this->setDao(new DefaultDao());
+            $dao = new DefaultDao();
+        }
+        $this->setDao($dao);
+    }
+
+    /**
+     * Magic set method
+     *
+     * @param string $name Property name
+     * @param mixed $value Property value
+     *
+     * @return void
+     */
+    public function __set($name, $value)
+    {
+        $this->values[$name] = new Item($name, $value);
+    }
+
+    /**
+     * Magic get method
+     *
+     * @param string $name Property name
+     *
+     * @return void
+     */
+    public function __get($name)
+    {
+        if (!isset($this->values[$name])) {
+            $this->values[$name] = new Item($name);
+        }
+        return $this->values[$name];
+    }
+
+    /**
+     * Magic unset method
+     *
+     * @param string $name Member name
+     *
+     * @return void
+     */
+    public function __unset($name)
+    {
+        if (isset($this->values[$name])) {
+            unset($this->values[$name]);
         }
     }
 
@@ -72,7 +123,8 @@ class Container
      */
     public function read()
     {
-        $this->getDao()->read();
+        $container = $this->getDao()->read();
+        $this->setValues($container->getValues());
         return $this;
     }
 
@@ -86,6 +138,9 @@ class Container
     public function setDao(\Phrozn\Registry\Dao $dao)
     {
         $this->dao = $dao;
+        if ($dao instanceof Dao) {
+            $dao->setContainer($this);
+        }
         return $this;
     }
 
@@ -97,6 +152,52 @@ class Container
     public function getDao()
     {
         return $this->dao;
+    }
+
+    /**
+     * Serialize container
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize($this->getValues());
+    }
+
+    /**
+     * Unserialize container
+     *
+     * @param string $serialized Serialized data
+     *
+     * @return array
+     */
+    public function unserialize($serialized)
+    {
+        $this->setValues(unserialize($serialized));
+        return $this->getValues();
+    }
+
+    /**
+     * Set values attribute.
+     *
+     * @param array $values Values attribute
+     *
+     * @return \Phrozn\Has\Values
+     */
+    public function setValues($values)
+    {
+        $this->values = $values;
+        return $this;
+    }
+
+    /**
+     * Get values attribute.
+     *
+     * @return \Phrozn\Has\Values
+     */
+    public function getValues()
+    {
+        return $this->values;
     }
 
 }

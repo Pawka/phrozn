@@ -45,7 +45,10 @@ class Yaml
     public function save()
     {
         if ($path = $this->getProjectPath()) {
-            file_put_contents($path . '/.registry', serialize($this->getContainer()));
+            $path .= '/' . $this->getOutputFile();
+            file_put_contents($path, serialize($this->getContainer()));
+        } else {
+            throw new \Exception('No project path provided.');
         }
         return $this;
     }
@@ -57,13 +60,12 @@ class Yaml
      */
     public function read()
     {
-        $path = $this->getProjectPath() . '/.registry';
+        $path = $this->getProjectPath() . '/' . $this->getOutputFile();
         if (!is_readable($path)) {
-            $this->getContainer()->set(null, array());
+            $this->getContainer()->setValues(null);
+            return $this->getContainer();
         }
-
-        $this->getContainer()
-             ->set(null, unserialize(file_get_contents($path)));
-        return $this;
+        $newContainer = unserialize(file_get_contents($path));
+        return $newContainer;
     }
 }

@@ -16,50 +16,37 @@
  *
  * @category    Phrozn
  * @package     Phrozn\Registry
+ * @subpackage  Has
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Registry;
-use Phrozn,
-    Phrozn\Registry\Has;
+namespace Phrozn\Registry\Has;
 
 /**
- * Phrozn registry data access layer
- *
- * It is planned to rely on YAML files for storage, but that can be easily amended
- * by implementing more DAOs
+ * Has values.
  *
  * @category    Phrozn
  * @package     Phrozn\Registry
+ * @subpackage  Has
  * @author      Victor Farazdagi
  */
-interface Dao
-    extends Has\Container,
-            Phrozn\Has\OutputFile,
-            Phrozn\Has\ProjectPath
+interface Values
 {
     /**
-     * Initialize DAO object
+     * Set values attribute.
      *
-     * @param \Phrozn\Registry\Container $container Registry container
+     * @param array $values Values attribute
      *
-     * @return void
+     * @return \Phrozn\Has\Values
      */
-    public function __construct(\Phrozn\Registry\Container $container = null);
+    public function setValues($values);
 
     /**
-     * Save current registry container
+     * Get values attribute.
      *
-     * @return \Phorzn\Registry\Dao
+     * @return \Phrozn\Has\Values
      */
-    public function save();
-
-    /**
-     * Read registry data into container.
-     *
-     * @return \Phrozn\Registry\Container
-     */
-    public function read();
+    public function getValues();
 }

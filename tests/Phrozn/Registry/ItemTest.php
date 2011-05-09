@@ -14,52 +14,41 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License. 
  *
- * @category    Phrozn
+ * @category    PhroznTest
  * @package     Phrozn\Registry
  * @author      Victor Farazdagi
  * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Registry;
-use Phrozn,
-    Phrozn\Registry\Has;
+namespace PhroznTest;
+use Phrozn\Registry\Item,
+    Phrozn\Registry\Container;
 
 /**
- * Phrozn registry data access layer
- *
- * It is planned to rely on YAML files for storage, but that can be easily amended
- * by implementing more DAOs
- *
- * @category    Phrozn
+ * @category    PhroznTest
  * @package     Phrozn\Registry
  * @author      Victor Farazdagi
  */
-interface Dao
-    extends Has\Container,
-            Phrozn\Has\OutputFile,
-            Phrozn\Has\ProjectPath
+class ItemTest 
+    extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Initialize DAO object
-     *
-     * @param \Phrozn\Registry\Container $container Registry container
-     *
-     * @return void
-     */
-    public function __construct(\Phrozn\Registry\Container $container = null);
+    public function testInit()
+    {
+        $item = new Item('bundle');
 
-    /**
-     * Save current registry container
-     *
-     * @return \Phorzn\Registry\Dao
-     */
-    public function save();
+        // auto-initialization
+        $this->assertInstanceOf('Phrozn\Registry\Item', $item->foo->bar);
+        $this->assertNull($item->foo->bar->value);
+        $this->assertNull($item->foo->bar->getValue());
+        $item->foo->bar = 42;
+        $this->assertSame('42', (string)$item->foo->bar);
+        $this->assertSame(42, $item->foo->bar->value);
+        $this->assertSame(42, $item->foo->bar->getValue());
 
-    /**
-     * Read registry data into container.
-     *
-     * @return \Phrozn\Registry\Container
-     */
-    public function read();
+        // unset
+        unset($item->foo); // reset the parent path
+        $this->assertNull($item->foo->bar->value);
+        $this->assertNull($item->foo->bar->getValue());
+    }
 }

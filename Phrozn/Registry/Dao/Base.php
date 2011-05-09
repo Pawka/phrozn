@@ -49,6 +49,12 @@ abstract class Base
     private $projectPath;
 
     /**
+     * Output path. ".registry" by default.
+     * @var string
+     */
+    private $outputFile = '.registry';
+
+    /**
      * Initialize DAO object
      *
      * @param \Phrozn\Registry\Container $container Registry container
@@ -106,6 +112,29 @@ abstract class Base
     public function getProjectPath()
     {
         return $this->projectPath;
+    }
+
+    /**
+     * Set output file path
+     *
+     * @param string $path File path
+     *
+     * @return \Phrozn\Has\OutputFile
+     */
+    public function setOutputFile($path)
+    {
+        $this->outputFile = $path;
+        return $this;
+    }
+
+    /**
+     * Get output file path
+     *
+     * @return string
+     */
+    public function getOutputFile()
+    {
+        return $this->outputFile;
     }
 
 }
