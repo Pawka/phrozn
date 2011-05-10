@@ -80,10 +80,20 @@ class BundleTest
     /**
      * @group cur
      */
+    public function testListBundleFilesByName()
+    {
+        $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
+        $bundle = new Bundle('test', new Config($bundlesConfig));
+        $files = $bundle->getFiles();
+        $this->assertFileInBundle('./plugins/Site/View/Test.php', $files);
+        $this->assertFileInBundle('./plugins/Processor/Test.php', $files);
+    }
+
     public function testExtractByName()
     {
+        $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
         $path = new ProjectPath(dirname(__FILE__) . '/Bundle/project/');
-        $bundle = new Bundle('test');
+        $bundle = new Bundle('test', new Config($bundlesConfig));
 
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
@@ -93,6 +103,18 @@ class BundleTest
 
         @unlink(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         @unlink(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+    }
+
+    private function assertFileInBundle($que, $files)
+    {
+        $result = false;
+        foreach ($files as $file) {
+            if ($file['filename'] == $que) {
+                $result = true;
+                break;
+            }
+        }
+        $this->assertTrue($result);
     }
 
 }

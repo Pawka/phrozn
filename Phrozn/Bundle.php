@@ -22,6 +22,7 @@
  */
 
 namespace Phrozn;
+use Archive_Tar as BundleArchive;
 
 /**
  * Phozn bundle
@@ -38,7 +39,7 @@ class Bundle
      * Official repository 
      * @var string
      */
-    const REPO = 'https://github.com/farazdagi/phrozn-bundles/'; 
+    const REPO = 'https://github.com/farazdagi/phrozn-bundles/raw/master/'; 
 
     const TYPE_ALL = 'all';
     const TYPE_AVAILABLE = 'available';
@@ -84,18 +85,28 @@ class Bundle
     }
 
     /**
+     * Get list of files in the bundle
+     *
+     * @return array
+     */
+    public function getFiles()
+    {
+        $tar = new BundleArchive($this->getInputFile());
+        return $tar->listContent();
+    }
+
+    /**
      * Extract bundle content into given path
      *
      * @param string $path Destination path
      *
      * @return \Phrozn\Bundle
      */
-    public function extractTo($path)
+    public function extractTo($path, $dryrun)
     {
         $path = (string)$path; // if \Phrozn\Path passed convert to string
+        var_dump($list);
 
-        var_dump($path);
-        
         return $this;
     }
 
@@ -192,12 +203,13 @@ class Bundle
     {
         if (null === $this->getInputFile()) {
             $bundle = $this->getKey();
+            $bundleId = $this->getInfo('id');
             if (substr($bundle, 0, 4) === 'http') {
                 $this->setInputFile($bundle);
             } else if (substr($bundle, -4) === '.tgz') {
                 $this->setInputFile($bundle);
             } 
-            $this->setInputFile(self::REPO . $bundle . '.tgz');
+            $this->setInputFile(self::REPO . $bundleId . '.tgz');
         }
 
         return $this;
