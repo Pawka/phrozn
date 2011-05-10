@@ -103,12 +103,19 @@ class Bundle
 
         $tbl = new ConsoleTable();
         $tbl->setHeaders(
-            array('S', 'Name', 'Version', 'Author', 'Description',)
+            array(
+                'S',
+                'Id', 
+                //'Name', 
+                'Version', 
+                'Author', 
+                'Description',)
         );
         foreach ($bundles as $bundle) {
             $tbl->addRow(array(
                 'p', 
-                $bundle['name'], 
+                $bundle['id'], 
+                //$bundle['name'], 
                 $bundle['version'],
                 $bundle['author'],
                 $bundle['description'],
@@ -119,7 +126,7 @@ class Bundle
             $tbl->addFilter(1, $callback);
             $this->out(sprintf("Search bundles having \"%s\"..", $que));
         }
-        $tbl->setAlign(2, CONSOLE_TABLE_ALIGN_CENTER);
+        $tbl->setAlign(3, CONSOLE_TABLE_ALIGN_CENTER);
         $this->out($tbl->getTable()) ;
     }
 

@@ -86,9 +86,6 @@ class BundleTest
         $this->assertFileInBundle('./plugins/Processor/Test.php', $files);
     }
 
-    /**
-     * @group cur
-     */
     public function testExtractByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';

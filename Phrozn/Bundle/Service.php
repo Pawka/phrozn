@@ -90,9 +90,9 @@ class Service
      */
     public function applyBundle($path, $bundle)
     {
-        $destinationPath = new ProjectPath($path);
-        $bundle = new Bundle($bundle, $destinationPath);
-        $bundle->apply();
+        $projectPath = new ProjectPath($path);
+        $bundle = new Bundle($bundle, $this->getConfig());
+        $bundle->extractTo($projectPath);
     }
 
     /**
@@ -105,7 +105,7 @@ class Service
      */
     public function getBundleInfo($bundle)
     {
-        $bundle = new Bundle($bundle);
+        $bundle = new Bundle($bundle, $this->getConfig());
         return $bundle->getInfo();
     }
 
