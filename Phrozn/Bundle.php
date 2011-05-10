@@ -102,10 +102,13 @@ class Bundle
      *
      * @return \Phrozn\Bundle
      */
-    public function extractTo($path, $dryrun)
+    public function extractTo($path)
     {
         $path = (string)$path; // if \Phrozn\Path passed convert to string
-        var_dump($list);
+        if ($path && substr($path, -7) == '.phrozn') {
+            $tar = new BundleArchive($this->getInputFile());
+            $tar->extract($path);
+        }
 
         return $this;
     }

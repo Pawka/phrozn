@@ -77,9 +77,6 @@ class BundleTest
         $bundle->getInfo();
     }
 
-    /**
-     * @group cur
-     */
     public function testListBundleFilesByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -89,20 +86,26 @@ class BundleTest
         $this->assertFileInBundle('./plugins/Processor/Test.php', $files);
     }
 
+    /**
+     * @group cur
+     */
     public function testExtractByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
         $path = new ProjectPath(dirname(__FILE__) . '/Bundle/project/');
         $bundle = new Bundle('test', new Config($bundlesConfig));
 
-        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
-        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
-        $bundle->extractTo($path);
-        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
-        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
 
-        @unlink(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
-        @unlink(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->assertFalse(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/plugins/Site/View/Test.php'));
+        $bundle->extractTo($path);
+        $this->assertTrue(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/plugins/Site/View/Test.php'));
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
     }
 
     private function assertFileInBundle($que, $files)
