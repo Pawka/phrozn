@@ -23,40 +23,52 @@
 
 namespace PhroznTest\Provider;
 use \PHPUnit_Framework_TestCase as TestCase,
-    Phrozn\Provider\LoadFromFile as Provider;
+    Phrozn\Provider\Factory;
+
 
 /**
  * @category    PhroznTest
  * @package     Phrozn\Provider
  * @author      Victor Farazdagi
  */
-class LoadFromFileProviderTest 
+class ProviderTest 
     extends TestCase
 {
-    public function testProvider()
+    public function testProviderCreation()
     {
         $input = dirname(__FILE__) . '/data/LoadFromFile.txt';
         $options = array(
             'input' => basename($input),
         );
-        $provider = new Provider($options);
+        $factory = new Factory();
+        $provider = $factory->create('LoadFromFile', $options);
         $provider->setProjectPath(dirname($input));
         $this->assertSame(file_get_contents($input), $provider->get());
     }
 
-    public function testProviderNoInputSet()
+    public function testPluginProviderCreation()
     {
-        $this->setExpectedException('Exception', 'No input file provided');
-        $provider = new Provider();
-        $provider->get();
+        require_once dirname(__FILE__) . '/data/PluginProvider.php';
+
+        $input = dirname(__FILE__) . '/data/LoadFromFile.txt';
+        $options = array(
+            'input' => basename($input),
+        );
+        $factory = new Factory();
+        $provider = $factory->create('PluginProvider', $options);
+        $provider->setProjectPath(dirname($input));
+        $this->assertSame(file_get_contents($input), $provider->get());
     }
 
-    public function testProviderInvalidInputFile()
+    public function testProviderNotFoundException()
     {
-        $this->setExpectedException('Exception', 'Input file "/some-unreadable-file" not found');
-        $provider = new Provider();
-        $provider->setConfig(array(
-            'input' => 'some-unreadable-file'
-        ))->get();
+        $this->setExpectedException('Exception', "Provider of type 'SpeedyJoe' not found..");
+        $input = dirname(__FILE__) . '/data/LoadFromFile.txt';
+        $options = array();
+
+        $factory = new Factory();
+        $provider = $factory->create('SpeedyJoe', $options);
+        $provider->setProjectPath(dirname($input));
     }
 }
+
