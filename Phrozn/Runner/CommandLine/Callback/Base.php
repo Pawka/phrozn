@@ -25,6 +25,8 @@ namespace Phrozn\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine,
     Phrozn\Outputter\Console\Color,
     Phrozn\Outputter\DefaultOutputter as Outputter,
+    Phrozn\Outputter\PlainOutputter,
+    Phrozn\Runner\CommandLine\Reader,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine\Commands;
 
@@ -180,7 +182,7 @@ abstract class Base
         if (null !== $this->unitTestData) {
             return $this->unitTestData;
         } else {
-            $outputter = new Outputter\PlainOutputter();
+            $outputter = new PlainOutputter();
             $reader = new Reader();
             return $reader
                 ->setOutputter($outputter)
