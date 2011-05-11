@@ -78,7 +78,20 @@ class Service
             $bundles[$bundle['id']] = $bundle;
         }
         return $bundles;
-   }
+    }
+
+    /**
+     * List all files present in bundle
+     *
+     * @param string $bundle Bundle name, URI or filename
+     *
+     * @return array
+     */
+    public function getBundleFiles($bundle)
+    {
+        $bundle = new Bundle($bundle, $this->getConfig());
+        return $bundle->getFiles();
+    }
 
     /**
      * Apply given bundle
