@@ -74,6 +74,12 @@ abstract class Base
     private $commandMeta;
 
     /**
+     * Data to be used as an answer to confirmation in UTs
+     * @var string
+     */
+    private $unitTestData;
+
+    /**
      * Set CLI outputter
      *
      * @param Console_CommandLine_Outputter $outputter Where to forward output
@@ -164,6 +170,36 @@ abstract class Base
         }
     }
 
+    /**
+     * Read-line either from STDIN or mock unit test data
+     *
+     * @return string
+     */
+    public function readLine()
+    {
+        if (null !== $this->unitTestData) {
+            return $this->unitTestData;
+        } else {
+            $outputter = new Outputter\PlainOutputter();
+            $reader = new Reader();
+            return $reader
+                ->setOutputter($outputter)
+                ->readLine("Type 'yes' to continue: ");
+        }
+    }
+
+    /**
+     * Since Unit Testing readline can be tricky, confirm answer is exposed
+     * to unit test via this method. Simply pass the string you want to be used
+     * in place of readline() result.
+     *
+     * @return \Phrozn\Runner\CommandLine\Callback
+     */
+    public function setUnitTestData($data)
+    {
+        $this->unitTestData = $data;
+        return $this;
+    }
 
     /**
      * Combine command documentation
