@@ -24,9 +24,7 @@
 namespace Phrozn\Runner\CommandLine\Callback;
 use Phrozn\Outputter\Console\Color,
     Symfony\Component\Yaml\Yaml,
-    Phrozn\Runner\CommandLine,
-    Phrozn\Outputter,
-    Phrozn\Runner\CommandLine\Reader;
+    Phrozn\Runner\CommandLine;
 
 /**
  * phrozn clobber command
