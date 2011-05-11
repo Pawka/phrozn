@@ -320,6 +320,26 @@ abstract class Base
         }
     }
 
+    /**
+     * Extract path argument or fallback to cwd
+     *
+     * @param string $name Name of the path argument
+     *
+     * @return string
+     */
+    protected function getPathArgument($name)
+    {
+        $path = isset($this->getParseResult()->command->args[$name])
+               ? $this->getParseResult()->command->args[$name] : \getcwd();
+
+        if (!$this->isAbsolute($path)) { // not an absolute path
+            $path = \getcwd() . '/./' . $path;
+        }
+        $path = realpath($path);
+
+        return $path;
+    }
+
     private function useAnsiColors()
     {
         if (null === $this->useAnsiColors) {
@@ -338,4 +358,6 @@ abstract class Base
         }
         return $this->commandMeta;
     }
+
+
 }
