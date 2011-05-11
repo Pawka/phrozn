@@ -70,8 +70,7 @@ class Clobber
 
         $this->out($this->getHeader());
         $this->out("Purging project data..");
-        $this->out(
-            "\nLocated project folder: {$path}");
+        $this->out("\nLocated project folder: {$path}");
         $this->out( 
             "Project folder is to be removed.\n" .
             "This operation %rCAN NOT%n be undone.\n");
@@ -79,7 +78,6 @@ class Clobber
         if (is_dir($path) === false) {
             throw new \Exception("No project found at {$path}");
         }
-
 
         if ($this->readLine() === 'yes') {
             `rm -rf $path`;
