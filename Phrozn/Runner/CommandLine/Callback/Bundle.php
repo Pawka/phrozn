@@ -25,6 +25,7 @@ namespace Phrozn\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine,
     Phrozn\Outputter\Console\Color,
     Phrozn\Config,
+    Phrozn\Path\Project as ProjectPath,
     Symfony\Component\Yaml\Yaml,
     Console_Table as ConsoleTable,
     Phrozn\Bundle\Service as BundleService;
@@ -118,19 +119,15 @@ class Bundle
 
         $tbl = new ConsoleTable();
         $tbl->setHeaders(
-            array(
-                'S',
-                'Id', 
-                //'Name', 
-                'Version', 
-                'Author', 
-                'Description',)
+            array('S', 'Id', 'Version', 'Author', 'Description')
         );
         foreach ($bundles as $bundle) {
+            if (isset($bundle['hide']) && $bundle['hide'] == true) {
+                continue;
+            }
             $tbl->addRow(array(
                 'p', 
                 $bundle['id'], 
-                //$bundle['name'], 
                 $bundle['version'],
                 $bundle['author'],
                 $bundle['description'],
