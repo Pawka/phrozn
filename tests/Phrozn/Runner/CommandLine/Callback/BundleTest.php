@@ -94,9 +94,6 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
-    /**
-     * @group cur
-     */
     public function testBundleInfoByQue()
     {
         $out = $this->outputter;
@@ -119,6 +116,216 @@ class BundleTest
         $out->assertInLogs('[FAIL]    Bundle "no-such-bundle" not found..');
     }
 
+    public function testBundleApplyByIdWithNoWithImplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        $cwd = \getcwd();
+        chdir($path);
+
+        
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
+        $result = $this->getParseResult("phr-dev bundle apply processor.test");
+        $this->runner
+            ->setUnitTestData('no')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[FAIL]     Aborted..');
+        chdir($cwd);
+    }
+
+    public function testBundleApplyByIdWithYesWithImplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        $cwd = \getcwd();
+        chdir($path);
+
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
+        
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $result = $this->getParseResult("phr-dev bundle apply processor.test");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[OK]       Done..');
+
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        chdir($cwd);
+    }
+
+    public function testBundleApplyByNameWithNoWithImplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        $cwd = \getcwd();
+        chdir($path);
+
+        
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
+        $result = $this->getParseResult("phr-dev bundle apply test");
+        $this->runner
+            ->setUnitTestData('no')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[FAIL]     Aborted..');
+        chdir($cwd);
+    }
+
+    public function testBundleApplyByNameWithYesWithImplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        $cwd = \getcwd();
+        chdir($path);
+        
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
+
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $result = $this->getParseResult("phr-dev bundle apply test");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[OK]       Done..');
+
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        chdir($cwd);
+    }
+
+    public function testBundleApplyByIdWithNoWithExplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
+        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $this->runner
+            ->setUnitTestData('no')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[FAIL]     Aborted..');
+    }
+
+    public function testBundleApplyByIdWithYesWithExplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
+
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[OK]       Done..');
+
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+    }
+
+    public function testBundleApplyWrongProjectPath()
+    {
+        $out = $this->outputter;
+
+        $path = '/wrong-path';
+        
+        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $this->runner
+            ->setUnitTestData('no')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('[FAIL]    No project found at /wrong-path');
+
+    }
+
+    /**
+     * @group cur
+     */
+    public function testBundleApplyEmptyBundle()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        
+        mkdir($path . '/.phrozn');
+        touch($path . '/.phrozn/config.yml');
+
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $result = $this->getParseResult("phr-dev bundle apply empty.bundle {$path}");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[OK]       Done..');
+
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+    }
+    
     public function testNoSubActionSpecified()
     {
         $out = $this->outputter;

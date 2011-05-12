@@ -189,9 +189,35 @@ class Bundle
      */
     private function execApply()
     {
-        $bundle = $this->getBundleData($this->getBundleParam());
-        var_dump($bundle);
-        echo Bundle::REPO . $bundle['id'];
+        $pathArg = $this->getPathArgument('path', false, $this->getCommand());
+        $path = new ProjectPath($pathArg);
+        $bundle = $this->getBundleParam();
+
+        $files = $this->service->getBundleFiles($bundle);
+        if (!is_array($files) || !count($files)) {
+            throw new \Exception('Invalid or empty bundle');
+        }
+
+        $this->out("Located project folder: {$path->get()}\n");
+        if (is_dir($path->get()) === false) {
+            throw new \Exception("No project found at {$pathArg}");
+        }
+
+        $this->out('Bundle content:');
+        foreach ($files as $file) {
+            // Archive_Tar defines dit as typeflag 5
+            if(in_array($file['typeflag'], array(5)) === false) {
+                $this->out('    ' . $file['filename']);
+            }
+        }
+
+        $this->out("\nDo you wish to install this bundle?");
+        if ($this->readLine() === 'yes') {
+            $this->service->applyBundle($path, $bundle);
+            $this->out(self::STATUS_OK . " Done..");
+        } else {
+            $this->out(self::STATUS_FAIL . " Aborted..");
+        }
     }
 
 
