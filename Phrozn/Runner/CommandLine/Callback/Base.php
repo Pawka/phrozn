@@ -310,8 +310,16 @@ abstract class Base
     {
         return str_repeat(' ', strlen(Color::strip(Color::convert($str))));
     }
-    
-    protected function isAbsolute($path) {
+
+    /**
+     * See whether given path is absolute or relative
+     *
+     * @param string $path Path to check
+     *
+     * @return boolean
+     */
+    protected function isAbsolute($path) 
+    {
         if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32') {
             $pattern = '/^[a-zA-z]:.*[^.lnk]$/';
             return preg_match($pattern, $path);
@@ -324,18 +332,25 @@ abstract class Base
      * Extract path argument or fallback to cwd
      *
      * @param string $name Name of the path argument
+     * @param boolean $realpath Whether to apply realpath() to path
+     * @param \Console_CommandLine_Result $command Command line result to use
      *
      * @return string
      */
-    protected function getPathArgument($name)
+    protected function getPathArgument($name, $realpath = true, $command = null)
     {
-        $path = isset($this->getParseResult()->command->args[$name])
-               ? $this->getParseResult()->command->args[$name] : \getcwd();
+        if (null == $command) {
+            $command = $this->getParseResult()->command;
+        }
+        $path = isset($command->args[$name]) ? $command->args[$name] : \getcwd();
 
         if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
-        $path = realpath($path);
+        
+        if ($realpath) {
+            $path = realpath($path);
+        }
 
         return $path;
     }
