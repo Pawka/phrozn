@@ -244,19 +244,4 @@ class Bundle
     {
         return $this->getParseResult()->command->command;
     }
-
-    /**
-     * Wraps Console color codes around $value,
-     * depending if its larger or smaller 0.
-     *
-     * @param float $value Value (column 1)
-     *
-     * @return string Colorful value
-     */
-    public function highlightSearchTerm($value)
-    {
-        $que = $this->getBundleParam();
-        $value = preg_replace('/(' . preg_quote($que). ')/si', '[\1]', $value);
-        return $value;
-    }
 }
