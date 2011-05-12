@@ -51,6 +51,10 @@ command:
                     help_name: bundle
                     description: Bundle name, path or URL
                     optional: false
+                path:
+                    help_name: path
+                    description: Path to apply bundle to
+                    optional: true
         clobber:
             name: clobber
             description: Remove given bundle from the project
