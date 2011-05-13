@@ -31,6 +31,7 @@ namespace Phrozn\Registry;
  * @author      Victor Farazdagi
  */
 class Item
+    implements \ArrayAccess
 {
     /**
      * Item name
@@ -97,6 +98,56 @@ class Item
     {
         if (isset($this->children[$name])) {
             unset($this->children[$name]);
+        }
+    }
+
+    /**
+     * ArrayAccess method - check whether offset exists
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->children[$offset]);
+    }
+
+    /**
+     * ArrayAccess method - get offset value
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset)->getValue();
+    }
+
+    /**
+     * ArrayAccess method - set the offset value
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->__set($offset, $value);
+    }
+
+    /**
+     * ArrayAccess method - reset value at offset
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        if ($this->offsetExists($offset)) {
+            unset($this->children[$offset]);
         }
     }
 

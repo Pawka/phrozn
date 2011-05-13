@@ -51,4 +51,20 @@ class ItemTest
         $this->assertNull($item->foo->bar->value);
         $this->assertNull($item->foo->bar->getValue());
     }
+
+    public function testArrayAccess()
+    {
+        $item = new Item('installed');
+        $val = array(
+            'id' => 'some.bundle.id'
+        );
+        $this->assertFalse(isset($item['some.bundle.name']));
+        $item['some.bundle.name'] = $val;
+        $this->assertTrue(isset($item['some.bundle.name']));
+        $this->assertSame($val, $item['some.bundle.name']);
+        $this->assertSame('some.bundle.id', $item['some.bundle.name']['id']);
+        unset($item['some.bundle.name']);
+        $this->assertFalse(isset($item['some.bundle.name']));
+    }
+
 }
