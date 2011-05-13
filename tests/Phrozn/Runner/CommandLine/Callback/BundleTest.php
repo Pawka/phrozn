@@ -83,6 +83,17 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    public function testBundleListHiddenBundles()
+    {
+        $out = $this->outputter;
+        $result = $this->getParseResult("phr-dev bundle list");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Test processor plugin - used to demonstrate how');
+    }
+
     public function testBundleInfoById()
     {
         $out = $this->outputter;
@@ -294,9 +305,6 @@ class BundleTest
 
     }
 
-    /**
-     * @group cur
-     */
     public function testBundleApplyEmptyBundle()
     {
         $out = $this->outputter;
@@ -306,24 +314,12 @@ class BundleTest
         mkdir($path . '/.phrozn');
         touch($path . '/.phrozn/config.yml');
 
-        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
-        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
-
         $result = $this->getParseResult("phr-dev bundle apply empty.bundle {$path}");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
             ->execute();
-        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
-        $out->assertInLogs('Bundle content:');
-        $out->assertInLogs('./plugins/Processor/Test.php');
-        $out->assertInLogs('./plugins/Site/View/Test.php');
-        $out->assertInLogs('Do you wish to install this bundle?');
-        $out->assertInLogs('[OK]       Done..');
-
-        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
-        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
-
+        $out->assertInLogs('[FAIL]    Invalid or empty bundle');
     }
     
     public function testNoSubActionSpecified()

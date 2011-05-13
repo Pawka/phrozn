@@ -14,3 +14,10 @@ processor.hatena:
     description: HatenaSyntax - Japanese diary service syntax (like wiki).
     version: "1.0"
     author: Kazusuke Sasezaki
+empty.bundle:
+    id: empty.bundle
+    name: EmptyBundle
+    description: Test bundle
+    version: "1.0"
+    author: Victor Farazdagi
+    hide: true
