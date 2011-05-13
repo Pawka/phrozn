@@ -24,7 +24,7 @@
 namespace PhroznTest;
 use Phrozn\Registry\Item,
     Phrozn\Registry\Container,
-    Phrozn\Registry\Dao\Yaml as Dao,
+    Phrozn\Registry\Dao\Serialized as Dao,
     \PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -71,6 +71,23 @@ class ContainerTest
         $this->assertInstanceOf('Phrozn\Registry\Item', $container->foo->bar);
         unset($container->foo->bar);
         $this->assertSame(null, $container->foo->bar->value);
+    }
+
+    public function testArrayAccess()
+    {
+        $container = new Container();
+        $this->assertFalse(isset($container['foo']));
+        $container['foo'] = 'bar';
+        $this->assertSame('bar', $container['foo']);
+        $this->assertSame('bar', (string)$container['foo']);
+        $this->assertTrue(isset($container['foo']));
+        unset($container['foo']);
+        $this->assertFalse(isset($container['foo']));
+
+        $container['installed'] = array(
+            'sub' => array('hub' => 'bub')
+        );
+        $this->assertSame('bub', $container['installed']['sub']['hub']);
     }
 
     public function testSave()

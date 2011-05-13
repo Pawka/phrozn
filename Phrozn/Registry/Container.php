@@ -23,7 +23,7 @@
 
 namespace Phrozn\Registry;
 use Phrozn\Registry\Has,
-    Phrozn\Registry\Dao\Yaml as DefaultDao;
+    Phrozn\Registry\Dao\Serialized as DefaultDao;
 
 /**
  * Phrozn registry container
@@ -34,6 +34,7 @@ use Phrozn\Registry\Has,
  */
 class Container
     implements \Serializable,
+               \ArrayAccess,
                Has\Dao,
                Has\Values
 {
@@ -102,6 +103,56 @@ class Container
     {
         if (isset($this->values[$name])) {
             unset($this->values[$name]);
+        }
+    }
+
+    /**
+     * ArrayAccess method - check whether offset exists
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->values[$offset]);
+    }
+
+    /**
+     * ArrayAccess method - get offset value
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset)->getValue();
+    }
+
+    /**
+     * ArrayAccess method - set the offset value
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->__set($offset, $value);
+    }
+
+    /**
+     * ArrayAccess method - reset value at offset
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        if ($this->offsetExists($offset)) {
+            unset($this->values[$offset]);
         }
     }
 
