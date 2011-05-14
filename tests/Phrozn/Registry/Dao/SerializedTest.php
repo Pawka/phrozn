@@ -25,7 +25,7 @@
 namespace PhroznTest;
 use Phrozn\Registry\Item,
     Phrozn\Registry\Container,
-    Phrozn\Registry\Dao\Yaml as Dao,
+    Phrozn\Registry\Dao\Serialized as Dao,
     \PHPUnit_Framework_TestCase as TestCase;
 
 /**
@@ -34,7 +34,7 @@ use Phrozn\Registry\Item,
  * @subpackage  Dao
  * @author      Victor Farazdagi
  */
-class YamlTest 
+class SerializedTest 
     extends TestCase
 {
     public function testInit()
