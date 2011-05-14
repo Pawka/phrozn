@@ -98,7 +98,9 @@ abstract class Base
      */
     public function setProjectPath($path)
     {
-        $path = new ProjectPath($path);
+        if (!($path instanceof \Phrozn\Path\Project)) {
+            $path = new ProjectPath($path);
+        }
         $this->projectPath = $path->get(); // calculate path
 
         return $this;
