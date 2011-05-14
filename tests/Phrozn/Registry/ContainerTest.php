@@ -37,39 +37,10 @@ class ContainerTest
     public function testParameterSetting()
     {
         $container = new Container();
-        $container->foo = 'bar';
-        $this->assertSame('bar', (string)$container->foo);
-        $container->foo = 'baz';
-        $this->assertSame('baz', (string)$container->foo);
-        $container->foo->bar = 'foobar';
-        $container->foo->baz = 'foobaz';
-        $this->assertSame('baz', (string)$container->foo);
-        $this->assertSame('foobar', (string)$container->foo->bar->value);
-        $this->assertSame('foobar', (string)$container->foo->bar);
-        $this->assertSame('foobaz', (string)$container->foo->baz->value);
-        $this->assertSame('foobaz', (string)$container->foo->baz);
-
-        $container->foo = 'baz';
-        $this->assertSame('baz', (string)$container->foo);
-        unset($container->foo);
-        $this->assertNull($container->foo->value);
-
-        $container->foo->bar = 'foobar';
-        $this->assertSame('foobar', (string)$container->foo->bar->value);
-        unset($container->foo->bar);
-        $this->assertNull($container->foo->bar->value);
-
-        $container->foo->baz = 'foobaz';
-        $this->assertSame('foobaz', (string)$container->foo->baz->value);
-        unset($container->foo->baz);
-        $this->assertNull($container->foo->baz->value);
-
-        $arr = array(1,2,3);
-        $container->foo->bar = $arr;
-        $this->assertSame($arr, $container->foo->bar->value);
-        $this->assertInstanceOf('Phrozn\Registry\Item', $container->foo->bar);
-        unset($container->foo->bar);
-        $this->assertSame(null, $container->foo->bar->value);
+        $container->set('foo', 'bar');
+        $this->assertSame('bar', $container->get('foo'));
+        $container->remove('foo');
+        $this->assertNull($container->get('foo'));
     }
 
     public function testArrayAccess()
@@ -89,6 +60,7 @@ class ContainerTest
         $this->assertSame('bub', $container['installed']['sub']['hub']);
     }
 
+
     public function testSave()
     {
         $dao = new Dao();
@@ -98,21 +70,23 @@ class ContainerTest
 
         $container = new Container($dao);
         $this->assertSame($dao, $container->getDao());
-        $container->bundle->sub->hub = 12;
-        $container->bundle->dub = array(1, 2, 3);
+        $container
+            ->set('bundle', 'test.me')
+            ->set('template', array(1, 2, 3));
 
         @unlink($path . '/.phrozn/.registry');
         $this->assertFalse(file_exists($path . '/.phrozn/.registry'));
         $container->save();
         $this->assertTrue(file_exists($path . '/.phrozn/.registry'));
-        $this->assertSame(file_get_contents($path . '/registry'), file_get_contents($path . '/.phrozn/.registry'));
+        $this->assertSame(file_get_contents($path . '/registry.serialized'), file_get_contents($path . '/.phrozn/.registry'));
 
         unset($container);
         $container = new Container($dao);
-        $this->assertSame('', (string)$container->bundle->sub->hub);
+        $this->assertNull($container->get('bundle'));
+        $this->assertNull($container->get('template'));
         $container->read();
-        $this->assertSame('12', (string)$container->bundle->sub->hub);
-        $this->assertSame(array(1, 2, 3), $container->bundle->dub->value);
+        $this->assertSame('test.me', $container->get('bundle'));
+        $this->assertSame(array(1, 2, 3), $container->get('template'));
     }
 
     public function testSaveWithImplicitDao()
@@ -125,26 +99,24 @@ class ContainerTest
         $container->getDao()->setProjectPath($path);
         $this->assertSame($path . '/.phrozn', $container->getDao()->getProjectPath());
 
-        $container->bundle->sub->hub = 12;
-        $container->bundle->dub = array(1, 2, 3);
+        $container
+            ->set('bundle', 'test.me')
+            ->set('template', array(1, 2, 3));
 
         @unlink($path . '/.phrozn/.registry');
         $this->assertFalse(file_exists($path . '/.phrozn/.registry'));
         $container->save();
         $this->assertTrue(file_exists($path . '/.phrozn/.registry'));
-        $this->assertSame(file_get_contents($path . '/registry'), file_get_contents($path . '/.phrozn/.registry'));
+        $this->assertSame(file_get_contents($path . '/registry.serialized'), file_get_contents($path . '/.phrozn/.registry'));
 
         unset($container);
         $container = new Container();
         $container->getDao()->setProjectPath($path);
 
-        $this->assertSame('', (string)$container->bundle->sub->hub);
-        $this->assertNull($container->bundle->sub->hub->value);
-        $this->assertNull($container->bundle->sub->hub->getValue());
+        $this->assertNull($container->get('bundle'));
+        $this->assertNull($container->get('template'));
         $container->read();
-        $this->assertSame('12', (string)$container->bundle->sub->hub);
-        $this->assertSame(12, $container->bundle->sub->hub->value);
-        $this->assertSame(12, $container->bundle->sub->hub->getValue());
-        $this->assertSame(array(1, 2, 3), $container->bundle->dub->value);
+        $this->assertSame('test.me', $container->get('bundle'));
+        $this->assertSame(array(1, 2, 3), $container->get('template'));
     }
 }

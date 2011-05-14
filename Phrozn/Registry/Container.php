@@ -47,7 +47,7 @@ class Container
      * Registry values
      * @var array
      */
-    private $values;
+    protected $values;
 
     /**
      * Initialize container
@@ -62,99 +62,17 @@ class Container
             $dao = new DefaultDao();
         }
         $this->setDao($dao);
+
+        $this->init(); // allow sub-classes to initialize 
     }
 
     /**
-     * Magic set method
-     *
-     * @param string $name Property name
-     * @param mixed $value Property value
+     * Initialize container
      *
      * @return void
      */
-    public function __set($name, $value)
-    {
-        $this->values[$name] = new Item($name, $value);
-    }
-
-    /**
-     * Magic get method
-     *
-     * @param string $name Property name
-     *
-     * @return void
-     */
-    public function __get($name)
-    {
-        if (!isset($this->values[$name])) {
-            $this->values[$name] = new Item($name);
-        }
-        return $this->values[$name];
-    }
-
-    /**
-     * Magic unset method
-     *
-     * @param string $name Member name
-     *
-     * @return void
-     */
-    public function __unset($name)
-    {
-        if (isset($this->values[$name])) {
-            unset($this->values[$name]);
-        }
-    }
-
-    /**
-     * ArrayAccess method - check whether offset exists
-     *
-     * @param mixed $offset Offset to check
-     *
-     * @return boolean
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->values[$offset]);
-    }
-
-    /**
-     * ArrayAccess method - get offset value
-     *
-     * @param mixed $offset Offset to check
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return $this->__get($offset)->getValue();
-    }
-
-    /**
-     * ArrayAccess method - set the offset value
-     *
-     * @param mixed $offset Offset to check
-     *
-     * @return void
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->__set($offset, $value);
-    }
-
-    /**
-     * ArrayAccess method - reset value at offset
-     *
-     * @param mixed $offset Offset to check
-     *
-     * @return void
-     */
-    public function offsetUnset($offset)
-    {
-        if ($this->offsetExists($offset)) {
-            unset($this->values[$offset]);
-        }
-    }
+    public function init()
+    {}
 
     /**
      * Persist current instance
@@ -251,4 +169,94 @@ class Container
         return $this->values;
     }
 
+    /**
+     * Set property value 
+     *
+     * @param string $name Property name
+     * @param mixed $value Property value
+     *
+     * @return \Phrozn\Registry\Container
+     */
+    public function set($name, $value)
+    {
+        $this->values[$name] = $value;
+        return $this;
+    }
+
+    /**
+     * Get property value
+     *
+     * @param string $name Property name
+     *
+     * @return mixed
+     */
+    public function get($name)
+    {
+        if (!isset($this->values[$name])) {
+            return null;
+        }
+        return $this->values[$name];
+    }
+
+    /**
+     * Unset property
+     *
+     * @param string $name Member name
+     *
+     * @return void
+     */
+    public function remove($name)
+    {
+        if (isset($this->values[$name])) {
+            unset($this->values[$name]);
+        }
+    }
+
+    /**
+     * ArrayAccess method - check whether offset exists
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->values[$offset]);
+    }
+
+    /**
+     * ArrayAccess method - get offset value
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * ArrayAccess method - set the offset value
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->set($offset, $value);
+    }
+
+    /**
+     * ArrayAccess method - reset value at offset
+     *
+     * @param mixed $offset Offset to check
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
+    }
 }

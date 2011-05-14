@@ -59,8 +59,8 @@ class SerializedTest
         $path = dirname(__FILE__) . '/../project/';
 
         $container = new Container();
-        $container->bundle->sub->hub = 12;
-        $container->bundle->dub = array(1, 2, 3);
+        $container->set('bundle', 'test.me');
+        $container->set('template', array(1, 2, 3));
 
         $dao = new Dao($container);
         $dao->setProjectPath($path);
@@ -70,16 +70,17 @@ class SerializedTest
         $dao->save();
         $this->assertTrue(file_exists($path . '/.phrozn/.registry'));
         $this->assertSame(
-            file_get_contents(dirname(__FILE__) . '/../project/registry'), 
+            file_get_contents(dirname(__FILE__) . '/../project/registry.serialized'), 
             file_get_contents($path . '/.phrozn/.registry'));
 
         // test read
         unset($container);
         $container = new Container($dao);
-        $this->assertSame('', (string)$container->bundle->sub->hub);
+        $this->assertNull($container->get('bundle'));
+        $this->assertNull($container->get('template'));
         $container->read();
-        $this->assertSame('12', (string)$container->bundle->sub->hub);
-        $this->assertSame(array(1, 2, 3), $container->bundle->dub->value);
+        $this->assertSame('test.me', $container->get('bundle'));
+        $this->assertSame(array(1, 2, 3), $container->get('template'));
         
         @unlink($path . '/.phrozn/.registry');
     }
@@ -88,13 +89,13 @@ class SerializedTest
     {
         $container = new Container();
         $arr = array(1, 2, 3);
-        $container->bundle->dub = $arr;
+        $container->set('template', $arr);
         $dao = new Dao($container);
         $dao->setOutputFile('not-found');
-        $this->assertSame($arr, $container->bundle->dub->value);
+        $this->assertSame($arr, $container->get('template'));
         $dao->read();
         $this->assertNull($container->getValues());
-        $this->assertNull($container->bundle->dub->value);
+        $this->assertNull($container->get('template'));
     }
 
     public function testNoPathException()
