@@ -166,23 +166,6 @@ class Bundle
     }
 
     /**
-     * Get type -i, -n, -a of bundles to work on
-     *
-     * @return string
-     */
-    private function getTypeParam()
-    {
-        $options = $this->getCommand()->options; 
-        $type = \Phrozn\Bundle::TYPE_ALL;
-        if ($options['installed']) {
-            $type = \Phrozn\Bundle::TYPE_INSTALLED;
-        } else if ($options['available']) {
-            $type = \Phrozn\Bundle::TYPE_AVAILABLE;
-        }
-        return $type;
-    }
-
-    /**
      * Apply bundle 
      * 
      * @return void
@@ -220,6 +203,22 @@ class Bundle
         }
     }
 
+    /**
+     * Get type -i, -n, -a of bundles to work on
+     *
+     * @return string
+     */
+    private function getTypeParam()
+    {
+        $options = $this->getCommand()->options; 
+        $type = \Phrozn\Bundle::TYPE_ALL;
+        if ($options['installed']) {
+            $type = \Phrozn\Bundle::TYPE_INSTALLED;
+        } else if ($options['available']) {
+            $type = \Phrozn\Bundle::TYPE_AVAILABLE;
+        }
+        return $type;
+    }
 
     /**
      * Extract bundle name/uri argument
