@@ -23,8 +23,7 @@
  */
 
 namespace PhroznTest;
-use Phrozn\Registry\Item,
-    Phrozn\Registry\Container,
+use Phrozn\Registry\Container,
     Phrozn\Registry\Dao\Serialized as Dao,
     \PHPUnit_Framework_TestCase as TestCase;
 
