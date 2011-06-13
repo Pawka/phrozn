@@ -96,15 +96,11 @@ class DefaultSite
         foreach ($it as $item) {
             $baseName = $item->getBaseName();
             if ($item->isFile()) {
-                $inputFile = $item->getRealPath(); 
+                $inputFile = $item->getRealPath();
 
-                $outputFile = '/media/' . basename($inputFile);
-                // find relative path, wrt to media
-                $pos = strpos($inputFile, '/media');
-                if ($pos !== false) {
-                    $outputFile = substr($inputFile, $pos);
-                }
-                $outputFile = $outputDir . $outputFile;
+                $path = $it->getSubPath();
+
+                $outputFile = $outputDir . '/media/' . $path . (!empty($path)?'/':'') . basename($inputFile);
 
                 // copy media files
                 try {
