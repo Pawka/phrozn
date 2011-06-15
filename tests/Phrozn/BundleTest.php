@@ -86,6 +86,91 @@ class BundleTest
         $this->assertFileInBundle('./plugins/Processor/Test.php', $files);
     }
 
+    public function testExtractByUri()
+    {
+        $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
+        $path = new ProjectPath(dirname(__FILE__) . '/Bundle/project/');
+        $bundlePath = 'https://github.com/farazdagi/phrozn-bundles/raw/master/processor.test.tgz';
+
+        $bundle = new Bundle($bundlePath, new Config($bundlesConfig));
+        $this->assertSame($bundle->getInputFile(), $bundlePath);
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+
+        $this->assertFalse(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/plugins/Site/View/Test.php'));
+        $bundle->extractTo($path);
+        $this->assertTrue(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/plugins/Site/View/Test.php'));
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+    }
+
+    public function testExtractByFileNameCustom()
+    {
+        $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
+        $path = new ProjectPath(dirname(__FILE__) . '/Bundle/project/');
+        $bundlePath = dirname(__FILE__) . '/Bundle/bundles/mybundle.tgz';
+
+        $bundle = new Bundle($bundlePath, new Config($bundlesConfig));
+        $this->assertSame($bundle->getInputFile(), $bundlePath);
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+
+        $this->assertFalse(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/plugins/Site/View/Test.php'));
+        $bundle->extractTo($path);
+        $this->assertTrue(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/plugins/Site/View/Test.php'));
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+    }
+
+    public function testExtractByFileNameConventional()
+    {
+        $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
+        $path = new ProjectPath(dirname(__FILE__) . '/Bundle/project/');
+        $bundlePath = dirname(__FILE__) . '/Bundle/bundles/processor.test.tgz';
+
+        $bundle = new Bundle($bundlePath, new Config($bundlesConfig));
+        $this->assertSame($bundle->getInputFile(), $bundlePath);
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+
+        $this->assertFalse(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/plugins/Site/View/Test.php'));
+        $bundle->extractTo($path);
+        $this->assertTrue(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/plugins/Site/View/Test.php'));
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+    }
+    
+    public function testExtractById()
+    {
+        $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
+        $path = new ProjectPath(dirname(__FILE__) . '/Bundle/project/');
+        $bundle = new Bundle('processor.test', new Config($bundlesConfig));
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+
+        $this->assertFalse(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/plugins/Site/View/Test.php'));
+        $bundle->extractTo($path);
+        $this->assertTrue(file_exists($path . '/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/plugins/Site/View/Test.php'));
+
+        @unlink($path . '/plugins/Processor/Test.php');
+        @unlink($path . '/plugins/Site/View/Test.php');
+    }
+
     public function testExtractByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -117,4 +202,9 @@ class BundleTest
         $this->assertTrue($result);
     }
 
+    public function testInvalidConfigurationObjectException()
+    {
+        $this->setExpectedException('Exception', 'Configuration object must be an instance of Phrozn\Config');
+        $bundle = new Bundle('test', new \StdClass);
+    }
 }

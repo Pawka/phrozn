@@ -206,13 +206,14 @@ class Bundle
     {
         if (null === $this->getInputFile()) {
             $bundle = $this->getKey();
-            $bundleId = $this->getInfo('id');
             if (substr($bundle, 0, 4) === 'http') {
                 $this->setInputFile($bundle);
             } else if (substr($bundle, -4) === '.tgz') {
                 $this->setInputFile($bundle);
-            } 
-            $this->setInputFile(self::REPO . $bundleId . '.tgz');
+            } else {
+                $bundleId = $this->getInfo('id');
+                $this->setInputFile(self::REPO . $bundleId . '.tgz');
+            }
         }
 
         return $this;
