@@ -115,4 +115,16 @@ class DefaultSiteTest
     public function testApplyBundleFromPhroznDir()
     {}
 
+    private function resetProjectDirectory()
+    {
+        $path = dirname(__FILE__) . '/project';
+        chmod($path, 0777);
+
+        $path .= '/.phrozn';
+        if (is_dir($path)) {
+            `rm -rf {$path}`;
+            $path = dirname($path);
+            `phr-dev init {$path}`;
+        }
+    }
 }
