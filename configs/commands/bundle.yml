@@ -103,7 +103,7 @@ docs:
         %bphrozn%n %gbundle%n list --all
 
         List installed bundles:
-        %bphrozn%n %gbundle%n list --i
+        %bphrozn%n %gbundle%n list -i
         %bphrozn%n %gbundle%n list --installed
 
         List not installed (available) bundles:
