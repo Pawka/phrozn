@@ -34,6 +34,11 @@ use Phrozn\Bundle,
 class BundleTest 
     extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $this->resetProjectDirectory();
+    }
+
     public function testGetInfo()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -206,5 +211,18 @@ class BundleTest
     {
         $this->setExpectedException('Exception', 'Configuration object must be an instance of Phrozn\Config');
         $bundle = new Bundle('test', new \StdClass);
+    }
+
+    private function resetProjectDirectory()
+    {
+        $path = dirname(__FILE__) . '/Bundle/project';
+        chmod($path, 0777);
+
+        $path .= '/.phrozn';
+        if (is_dir($path)) {
+            `rm -rf {$path}`;
+            $path = dirname($path);
+            `phr-dev init {$path}`;
+        }
     }
 }
