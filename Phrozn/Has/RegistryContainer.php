@@ -39,12 +39,12 @@ interface RegistryContainer
      *
      * @return \Phrozn\Has\RegistryContainer
      */
-    public function setContainer($container);
+    public function setRegistryContainer($container);
 
     /**
      * Get registry container
      *
      * @return \Phrozn\Registry\Container
      */
-    public function getContainer();
+    public function getRegistryContainer();
 }
