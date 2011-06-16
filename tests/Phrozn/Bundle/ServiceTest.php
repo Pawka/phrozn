@@ -25,7 +25,8 @@ namespace PhroznTest\Bundle;
 use Phrozn\Bundle\Service as BundleService,
     Phrozn\Outputter\TestOutputter,
     Phrozn\Config,
-    Phrozn\Bundle;
+    Phrozn\Bundle,
+    Phrozn\Registry\Container\Bundles as Container;
 
 /**
  * @category    Phrozn
@@ -36,12 +37,19 @@ class DefaultSiteTest
     extends \PHPUnit_Framework_TestCase
 {
     private $service;
+    private $container;
 
     public function setUp()
     {
         $config = new Config(dirname(__FILE__) . '/../../../configs/');
         $this->service = new BundleService();
         $this->service->setConfig($config);
+
+        $this->container = new Container();
+        $path = dirname(__FILE__) . '/../project';
+        $this->container->getDao()->setProjectPath($path);
+
+        $this->resetProjectDirectory();
     }
 
     public function testListNoParams()
@@ -98,6 +106,23 @@ class DefaultSiteTest
     /**
      * @group cur
      */
+    public function testRegistryValues()
+    {
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service->applyBundle($path, $bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
+        $registry = $this->service->getRegistryContainer();
+        $this->assertTrue($registry->isInstalled('processor.test'));
+        $files = $registry->getFiles('processor.test');
+        $this->assertTrue(isset($files[6]['filename']));
+        $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
+    }
+
     public function testApplyOfficialBundleByName()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -114,6 +139,21 @@ class DefaultSiteTest
 
     public function testApplyBundleFromPhroznDir()
     {}
+
+    public function testAlreadyInstalledException()
+    {
+        $this->setExpectedException('Exception', 
+            'Bundle "processor.test" is already installed.');
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service->applyBundle($path, $bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
+        $this->service->applyBundle($path, $bundle);
+    }
 
     private function resetProjectDirectory()
     {

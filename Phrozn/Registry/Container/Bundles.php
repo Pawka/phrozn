@@ -46,6 +46,9 @@ class Bundles
         if (null === $this->get('installed')) {
             $this->set('installed', array());
         }
+        if (null === $this->get('files')) {
+            $this->set('files', array());
+        }
     }
 
     /**
@@ -55,12 +58,16 @@ class Bundles
      *
      * @return \Phrozn\Registry\Container
      */
-    public function markAsInstalled($bundle)
+    public function markAsInstalled($bundle, $files)
     {
         $installed = $this->get('installed');
         $installed[] = $bundle;
+
+        $bundleFiles = $this->get('files');
+        $bundleFiles[$bundle] = $files;
         $this
             ->set('installed', $installed)
+            ->set('files', $bundleFiles)
             ->save();
         return $this;
     }
@@ -76,5 +83,11 @@ class Bundles
     {
         $installed = $this->get('installed');
         return in_array($bundle, $installed);
+    }
+
+    public function getFiles($bundle)
+    {
+        $files = $this->get('files');
+        return isset($files[$bundle]) ? $files[$bundle] : array();
     }
 }

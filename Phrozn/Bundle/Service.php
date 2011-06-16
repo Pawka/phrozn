@@ -24,6 +24,8 @@
 namespace Phrozn\Bundle;
 use Phrozn\Has,
     Phrozn\Bundle,
+    Phrozn\Registry\Container\Bundles as RegistryContainer,
+    Phrozn\Registry\Dao\Serialized as RegistryDao,
     Phrozn\Path\Project as ProjectPath;
 
 /**
@@ -34,13 +36,21 @@ use Phrozn\Has,
  * @author      Victor Farazdagi
  */
 class Service
-    implements Has\Config
+    implements 
+            Has\Config,
+            Has\RegistryContainer
 {
     /**
      * Configuration object
      * @var \Phrozn\Config
      */
     private $config;
+
+    /**
+     * Bundle registry
+     * @var \Phrozn\Registry\Container
+     */
+    private $registryContainer;
 
     /**
      * Get list of bundles by type
@@ -105,7 +115,21 @@ class Service
     {
         $projectPath = new ProjectPath($path);
         $bundle = new Bundle($bundle, $this->getConfig());
+        $bundleId = $bundle->getInfo('id');
+
+        $this->initRegistryContainer($projectPath);
+        $registry = $this->getRegistryContainer();
+
+        if ($registry->isInstalled($bundleId)) {
+            throw new \Exception(
+                sprintf('Bundle "%s" is already installed.', $bundleId));
+        }
+
+        // install
         $bundle->extractTo($projectPath);
+
+        // persist list of installed bundles
+        $registry->markAsInstalled($bundleId, $bundle->getFiles());
     }
 
     /**
@@ -147,4 +171,46 @@ class Service
     {
         return $this->config;
     }
+
+    /**
+     * Initialize (if necessary) and return registry container
+     *
+     * @param string $path Path to Phrozn project
+     *
+     * @return \Phrozn\Bundle\Service
+     */
+    private function initRegistryContainer($projectPath)
+    {
+        if (null === $this->registryContainer) {
+            $dao = new RegistryDao();
+            $dao
+                ->setProjectPath($projectPath)
+                ->setOutputFile('.bundles');
+            $this->setRegistryContainer(new RegistryContainer($dao));
+        }
+        return $this;
+    }
+
+    /**
+     * Set container
+     *
+     * @param \Phrozn\Registry\Container $container Registry container
+     *
+     * @return \Phrozn\Has\RegistryContainer
+     */
+    public function setRegistryContainer($container)
+    {
+        $this->registryContainer = $container;
+    }
+
+    /**
+     * Get registry container
+     *
+     * @return \Phrozn\Registry\Container
+     */
+    public function getRegistryContainer()
+    {
+        return $this->registryContainer;
+    }
+
 }
