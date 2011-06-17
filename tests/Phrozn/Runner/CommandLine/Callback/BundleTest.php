@@ -38,6 +38,7 @@ class BundleTest
     private $runner;
     private $outputter;
     private $parser;
+    private $previousPath;
 
     public function setUp()
     {
@@ -51,8 +52,11 @@ class BundleTest
             'skeleton'  => $base . 'skeleton/',
         );
 
-        // purge project directory
-        $this->removeProjectDirectory();
+        $path = dirname(__FILE__) . '/project';
+        $this->previousPath = \getcwd();
+        chdir($path);
+
+        $this->resetProjectDirectory();
         
         $this->outputter = new Outputter($this);
         $runner = new Callback();
@@ -68,8 +72,8 @@ class BundleTest
 
     public function tearDown()
     {
-        // purge project directory
-        $this->removeProjectDirectory();
+        $this->resetProjectDirectory(true);
+        chdir($this->previousPath);
     }
 
     public function testBundleList()
@@ -132,12 +136,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        $cwd = \getcwd();
-        chdir($path);
 
-        
-        mkdir($path . '/.phrozn');
-        touch($path . '/.phrozn/config.yml');
         $result = $this->getParseResult("phr-dev bundle apply processor.test");
         $this->runner
             ->setUnitTestData('no')
@@ -149,7 +148,6 @@ class BundleTest
         $out->assertInLogs('./plugins/Site/View/Test.php');
         $out->assertInLogs('Do you wish to install this bundle?');
         $out->assertInLogs('[FAIL]     Aborted..');
-        chdir($cwd);
     }
 
     public function testBundleApplyByIdWithYesWithImplicitPath()
@@ -157,11 +155,6 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        $cwd = \getcwd();
-        chdir($path);
-
-        mkdir($path . '/.phrozn');
-        touch($path . '/.phrozn/config.yml');
         
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
@@ -180,8 +173,6 @@ class BundleTest
 
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
-
-        chdir($cwd);
     }
 
     public function testBundleApplyByNameWithNoWithImplicitPath()
@@ -189,12 +180,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        $cwd = \getcwd();
-        chdir($path);
 
-        
-        mkdir($path . '/.phrozn');
-        touch($path . '/.phrozn/config.yml');
         $result = $this->getParseResult("phr-dev bundle apply test");
         $this->runner
             ->setUnitTestData('no')
@@ -206,7 +192,6 @@ class BundleTest
         $out->assertInLogs('./plugins/Site/View/Test.php');
         $out->assertInLogs('Do you wish to install this bundle?');
         $out->assertInLogs('[FAIL]     Aborted..');
-        chdir($cwd);
     }
 
     public function testBundleApplyByNameWithYesWithImplicitPath()
@@ -214,11 +199,6 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        $cwd = \getcwd();
-        chdir($path);
-        
-        mkdir($path . '/.phrozn');
-        touch($path . '/.phrozn/config.yml');
 
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
@@ -237,8 +217,6 @@ class BundleTest
 
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
-
-        chdir($cwd);
     }
 
     public function testBundleApplyByIdWithNoWithExplicitPath()
@@ -247,8 +225,6 @@ class BundleTest
 
         $path = dirname(__FILE__) . '/project';
         
-        mkdir($path . '/.phrozn');
-        touch($path . '/.phrozn/config.yml');
         $result = $this->getParseResult("phr-dev bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('no')
@@ -268,9 +244,6 @@ class BundleTest
 
         $path = dirname(__FILE__) . '/project';
         
-        mkdir($path . '/.phrozn');
-        touch($path . '/.phrozn/config.yml');
-
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
@@ -311,9 +284,6 @@ class BundleTest
 
         $path = dirname(__FILE__) . '/project';
         
-        mkdir($path . '/.phrozn');
-        touch($path . '/.phrozn/config.yml');
-
         $result = $this->getParseResult("phr-dev bundle apply empty.bundle {$path}");
         $this->runner
             ->setUnitTestData('yes')
@@ -339,7 +309,7 @@ class BundleTest
         return $this->parser->parse(count($args), $args);
     }
 
-    private function removeProjectDirectory()
+    private function resetProjectDirectory($justPurge = false)
     {
         $path = dirname(__FILE__) . '/project';
         chmod($path, 0777);
@@ -347,6 +317,10 @@ class BundleTest
         $path .= '/.phrozn';
         if (is_dir($path)) {
             `rm -rf {$path}`;
+        }
+        if (false === $justPurge) {
+            $path = dirname($path);
+            `phr-dev init {$path}`;
         }
     }
 }

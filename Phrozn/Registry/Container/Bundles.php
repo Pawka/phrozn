@@ -90,4 +90,16 @@ class Bundles
         $files = $this->get('files');
         return isset($files[$bundle]) ? $files[$bundle] : array();
     }
+
+    /**
+     * (Re)read current container from DAO
+     *
+     * @return \Phrozn\Registry\Container
+     */
+    public function read()
+    {
+        parent::read();
+        $this->init(); // re-initialize container
+        return $this;
+    }
 }

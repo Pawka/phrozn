@@ -54,7 +54,7 @@ class BundlesTest
         $this->assertSame(array(), $this->container->get('installed'));
 
         $this->assertFalse($this->container->isInstalled('test.bundle'));
-        $this->container->markAsInstalled('test.bundle');
+        $this->container->markAsInstalled('test.bundle', array());
         $this->assertTrue($this->container->isInstalled('test.bundle'));
 
         $container = new Container();

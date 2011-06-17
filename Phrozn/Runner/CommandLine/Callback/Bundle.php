@@ -113,9 +113,19 @@ class Bundle
      */
     private function execList()
     {
+        $pathArg = $this->getPathArgument('path', false, $this->getCommand());
+        $path = new ProjectPath($pathArg);
+
         $que = $this->getBundleParam(); // user searches for a certain bundle
-        $bundles = $this->service->getBundles(
+        $bundles = $this->service
+            ->setProjectPath($path)
+            ->getBundles(
                 $this->getTypeParam(), $this->getBundleParam());
+
+        $this->out("Located project folder: {$path->get()}\n");
+        if (is_dir($path->get()) === false) {
+            throw new \Exception("No project found at {$pathArg}");
+        }
 
         $tbl = new ConsoleTable();
         $tbl->setHeaders(
@@ -126,7 +136,7 @@ class Bundle
                 continue;
             }
             $tbl->addRow(array(
-                'p', 
+                $this->service->getRegistryContainer()->isInstalled($bundle['id']) ? 'i' : 'p', 
                 $bundle['id'], 
                 $bundle['version'],
                 $bundle['author'],
@@ -196,7 +206,10 @@ class Bundle
 
         $this->out("\nDo you wish to install this bundle?");
         if ($this->readLine() === 'yes') {
-            $this->service->applyBundle($path, $bundle);
+            $this
+                ->service
+                ->setProjectPath($path)
+                ->applyBundle($bundle);
             $this->out(self::STATUS_OK . " Done..");
         } else {
             $this->out(self::STATUS_FAIL . " Aborted..");

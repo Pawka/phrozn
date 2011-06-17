@@ -39,6 +39,11 @@ class BundleTest
         $this->resetProjectDirectory();
     }
 
+    public function tearDown()
+    {
+        $this->resetProjectDirectory(true);
+    }
+
     public function testGetInfo()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -213,7 +218,7 @@ class BundleTest
         $bundle = new Bundle('test', new \StdClass);
     }
 
-    private function resetProjectDirectory()
+    private function resetProjectDirectory($justPurge = false)
     {
         $path = dirname(__FILE__) . '/Bundle/project';
         chmod($path, 0777);
@@ -221,6 +226,8 @@ class BundleTest
         $path .= '/.phrozn';
         if (is_dir($path)) {
             `rm -rf {$path}`;
+        }
+        if (false === $justPurge) {
             $path = dirname($path);
             `phr-dev init {$path}`;
         }

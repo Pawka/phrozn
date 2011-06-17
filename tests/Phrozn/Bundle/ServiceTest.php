@@ -41,15 +41,22 @@ class DefaultSiteTest
 
     public function setUp()
     {
+        $this->resetProjectDirectory();
+
+        $path = dirname(__FILE__) . '/project';
+
         $config = new Config(dirname(__FILE__) . '/../../../configs/');
-        $this->service = new BundleService();
-        $this->service->setConfig($config);
+        $this->service = new BundleService($config, $path);
 
         $this->container = new Container();
-        $path = dirname(__FILE__) . '/../project';
-        $this->container->getDao()->setProjectPath($path);
+        $this->container
+            ->getDao()
+            ->setProjectPath($path);
+    }
 
-        $this->resetProjectDirectory();
+    public function tearDown()
+    {
+        $this->resetProjectDirectory(true);
     }
 
     public function testListNoParams()
@@ -84,11 +91,96 @@ class DefaultSiteTest
         $this->assertArrayHasKey('processor.hatena', $bundles);
     }
 
-    public function testListBundles()
+    public function testListInstalled()
     {
-        $this->markTestIncomplete('YOU NEED TO TEST DIFF TYPES');
         $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED);
+        $this->assertSame(array(), $bundles);
+        
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service
+            ->setProjectPath($path)
+            ->applyBundle($bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
+        $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED);
+
+        $this->arrayHasKey('processor.test', $bundles);
+        $this->arrayHasKey('id', $bundles['processor.test']);
+        $this->assertSame('processor.test', $bundles['processor.test']['id']);
+
+    }
+
+    public function testListInstalledSearch()
+    {
+        $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED);
+        $this->assertSame(array(), $bundles);
+        
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service->applyBundle($bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
+        $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED, 'HatenaSyntax');
+        $this->assertSame(array(), $bundles);
+
+        $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED, 'test');
+        $this->arrayHasKey('processor.test', $bundles);
+        $this->arrayHasKey('id', $bundles['processor.test']);
+        $this->assertSame('processor.test', $bundles['processor.test']['id']);
+   }
+
+    public function testListAvailable()
+    {
         $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE);
+        $this->assertTrue(isset($bundles['processor.test']));
+        $this->arrayHasKey('processor.test', $bundles);
+        $this->arrayHasKey('id', $bundles['processor.test']);
+        $this->assertSame('processor.test', $bundles['processor.test']['id']);
+
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service
+            ->setProjectPath($path)
+            ->applyBundle($bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
+        $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE);
+        $this->assertFalse(isset($bundles['processor.test']));
+        $this->assertTrue(isset($bundles['processor.hatena']));
+   }
+
+    public function testListAvailableSearch()
+    {
+        $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE, 'test');
+        $this->assertTrue(isset($bundles['processor.test']));
+        $this->assertFalse(isset($bundles['processor.hatena']));
+        $this->arrayHasKey('processor.test', $bundles);
+        $this->arrayHasKey('id', $bundles['processor.test']);
+        $this->assertSame('processor.test', $bundles['processor.test']['id']);
+
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service
+            ->setProjectPath($path)
+            ->applyBundle($bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
+        $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE);
+        $this->assertFalse(isset($bundles['processor.test']));
+        $this->assertTrue(isset($bundles['processor.hatena']));
     }
 
     public function testSetConfigException()
@@ -103,20 +195,56 @@ class DefaultSiteTest
         $bundles = $this->service->getBundles('invalid-type', 'processor'); // list all processors
     }
 
-    /**
-     * @group cur
-     */
+    public function testGetBundleInfo()
+    {
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $info = $this->service->getBundleInfo($bundle);
+        $this->assertSame('processor.test', $info['id']);
+        $this->assertSame('Test', $info['name']);
+        $this->assertSame('Victor Farazdagi', $info['author']);
+    }
+
+    public function testGetBundleFiles()
+    {
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $files = $this->service->getBundleFiles($bundle);
+        $this->assertTrue(isset($files[6]['filename']));
+        $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
+    }
+
     public function testRegistryValues()
     {
         $path = dirname(__FILE__) . '/project/';
         $bundle = 'test';
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
-        $this->service->applyBundle($path, $bundle);
+        $this->service->applyBundle($bundle);
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
 
         $registry = $this->service->getRegistryContainer();
+        $this->assertTrue($registry->isInstalled('processor.test'));
+        $files = $registry->getFiles('processor.test');
+        $this->assertTrue(isset($files[6]['filename']));
+        $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
+    }
+
+    public function testRegistryValuesWithExternalContainer()
+    {
+        $path = dirname(__FILE__) . '/project/';
+        $bundle = 'test';
+        $registry = $this->service
+            ->setRegistryContainer($this->container)
+            ->getRegistryContainer();
+
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->service->applyBundle($bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
         $this->assertTrue($registry->isInstalled('processor.test'));
         $files = $registry->getFiles('processor.test');
         $this->assertTrue(isset($files[6]['filename']));
@@ -129,7 +257,7 @@ class DefaultSiteTest
         $bundle = 'test';
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
-        $this->service->applyBundle($path, $bundle);
+        $this->service->applyBundle($bundle);
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
     }
@@ -148,14 +276,14 @@ class DefaultSiteTest
         $bundle = 'test';
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
-        $this->service->applyBundle($path, $bundle);
+        $this->service->applyBundle($bundle);
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
 
-        $this->service->applyBundle($path, $bundle);
+        $this->service->applyBundle($bundle);
     }
 
-    private function resetProjectDirectory()
+    private function resetProjectDirectory($justPurge = false)
     {
         $path = dirname(__FILE__) . '/project';
         chmod($path, 0777);
@@ -163,6 +291,8 @@ class DefaultSiteTest
         $path .= '/.phrozn';
         if (is_dir($path)) {
             `rm -rf {$path}`;
+        }
+        if (false === $justPurge) {
             $path = dirname($path);
             `phr-dev init {$path}`;
         }

@@ -24,9 +24,9 @@ command:
                     action:      StoreTrue 
                     default: false
                 available:
-                    short_name:  -n
+                    short_name:  -p
                     long_name:   --not-installed
-                    doc_name:    -n [--not-installed]
+                    doc_name:    -p [--not-installed]
                     description: List not installed (available) bundles
                     action:      StoreTrue 
                     default:     false
@@ -34,6 +34,10 @@ command:
                 bundle:
                     help_name: bundle
                     description: Bundle name, path or URL
+                    optional: true
+                path:
+                    help_name: path
+                    description: Project path
                     optional: true
         info:
             name: info
@@ -63,6 +67,10 @@ command:
                     help_name: bundle
                     description: Bundle name, path or URL
                     optional: false
+                path:
+                    help_name: path
+                    description: Project path
+                    optional: true
 
 # callback
 callback: [Bundle, execute]

@@ -38,7 +38,8 @@ use Phrozn\Has,
 class Service
     implements 
             Has\Config,
-            Has\RegistryContainer
+            Has\RegistryContainer,
+            Has\ProjectPath
 {
     /**
      * Configuration object
@@ -51,6 +52,25 @@ class Service
      * @var \Phrozn\Registry\Container
      */
     private $registryContainer;
+
+    /**
+     * Service operates on a project located at given path.
+     * @var \Phrozn\Path\Project
+     */
+    private $projectPath;
+
+    /**
+     * Initializat the service
+     *
+     * @param \Phrozn\Config $config Service configuration options
+     * @param \Phrozn\Path|string $path Project path (location of .phrozn directory)
+     */
+    public function __construct($config = null, $path = null)
+    {
+        $this
+            ->setConfig($config)
+            ->setProjectPath($path);
+    }
 
     /**
      * Get list of bundles by type
@@ -75,6 +95,8 @@ class Service
             throw new \Exception(sprintf('Invalid bundle type "%s".', $type));
         }
         $config = $this->getConfig();
+        $registry = $this->getRegistryContainer();
+
         $bundles = array();
         foreach ($config['bundles'] as $bundle) {
             if ($filter) {
@@ -85,6 +107,21 @@ class Service
                     continue;
                 } 
             } 
+            switch ($type) {
+                case Bundle::TYPE_INSTALLED:
+                    if (false === $registry->isInstalled($bundle['id'])) {
+                        continue 2;
+                    }
+                    break;
+                case Bundle::TYPE_AVAILABLE:
+                    if (true === $registry->isInstalled($bundle['id'])) {
+                        continue 2;
+                    }
+                    break;
+                default:
+                    // do nothing
+                    break;
+            }
             $bundles[$bundle['id']] = $bundle;
         }
         return $bundles;
@@ -106,18 +143,15 @@ class Service
     /**
      * Apply given bundle
      *
-     * @param string $path Path where bundle is to be applied
      * @param string $bundle Bundle name, URI or filename
      *
      * @return \Phrozn\Bundle
      */
-    public function applyBundle($path, $bundle)
+    public function applyBundle($bundle)
     {
-        $projectPath = new ProjectPath($path);
         $bundle = new Bundle($bundle, $this->getConfig());
         $bundleId = $bundle->getInfo('id');
 
-        $this->initRegistryContainer($projectPath);
         $registry = $this->getRegistryContainer();
 
         if ($registry->isInstalled($bundleId)) {
@@ -126,7 +160,7 @@ class Service
         }
 
         // install
-        $bundle->extractTo($projectPath);
+        $bundle->extractTo($this->getProjectPath());
 
         // persist list of installed bundles
         $registry->markAsInstalled($bundleId, $bundle->getFiles());
@@ -155,7 +189,7 @@ class Service
      */
     public function setConfig($config)
     {
-        if (!($config instanceof \Phrozn\Config)) {
+        if (null !== $config && !($config instanceof \Phrozn\Config)) {
             throw new \Exception('Configuration object must be an instance of Phrozn\Config');
         }
         $this->config = $config;
@@ -173,25 +207,6 @@ class Service
     }
 
     /**
-     * Initialize (if necessary) and return registry container
-     *
-     * @param string $path Path to Phrozn project
-     *
-     * @return \Phrozn\Bundle\Service
-     */
-    private function initRegistryContainer($projectPath)
-    {
-        if (null === $this->registryContainer) {
-            $dao = new RegistryDao();
-            $dao
-                ->setProjectPath($projectPath)
-                ->setOutputFile('.bundles');
-            $this->setRegistryContainer(new RegistryContainer($dao));
-        }
-        return $this;
-    }
-
-    /**
      * Set container
      *
      * @param \Phrozn\Registry\Container $container Registry container
@@ -201,6 +216,7 @@ class Service
     public function setRegistryContainer($container)
     {
         $this->registryContainer = $container;
+        return $this;
     }
 
     /**
@@ -210,7 +226,44 @@ class Service
      */
     public function getRegistryContainer()
     {
+        if (null === $this->registryContainer) {
+            $dao = new RegistryDao();
+            $dao
+                ->setProjectPath($this->getProjectPath())
+                ->setOutputFile('.bundles');
+            $this->registryContainer = new RegistryContainer($dao);
+            $this->registryContainer->read(); //(re)read container values
+        } else { // update project path
+            $this
+                ->registryContainer
+                ->getDao()
+                ->setProjectPath($this->getProjectPath());
+        }
         return $this->registryContainer;
+    }
+
+    /**
+     * Set project path.
+     *
+     * @param string $path Project path.
+     *
+     * @return \Phrozn\Has\ProjectPath
+     */
+    public function setProjectPath($path)
+    {
+        $path = (string)$path;
+        $this->projectPath = new ProjectPath($path);
+        return $this;
+    }
+
+    /**
+     * Get project path.
+     *
+     * @return string
+     */
+    public function getProjectPath()
+    {
+        return (string)$this->projectPath;
     }
 
 }
