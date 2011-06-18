@@ -124,8 +124,8 @@ docs:
         To apply test processor used in docs (http://bit.ly/icTc35):
         %bphrozn%n %gbundle%n apply processor.test
 
-        To apply bundle located in archive:
-        %bphrozn%n %gbundle%n apply /path/to/processor.test.phar
+        To apply bundle located in archive (MUST be in tgz format):
+        %bphrozn%n %gbundle%n apply /path/to/processor.test.tgz
 
         To remove bundle:
         %bphrozn%n %gbundle%n clobber BUNDLE
