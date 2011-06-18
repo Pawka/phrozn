@@ -71,6 +71,31 @@ class Bundles
             ->save();
         return $this;
     }
+    
+    /**
+     * Mark bundle as uninstalled (clean from registry)
+     *
+     * @param string $bundle Bundle identifier.
+     *
+     * @return \Phrozn\Registry\Container
+     */
+    public function markAsUninstalled($bundle)
+    {
+        $installed = $this->get('installed');
+        $bundleFiles = $this->get('files');
+
+        if (false !== ($k = array_search($bundle, $installed))) {
+            unset($installed[$k]);
+        }
+        if (isset($bundleFiles[$bundle])) {
+            unset($bundleFiles[$bundle]);
+        }
+        $this
+            ->set('installed', $installed)
+            ->set('files', $bundleFiles)
+            ->save();
+        return $this;
+    }
 
     /**
      * Check whether bundle is installed
