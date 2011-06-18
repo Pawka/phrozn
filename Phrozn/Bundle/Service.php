@@ -167,6 +167,32 @@ class Service
     }
 
     /**
+     * Remove given bundle from project directory
+     *
+     * @param string $bundle Bundle name, URI or filename
+     *
+     * @return \Phrozn\Bundle
+     */
+    public function clobberBundle($bundle)
+    {
+        $bundle = new Bundle($bundle, $this->getConfig());
+        $bundleId = $bundle->getInfo('id');
+
+        $registry = $this->getRegistryContainer();
+
+        if (false === $registry->isInstalled($bundleId)) {
+            throw new \Exception(
+                sprintf('Bundle "%s" is NOT installed.', $bundleId));
+        }
+
+        // uninstall
+        $bundle->removeFrom($this->getProjectPath());
+
+        // persist list of installed bundles
+        $registry->markAsUninstalled($bundleId);
+   }
+
+    /**
      * Get bundle info
      *
      * @param string $bundle Bundle name, URI or filename

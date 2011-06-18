@@ -251,6 +251,17 @@ class DefaultSiteTest
         $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
     }
 
+    public function testClobberNotInstalledExcdeption()
+    {
+        $this->setExpectedException(
+            'Exception', 'Bundle "processor.test" is NOT installed');
+        $path = dirname(__FILE__) . '/project/';
+
+        $this->assertFalse($this->service->getRegistryContainer()->isInstalled('processor.test'));
+        $this->service->clobberBundle('test');
+    }
+
+
     public function testApplyOfficialBundleByName()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -260,13 +271,21 @@ class DefaultSiteTest
         $this->service->applyBundle($bundle);
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+
+        $bundle = 'hatenasyntax';
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Hatena.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Hatena.php'));
+        $this->service->applyBundle($bundle);
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Hatena.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Hatena.php'));
+
+        $this->service->clobberBundle('test');
+        $this->assertFalse($this->service->getRegistryContainer()->isInstalled('processor.test'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '.phrozn/plugins/Site/View/Test.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Processor/Hatena.php'));
+        $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Hatena.php'));
     }
-
-    public function testApplyBundleFromProjectDir()
-    {}
-
-    public function testApplyBundleFromPhroznDir()
-    {}
 
     public function testAlreadyInstalledException()
     {
