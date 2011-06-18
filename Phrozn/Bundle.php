@@ -98,7 +98,7 @@ class Bundle
     /**
      * Extract bundle content into given path
      *
-     * @param string $path Destination path
+     * @param \Phrozn\Path|string $path Destination path
      *
      * @return \Phrozn\Bundle
      */
@@ -108,6 +108,33 @@ class Bundle
         if ($path && substr($path, -7) == '.phrozn') {
             $tar = new BundleArchive($this->getInputFile());
             $tar->extract($path);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove bundle contents from a given path
+     *
+     * @param \Phrozn\Path|string $path Project path
+     *
+     * @return \Phrozn\Bundle
+     */
+    public function removeFrom($path)
+    {
+        $path = (string)$path; 
+        if ($path && substr($path, -7) == '.phrozn') {
+            foreach ($this->getFiles() as $entry) {
+                if ($entry['typeflag'] != 5) { // ignore dirs
+                    $filepath = realpath(
+                        $path . DIRECTORY_SEPARATOR . $entry['filename']);
+                    if (false === @unlink($filepath)) {
+                        throw new \Exception(
+                            'Error removing file "%s": %s', 
+                            $entry['filename'], \error_get_last());
+                    }
+                }
+            }
         }
 
         return $this;
