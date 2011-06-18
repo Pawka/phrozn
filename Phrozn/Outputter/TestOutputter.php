@@ -137,4 +137,14 @@ class TestOutputter
         $this->testCase->assertEquals(1, 1); // increase number of positive assertions
     }
 
+    /**
+     * Cleanup previous logs
+     *
+     * @return void
+     */
+    public function resetLogs()
+    {
+        $this->lines = array();
+    }
+
 }
