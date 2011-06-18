@@ -198,7 +198,7 @@ class Bundle
 
         $this->out('Bundle content:');
         foreach ($files as $file) {
-            // Archive_Tar defines dit as typeflag 5
+            // Archive_Tar defines dir as typeflag 5
             if(in_array($file['typeflag'], array(5)) === false) {
                 $this->out('    ' . $file['filename']);
             }
@@ -210,6 +210,46 @@ class Bundle
                 ->service
                 ->setProjectPath($path)
                 ->applyBundle($bundle);
+            $this->out(self::STATUS_OK . " Done..");
+        } else {
+            $this->out(self::STATUS_FAIL . " Aborted..");
+        }
+    }
+
+    /**
+     * Clobber bundle 
+     * 
+     * @return void
+     */
+    private function execClobber()
+    {
+        $pathArg = $this->getPathArgument('path', false, $this->getCommand());
+        $path = new ProjectPath($pathArg);
+        $bundle = $this->getBundleParam();
+
+        $files = $this->service->getBundleFiles($bundle);
+
+        $this->out("Located project folder: {$path->get()}\n");
+        if (is_dir($path->get()) === false) {
+            throw new \Exception("No project found at {$pathArg}");
+        }
+
+        $this->out('Bundle content:');
+        foreach ($files as $file) {
+            // Archive_Tar defines dir as typeflag 5
+            if(in_array($file['typeflag'], array(5)) === false) {
+                $this->out('    ' . $file['filename']);
+            }
+        }
+
+        $this->out( 
+            "\nBundle files are to be removed.\n" .
+            "This operation %rCAN NOT%n be undone.\n");
+        if ($this->readLine() === 'yes') {
+            $this
+                ->service
+                ->setProjectPath($path)
+                ->clobberBundle($bundle);
             $this->out(self::STATUS_OK . " Done..");
         } else {
             $this->out(self::STATUS_FAIL . " Aborted..");

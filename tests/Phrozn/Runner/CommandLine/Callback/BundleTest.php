@@ -98,6 +98,21 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    public function testBundleListWrongProjectPath()
+    {
+        $out = $this->outputter;
+
+        $path = '/wrong-path';
+        
+        $result = $this->getParseResult("phr-dev bundle list test {$path}");
+        $this->runner
+            ->setUnitTestData('no')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('[FAIL]    No project found at /wrong-path');
+
+    }
+
     public function testBundleInfoById()
     {
         $out = $this->outputter;
@@ -173,6 +188,22 @@ class BundleTest
 
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $out->resetLogs();
+        $result = $this->getParseResult("phr-dev bundle list -p test");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertNotInLogs('Test processor plugin - used to demonstrate how');
+
+        $out->resetLogs();
+        $result = $this->getParseResult("phr-dev bundle list -i test");
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
     public function testBundleApplyByNameWithNoWithImplicitPath()
@@ -290,6 +321,120 @@ class BundleTest
             ->setParseResult($result)
             ->execute();
         $out->assertInLogs('[FAIL]    Invalid or empty bundle');
+    }
+
+    public function testBundleClobberNonInstalledBundle()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('[FAIL]    Bundle "processor.test" is NOT installed.');
+    }
+
+    public function testBundleClobberByIdWithYesWithExplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[OK]       Done..');
+
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $out->resetLogs();
+        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Bundle files are to be removed.');
+        $out->assertInLogs('[OK]       Done..');
+
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+    }
+
+    public function testBundleClobberByIdWithNoWithExplicitPath()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project';
+        
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $this->runner
+            ->setUnitTestData('yes')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Do you wish to install this bundle?');
+        $out->assertInLogs('[OK]       Done..');
+
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+
+        $out->resetLogs();
+        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $this->runner
+            ->setUnitTestData('no')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('Located project folder: ' . $path . '/.phrozn');
+        $out->assertInLogs('Bundle content:');
+        $out->assertInLogs('./plugins/Processor/Test.php');
+        $out->assertInLogs('./plugins/Site/View/Test.php');
+        $out->assertInLogs('Bundle files are to be removed.');
+        $out->assertInLogs("[FAIL]     Aborted..");
+
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
+        $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
+    }
+
+    public function testBundleClobberWrongProjectPath()
+    {
+        $out = $this->outputter;
+
+        $path = '/wrong-path';
+        
+        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $this->runner
+            ->setUnitTestData('no')
+            ->setParseResult($result)
+            ->execute();
+        $out->assertInLogs('[FAIL]    No project found at /wrong-path');
+
     }
     
     public function testNoSubActionSpecified()
