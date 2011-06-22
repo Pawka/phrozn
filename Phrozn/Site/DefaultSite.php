@@ -100,7 +100,9 @@ class DefaultSite
 
                 $path = $it->getSubPath();
 
-                $outputFile = $outputDir . '/media/' . $path . (!empty($path)?'/':'') . basename($inputFile);
+                $outputFile = $outputDir . '/media/' . $path 
+                            . (!empty($path) ? '/' : '') 
+                            . basename($inputFile);
 
                 // copy media files
                 try {
