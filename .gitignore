@@ -2,4 +2,3 @@
 __TwigTemplate*
 /build/pear/*
 /tests/code-coverage
-/tests/Phrozn/Registry/project/.phrozn/.registry
