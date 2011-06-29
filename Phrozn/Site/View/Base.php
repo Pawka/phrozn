@@ -509,7 +509,7 @@ abstract class Base
 
         $source = $this->readSourceFile();
 
-        $pos = strpos($source, '---');
+        $pos = strpos($source, "\n---\n");
         if ($pos !== false) {
             $this->template = trim(substr($source, $pos + 3));
 
