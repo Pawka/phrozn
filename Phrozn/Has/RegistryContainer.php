@@ -24,27 +24,27 @@
 namespace Phrozn\Has;
 
 /**
- * Entity has config property
+ * Entity has registry container of some type attached
  *
  * @category    Phrozn
  * @package     Phrozn\Has
  * @author      Victor Farazdagi
  */
-interface Config 
+interface RegistryContainer 
 {
     /**
-     * Set configuration
+     * Set container
      *
-     * @param array $config Array of options
+     * @param \Phrozn\Registry\Container $container Registry container
      *
-     * @return \Phrozn\Has\Config
+     * @return \Phrozn\Has\RegistryContainer
      */
-    public function setConfig($config);
+    public function setRegistryContainer($container);
 
     /**
-     * Get configuration
+     * Get registry container
      *
-     * @return array
+     * @return \Phrozn\Registry\Container
      */
-    public function getConfig();
+    public function getRegistryContainer();
 }

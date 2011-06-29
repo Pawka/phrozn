@@ -26,14 +26,14 @@ namespace Phrozn\Registry\Dao;
 use Phrozn\Registry\Dao;
 
 /**
- * YAML data store.
+ * Serialized data store.
  *
  * @category    Phrozn
  * @package     Phrozn\Registry
  * @subpackage  Dao
  * @author      Victor Farazdagi
  */
-class Yaml
+class Serialized
     extends Base
     implements Dao
 {

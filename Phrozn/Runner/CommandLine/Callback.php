@@ -22,6 +22,7 @@
  */
 
 namespace Phrozn\Runner\CommandLine;
+use Phrozn\Has;
 
 /**
  * Subcommand interface
@@ -31,6 +32,8 @@ namespace Phrozn\Runner\CommandLine;
  * @author      Victor Farazdagi
  */
 interface Callback
+    extends Has\Config,
+            Has\Outputter
 {
     /**
      * Executes the callback action 
@@ -38,22 +41,6 @@ interface Callback
      * @return string
      */
     public function execute();
-
-    /**
-     * Set CLI outputter
-     *
-     * @param Console_CommandLine_Outputter $outputter Where to forward output
-     *
-     * @return Phrozn\Runner\CommandLine\Callback
-     */
-    public function setOutputter($out);
-
-    /**
-     * Get CLI outputter
-     *
-     * @return Console_CommandLine_Outputter CLI outputter instance
-     */
-    public function getOutputter();
 
     /**
      * Result object of CLI input parsing
@@ -70,21 +57,4 @@ interface Callback
      * @return Console_CommandLine_Result 
      */
     public function getParseResult();
-
-    /**
-     * Set config data for a given callback
-     *
-     * @param array $config Config array
-     *
-     * @return Phrozn\Runner\CommandLine\Callback
-     */
-    public function setConfig($config);
-
-    /**
-     * Get command config array
-     *
-     * @return array
-     */
-    public function getConfig();
-
 }

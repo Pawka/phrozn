@@ -1,4 +1,3 @@
-[35;1mPhrozn 0.1.38 by Victor Farazdagi
 [0m
 usage: [34mphrozn[0m [32m<command>[0m [options] [args]
 
@@ -9,6 +8,7 @@ Type 'phrozn --version' to see the program version and installed plugins.
 Available commands:
     clobber
     initialize (init)
+    bundle
     help (h, ?)
     update (build, up)
 

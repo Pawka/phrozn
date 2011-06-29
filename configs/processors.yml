@@ -1,5 +1,0 @@
-# List of availble text processing engines
----
-twig:
-    name: Twig Templating Engine
-    extension: twig

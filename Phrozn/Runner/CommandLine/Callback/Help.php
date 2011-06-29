@@ -22,7 +22,7 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
-use Console_Color as Color,
+use Phrozn\Outputter\Console\Color,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine;
 

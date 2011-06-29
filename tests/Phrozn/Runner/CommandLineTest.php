@@ -63,8 +63,9 @@ class CommandLineTest
             'update',
         ));
         $path = dirname(__FILE__) . '/output/phr-help-update.out';
-        $this->assertSame(
-            file_get_contents($path), file_get_contents(self::STDOUT));
+        $original = file_get_contents($path); 
+        $rendered = implode("", array_slice(file(self::STDOUT), 1));
+        $this->assertSame($original, $rendered);
     }
 
     public function testRunHUpdate()
@@ -74,8 +75,9 @@ class CommandLineTest
             '-h',
         ));
         $path = dirname(__FILE__) . '/output/phr-help.out';
-        $this->assertSame(
-            file_get_contents($path), file_get_contents(self::STDOUT));
+        $original = file_get_contents($path); 
+        $rendered = implode("", array_slice(file(self::STDOUT), 1));
+        $this->assertSame($original, $rendered);
     }
 
     /**

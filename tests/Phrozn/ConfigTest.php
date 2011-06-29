@@ -41,7 +41,6 @@ class ConfigTest
         $this->assertTrue(isset($config['phrozn']));
         $this->assertTrue(isset($config['phrozn']['author']));
         $this->assertSame('Victor Farazdagi', $config['phrozn']['author']);
-        $this->assertTrue(isset($config['processors']['twig']));
 
         $config['phrozn'] = 'updated';
         $this->assertSame('updated', $config['phrozn']);
@@ -53,6 +52,13 @@ class ConfigTest
         $this->assertTrue(isset($config['paths']['skeleton']));
         $this->assertTrue(isset($config['paths']['library']));
         $this->assertTrue(isset($config['paths']['configs']));
+    }
+
+    public function testLoadFile()
+    {
+        $config = new Config(dirname(__FILE__) . '/../../configs/bundles.yml');
+        $this->assertInstanceOf('\Phrozn\Config', $config);
+        $this->assertTrue(isset($config['bundles']['processor.test']));
     }
 
 
