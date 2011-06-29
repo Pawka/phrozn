@@ -509,15 +509,13 @@ abstract class Base
 
         $source = $this->readSourceFile();
 
-        $pos = strpos($source, "\n---\n");
-        if ($pos !== false) {
-            $this->template = trim(substr($source, $pos + 3));
-
-            $frontMatter = substr($source, 0, $pos);
-            $this->frontMatter = Yaml::load($frontMatter);
+        $parts = preg_split('/[\n]+[-]{3}[\n]/', $source, 2);
+        if (count($parts) === 2) {
+            $this->frontMatter = Yaml::load($parts[0]);
+            $this->template = $parts[1];
         } else {
-            $this->template = $source;
             $this->frontMatter = null;
+            $this->template = $source;
         }
 
         return $this;
