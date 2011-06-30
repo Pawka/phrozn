@@ -54,7 +54,7 @@ class Init
 
         $config = $this->getConfig();
 
-        if ($path[0] != '/') { // not an absolute path
+        if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
         $path = realpath($path);

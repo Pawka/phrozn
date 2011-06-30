@@ -1,0 +1,17 @@
+[0m
+usage: [34mphrozn[0m [32m<command>[0m [options] [args]
+
+Type 'phrozn help <command>' for help on a specific command.
+Type 'phrozn ? help' for help on using help.
+Type 'phrozn --version' to see the program version and installed plugins.
+
+Available commands:
+    clobber
+    initialize (init)
+    bundle
+    help (h, ?)
+    update (build, up)
+
+
+Phrozn is extremely flexible static site generator for PHP.
+For additional information, see [1mhttp://phrozn.info[0m

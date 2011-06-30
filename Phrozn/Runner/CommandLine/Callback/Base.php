@@ -25,6 +25,8 @@ namespace Phrozn\Runner\CommandLine\Callback;
 use Phrozn\Runner\CommandLine,
     Phrozn\Outputter\Console\Color,
     Phrozn\Outputter\DefaultOutputter as Outputter,
+    Phrozn\Outputter\PlainOutputter,
+    Phrozn\Runner\CommandLine\Reader,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine\Commands;
 
@@ -72,6 +74,12 @@ abstract class Base
      * @array
      */
     private $commandMeta;
+
+    /**
+     * Data to be used as an answer to confirmation in UTs
+     * @var string
+     */
+    private $unitTestData;
 
     /**
      * Set CLI outputter
@@ -164,6 +172,36 @@ abstract class Base
         }
     }
 
+    /**
+     * Read-line either from STDIN or mock unit test data
+     *
+     * @return string
+     */
+    public function readLine()
+    {
+        if (null !== $this->unitTestData) {
+            return $this->unitTestData;
+        } else {
+            $outputter = new PlainOutputter();
+            $reader = new Reader();
+            return $reader
+                ->setOutputter($outputter)
+                ->readLine("Type 'yes' to continue: ");
+        }
+    }
+
+    /**
+     * Since Unit Testing readline can be tricky, confirm answer is exposed
+     * to unit test via this method. Simply pass the string you want to be used
+     * in place of readline() result.
+     *
+     * @return \Phrozn\Runner\CommandLine\Callback
+     */
+    public function setUnitTestData($data)
+    {
+        $this->unitTestData = $data;
+        return $this;
+    }
 
     /**
      * Combine command documentation
@@ -187,7 +225,7 @@ abstract class Base
 
         $out = '';
         $out .= sprintf("%s: %s\n", $docs['name'], $docs['summary']);
-        $out .= 'usage: ' . $docs['usage'] . "\n";
+        $out .= 'usage: ' . trim($docs['usage']) . "\n";
         $out .= "\n  " . $this->pre($docs['description']) . "\n";
 
         $hasOptions = false;
@@ -207,10 +245,25 @@ abstract class Base
                 $out .= "  {$arg['help_name']} {$spaces} : {$arg['description']}\n";
             }
         }
+        if (isset($command['commands']) && count($command['commands'])) {
+            $out .= "Valid commands:\n";
+            foreach ($command['commands'] as $subcommand) {
+                $spaces = str_repeat(' ', 30 - strlen($subcommand['name']));
+                $out .= "  {$subcommand['name']} {$spaces} : {$subcommand['description']}\n";
+            }
+        }
 
-        if ($verbose && isset($docs['examples'])) {
-            $out .= "\nExamples:";
-            $out .= "\n  " . $this->pre($docs['examples']) . "\n";
+        if ($verbose) {
+            if (isset($docs['extradesc'])) {
+                $out .= "\nExtended Documentation:";
+                $out .= "\n  " . $this->pre(trim($docs['extradesc'])) . "\n";
+            }
+            if (isset($docs['examples'])) {
+                $out .= "\nExamples:";
+                $out .= "\n  " . $this->pre(trim($docs['examples'])) . "\n";
+            }
+        } else {
+            $out .= "\nUse help with -v or --verbose option to get more information.\n";
         }
 
         return $out;
@@ -258,6 +311,50 @@ abstract class Base
         return str_repeat(' ', strlen(Color::strip(Color::convert($str))));
     }
 
+    /**
+     * See whether given path is absolute or relative
+     *
+     * @param string $path Path to check
+     *
+     * @return boolean
+     */
+    protected function isAbsolute($path) 
+    {
+        if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32') {
+            $pattern = '/^[a-zA-z]:.*[^.lnk]$/';
+            return preg_match($pattern, $path);
+        } else {
+            return $path{0} == '/';
+        }
+    }
+
+    /**
+     * Extract path argument or fallback to cwd
+     *
+     * @param string $name Name of the path argument
+     * @param boolean $realpath Whether to apply realpath() to path
+     * @param \Console_CommandLine_Result $command Command line result to use
+     *
+     * @return string
+     */
+    protected function getPathArgument($name, $realpath = true, $command = null)
+    {
+        if (null == $command) {
+            $command = $this->getParseResult()->command;
+        }
+        $path = isset($command->args[$name]) ? $command->args[$name] : \getcwd();
+
+        if (!$this->isAbsolute($path)) { // not an absolute path
+            $path = \getcwd() . '/./' . $path;
+        }
+        
+        if ($realpath) {
+            $path = realpath($path);
+        }
+
+        return $path;
+    }
+
     private function useAnsiColors()
     {
         if (null === $this->useAnsiColors) {
@@ -276,4 +373,6 @@ abstract class Base
         }
         return $this->commandMeta;
     }
+
+
 }

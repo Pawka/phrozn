@@ -22,11 +22,9 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
-use Console_Color as Color,
+use Phrozn\Outputter\Console\Color,
     Symfony\Component\Yaml\Yaml,
-    Phrozn\Runner\CommandLine,
-    Phrozn\Outputter,
-    Phrozn\Runner\CommandLine\Reader;
+    Phrozn\Runner\CommandLine;
 
 /**
  * phrozn clobber command
@@ -39,12 +37,6 @@ class Clobber
     extends Base
     implements CommandLine\Callback
 {
-    /**
-     * Data to be used as an answer to confirmation in UTs
-     * @var string
-     */
-    private $unitTestData;
-
     /**
      * Executes the callback action 
      *
@@ -65,7 +57,7 @@ class Clobber
         $path = isset($this->getParseResult()->command->args['path'])
                ? $this->getParseResult()->command->args['path'] : \getcwd();
 
-        if ($path[0] != '/') { // not an absolute path
+        if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
         $path = realpath($path);
@@ -76,8 +68,7 @@ class Clobber
 
         $this->out($this->getHeader());
         $this->out("Purging project data..");
-        $this->out(
-            "\nLocated project folder: {$path}");
+        $this->out("\nLocated project folder: {$path}");
         $this->out( 
             "Project folder is to be removed.\n" .
             "This operation %rCAN NOT%n be undone.\n");
@@ -85,7 +76,6 @@ class Clobber
         if (is_dir($path) === false) {
             throw new \Exception("No project found at {$path}");
         }
-
 
         if ($this->readLine() === 'yes') {
             `rm -rf $path`;
@@ -95,36 +85,4 @@ class Clobber
         }
         $this->out($this->getFooter());
     }
-
-    /**
-     * Decide whether we are faking getting data from STDIN
-     *
-     * @return string
-     */
-    public function readLine()
-    {
-        if (null !== $this->unitTestData) {
-            return $this->unitTestData;
-        } else {
-            $outputter = new Outputter\PlainOutputter();
-            $reader = new Reader();
-            return $reader
-                ->setOutputter($outputter)
-                ->readLine("Type 'yes' to continue: ");
-        }
-    }
-
-    /**
-     * Since Unit Testing readline can be tricky, confirm answer is exposed
-     * to unit test via this method. Simply pass the string you want to be used
-     * in place of readline() result.
-     *
-     * @return \Phrozn\Runner\CommandLine\Callback
-     */
-    public function setUnitTestData($data)
-    {
-        $this->unitTestData = $data;
-        return $this;
-    }
-
 }

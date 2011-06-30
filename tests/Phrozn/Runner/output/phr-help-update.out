@@ -1,0 +1,20 @@
+[0m
+update (up): Phrozn usage manual
+usage: [34mphrozn[0m [32mup[0m [SRC] [DEST]
+
+  This command compiles/updates static site.
+  
+  If output PATH not provided, current directory is assumed.
+  
+Available options:
+  -R [--regen]                    : Re-generate the site from scratch removing any previous content
+
+Valid arguments:
+  [SRC]                           : Source directory
+  [DEST]                          : Destination directory
+
+Use help with -v or --verbose option to get more information.
+
+
+Phrozn is extremely flexible static site generator for PHP.
+For additional information, see [1mhttp://phrozn.info[0m

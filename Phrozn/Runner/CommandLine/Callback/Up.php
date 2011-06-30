@@ -22,7 +22,7 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
-use Console_Color as Color,
+use Phrozn\Outputter\Console\Color,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine,
     Phrozn\Site\DefaultSite as Site;
@@ -96,8 +96,8 @@ class Up
     {
         $in = $out = null;
 
-        $in = $this->extractPath('in');
-        $out = $this->extractPath('out');
+        $in  = $this->getPathArgument('in');
+        $out = $this->getPathArgument('out');
 
         if (strpos($in, '.phrozn') === false) {
             return array(
@@ -111,19 +111,4 @@ class Up
             );
         }
     }
-
-    private function extractPath($type)
-    {
-        $path = isset($this->getParseResult()->command->args[$type])
-               ? $this->getParseResult()->command->args[$type] : \getcwd();
-
-        if ($path[0] != '/') { // not an absolute path
-            $path = \getcwd() . '/./' . $path;
-        }
-        $path = realpath($path);
-
-        return $path;
-    }
-
-
 }

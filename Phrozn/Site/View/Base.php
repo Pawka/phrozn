@@ -23,7 +23,9 @@
 
 namespace Phrozn\Site\View;
 use Symfony\Component\Yaml\Yaml,
-    Phrozn\Site\View\Factory,
+    Phrozn\Path\Project as ProjectPath,
+    Phrozn\Site\View\Factory as ViewFactory,
+    Phrozn\Provider\Factory as ProviderFactory,
     Phrozn\Site\Layout\DefaultLayout as Layout,
     Phrozn\Site\View\OutputPath\Entry as OutputFile,
     Phrozn\Autoloader as Loader;
@@ -128,7 +130,13 @@ abstract class Base
             mkdir($destinationDir, 0777, true);
         }
 
-        file_put_contents($this->getOutputFile(), $out);
+        $outputFile = $this->getOutputFile();
+        if (!is_dir($outputFile)) {
+            file_put_contents($outputFile, $out);
+        } else {
+            throw new \Exception(sprintf(
+                'Output path "%s" is directory.', $outputFile));
+        }
 
         return $out;
     }
@@ -144,6 +152,23 @@ abstract class Base
     {
         // inject front matter options into template
         $vars = array_merge($vars, $this->getParams());
+        
+        // inject providers content
+        if ($providers = $this->getParam('page.providers', false)) {
+            $factory = new ProviderFactory();
+            $projectPath = new ProjectPath($this->getOutputDir());
+            foreach ($providers as $varname => $data) {
+                if (!isset($data['provider'])) {
+                    continue;
+                }
+                $provider = $factory->create($data['provider'], $data); 
+                $provider->setProjectPath($projectPath->get());
+                $providedContent = $provider->get();
+                $vars['page']['providers'][$varname] = $providedContent;
+                $vars['this']['providers'][$varname] = $providedContent;
+            }
+
+        }
 
         // convert view into static representation
         $view = $this->getTemplate();
@@ -272,7 +297,6 @@ abstract class Base
     {
         $this->parse();
         $this->frontMatter[$param] = $value;
-
         return $this;
     }
 
@@ -439,7 +463,7 @@ abstract class Base
      */
     protected function applyLayout($content, $vars)
     {
-        $layoutName = $this->getParam('page.layout', Factory::DEFAULT_LAYOUT_SCRIPT);
+        $layoutName = $this->getParam('page.layout', ViewFactory::DEFAULT_LAYOUT_SCRIPT);
 
         $inputFile = $this->getInputFile();
         $pos = strpos($inputFile, '/entries');
@@ -449,7 +473,7 @@ abstract class Base
         }
         $layoutPath = realpath(dirname($inputFile) . '/../layouts/' . $layoutName);
 
-        $factory = new Factory($layoutPath);
+        $factory = new ViewFactory($layoutPath);
         $layout = $factory->create(); // essentially layout is Site\View as well
         $layout->hasLayout(false); // no nested layouts
 
@@ -485,15 +509,13 @@ abstract class Base
 
         $source = $this->readSourceFile();
 
-        $pos = strpos($source, '---');
-        if ($pos !== false) {
-            $this->template = trim(substr($source, $pos + 3));
-
-            $frontMatter = substr($source, 0, $pos);
-            $this->frontMatter = Yaml::load($frontMatter);
+        $parts = preg_split('/[\n]*[-]{3}[\n]/', $source, 2);
+        if (count($parts) === 2) {
+            $this->frontMatter = Yaml::load($parts[0]);
+            $this->template = trim($parts[1]);
         } else {
-            $this->template = $source;
             $this->frontMatter = null;
+            $this->template = trim($source);
         }
 
         return $this;
