@@ -83,7 +83,11 @@ class UpTest
         $this->assertFalse(is_dir($path . '/.phrozn'));
         $this->assertFalse(is_dir($path . '/.phrozn/entries'));
         $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
-        `phr-dev init {$path}`;
+        
+        $phrdev = dirname(dirname(dirname(dirname(dirname(__DIR__))))).'/bin/phrozn.php';
+
+        `{$phrdev} init {$path}`;
+        
         $this->assertTrue(is_dir($path . '/.phrozn'));
         $this->assertTrue(is_dir($path . '/.phrozn/entries'));
         $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
