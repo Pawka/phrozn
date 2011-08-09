@@ -514,7 +514,7 @@ abstract class Base
             $this->frontMatter = Yaml::load($parts[0]);
             $this->template = trim($parts[1]);
         } else {
-            $this->frontMatter = null;
+            $this->frontMatter = array();
             $this->template = trim($source);
         }
 
