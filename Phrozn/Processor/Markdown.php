@@ -39,7 +39,7 @@ class Markdown
      * Reference to procesor class
      * @var \Markdown_Parser
      */
-    private $markdown;
+    protected $markdown;
 
     /**
      * Processor can be setup at initialization time

@@ -39,7 +39,7 @@ class Textile
      * Reference to procesor class
      * @var \Textile
      */
-    private $textile;
+    protected $textile;
 
     /**
      * Processor can be setup at initialization time
