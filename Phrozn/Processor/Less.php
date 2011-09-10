@@ -39,7 +39,7 @@ class Less
      * Reference to LESS compiler
      * @var \
      */
-    private $lessc;
+    protected $lessc;
 
     /**
      * If configuration options are passes then twig environment 
@@ -74,7 +74,7 @@ class Less
                     ->parse($tpl);
     }
 
-    private function getEnvironment($reset = false)
+    protected function getEnvironment($reset = false)
     {
         if ($reset === true || null === $this->lessc) {
             $this->lessc = new \lessc;
