@@ -18,14 +18,13 @@
  * method is allowed if 'article' is an object.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_SandboxedPrint extends Twig_Node_Print
 {
-    public function __construct(Twig_Node_Print $node)
+    public function __construct(Twig_Node_Expression $expr, $lineno, $tag = null)
     {
-        parent::__construct($node->expr, $node->getLine(), $node->getNodeTag());
+        parent::__construct($expr, $lineno, $tag);
     }
 
     /**
@@ -33,21 +32,29 @@ class Twig_Node_SandboxedPrint extends Twig_Node_Print
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
-            ->write('if ($this->env->hasExtension(\'sandbox\') && is_object(')
-            ->subcompile($this->expr)
-            ->raw(')) {'."\n")
-            ->indent()
-            ->write('$this->env->getExtension(\'sandbox\')->checkMethodAllowed(')
-            ->subcompile($this->expr)
-            ->raw(', \'__toString\');'."\n")
-            ->outdent()
-            ->write('}'."\n")
+            ->write('echo $this->env->getExtension(\'sandbox\')->ensureToStringAllowed(')
+            ->subcompile($this->getNode('expr'))
+            ->raw(");\n")
         ;
+    }
 
-        parent::compile($compiler);
+    /**
+     * Removes node filters.
+     *
+     * This is mostly needed when another visitor adds filters (like the escaper one).
+     *
+     * @param Twig_Node $node A Node
+     */
+    protected function removeNodeFilter($node)
+    {
+        if ($node instanceof Twig_Node_Expression_Filter) {
+            return $this->removeNodeFilter($node->getNode('node'));
+        }
+
+        return $node;
     }
 }

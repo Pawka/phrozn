@@ -13,14 +13,28 @@
  * Represents a set node.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_Set extends Twig_Node
 {
     public function __construct($capture, Twig_NodeInterface $names, Twig_NodeInterface $values, $lineno, $tag = null)
     {
-        parent::__construct(array('names' => $names, 'values' => $values), array('capture' => $capture), $lineno, $tag);
+        parent::__construct(array('names' => $names, 'values' => $values), array('capture' => $capture, 'safe' => false), $lineno, $tag);
+
+        /*
+         * Optimizes the node when capture is used for a large block of text.
+         *
+         * {% set foo %}foo{% endset %} is compiled to $context['foo'] = new Twig_Markup("foo");
+         */
+        if ($this->getAttribute('capture')) {
+            $this->setAttribute('safe', true);
+
+            $values = $this->getNode('values');
+            if ($values instanceof Twig_Node_Text) {
+                $this->setNode('values', new Twig_Node_Expression_Constant($values->getAttribute('data'), $values->getLine()));
+                $this->setAttribute('capture', false);
+            }
+        }
     }
 
     /**
@@ -28,13 +42,13 @@ class Twig_Node_Set extends Twig_Node
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
 
-        if (count($this->names) > 1) {
+        if (count($this->getNode('names')) > 1) {
             $compiler->write('list(');
-            foreach ($this->names as $idx => $node) {
+            foreach ($this->getNode('names') as $idx => $node) {
                 if ($idx) {
                     $compiler->raw(', ');
                 }
@@ -43,26 +57,26 @@ class Twig_Node_Set extends Twig_Node
             }
             $compiler->raw(')');
         } else {
-            if ($this['capture']) {
+            if ($this->getAttribute('capture')) {
                 $compiler
                     ->write("ob_start();\n")
-                    ->subcompile($this->values)
+                    ->subcompile($this->getNode('values'))
                 ;
             }
 
-            $compiler->subcompile($this->names, false);
+            $compiler->subcompile($this->getNode('names'), false);
 
-            if ($this['capture']) {
-                $compiler->raw(" = ob_get_clean()");
+            if ($this->getAttribute('capture')) {
+                $compiler->raw(" = new Twig_Markup(ob_get_clean())");
             }
         }
 
-        if (!$this['capture']) {
+        if (!$this->getAttribute('capture')) {
             $compiler->raw(' = ');
 
-            if (count($this->names) > 1) {
+            if (count($this->getNode('names')) > 1) {
                 $compiler->write('array(');
-                foreach ($this->values as $idx => $value) {
+                foreach ($this->getNode('values') as $idx => $value) {
                     if ($idx) {
                         $compiler->raw(', ');
                     }
@@ -71,7 +85,15 @@ class Twig_Node_Set extends Twig_Node
                 }
                 $compiler->raw(')');
             } else {
-                $compiler->subcompile($this->values);
+                if ($this->getAttribute('safe')) {
+                    $compiler
+                        ->raw("new Twig_Markup(")
+                        ->subcompile($this->getNode('values'))
+                        ->raw(")")
+                    ;
+                } else {
+                    $compiler->subcompile($this->getNode('values'));
+                }
             }
         }
 

@@ -44,60 +44,60 @@ abstract class Base
      * Input file path
      * @var string
      */
-    protected $inputFile;
+    private $inputFile;
 
     /**
      * Output directory path
      * @var string
      */
-    protected $outputDir;
+    private $outputDir;
 
     /**
      * Output file path
      * @var string
      */
-    protected $outputFile;
+    private $outputFile;
 
     /**
      * Registered text processors
      * @var array of \Phrozn\Processor
      */
-    protected $processors;
+    private $processors;
 
     /**
      * Template source text
      * @var string
      */
-    protected $source;
+    private $source;
 
     /**
      * Whether given concrete view must be wrapped into layout or not
      */
-    protected $hasLayout = true;
+    private $hasLayout = true;
 
     /**
      * Cache object for extracted template
      * @var string
      */
-    protected $template;
+    private $template;
 
     /**
      * Cache object for extracted FM
      * @var array
      */
-    protected $frontMatter;
+    private $frontMatter;
 
     /**
      * Loaded content of site/config.yml
      * @var array
      */
-    protected $siteConfig;
+    private $siteConfig;
 
     /**
      * Loaded content of configs/phrozn.yml
      * @var array
      */
-    protected $appConfig;
+    private $appConfig;
 
     /**
      * Initialize page
@@ -170,9 +170,9 @@ abstract class Base
 
         }
 
-        $vars['template_file_path'] = $this->inputFile;
-        $vars['template_file']      = substr($this->inputFile, strrpos($this->inputFile, DIRECTORY_SEPARATOR));
-        $vars['template_dir']       = dirname($this->inputFile);
+        $vars['phrozn_template_file_path'] = $this->inputFile;
+        $vars['phrozn_template_file']      = substr($this->inputFile, strrpos($this->inputFile, DIRECTORY_SEPARATOR)+1);
+        $vars['phrozn_template_dir']       = dirname($this->inputFile);
 
         // convert view into static representation
         $view = $this->getTemplate();

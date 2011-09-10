@@ -9,14 +9,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-/**
- * Exception thrown when an error occurs at runtime.
- *
- * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
- */
-class Twig_RuntimeError extends Twig_Error
+class Twig_Node_Expression_Binary_BitwiseOr extends Twig_Node_Expression_Binary
 {
+    public function operator(Twig_Compiler $compiler)
+    {
+        return $compiler->raw('|');
+    }
 }

@@ -15,24 +15,39 @@ class Twig_Node_Expression_Test extends Twig_Node_Expression
         parent::__construct(array('node' => $node, 'arguments' => $arguments), array('name' => $name), $lineno);
     }
 
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $testMap = $compiler->getEnvironment()->getTests();
-        if (!isset($testMap[$this['name']])) {
-            throw new Twig_SyntaxError(sprintf('The test "%s" does not exist', $this['name']), $this->getLine());
+        if (!isset($testMap[$this->getAttribute('name')])) {
+            throw new Twig_Error_Syntax(sprintf('The test "%s" does not exist', $this->getAttribute('name')), $this->getLine());
+        }
+
+        $name = $this->getAttribute('name');
+        $node = $this->getNode('node');
+
+        // defined is a special case
+        if ('defined' === $name) {
+            if ($node instanceof Twig_Node_Expression_Name || $node instanceof Twig_Node_Expression_GetAttr) {
+                $node->setAttribute('is_defined_test', true);
+                $compiler->subcompile($node);
+                $node->removeAttribute('is_defined_test');
+            } else {
+                throw new Twig_Error_Syntax('The "defined" test only works with simple variables', $this->getLine());
+            }
+            return;
         }
 
         $compiler
-            ->raw($testMap[$this['name']]->compile().'(')
-            ->subcompile($this->node)
+            ->raw($testMap[$name]->compile().'(')
+            ->subcompile($node)
         ;
 
-        if (null !== $this->arguments) {
+        if (null !== $this->getNode('arguments')) {
             $compiler->raw(', ');
 
-            $max = count($this->arguments) - 1;
-            foreach ($this->arguments as $i => $node) {
-                $compiler->subcompile($node);
+            $max = count($this->getNode('arguments')) - 1;
+            foreach ($this->getNode('arguments') as $i => $arg) {
+                $compiler->subcompile($arg);
 
                 if ($i != $max) {
                     $compiler->raw(', ');

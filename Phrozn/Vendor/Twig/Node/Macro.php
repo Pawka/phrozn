@@ -13,8 +13,7 @@
  * Represents a macro node.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_Macro extends Twig_Node
 {
@@ -28,34 +27,45 @@ class Twig_Node_Macro extends Twig_Node
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $arguments = array();
-        foreach ($this->arguments as $argument) {
-            $arguments[] = '$'.$argument['name'].' = null';
+        foreach ($this->getNode('arguments') as $argument) {
+            $arguments[] = '$'.$argument->getAttribute('name').' = null';
         }
 
         $compiler
             ->addDebugInfo($this)
-            ->write(sprintf("public function get%s(%s)\n", $this['name'], implode(', ', $arguments)), "{\n")
+            ->write(sprintf("public function get%s(%s)\n", $this->getAttribute('name'), implode(', ', $arguments)), "{\n")
             ->indent()
-            ->write("\$context = array(\n")
+            ->write("\$context = array_merge(\$this->env->getGlobals(), array(\n")
             ->indent()
         ;
 
-        foreach ($this->arguments as $argument) {
+        foreach ($this->getNode('arguments') as $argument) {
             $compiler
                 ->write('')
-                ->string($argument['name'])
-                ->raw(' => $'.$argument['name'])
+                ->string($argument->getAttribute('name'))
+                ->raw(' => $'.$argument->getAttribute('name'))
                 ->raw(",\n")
             ;
         }
 
         $compiler
             ->outdent()
-            ->write(");\n\n")
-            ->subcompile($this->body)
+            ->write("));\n\n")
+            ->write("ob_start();\n")
+            ->write("try {\n")
+            ->indent()
+            ->subcompile($this->getNode('body'))
+            ->outdent()
+            ->write("} catch(Exception \$e) {\n")
+            ->indent()
+            ->write("ob_end_clean();\n\n")
+            ->write("throw \$e;\n")
+            ->outdent()
+            ->write("}\n\n")
+            ->write("return ob_get_clean();\n")
             ->outdent()
             ->write("}\n\n")
         ;

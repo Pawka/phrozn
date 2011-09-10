@@ -42,12 +42,12 @@ class Twig
     protected $twig;
 
     /**
-     * If configuration options are passes then twig environment 
+     * If configuration options are passes then twig environment
      * is initialized right away
      *
      * @param array $options Processor options
      *
-     * @return void
+     * @return \Phrozn\Processor\Twig
      */
     public function __construct($options = array())
     {
@@ -74,16 +74,20 @@ class Twig
      */
     public function render($tpl, $vars = array())
     {
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($vars['template_dir']), $this->getConfig());
-        return $twig->loadTemplate($vars['template_file'])->render($vars);
+        $twig = $this->getEnvironment();
+        
+        /* @var $twigLoader \Twig_Loader_Filesystem */
+        $twigLoader = $twig->getLoader();
+        $twigLoader->setPaths(array($vars['phrozn_template_dir']));
+
+        return $twig->loadTemplate($vars['phrozn_template_file'])->render($vars);
     }
 
-    /*
     protected function getEnvironment($reset = false)
     {
         if ($reset === true || null === $this->twig) {
-            $this->twig = new \Twig_Environment(
-                $this->getLoader(), $this->getConfig());
+            $this->twig = new \Twig_Environment($this->getLoader(), $this->getConfig());
+            $this->twig->removeExtension('escaper');
         }
 
         return $this->twig;
@@ -91,7 +95,8 @@ class Twig
 
     protected function getLoader()
     {
-        return new \Twig_Loader_String();
+        // we'll add this at render() time
+        return new \Twig_Loader_Filesystem(array());
     }
-    */
+
 }

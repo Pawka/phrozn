@@ -13,8 +13,7 @@
  * Represents a template filter.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 abstract class Twig_Filter implements Twig_FilterInterface
 {
@@ -24,7 +23,8 @@ abstract class Twig_Filter implements Twig_FilterInterface
     {
         $this->options = array_merge(array(
             'needs_environment' => false,
-            'is_escaper'        => false,
+            'needs_context'     => false,
+            'pre_escape'        => null,
         ), $options);
     }
 
@@ -33,8 +33,26 @@ abstract class Twig_Filter implements Twig_FilterInterface
         return $this->options['needs_environment'];
     }
 
-    public function isEscaper()
+    public function needsContext()
     {
-        return $this->options['is_escaper'];
+        return $this->options['needs_context'];
+    }
+
+    public function getSafe(Twig_Node $filterArgs)
+    {
+        if (isset($this->options['is_safe'])) {
+            return $this->options['is_safe'];
+        }
+
+        if (isset($this->options['is_safe_callback'])) {
+            return call_user_func($this->options['is_safe_callback'], $filterArgs);
+        }
+
+        return array();
+    }
+
+    public function getPreEscape()
+    {
+        return $this->options['pre_escape'];
     }
 }

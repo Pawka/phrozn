@@ -13,8 +13,7 @@
  * Represents a function template test.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Test_Function implements Twig_TestInterface
 {

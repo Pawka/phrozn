@@ -16,16 +16,16 @@ class Twig_Node_Expression_Conditional extends Twig_Node_Expression
         parent::__construct(array('expr1' => $expr1, 'expr2' => $expr2, 'expr3' => $expr3), array(), $lineno);
     }
 
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler
-            ->raw('(')
-            ->subcompile($this->expr1)
+            ->raw('((')
+            ->subcompile($this->getNode('expr1'))
             ->raw(') ? (')
-            ->subcompile($this->expr2)
+            ->subcompile($this->getNode('expr2'))
             ->raw(') : (')
-            ->subcompile($this->expr3)
-            ->raw(')')
+            ->subcompile($this->getNode('expr3'))
+            ->raw('))')
         ;
     }
 }

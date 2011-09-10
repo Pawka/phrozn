@@ -12,14 +12,13 @@
 /**
  * Loads a template from an array.
  *
- * When using this loader with a cache mehcanism, you should know that a new cache
+ * When using this loader with a cache mechanism, you should know that a new cache
  * key is generated each time a template content "changes" (the cache key being the
  * source code of the template). If you don't want to see your cache grows out of
  * control, you need to take care of clearing the old cache file by yourself.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Loader_Array implements Twig_LoaderInterface
 {
@@ -41,16 +40,27 @@ class Twig_Loader_Array implements Twig_LoaderInterface
     }
 
     /**
+     * Adds or overrides a template.
+     *
+     * @param string $name     The template name
+     * @param string $template The template source
+     */
+    public function setTemplate($name, $template)
+    {
+        $this->templates[$name] = $template;
+    }
+
+    /**
      * Gets the source code of a template, given its name.
      *
-     * @param  string $name string The name of the template to load
+     * @param  string $name The name of the template to load
      *
      * @return string The template source code
      */
     public function getSource($name)
     {
         if (!isset($this->templates[$name])) {
-            throw new LogicException(sprintf('Template "%s" is not defined.', $name));
+            throw new Twig_Error_Loader(sprintf('Template "%s" is not defined.', $name));
         }
 
         return $this->templates[$name];
@@ -59,14 +69,14 @@ class Twig_Loader_Array implements Twig_LoaderInterface
     /**
      * Gets the cache key to use for the cache for a given template name.
      *
-     * @param  string $name string The name of the template to load
+     * @param  string $name The name of the template to load
      *
      * @return string The cache key
      */
     public function getCacheKey($name)
     {
         if (!isset($this->templates[$name])) {
-            throw new LogicException(sprintf('Template "%s" is not defined.', $name));
+            throw new Twig_Error_Loader(sprintf('Template "%s" is not defined.', $name));
         }
 
         return $this->templates[$name];
