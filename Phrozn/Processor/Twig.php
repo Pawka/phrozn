@@ -39,7 +39,7 @@ class Twig
      * Reference to twig engine environment object
      * @var \Twig_Environment
      */
-    private $twig;
+    protected $twig;
 
     /**
      * If configuration options are passes then twig environment 
@@ -79,7 +79,7 @@ class Twig
                     ->render($vars);
     }
 
-    private function getEnvironment($reset = false)
+    protected function getEnvironment($reset = false)
     {
         if ($reset === true || null === $this->twig) {
             $this->twig = new \Twig_Environment(
@@ -89,7 +89,7 @@ class Twig
         return $this->twig;
     }
 
-    private function getLoader()
+    protected function getLoader()
     {
         return new \Twig_Loader_String();
     }
