@@ -74,11 +74,11 @@ class Twig
      */
     public function render($tpl, $vars = array())
     {
-        return $this->getEnvironment()
-                    ->loadTemplate($tpl)
-                    ->render($vars);
+        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($vars['template_dir']), $this->getConfig());
+        return $twig->loadTemplate($vars['template_file'])->render($vars);
     }
 
+    /*
     protected function getEnvironment($reset = false)
     {
         if ($reset === true || null === $this->twig) {
@@ -93,4 +93,5 @@ class Twig
     {
         return new \Twig_Loader_String();
     }
+    */
 }

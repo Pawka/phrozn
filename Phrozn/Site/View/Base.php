@@ -44,60 +44,60 @@ abstract class Base
      * Input file path
      * @var string
      */
-    private $inputFile;
+    protected $inputFile;
 
     /**
      * Output directory path
      * @var string
      */
-    private $outputDir;
+    protected $outputDir;
 
     /**
      * Output file path
      * @var string
      */
-    private $outputFile;
+    protected $outputFile;
 
     /**
      * Registered text processors
      * @var array of \Phrozn\Processor
      */
-    private $processors;
+    protected $processors;
 
     /**
      * Template source text
      * @var string
      */
-    private $source;
+    protected $source;
 
     /**
      * Whether given concrete view must be wrapped into layout or not
      */
-    private $hasLayout = true;
+    protected $hasLayout = true;
 
     /**
      * Cache object for extracted template
      * @var string
      */
-    private $template;
+    protected $template;
 
     /**
      * Cache object for extracted FM
      * @var array
      */
-    private $frontMatter;
+    protected $frontMatter;
 
     /**
      * Loaded content of site/config.yml
      * @var array
      */
-    private $siteConfig;
+    protected $siteConfig;
 
     /**
      * Loaded content of configs/phrozn.yml
      * @var array
      */
-    private $appConfig;
+    protected $appConfig;
 
     /**
      * Initialize page
@@ -152,7 +152,7 @@ abstract class Base
     {
         // inject front matter options into template
         $vars = array_merge($vars, $this->getParams());
-        
+
         // inject providers content
         if ($providers = $this->getParam('page.providers', false)) {
             $factory = new ProviderFactory();
@@ -161,7 +161,7 @@ abstract class Base
                 if (!isset($data['provider'])) {
                     continue;
                 }
-                $provider = $factory->create($data['provider'], $data); 
+                $provider = $factory->create($data['provider'], $data);
                 $provider->setProjectPath($projectPath->get());
                 $providedContent = $provider->get();
                 $vars['page']['providers'][$varname] = $providedContent;
@@ -169,6 +169,10 @@ abstract class Base
             }
 
         }
+
+        $vars['template_file_path'] = $this->inputFile;
+        $vars['template_file']      = substr($this->inputFile, strrpos($this->inputFile, DIRECTORY_SEPARATOR));
+        $vars['template_dir']       = dirname($this->inputFile);
 
         // convert view into static representation
         $view = $this->getTemplate();
@@ -346,7 +350,7 @@ abstract class Base
         if (null !== $param) {
             $params = $this->locateParam($params, $param);
         }
-        
+
         return isset($params) ? $params : $default;
     }
 
@@ -355,7 +359,7 @@ abstract class Base
      *
      * @return mixed
      */
-    private function locateParam($params, $param) 
+    private function locateParam($params, $param)
     {
         $value = null;
         $keys = explode('.', $param);
@@ -467,7 +471,7 @@ abstract class Base
 
         $inputFile = $this->getInputFile();
         $pos = strpos($inputFile, '/entries');
-        // make sure that input path is normalized to root entries directory 
+        // make sure that input path is normalized to root entries directory
         if (false !== $pos) {
             $inputFile = substr($inputFile, 0, $pos + 8) . '/entry';
         }
