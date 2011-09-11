@@ -50,13 +50,6 @@ class Twig
     protected $loader;
 
     /**
-     * Path to template file being rendered
-     * @see self::prepare()
-     * @var string
-     */
-    private $templatePath;
-
-    /**
      * If configuration options are passed then twig environment
      * is initialized right away
      *
@@ -89,8 +82,9 @@ class Twig
      */
     public function render($tpl, $vars = array())
     {
+        $config = $this->getConfig();
         $rendered = $this->getEnvironment()
-                         ->loadTemplate(basename($this->templatePath)) // generated inside prepare()
+                         ->loadTemplate($config['phr_template_filename'] . '.ready') 
                          ->render($vars);
         $this->cleanup(); // post-process
         return $rendered;
@@ -123,11 +117,15 @@ class Twig
     protected function getLoader()
     {
         $config = $this->getConfig();
+        // template's directory
+        $paths = array($config['phr_template_dir']);
+
         $projectPath = new ProjectPath($config['phr_template_dir']);
-        // allow to include and inherit templates wrt to project's root folder
-        // but fallback to phr_template_dir if not inside of .phrozn
-        $projectPath = $projectPath->get() ?: $config['phr_template_dir'];
-        return new \Twig_Loader_Filesystem($projectPath);
+        if ($projectPath = $projectPath->get()) {
+            $paths[] = $projectPath . DIRECTORY_SEPARATOR . 'layouts';
+            $paths[] = $projectPath;
+        }
+        return new \Twig_Loader_Filesystem($paths);
     }
 
     /**
@@ -140,21 +138,12 @@ class Twig
         $config = $this->getConfig();
         $path = $config['phr_template_dir'] 
               . DIRECTORY_SEPARATOR . $config['phr_template_filename'];
-        $projectPath = new ProjectPath($config['phr_template_dir']);
-        $projectPath = $projectPath->get() ?: $config['phr_template_dir'];
-        
-        // read raw template source
-        if (!is_readable($path)) {
-            throw new \Exception(sprintf('View input "%s" file not readable.', $path));
-        }
         $source = \file_get_contents($path);
         
         // strip front matter
         $parts = preg_split('/[\n]*[-]{3}[\n]/', $source, 2);
         $template = (count($parts) === 2) ? $parts[1] : trim($source);
-        $this->templatePath = $projectPath . DIRECTORY_SEPARATOR 
-                            . $config['phr_template_filename'] . '.ready';
-        \file_put_contents($this->templatePath, $template);
+        \file_put_contents($path . '.ready', $template);
 
         return $this;
     }
@@ -166,7 +155,10 @@ class Twig
      */
     protected function cleanup()
     {
-        unlink($this->templatePath);
+        $config = $this->getConfig();
+        $path = $config['phr_template_dir'] 
+              . DIRECTORY_SEPARATOR . $config['phr_template_filename'];
+        unlink($path . '.ready');
         return $this;
     }
 }
