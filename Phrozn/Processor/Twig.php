@@ -22,7 +22,8 @@
  */
 
 namespace Phrozn\Processor;
-use Phrozn\Autoloader as Loader;
+use Phrozn\Autoloader as Loader,
+    Phrozn\Path\Project as ProjectPath;
 
 /**
  * Twig templates processor
@@ -42,12 +43,26 @@ class Twig
     protected $twig;
 
     /**
-     * If configuration options are passes then twig environment 
+     * Reference to twig current template loader
+     *
+     * @var \Twig_LoaderInterface
+     */
+    protected $loader;
+
+    /**
+     * Path to template file being rendered
+     * @see self::prepare()
+     * @var string
+     */
+    private $templatePath;
+
+    /**
+     * If configuration options are passed then twig environment
      * is initialized right away
      *
      * @param array $options Processor options
      *
-     * @return void
+     * @return \Phrozn\Processor\Twig
      */
     public function __construct($options = array())
     {
@@ -74,23 +89,84 @@ class Twig
      */
     public function render($tpl, $vars = array())
     {
-        return $this->getEnvironment()
-                    ->loadTemplate($tpl)
-                    ->render($vars);
+        $rendered = $this->getEnvironment()
+                         ->loadTemplate(basename($this->templatePath)) // generated inside prepare()
+                         ->render($vars);
+        $this->cleanup(); // post-process
+        return $rendered;
     }
 
+    /**
+     * Get (init if necessary) twig environment
+     *
+     * @param boolean $reset Force re-initialization
+     *
+     * @return \Twig_Environment
+     */
     protected function getEnvironment($reset = false)
     {
         if ($reset === true || null === $this->twig) {
+            $this->prepare();
             $this->twig = new \Twig_Environment(
                 $this->getLoader(), $this->getConfig());
+            $this->twig->removeExtension('escaper');
         }
 
         return $this->twig;
     }
 
+    /**
+     * Get template loader
+     *
+     * @return \Twig_LoaderInterface
+     */
     protected function getLoader()
     {
-        return new \Twig_Loader_String();
+        $config = $this->getConfig();
+        $projectPath = new ProjectPath($config['phr_template_dir']);
+        // allow to include and inherit templates wrt to project's root folder
+        // but fallback to phr_template_dir if not inside of .phrozn
+        $projectPath = $projectPath->get() ?: $config['phr_template_dir'];
+        return new \Twig_Loader_Filesystem($projectPath);
+    }
+
+    /**
+     * Prepare template for loading into twig (strip Front Matter etc)
+     *
+     * @return \Phrozn\Processor\Twig
+     */
+    protected function prepare()
+    {
+        $config = $this->getConfig();
+        $path = $config['phr_template_dir'] 
+              . DIRECTORY_SEPARATOR . $config['phr_template_filename'];
+        $projectPath = new ProjectPath($config['phr_template_dir']);
+        $projectPath = $projectPath->get() ?: $config['phr_template_dir'];
+        
+        // read raw template source
+        if (!is_readable($path)) {
+            throw new \Exception(sprintf('View input "%s" file not readable.', $path));
+        }
+        $source = \file_get_contents($path);
+        
+        // strip front matter
+        $parts = preg_split('/[\n]*[-]{3}[\n]/', $source, 2);
+        $template = (count($parts) === 2) ? $parts[1] : trim($source);
+        $this->templatePath = $projectPath . DIRECTORY_SEPARATOR 
+                            . $config['phr_template_filename'] . '.ready';
+        \file_put_contents($this->templatePath, $template);
+
+        return $this;
+    }
+
+    /**
+     * Post-process the rendering, removing any intermediary resources.
+     *
+     * @return \Phrozn\Processor\Twig
+     */
+    protected function cleanup()
+    {
+        unlink($this->templatePath);
+        return $this;
     }
 }

@@ -13,28 +13,27 @@
  * Interface all loaders must implement.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 interface Twig_LoaderInterface
 {
     /**
      * Gets the source code of a template, given its name.
      *
-     * @param  string $name string The name of the template to load
+     * @param  string $name The name of the template to load
      *
      * @return string The template source code
      */
-    public function getSource($name);
+    function getSource($name);
 
     /**
      * Gets the cache key to use for the cache for a given template name.
      *
-     * @param  string $name string The name of the template to load
+     * @param  string $name The name of the template to load
      *
      * @return string The cache key
      */
-    public function getCacheKey($name);
+    function getCacheKey($name);
 
     /**
      * Returns true if the template is still fresh.
@@ -42,5 +41,5 @@ interface Twig_LoaderInterface
      * @param string    $name The template name
      * @param timestamp $time The last modification time of the cached template
      */
-    public function isFresh($name, $time);
+    function isFresh($name, $time);
 }

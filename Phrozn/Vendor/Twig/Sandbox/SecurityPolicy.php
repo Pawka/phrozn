@@ -13,8 +13,7 @@
  * Represents a security policy which need to be enforced when sandbox mode is enabled.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterface
 {
@@ -22,13 +21,15 @@ class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterfac
     protected $allowedFilters;
     protected $allowedMethods;
     protected $allowedProperties;
+    protected $allowedFunctions;
 
-    public function __construct(array $allowedTags = array(), array $allowedFilters = array(), array $allowedMethods = array(), array $allowedProperties = array())
+    public function __construct(array $allowedTags = array(), array $allowedFilters = array(), array $allowedMethods = array(), array $allowedProperties = array(), array $allowedFunctions = array())
     {
         $this->allowedTags = $allowedTags;
         $this->allowedFilters = $allowedFilters;
-        $this->allowedMethods = $allowedMethods;
+        $this->setAllowedMethods($allowedMethods);
         $this->allowedProperties = $allowedProperties;
+        $this->allowedFunctions = $allowedFunctions;
     }
 
     public function setAllowedTags(array $tags)
@@ -43,7 +44,10 @@ class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterfac
 
     public function setAllowedMethods(array $methods)
     {
-        $this->allowedMethods = $methods;
+        $this->allowedMethods = array();
+        foreach ($methods as $class => $m) {
+            $this->allowedMethods[$class] = array_map('strtolower', is_array($m) ? $m : array($m));
+        }
     }
 
     public function setAllowedProperties(array $properties)
@@ -51,7 +55,12 @@ class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterfac
         $this->allowedProperties = $properties;
     }
 
-    public function checkSecurity($tags, $filters)
+    public function setAllowedFunctions(array $functions)
+    {
+        $this->allowedFunctions = $functions;
+    }
+
+    public function checkSecurity($tags, $filters, $functions)
     {
         foreach ($tags as $tag) {
             if (!in_array($tag, $this->allowedTags)) {
@@ -64,14 +73,25 @@ class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterfac
                 throw new Twig_Sandbox_SecurityError(sprintf('Filter "%s" is not allowed.', $filter));
             }
         }
+
+        foreach ($functions as $function) {
+            if (!in_array($function, $this->allowedFunctions)) {
+                throw new Twig_Sandbox_SecurityError(sprintf('Function "%s" is not allowed.', $function));
+            }
+        }
     }
 
     public function checkMethodAllowed($obj, $method)
     {
+        if ($obj instanceof Twig_TemplateInterface || $obj instanceof Twig_Markup) {
+            return true;
+        }
+
         $allowed = false;
+        $method = strtolower($method);
         foreach ($this->allowedMethods as $class => $methods) {
             if ($obj instanceof $class) {
-                $allowed = in_array($method, is_array($methods) ? $methods : array($methods));
+                $allowed = in_array($method, $methods);
 
                 break;
             }

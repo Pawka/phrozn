@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-09-10</date>
- <time>20:09:14</time>
+ <date>2011-09-11</date>
+ <time>18:41:50</time>
  <version>
-  <release>0.2.2</release>
-  <api>0.2.2</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -187,29 +187,28 @@
       </dir> <!-- /Phrozn/Vendor/Symfony/Component -->
      </dir> <!-- /Phrozn/Vendor/Symfony -->
      <dir name="Twig">
+      <dir name="Error">
+       <file baseinstalldir="/" name="Loader.php" role="php" />
+       <file baseinstalldir="/" name="Runtime.php" role="php" />
+       <file baseinstalldir="/" name="Syntax.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Error -->
       <dir name="Extension">
        <file baseinstalldir="/" name="Core.php" role="php" />
        <file baseinstalldir="/" name="Escaper.php" role="php" />
-       <file baseinstalldir="/" name="I18n.php" role="php" />
+       <file baseinstalldir="/" name="Optimizer.php" role="php" />
        <file baseinstalldir="/" name="Sandbox.php" role="php" />
       </dir> <!-- /Phrozn/Vendor/Twig/Extension -->
       <dir name="Filter">
        <file baseinstalldir="/" name="Function.php" role="php" />
        <file baseinstalldir="/" name="Method.php" role="php" />
       </dir> <!-- /Phrozn/Vendor/Twig/Filter -->
-      <dir name="Grammar">
-       <file baseinstalldir="/" name="Arguments.php" role="php" />
-       <file baseinstalldir="/" name="Array.php" role="php" />
-       <file baseinstalldir="/" name="Body.php" role="php" />
-       <file baseinstalldir="/" name="Boolean.php" role="php" />
-       <file baseinstalldir="/" name="Constant.php" role="php" />
-       <file baseinstalldir="/" name="Expression.php" role="php" />
-       <file baseinstalldir="/" name="Number.php" role="php" />
-       <file baseinstalldir="/" name="Optional.php" role="php" />
-       <file baseinstalldir="/" name="Tag.php" role="php" />
-      </dir> <!-- /Phrozn/Vendor/Twig/Grammar -->
+      <dir name="Function">
+       <file baseinstalldir="/" name="Function.php" role="php" />
+       <file baseinstalldir="/" name="Method.php" role="php" />
+      </dir> <!-- /Phrozn/Vendor/Twig/Function -->
       <dir name="Loader">
        <file baseinstalldir="/" name="Array.php" role="php" />
+       <file baseinstalldir="/" name="Chain.php" role="php" />
        <file baseinstalldir="/" name="Filesystem.php" role="php" />
        <file baseinstalldir="/" name="String.php" role="php" />
       </dir> <!-- /Phrozn/Vendor/Twig/Loader -->
@@ -218,12 +217,25 @@
         <dir name="Binary">
          <file baseinstalldir="/" name="Add.php" role="php" />
          <file baseinstalldir="/" name="And.php" role="php" />
+         <file baseinstalldir="/" name="BitwiseAnd.php" role="php" />
+         <file baseinstalldir="/" name="BitwiseOr.php" role="php" />
+         <file baseinstalldir="/" name="BitwiseXor.php" role="php" />
          <file baseinstalldir="/" name="Concat.php" role="php" />
          <file baseinstalldir="/" name="Div.php" role="php" />
+         <file baseinstalldir="/" name="Equal.php" role="php" />
          <file baseinstalldir="/" name="FloorDiv.php" role="php" />
+         <file baseinstalldir="/" name="Greater.php" role="php" />
+         <file baseinstalldir="/" name="GreaterEqual.php" role="php" />
+         <file baseinstalldir="/" name="In.php" role="php" />
+         <file baseinstalldir="/" name="Less.php" role="php" />
+         <file baseinstalldir="/" name="LessEqual.php" role="php" />
          <file baseinstalldir="/" name="Mod.php" role="php" />
          <file baseinstalldir="/" name="Mul.php" role="php" />
+         <file baseinstalldir="/" name="NotEqual.php" role="php" />
+         <file baseinstalldir="/" name="NotIn.php" role="php" />
          <file baseinstalldir="/" name="Or.php" role="php" />
+         <file baseinstalldir="/" name="Power.php" role="php" />
+         <file baseinstalldir="/" name="Range.php" role="php" />
          <file baseinstalldir="/" name="Sub.php" role="php" />
         </dir> <!-- /Phrozn/Vendor/Twig/Node/Expression/Binary -->
         <dir name="Unary">
@@ -234,12 +246,15 @@
         <file baseinstalldir="/" name="Array.php" role="php" />
         <file baseinstalldir="/" name="AssignName.php" role="php" />
         <file baseinstalldir="/" name="Binary.php" role="php" />
-        <file baseinstalldir="/" name="Compare.php" role="php" />
+        <file baseinstalldir="/" name="BlockReference.php" role="php" />
         <file baseinstalldir="/" name="Conditional.php" role="php" />
         <file baseinstalldir="/" name="Constant.php" role="php" />
+        <file baseinstalldir="/" name="ExtensionReference.php" role="php" />
         <file baseinstalldir="/" name="Filter.php" role="php" />
+        <file baseinstalldir="/" name="Function.php" role="php" />
         <file baseinstalldir="/" name="GetAttr.php" role="php" />
         <file baseinstalldir="/" name="Name.php" role="php" />
+        <file baseinstalldir="/" name="Parent.php" role="php" />
         <file baseinstalldir="/" name="Test.php" role="php" />
         <file baseinstalldir="/" name="Unary.php" role="php" />
        </dir> <!-- /Phrozn/Vendor/Twig/Node/Expression -->
@@ -253,17 +268,18 @@
        <file baseinstalldir="/" name="Include.php" role="php" />
        <file baseinstalldir="/" name="Macro.php" role="php" />
        <file baseinstalldir="/" name="Module.php" role="php" />
-       <file baseinstalldir="/" name="Parent.php" role="php" />
        <file baseinstalldir="/" name="Print.php" role="php" />
        <file baseinstalldir="/" name="Sandbox.php" role="php" />
        <file baseinstalldir="/" name="SandboxedModule.php" role="php" />
        <file baseinstalldir="/" name="SandboxedPrint.php" role="php" />
        <file baseinstalldir="/" name="Set.php" role="php" />
+       <file baseinstalldir="/" name="Spaceless.php" role="php" />
        <file baseinstalldir="/" name="Text.php" role="php" />
-       <file baseinstalldir="/" name="Trans.php" role="php" />
       </dir> <!-- /Phrozn/Vendor/Twig/Node -->
       <dir name="NodeVisitor">
        <file baseinstalldir="/" name="Escaper.php" role="php" />
+       <file baseinstalldir="/" name="Optimizer.php" role="php" />
+       <file baseinstalldir="/" name="SafeAnalysis.php" role="php" />
        <file baseinstalldir="/" name="Sandbox.php" role="php" />
       </dir> <!-- /Phrozn/Vendor/Twig/NodeVisitor -->
       <dir name="Sandbox">
@@ -273,22 +289,23 @@
       </dir> <!-- /Phrozn/Vendor/Twig/Sandbox -->
       <dir name="Test">
        <file baseinstalldir="/" name="Function.php" role="php" />
+       <file baseinstalldir="/" name="Method.php" role="php" />
       </dir> <!-- /Phrozn/Vendor/Twig/Test -->
       <dir name="TokenParser">
        <file baseinstalldir="/" name="AutoEscape.php" role="php" />
        <file baseinstalldir="/" name="Block.php" role="php" />
-       <file baseinstalldir="/" name="Display.php" role="php" />
        <file baseinstalldir="/" name="Extends.php" role="php" />
        <file baseinstalldir="/" name="Filter.php" role="php" />
        <file baseinstalldir="/" name="For.php" role="php" />
+       <file baseinstalldir="/" name="From.php" role="php" />
        <file baseinstalldir="/" name="If.php" role="php" />
        <file baseinstalldir="/" name="Import.php" role="php" />
        <file baseinstalldir="/" name="Include.php" role="php" />
        <file baseinstalldir="/" name="Macro.php" role="php" />
-       <file baseinstalldir="/" name="Parent.php" role="php" />
        <file baseinstalldir="/" name="Sandbox.php" role="php" />
        <file baseinstalldir="/" name="Set.php" role="php" />
-       <file baseinstalldir="/" name="Trans.php" role="php" />
+       <file baseinstalldir="/" name="Spaceless.php" role="php" />
+       <file baseinstalldir="/" name="Use.php" role="php" />
       </dir> <!-- /Phrozn/Vendor/Twig/TokenParser -->
       <file baseinstalldir="/" name="Autoloader.php" role="php" />
       <file baseinstalldir="/" name="Compiler.php" role="php" />
@@ -300,25 +317,26 @@
       <file baseinstalldir="/" name="ExtensionInterface.php" role="php" />
       <file baseinstalldir="/" name="Filter.php" role="php" />
       <file baseinstalldir="/" name="FilterInterface.php" role="php" />
-      <file baseinstalldir="/" name="Grammar.php" role="php" />
-      <file baseinstalldir="/" name="GrammarInterface.php" role="php" />
+      <file baseinstalldir="/" name="Function.php" role="php" />
+      <file baseinstalldir="/" name="FunctionInterface.php" role="php" />
       <file baseinstalldir="/" name="Lexer.php" role="php" />
       <file baseinstalldir="/" name="LexerInterface.php" role="php" />
       <file baseinstalldir="/" name="LoaderInterface.php" role="php" />
+      <file baseinstalldir="/" name="Markup.php" role="php" />
       <file baseinstalldir="/" name="Node.php" role="php" />
       <file baseinstalldir="/" name="NodeInterface.php" role="php" />
+      <file baseinstalldir="/" name="NodeOutputInterface.php" role="php" />
       <file baseinstalldir="/" name="NodeTraverser.php" role="php" />
       <file baseinstalldir="/" name="NodeVisitorInterface.php" role="php" />
       <file baseinstalldir="/" name="Parser.php" role="php" />
       <file baseinstalldir="/" name="ParserInterface.php" role="php" />
-      <file baseinstalldir="/" name="RuntimeError.php" role="php" />
-      <file baseinstalldir="/" name="SimpleTokenParser.php" role="php" />
-      <file baseinstalldir="/" name="SyntaxError.php" role="php" />
       <file baseinstalldir="/" name="Template.php" role="php" />
       <file baseinstalldir="/" name="TemplateInterface.php" role="php" />
       <file baseinstalldir="/" name="TestInterface.php" role="php" />
       <file baseinstalldir="/" name="Token.php" role="php" />
       <file baseinstalldir="/" name="TokenParser.php" role="php" />
+      <file baseinstalldir="/" name="TokenParserBroker.php" role="php" />
+      <file baseinstalldir="/" name="TokenParserBrokerInterface.php" role="php" />
       <file baseinstalldir="/" name="TokenParserInterface.php" role="php" />
       <file baseinstalldir="/" name="TokenStream.php" role="php" />
      </dir> <!-- /Phrozn/Vendor/Twig -->

@@ -8,6 +8,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+/**
+ * Marks a section of a template as untrusted code that must be evaluated in the sandbox mode.
+ *
+ * <pre>
+ * {% sandbox %}
+ *     {% include 'user.html' %}
+ * {% endsandbox %}
+ * </pre>
+ *
+ * @see http://www.twig-project.org/doc/api.html#sandbox-extension for details
+ */
 class Twig_TokenParser_Sandbox extends Twig_TokenParser
 {
     /**
@@ -26,7 +38,7 @@ class Twig_TokenParser_Sandbox extends Twig_TokenParser
         return new Twig_Node_Sandbox($body, $token->getLine(), $this->getTag());
     }
 
-    public function decideBlockEnd($token)
+    public function decideBlockEnd(Twig_Token $token)
     {
         return $token->test('endsandbox');
     }

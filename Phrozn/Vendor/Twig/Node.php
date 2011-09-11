@@ -14,10 +14,9 @@
  * Represents a node in the AST.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorAggregate
+class Twig_Node implements Twig_NodeInterface, Countable, IteratorAggregate
 {
     protected $nodes;
     protected $attributes;
@@ -37,10 +36,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      */
     public function __construct(array $nodes = array(), array $attributes = array(), $lineno = 0, $tag = null)
     {
-        $this->nodes = array();
-        foreach ($nodes as $name => $node) {
-            $this->$name = $node;
-        }
+        $this->nodes = $nodes;
         $this->attributes = $attributes;
         $this->lineno = $lineno;
         $this->tag = $tag;
@@ -104,7 +100,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
         return $asDom ? $dom : $dom->saveXml();
     }
 
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         foreach ($this->nodes as $node) {
             $node->compile($compiler);
@@ -128,7 +124,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      *
      * @return Boolean true if the attribute is defined, false otherwise
      */
-    public function offsetExists($name)
+    public function hasAttribute($name)
     {
         return array_key_exists($name, $this->attributes);
     }
@@ -140,10 +136,10 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      *
      * @return mixed  The attribute value
      */
-    public function offsetGet($name)
+    public function getAttribute($name)
     {
         if (!array_key_exists($name, $this->attributes)) {
-            throw new InvalidArgumentException(sprintf('Attribute "%s" does not exist for Node "%s".', $name, get_class($this)));
+            throw new Twig_Error_Runtime(sprintf('Attribute "%s" does not exist for Node "%s".', $name, get_class($this)));
         }
 
         return $this->attributes[$name];
@@ -155,7 +151,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      * @param string The attribute name
      * @param mixed  The attribute value
      */
-    public function offsetSet($name, $value)
+    public function setAttribute($name, $value)
     {
         $this->attributes[$name] = $value;
     }
@@ -165,7 +161,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      *
      * @param string The attribute name
      */
-    public function offsetUnset($name)
+    public function removeAttribute($name)
     {
         unset($this->attributes[$name]);
     }
@@ -177,7 +173,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      *
      * @return Boolean true if the node with the given name exists, false otherwise
      */
-    public function __isset($name)
+    public function hasNode($name)
     {
         return array_key_exists($name, $this->nodes);
     }
@@ -189,10 +185,10 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      *
      * @return Twig_Node A Twig_Node instance
      */
-    public function __get($name)
+    public function getNode($name)
     {
         if (!array_key_exists($name, $this->nodes)) {
-            throw new InvalidArgumentException(sprintf('Node "%s" does not exist for Node "%s".', $name, get_class($this)));
+            throw new Twig_Error_Runtime(sprintf('Node "%s" does not exist for Node "%s".', $name, get_class($this)));
         }
 
         return $this->nodes[$name];
@@ -204,7 +200,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      * @param string    The node name
      * @param Twig_Node A Twig_Node instance
      */
-    public function __set($name, $node = null)
+    public function setNode($name, $node = null)
     {
         $this->nodes[$name] = $node;
     }
@@ -214,7 +210,7 @@ class Twig_Node implements Twig_NodeInterface, ArrayAccess, Countable, IteratorA
      *
      * @param string The node name
      */
-    public function __unset($name)
+    public function removeNode($name)
     {
         unset($this->nodes[$name]);
     }

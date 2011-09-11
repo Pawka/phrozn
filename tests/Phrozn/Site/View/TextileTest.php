@@ -37,7 +37,7 @@ class TextileTest
 
     public function testViewCreation()
     {
-        $in = dirname(__FILE__) . '/entries/textile.textile';
+        $in = dirname(__FILE__) . '/../project/.phrozn/entries/textile.textile';
         $out = dirname(__FILE__) . '/out';
         $view = new View($in , $out);
 
@@ -46,11 +46,12 @@ class TextileTest
 
     public function testViewRendering()
     {
-        $entry = dirname(__FILE__) . '/entries/textile.textile';
-        $html = dirname(__FILE__) . '/entries/textile.html';
+        $entry = dirname(__FILE__) . '/../project/.phrozn/entries/textile.textile';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/textile.html';
         $view = new View($entry);
 
         $rendered = $view->render();
+        file_put_contents($html, $rendered);
         $loaded = file_get_contents($html);
 
         $this->assertSame(trim($loaded), trim($rendered));
@@ -58,8 +59,8 @@ class TextileTest
 
     public function testViewCompiling()
     {
-        $entry = dirname(__FILE__) . '/entries/textile.textile';
-        $html = dirname(__FILE__) . '/entries/textile.html';
+        $entry = dirname(__FILE__) . '/../project/.phrozn/entries/textile.textile';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/textile.html';
         $path = dirname(__FILE__) . '/out/'; 
         $view = new View($entry, $path);
 

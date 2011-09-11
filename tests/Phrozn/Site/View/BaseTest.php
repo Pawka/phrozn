@@ -37,7 +37,7 @@ class BaseTest
 
     public function testViewCreation()
     {
-        $in = dirname(__FILE__) . '/entries/fm-parsing.txt';
+        $in = dirname(__FILE__) . '/../project/.phrozn/entries/fm-parsing.txt';
         $out = dirname(__FILE__) . '/out';
         $view = new View($in , $out);
 
@@ -46,7 +46,7 @@ class BaseTest
 
     public function testViewFrontMatterParsing()
     {
-        $css = dirname(__FILE__) . '/entries/fm-parsing.txt';
+        $css = dirname(__FILE__) . '/../project/.phrozn/entries/fm-parsing.txt';
         $view = new View($css);
         $fm = $view->getFrontMatter();
         $this->assertTrue(true); // in non fixed version this throws InvalidArgument exception

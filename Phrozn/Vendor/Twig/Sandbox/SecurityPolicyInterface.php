@@ -13,14 +13,13 @@
  * Interfaces that all security policy classes must implements.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 interface Twig_Sandbox_SecurityPolicyInterface
 {
-    public function checkSecurity($tags, $filters);
+    function checkSecurity($tags, $filters, $functions);
 
-    public function checkMethodAllowed($obj, $method);
+    function checkMethodAllowed($obj, $method);
 
-    public function checkPropertyAllowed($obj, $method);
+    function checkPropertyAllowed($obj, $method);
 }

@@ -152,7 +152,7 @@ abstract class Base
     {
         // inject front matter options into template
         $vars = array_merge($vars, $this->getParams());
-        
+
         // inject providers content
         if ($providers = $this->getParam('page.providers', false)) {
             $factory = new ProviderFactory();
@@ -161,7 +161,7 @@ abstract class Base
                 if (!isset($data['provider'])) {
                     continue;
                 }
-                $provider = $factory->create($data['provider'], $data); 
+                $provider = $factory->create($data['provider'], $data);
                 $provider->setProjectPath($projectPath->get());
                 $providedContent = $provider->get();
                 $vars['page']['providers'][$varname] = $providedContent;
@@ -346,7 +346,7 @@ abstract class Base
         if (null !== $param) {
             $params = $this->locateParam($params, $param);
         }
-        
+
         return isset($params) ? $params : $default;
     }
 
@@ -355,7 +355,7 @@ abstract class Base
      *
      * @return mixed
      */
-    private function locateParam($params, $param) 
+    private function locateParam($params, $param)
     {
         $value = null;
         $keys = explode('.', $param);
@@ -467,7 +467,7 @@ abstract class Base
 
         $inputFile = $this->getInputFile();
         $pos = strpos($inputFile, '/entries');
-        // make sure that input path is normalized to root entries directory 
+        // make sure that input path is normalized to root entries directory
         if (false !== $pos) {
             $inputFile = substr($inputFile, 0, $pos + 8) . '/entry';
         }

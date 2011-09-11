@@ -13,8 +13,7 @@
  * Represents a node in the AST.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 interface Twig_NodeInterface
 {
@@ -23,9 +22,9 @@ interface Twig_NodeInterface
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler);
+    function compile(Twig_Compiler $compiler);
 
-    public function getLine();
+    function getLine();
 
-    public function getNodeTag();
+    function getNodeTag();
 }

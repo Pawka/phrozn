@@ -13,8 +13,7 @@
  * Represents a function template filter.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Filter_Function extends Twig_Filter
 {

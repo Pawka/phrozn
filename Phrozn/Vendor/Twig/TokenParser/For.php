@@ -9,6 +9,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+/**
+ * Loops over each item of a sequence.
+ *
+ * <pre>
+ * <ul>
+ *  {% for user in users %}
+ *    <li>{{ user.username|e }}</li>
+ *  {% endfor %}
+ * </ul>
+ * </pre>
+ */
 class Twig_TokenParser_For extends Twig_TokenParser
 {
     /**
@@ -22,14 +34,13 @@ class Twig_TokenParser_For extends Twig_TokenParser
     {
         $lineno = $token->getLine();
         $targets = $this->parser->getExpressionParser()->parseAssignmentExpression();
-        $this->parser->getStream()->expect('in');
+        $this->parser->getStream()->expect(Twig_Token::OPERATOR_TYPE, 'in');
         $seq = $this->parser->getExpressionParser()->parseExpression();
 
-        $withLoop = true;
-        if ($this->parser->getStream()->test('without')) {
+        $ifexpr = null;
+        if ($this->parser->getStream()->test(Twig_Token::NAME_TYPE, 'if')) {
             $this->parser->getStream()->next();
-            $this->parser->getStream()->expect('loop');
-            $withLoop = false;
+            $ifexpr = $this->parser->getExpressionParser()->parseExpression();
         }
 
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
@@ -43,22 +54,22 @@ class Twig_TokenParser_For extends Twig_TokenParser
         $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
 
         if (count($targets) > 1) {
-            $keyTarget = $targets->{0};
-            $valueTarget = $targets->{1};
+            $keyTarget = $targets->getNode(0);
+            $valueTarget = $targets->getNode(1);
         } else {
             $keyTarget = new Twig_Node_Expression_AssignName('_key', $lineno);
-            $valueTarget = $targets->{0};
+            $valueTarget = $targets->getNode(0);
         }
 
-        return new Twig_Node_For($keyTarget, $valueTarget, $seq, $body, $else, $withLoop, $lineno, $this->getTag());
+        return new Twig_Node_For($keyTarget, $valueTarget, $seq, $ifexpr, $body, $else, $lineno, $this->getTag());
     }
 
-    public function decideForFork($token)
+    public function decideForFork(Twig_Token $token)
     {
         return $token->test(array('else', 'endfor'));
     }
 
-    public function decideForEnd($token)
+    public function decideForEnd(Twig_Token $token)
     {
         return $token->test('endfor');
     }

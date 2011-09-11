@@ -18,9 +18,9 @@ class Twig_Extension_Escaper extends Twig_Extension
     }
 
     /**
-     * Returns the token parser instance to add to the existing list.
+     * Returns the token parser instances to add to the existing list.
      *
-     * @return array An array of Twig_TokenParser instances
+     * @return array An array of Twig_TokenParserInterface or Twig_TokenParserBrokerInterface instances
      */
     public function getTokenParsers()
     {
@@ -45,7 +45,7 @@ class Twig_Extension_Escaper extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'safe' => new Twig_Filter_Function('twig_safe_filter', array('is_escaper' => true)),
+            'raw' => new Twig_Filter_Function('twig_raw_filter', array('is_safe' => array('all'))),
         );
     }
 
@@ -65,8 +65,13 @@ class Twig_Extension_Escaper extends Twig_Extension
     }
 }
 
-// tells the escaper node visitor that the string is safe
-function twig_safe_filter($string)
+/**
+ * Marks a variable as being safe.
+ *
+ * @param string $string A PHP variable
+ */
+function twig_raw_filter($string)
 {
     return $string;
 }
+

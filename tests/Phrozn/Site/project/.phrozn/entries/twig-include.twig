@@ -1,0 +1,13 @@
+boxes:
+    - size: huge
+      title: phelephant
+    - size: tiny
+      title: mouse
+---
+{{ the_answer }}
+<div>
+{% include "layouts/includes/twig-included.twig" %}
+</div>
+{% for box in this.boxes %}
+    {% include "layouts/foo/twig-included-box.twig" %}
+{% endfor %}

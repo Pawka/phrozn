@@ -13,10 +13,22 @@
  * Represents a template filter.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 interface Twig_FilterInterface
 {
-    public function compile();
+    /**
+     * Compiles a filter.
+     *
+     * @return string The PHP code for the filter
+     */
+    function compile();
+
+    function needsEnvironment();
+
+    function needsContext();
+
+    function getSafe(Twig_Node $filterArgs);
+
+    function getPreEscape();
 }
