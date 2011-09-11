@@ -38,7 +38,7 @@ class FactoryTest
 
     public function testImplicitHtmlFileCreation()
     {
-        $path = dirname(__FILE__) . '/entries/';
+        $path = dirname(__FILE__) . '/../project/.phrozn/entries/';
         $input = $path . '2011-02-24-factory-test.twig';
         $output = realpath($path . '/../site');
         $factory = new Factory();
@@ -51,7 +51,7 @@ class FactoryTest
 
     public function testSourceFileCanNotBeRead()
     {
-        $path = dirname(__FILE__) . '/entries/';
+        $path = dirname(__FILE__) . '/../project/.phrozn/entries/';
         $input = $path . 'not-found.twig';
 
         $this->setExpectedException('Exception',
@@ -66,7 +66,7 @@ class FactoryTest
     public function testNonExistantProcessor()
     {
 
-        $path = dirname(__FILE__) . '/entries/';
+        $path = dirname(__FILE__) . '/../project/.phrozn/entries/';
         $input = $path . '2011-02-24-wrong-file-type.wrong';
 
         $factory = new Factory();
