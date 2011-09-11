@@ -37,17 +37,31 @@ class TwigTest
 
     public function testViewCreation()
     {
-        $in = dirname(__FILE__) . '/entries/2011-02-24-create.twig';
+        $in = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-create.twig';
         $out = dirname(__FILE__) . '/out';
         $view = new View($in , $out);
 
         $this->assertInstanceOf('\Phrozn\Site\View\Twig', $view);
     }
 
-    public function testViewRendering()
+    public function testViewRenderingWithFrontMatter()
     {
-        $twig = dirname(__FILE__) . '/entries/2011-02-24-render.twig';
-        $html = dirname(__FILE__) . '/entries/2011-02-24-render.html';
+        $twig = dirname(__FILE__) . '/../project/.phrozn/entries/twig-child-with-fm.twig';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/twig-child-with-fm.html';
+        $view = new View($twig);
+
+        $vars = array('the_answer' => 42);
+        $rendered = $view->render($vars);
+
+        $loaded = file_get_contents($html);
+
+        $this->assertSame(trim($loaded), trim($rendered));
+    }
+
+    public function testViewRenderingWithIncludes()
+    {
+        $twig = dirname(__FILE__) . '/../project/.phrozn/entries/twig-include.twig';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/twig-include.html';
         $view = new View($twig);
 
         $vars = array('the_answer' => 42);
@@ -60,8 +74,8 @@ class TwigTest
 
     public function testViewCompiling()
     {
-        $twig = dirname(__FILE__) . '/entries/2011-02-24-compile.twig';
-        $html = dirname(__FILE__) . '/entries/2011-02-24-compile.html';
+        $twig = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-compile.twig';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-compile.html';
         $path = dirname(__FILE__) . '/out/'; 
         $view = new View($twig, $path);
 
@@ -87,13 +101,10 @@ class TwigTest
         unlink($path . '2011-02-24-compile.html');
     }
 
-    /**
-     * @group cur
-     */
     public function testViewCompilingPermalinkSetParametrizedIndexAdded()
     {
-        $twig = dirname(__FILE__) . '/entries/compile-permalink-append-index.twig';
-        $html = dirname(__FILE__) . '/entries/compile-permalink.html';
+        $twig = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink-append-index.twig';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink.html';
         $path = dirname(__FILE__) . '/out/'; 
         $view = new View($twig, $path);
 
@@ -121,8 +132,8 @@ class TwigTest
 
     public function testViewCompilingPermalinkSetParametrized()
     {
-        $twig = dirname(__FILE__) . '/entries/compile-permalink-parametrized.twig';
-        $html = dirname(__FILE__) . '/entries/compile-permalink.html';
+        $twig = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink-parametrized.twig';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink.html';
         $path = dirname(__FILE__) . '/out/'; 
         $view = new View($twig, $path);
 
@@ -151,8 +162,8 @@ class TwigTest
 
     public function testNoFrontMatter()
     {
-        $twig = dirname(__FILE__) . '/entries/2011-02-24-no-front-matter.twig';
-        $html = dirname(__FILE__) . '/entries/2011-02-24-no-front-matter.html';
+        $twig = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-no-front-matter.twig';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-no-front-matter.html';
         $view = new View($twig);
 
         $vars = array('the_answer' => 42);
