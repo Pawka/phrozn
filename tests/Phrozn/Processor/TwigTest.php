@@ -39,14 +39,10 @@ class TwigTest
         $this->path = dirname(__FILE__) . '/templates/';
     }
 
-    /**
-     * @group cur
-     */
     public function testRender()
     {
-        $processor = new Processor();
-        $tpl = file_get_contents($this->path . 'tpl1.twig');
-        $rendered = $processor->render($tpl, array(
+        $processor = $this->getProcessor($this->path . 'tpl1.twig');
+        $rendered = $processor->render(null, array(
             'a_variable' => 'Aha!',
             'navigation' => array(
                 array(
@@ -65,11 +61,12 @@ class TwigTest
 
     public function testRenderConstructorInjection()
     {
-        $processor = new Processor(array(
-            'cache' => dirname(__FILE__) . '/templates/',
-        ));
-        $tpl = file_get_contents($this->path . 'tpl1.twig');
-        $rendered = $processor->render($tpl, array(
+        $processor = $this->getProcessor(
+            $this->path . 'tpl1.twig', array(
+                'cache' => dirname(__FILE__) . '/templates/cache/',
+            )
+        );
+        $rendered = $processor->render(null, array(
             'a_variable' => 'Aha!',
             'navigation' => array(
                 array(
@@ -131,5 +128,15 @@ class TwigTest
         $static = file_get_contents(dirname(__FILE__) . '/templates/twig-inherit.html');
         $this->assertSame(trim($static), trim($rendered));
     }
+
+    private function getProcessor($inputFile, $extraOpts = array())
+    {
+        $options = array(
+            'phr_template_filename' => basename($inputFile),
+            'phr_template_dir'      => dirname($inputFile),
+        );
+        return new Processor(array_merge($options, $extraOpts));
+    }
+
 
 }
