@@ -21,7 +21,7 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace PhroznTest\Runner\CommandLine;
+namespace PhroznTest\Runner;
 use Phrozn\Runner\CommandLine as Runner,
     Phrozn\Autoloader as Loader,
     Phrozn\Outputter\TestOutputter as Outputter;

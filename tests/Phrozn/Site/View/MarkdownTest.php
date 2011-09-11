@@ -37,7 +37,7 @@ class MarkdownTest
 
     public function testViewCreation()
     {
-        $in = dirname(__FILE__) . '/entries/markdown.markdown';
+        $in = dirname(__FILE__) . '/../project/.phrozn/entries/markdown.markdown';
         $out = dirname(__FILE__) . '/out';
         $view = new View($in , $out);
 
@@ -46,8 +46,8 @@ class MarkdownTest
 
     public function testViewRendering()
     {
-        $entry = dirname(__FILE__) . '/entries/markdown.markdown';
-        $html = dirname(__FILE__) . '/entries/markdown.html';
+        $entry = dirname(__FILE__) . '/../project/.phrozn/entries/markdown.markdown';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/markdown.html';
         $view = new View($entry);
 
         $rendered = $view->render();
@@ -58,8 +58,8 @@ class MarkdownTest
 
     public function testViewCompiling()
     {
-        $entry = dirname(__FILE__) . '/entries/markdown.markdown';
-        $html = dirname(__FILE__) . '/entries/markdown.html';
+        $entry = dirname(__FILE__) . '/../project/.phrozn/entries/markdown.markdown';
+        $html = dirname(__FILE__) . '/../project/.phrozn/entries/markdown.html';
         $path = dirname(__FILE__) . '/out/'; 
         $view = new View($entry, $path);
 
