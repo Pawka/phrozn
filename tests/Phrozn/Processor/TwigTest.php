@@ -117,12 +117,33 @@ class TwigTest
         $this->assertSame(trim($static), trim($rendered));
     }
 
-    /**
-     * @group cur
-     */
     public function testInheritedTemplates()
     {
         $processor = $this->getProcessor($this->path . 'twig-child.twig');
+        $rendered = $processor->render(null, array(
+            'a_variable' => 'Aha!',
+            'boxes' => array(
+                array(
+                    'size'      => 'huge',
+                    'title'     => 'phelephant'
+                ),
+                array(
+                    'size'      => 'tiny',
+                    'title'     => 'mouse'
+                )
+            )
+        ));
+        
+        $static = file_get_contents(dirname(__FILE__) . '/templates/twig-inherit.html');
+        $this->assertSame(trim($static), trim($rendered));
+    }
+
+    /**
+     * @group cur
+     */
+    public function testStripFrontmatter()
+    {
+        $processor = $this->getProcessor($this->path . 'twig-child-with-fm.twig');
         $rendered = $processor->render(null, array(
             'a_variable' => 'Aha!',
             'boxes' => array(
