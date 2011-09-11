@@ -14,10 +14,10 @@
   <active>yes</active>
  </lead>
  <date>2011-09-11</date>
- <time>18:41:50</time>
+ <time>19:46:24</time>
  <version>
-  <release>0.3.0</release>
-  <api>0.3.0</api>
+  <release>0.3.1</release>
+  <api>0.3.1</api>
  </version>
  <stability>
   <release>beta</release>

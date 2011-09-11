@@ -1,5 +1,6 @@
 <?php
 use Phrozn\Autoloader as Loader;
+error_reporting(E_ALL & ~E_NOTICE);
 
 // rely on configuration files
 require_once dirname(__FILE__) . '/../Phrozn/Autoloader.php';
