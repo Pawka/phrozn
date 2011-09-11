@@ -1,4 +1,3 @@
----
 _emphasized_ (e.g., italics)
 
 *strongly emphasized* (e.g., boldface)
@@ -41,4 +40,3 @@ bq. This text will be enclosed in an HTML blockquote element.
 "(classname)link text(title tooltip)":link_address
 
 !imageurl(alt text)!
-
