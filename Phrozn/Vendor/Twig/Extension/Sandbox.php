@@ -21,9 +21,9 @@ class Twig_Extension_Sandbox extends Twig_Extension
     }
 
     /**
-     * Returns the token parser instance to add to the existing list.
+     * Returns the token parser instances to add to the existing list.
      *
-     * @return array An array of Twig_TokenParser instances
+     * @return array An array of Twig_TokenParserInterface or Twig_TokenParserBrokerInterface instances
      */
     public function getTokenParsers()
     {
@@ -70,10 +70,10 @@ class Twig_Extension_Sandbox extends Twig_Extension
         return $this->policy;
     }
 
-    public function checkSecurity($tags, $filters)
+    public function checkSecurity($tags, $filters, $functions)
     {
         if ($this->isSandboxed()) {
-            $this->policy->checkSecurity($tags, $filters);
+            $this->policy->checkSecurity($tags, $filters, $functions);
         }
     }
 
@@ -89,6 +89,15 @@ class Twig_Extension_Sandbox extends Twig_Extension
         if ($this->isSandboxed()) {
             $this->policy->checkPropertyAllowed($obj, $method);
         }
+    }
+
+    public function ensureToStringAllowed($obj)
+    {
+        if (is_object($obj)) {
+            $this->policy->checkMethodAllowed($obj, '__toString');
+        }
+
+        return $obj;
     }
 
     /**

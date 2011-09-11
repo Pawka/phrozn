@@ -14,8 +14,7 @@
  * Represents an if node.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_If extends Twig_Node
 {
@@ -29,10 +28,10 @@ class Twig_Node_If extends Twig_Node
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
-        for ($i = 0; $i < count($this->tests); $i += 2) {
+        for ($i = 0; $i < count($this->getNode('tests')); $i += 2) {
             if ($i > 0) {
                 $compiler
                     ->outdent()
@@ -45,19 +44,19 @@ class Twig_Node_If extends Twig_Node
             }
 
             $compiler
-                ->subcompile($this->tests->{$i})
+                ->subcompile($this->getNode('tests')->getNode($i))
                 ->raw(") {\n")
                 ->indent()
-                ->subcompile($this->tests->{($i + 1)})
+                ->subcompile($this->getNode('tests')->getNode($i + 1))
             ;
         }
 
-        if (isset($this->else) && null !== $this->else) {
+        if ($this->hasNode('else') && null !== $this->getNode('else')) {
             $compiler
                 ->outdent()
                 ->write("} else {\n")
                 ->indent()
-                ->subcompile($this->else)
+                ->subcompile($this->getNode('else'))
             ;
         }
 

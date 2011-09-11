@@ -15,8 +15,7 @@
  * It visits all nodes and their children and call the given visitor for each.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_NodeTraverser
 {
@@ -45,7 +44,11 @@ class Twig_NodeTraverser
      */
     public function addVisitor(Twig_NodeVisitorInterface $visitor)
     {
-        $this->visitors[] = $visitor;
+        if (!isset($this->visitors[$visitor->getPriority()])) {
+            $this->visitors[$visitor->getPriority()] = array();
+        }
+
+        $this->visitors[$visitor->getPriority()][] = $visitor;
     }
 
     /**
@@ -53,28 +56,34 @@ class Twig_NodeTraverser
      *
      * @param Twig_NodeInterface $node A Twig_NodeInterface instance
      */
-    public function traverse(Twig_NodeInterface $node = null)
+    public function traverse(Twig_NodeInterface $node)
+    {
+        ksort($this->visitors);
+        foreach ($this->visitors as $visitors) {
+            foreach ($visitors as $visitor) {
+                $node = $this->traverseForVisitor($visitor, $node);
+            }
+        }
+
+        return $node;
+    }
+
+    protected function traverseForVisitor(Twig_NodeVisitorInterface $visitor, Twig_NodeInterface $node = null)
     {
         if (null === $node) {
             return null;
         }
 
-        foreach ($this->visitors as $visitor) {
-            $node = $visitor->enterNode($node, $this->env);
-        }
+        $node = $visitor->enterNode($node, $this->env);
 
         foreach ($node as $k => $n) {
-            if (false !== $n = $this->traverse($n)) {
-                $node->$k = $n;
+            if (false !== $n = $this->traverseForVisitor($visitor, $n)) {
+                $node->setNode($k, $n);
             } else {
-                unset($node->$k);
+                $node->removeNode($k);
             }
         }
 
-        foreach ($this->visitors as $visitor) {
-            $node = $visitor->leaveNode($node, $this->env);
-        }
-
-        return $node;
+        return $visitor->leaveNode($node, $this->env);
     }
 }

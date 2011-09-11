@@ -9,6 +9,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+/**
+ * Marks a section of a template as being reusable.
+ *
+ * <pre>
+ *  {% block head %}
+ *    <link rel="stylesheet" href="style.css" />
+ *    <title>{% block title %}{% endblock %} - My Webpage</title>
+ *  {% endblock %}
+ * </pre>
+ */
 class Twig_TokenParser_Block extends Twig_TokenParser
 {
     /**
@@ -24,8 +35,9 @@ class Twig_TokenParser_Block extends Twig_TokenParser
         $stream = $this->parser->getStream();
         $name = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
         if ($this->parser->hasBlock($name)) {
-            throw new Twig_SyntaxError("The block '$name' has already been defined", $lineno);
+            throw new Twig_Error_Syntax("The block '$name' has already been defined", $lineno);
         }
+        $this->parser->pushLocalScope();
         $this->parser->pushBlockStack($name);
 
         if ($stream->test(Twig_Token::BLOCK_END_TYPE)) {
@@ -36,7 +48,7 @@ class Twig_TokenParser_Block extends Twig_TokenParser
                 $value = $stream->next()->getValue();
 
                 if ($value != $name) {
-                    throw new Twig_SyntaxError(sprintf("Expected endblock for block '$name' (but %s given)", $value), $lineno);
+                    throw new Twig_Error_Syntax(sprintf("Expected endblock for block '$name' (but %s given)", $value), $lineno);
                 }
             }
         } else {
@@ -49,11 +61,12 @@ class Twig_TokenParser_Block extends Twig_TokenParser
         $block = new Twig_Node_Block($name, $body, $lineno);
         $this->parser->setBlock($name, $block);
         $this->parser->popBlockStack();
+        $this->parser->popLocalScope();
 
         return new Twig_Node_BlockReference($name, $lineno, $this->getTag());
     }
 
-    public function decideBlockEnd($token)
+    public function decideBlockEnd(Twig_Token $token)
     {
         return $token->test('endblock');
     }

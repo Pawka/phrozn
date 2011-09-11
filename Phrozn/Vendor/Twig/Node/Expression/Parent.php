@@ -14,10 +14,9 @@
  * Represents a parent node.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Parent extends Twig_Node
+class Twig_Node_Expression_Parent extends Twig_Node_Expression
 {
     public function __construct($name, $lineno, $tag = null)
     {
@@ -29,11 +28,12 @@ class Twig_Node_Parent extends Twig_Node
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler
-            ->addDebugInfo($this)
-            ->write("\$this->getParent(\$context, \$parents);\n")
+            ->raw("\$this->renderParentBlock(")
+            ->string($this->getAttribute('name'))
+            ->raw(", \$context, \$blocks)")
         ;
     }
 }

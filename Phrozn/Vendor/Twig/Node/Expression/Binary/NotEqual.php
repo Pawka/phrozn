@@ -8,11 +8,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-interface Twig_GrammarInterface
+class Twig_Node_Expression_Binary_NotEqual extends Twig_Node_Expression_Binary
 {
-    public function setParser(Twig_ParserInterface $parser);
-
-    public function parse(Twig_Token $token);
-
-    public function getName();
+    public function operator(Twig_Compiler $compiler)
+    {
+        return $compiler->raw('!=');
+    }
 }

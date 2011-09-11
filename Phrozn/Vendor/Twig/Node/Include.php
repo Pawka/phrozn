@@ -14,14 +14,13 @@
  * Represents an include node.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
-class Twig_Node_Include extends Twig_Node
+class Twig_Node_Include extends Twig_Node implements Twig_NodeOutputInterface
 {
-    public function __construct(Twig_Node_Expression $expr, Twig_Node_Expression $variables = null, $lineno, $tag = null)
+    public function __construct(Twig_Node_Expression $expr, Twig_Node_Expression $variables = null, $only = false, $ignoreMissing = false, $lineno, $tag = null)
     {
-        parent::__construct(array('expr' => $expr, 'variables' => $variables), array(), $lineno, $tag);
+        parent::__construct(array('expr' => $expr, 'variables' => $variables), array('only' => (Boolean) $only, 'ignore_missing' => (Boolean) $ignoreMissing), $lineno, $tag);
     }
 
     /**
@@ -29,37 +28,61 @@ class Twig_Node_Include extends Twig_Node
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
 
-        if ($this->expr instanceof Twig_Node_Expression_Constant) {
+        if ($this->getAttribute('ignore_missing')) {
+            $compiler
+                ->write("try {\n")
+                ->indent()
+            ;
+        }
+
+        if ($this->getNode('expr') instanceof Twig_Node_Expression_Constant) {
             $compiler
                 ->write("\$this->env->loadTemplate(")
-                ->subcompile($this->expr)
+                ->subcompile($this->getNode('expr'))
                 ->raw(")->display(")
             ;
         } else {
             $compiler
-                ->write("\$template = ")
-                ->subcompile($this->expr)
-                ->raw(";\n")
-                ->write("if (!\$template")
-                ->raw(" instanceof Twig_Template) {\n")
-                ->indent()
-                ->write("\$template = \$this->env->loadTemplate(\$template);\n")
-                ->outdent()
-                ->write("}\n")
+                ->write("\$template = \$this->env->resolveTemplate(")
+                ->subcompile($this->getNode('expr'))
+                ->raw(");\n")
                 ->write('$template->display(')
             ;
         }
 
-        if (null === $this->variables) {
-            $compiler->raw('$context');
+        if (false === $this->getAttribute('only')) {
+            if (null === $this->getNode('variables')) {
+                $compiler->raw('$context');
+            } else {
+                $compiler
+                    ->raw('array_merge($context, ')
+                    ->subcompile($this->getNode('variables'))
+                    ->raw(')')
+                ;
+            }
         } else {
-            $compiler->subcompile($this->variables);
+            if (null === $this->getNode('variables')) {
+                $compiler->raw('array()');
+            } else {
+                $compiler->subcompile($this->getNode('variables'));
+            }
         }
 
         $compiler->raw(");\n");
+
+        if ($this->getAttribute('ignore_missing')) {
+            $compiler
+                ->outdent()
+                ->write("} catch (Twig_Error_Loader \$e) {\n")
+                ->indent()
+                ->write("// ignore missing template\n")
+                ->outdent()
+                ->write("}\n\n")
+            ;
+        }
     }
 }

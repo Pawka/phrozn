@@ -16,8 +16,8 @@ class Twig_Node_Expression_Constant extends Twig_Node_Expression
         parent::__construct(array(), array('value' => $value), $lineno);
     }
 
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
-        $compiler->repr($this['value']);
+        $compiler->repr($this->getAttribute('value'));
     }
 }

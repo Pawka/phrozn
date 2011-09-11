@@ -13,10 +13,14 @@
  * Represents a template test.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 interface Twig_TestInterface
 {
-    public function compile();
+    /**
+     * Compiles a test.
+     *
+     * @return string The PHP code for the test
+     */
+    function compile();
 }

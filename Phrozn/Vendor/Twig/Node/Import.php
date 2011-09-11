@@ -13,12 +13,11 @@
  * Represents an import node.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Node_Import extends Twig_Node
 {
-    public function __construct(Twig_Node_Expression $expr, Twig_Node_Expression_AssignName $var, $lineno, $tag = null)
+    public function __construct(Twig_Node_Expression $expr, Twig_Node_Expression $var, $lineno, $tag = null)
     {
         parent::__construct(array('expr' => $expr, 'var' => $var), array(), $lineno, $tag);
     }
@@ -28,22 +27,22 @@ class Twig_Node_Import extends Twig_Node
      *
      * @param Twig_Compiler A Twig_Compiler instance
      */
-    public function compile($compiler)
+    public function compile(Twig_Compiler $compiler)
     {
         $compiler
             ->addDebugInfo($this)
             ->write('')
-            ->subcompile($this->var)
+            ->subcompile($this->getNode('var'))
             ->raw(' = ')
         ;
 
-        if ($this->expr instanceof Twig_Node_Expression_Name && '_self' === $this->expr['name']) {
+        if ($this->getNode('expr') instanceof Twig_Node_Expression_Name && '_self' === $this->getNode('expr')->getAttribute('name')) {
             $compiler->raw("\$this");
         } else {
             $compiler
                 ->raw('$this->env->loadTemplate(')
-                ->subcompile($this->expr)
-                ->raw(", true)")
+                ->subcompile($this->getNode('expr'))
+                ->raw(")")
             ;
         }
 

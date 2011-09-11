@@ -18,15 +18,14 @@
  * control, you need to take care of clearing the old cache file by yourself.
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_Loader_String implements Twig_LoaderInterface
 {
     /**
      * Gets the source code of a template, given its name.
      *
-     * @param  string $name string The name of the template to load
+     * @param  string $name The name of the template to load
      *
      * @return string The template source code
      */
@@ -38,7 +37,7 @@ class Twig_Loader_String implements Twig_LoaderInterface
     /**
      * Gets the cache key to use for the cache for a given template name.
      *
-     * @param  string $name string The name of the template to load
+     * @param  string $name The name of the template to load
      *
      * @return string The cache key
      */
