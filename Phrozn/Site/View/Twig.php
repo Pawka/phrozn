@@ -49,7 +49,11 @@ class Twig
     {
         parent::__construct($inputFile, $outputDir);
 
-        $this->addProcessor(new Processor());
+        $options = array(
+            'phr_template_filename' => basename($this->inputFile),
+            'phr_template_dir'      => dirname($this->inputFile),
+        );
+        $this->addProcessor(new Processor($options));
     }
 
     /**

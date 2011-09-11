@@ -170,10 +170,6 @@ abstract class Base
 
         }
 
-        $vars['phrozn_template_file_path'] = $this->inputFile;
-        $vars['phrozn_template_file']      = substr($this->inputFile, strrpos($this->inputFile, DIRECTORY_SEPARATOR)+1);
-        $vars['phrozn_template_dir']       = dirname($this->inputFile);
-
         // convert view into static representation
         $view = $this->getTemplate();
         foreach ($this->getProcessors() as $processor) {
