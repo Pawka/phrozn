@@ -1,0 +1,10 @@
+{{ a_variable }}
+<div>
+{% include "twig-included.twig" %}
+</div>
+<div>
+{% include "foo/twig-included.twig" %}
+</div>
+{% for box in boxes %}
+    {% include "foo/twig-included-box.twig" %}
+{% endfor %}

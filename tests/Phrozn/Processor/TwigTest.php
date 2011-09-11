@@ -87,4 +87,25 @@ class TwigTest
         $this->assertSame(trim($static), trim($rendered));
     }
 
+    public function testTwigInclude()
+    {
+        $processor = $this->getProcessor($this->path . 'twig-include.twig');
+        $rendered = $processor->render(null, array(
+            'a_variable' => 'Aha!',
+            'boxes' => array(
+                array(
+                    'size'      => 'huge',
+                    'title'     => 'phelephant'
+                ),
+                array(
+                    'size'      => 'tiny',
+                    'title'     => 'mouse'
+                )
+            )
+        ));
+        
+        $static = file_get_contents(dirname(__FILE__) . '/templates/twig-include.html');
+        $this->assertSame(trim($static), trim($rendered));
+    }
+
 }
