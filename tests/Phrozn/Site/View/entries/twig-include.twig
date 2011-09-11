@@ -1,0 +1,19 @@
+boxes:
+    - size: huge
+      title: phelephant
+    - size: tiny
+      title: mouse
+---
+{{ a_variable }}
+<div>
+{% include "layouts/include/twig-included.twig" %}
+</div>
+<div>
+{% include "twig-included.twig" %}
+</div>
+<div>
+{% include "foo/twig-included.twig" %}
+</div>
+{% for box in this.boxes %}
+    {% include "foo/twig-included-box.twig" %}
+{% endfor %}
