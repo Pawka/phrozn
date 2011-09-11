@@ -66,6 +66,7 @@ class TwigTest
         ));
         $static = file_get_contents($this->path . 'tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
+        unlink($this->path . 'tpl1.twig.ready');
     }
 
     public function testRenderConstructorInjection()
@@ -94,6 +95,7 @@ class TwigTest
         $this->assertSame(trim($static), trim($rendered));
         $processor->cleanup();      // purge cache
         `touch ${cache_dir}README`; // cache clears all files
+        unlink($this->path . 'tpl1.twig.ready');
     }
 
     public function testTwigInclude()
@@ -115,6 +117,7 @@ class TwigTest
         
         $static = file_get_contents(dirname(__FILE__) . '/templates/twig-include.html');
         $this->assertSame(trim($static), trim($rendered));
+        unlink($this->path . 'twig-include.twig.ready');
     }
 
     public function testInheritedTemplates()
@@ -136,7 +139,9 @@ class TwigTest
         
         $static = file_get_contents(dirname(__FILE__) . '/templates/twig-inherit.html');
         $this->assertSame(trim($static), trim($rendered));
+        unlink($this->path . 'twig-child.twig.ready');
     }
+
 
     /**
      * @group cur
@@ -160,6 +165,7 @@ class TwigTest
         
         $static = file_get_contents(dirname(__FILE__) . '/templates/twig-inherit.html');
         $this->assertSame(trim($static), trim($rendered));
+        unlink($this->path . 'twig-child-with-fm.twig.ready');
     }
 
     private function getProcessor($inputFile, $extraOpts = array())
