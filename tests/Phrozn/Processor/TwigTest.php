@@ -24,6 +24,15 @@
 namespace PhroznTest\Processor;
 use Phrozn\Processor\Twig as Processor;
 
+class TestProcessor
+    extends Processor
+{
+    public function cleanup()
+    {
+        $this->getEnvironment()->clearCacheFiles();
+    }
+}
+
 /**
  * @category    Phrozn
  * @package     Phrozn\Processor
@@ -61,9 +70,10 @@ class TwigTest
 
     public function testRenderConstructorInjection()
     {
+        $cache_dir = dirname(__FILE__) . '/templates/cache/';
         $processor = $this->getProcessor(
             $this->path . 'tpl1.twig', array(
-                'cache' => dirname(__FILE__) . '/templates/cache/',
+                'cache' => $cache_dir,
             )
         );
         $rendered = $processor->render(null, array(
@@ -82,6 +92,8 @@ class TwigTest
         
         $static = file_get_contents(dirname(__FILE__) . '/templates/tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
+        $processor->cleanup();      // purge cache
+        `touch ${cache_dir}README`; // cache clears all files
     }
 
     public function testTwigInclude()
@@ -135,7 +147,7 @@ class TwigTest
             'phr_template_filename' => basename($inputFile),
             'phr_template_dir'      => dirname($inputFile),
         );
-        return new Processor(array_merge($options, $extraOpts));
+        return new TestProcessor(array_merge($options, $extraOpts));
     }
 
 
