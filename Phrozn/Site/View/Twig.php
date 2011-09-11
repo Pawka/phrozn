@@ -49,11 +49,36 @@ class Twig
     {
         parent::__construct($inputFile, $outputDir);
 
-        $options = array(
-            'phr_template_filename' => basename($this->inputFile),
-            'phr_template_dir'      => dirname($this->inputFile),
-        );
+        $options = array();
+        if (null !== $inputFile) {
+            $options = array(
+                'phr_template_filename' => basename($inputFile),
+                'phr_template_dir'      => dirname($inputFile),
+            );
+        }
         $this->addProcessor(new Processor($options));
+    }
+
+    /**
+     * Set input file path. Overriden to update processor options.
+     *
+     * @param string $file Path to file
+     *
+     * @return \Phrozn\Site\View
+     */
+    public function setInputFile($path)
+    {
+        parent::setInputFile($path);
+        $processors = $this->getProcessors();
+        if (count($processors)) {
+            $options = array(
+                'phr_template_filename' => basename($path),
+                'phr_template_dir'      => dirname($path),
+            );
+            $processor = array_pop($processors);
+            $processor->setConfig($options);
+        }
+        return $this;
     }
 
     /**
