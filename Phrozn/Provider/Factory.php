@@ -43,10 +43,10 @@ class Factory
      */
     public function create($type, $data)
     {
-        $class = 'Phrozn\\Provider\\' . ucfirst($type);
+        // try to see if we have user defined plugin
+        $class = 'PhroznPlugin\\Provider\\' . ucfirst($type);
         if (!class_exists($class)) {
-            // try to see if we have user defined plugin
-            $class = 'PhroznPlugin\\Provider\\' . ucfirst($type);
+            $class = 'Phrozn\\Provider\\' . ucfirst($type);
             if (!class_exists($class)) {
                 throw new \Exception("Provider of type '{$type}' not found..");
             }
