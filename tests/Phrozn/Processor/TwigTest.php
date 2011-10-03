@@ -2,17 +2,17 @@
 /**
  * Copyright 2011 Victor Farazdagi
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Processor
@@ -38,7 +38,7 @@ class TestProcessor
  * @package     Phrozn\Processor
  * @author      Victor Farazdagi
  */
-class TwigTest 
+class TwigTest
     extends \PHPUnit_Framework_TestCase
 {
     private $path;
@@ -51,7 +51,8 @@ class TwigTest
     public function testRender()
     {
         $processor = $this->getProcessor($this->path . 'tpl1.twig');
-        $rendered = $processor->render(null, array(
+        $template = file_get_contents($this->path . 'tpl1.twig');
+        $rendered = $processor->render($template, array(
             'a_variable' => 'Aha!',
             'navigation' => array(
                 array(
@@ -66,7 +67,6 @@ class TwigTest
         ));
         $static = file_get_contents($this->path . 'tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
-        unlink($this->path . 'tpl1.twig.ready');
     }
 
     public function testRenderConstructorInjection()
@@ -77,7 +77,8 @@ class TwigTest
                 'cache' => $cache_dir,
             )
         );
-        $rendered = $processor->render(null, array(
+        $template = file_get_contents($this->path . 'tpl1.twig');
+        $rendered = $processor->render($template, array(
             'a_variable' => 'Aha!',
             'navigation' => array(
                 array(
@@ -90,18 +91,21 @@ class TwigTest
                 )
             )
         ));
-        
+
         $static = file_get_contents(dirname(__FILE__) . '/templates/tpl1.html');
         $this->assertSame(trim($static), trim($rendered));
         $processor->cleanup();      // purge cache
         `touch ${cache_dir}README`; // cache clears all files
-        unlink($this->path . 'tpl1.twig.ready');
     }
 
+    /**
+     * @group cur
+     */
     public function testTwigInclude()
     {
         $processor = $this->getProcessor($this->path . 'twig-include.twig');
-        $rendered = $processor->render(null, array(
+        $template = file_get_contents($this->path . 'twig-include.twig');
+        $rendered = $processor->render($template, array(
             'a_variable' => 'Aha!',
             'boxes' => array(
                 array(
@@ -114,16 +118,16 @@ class TwigTest
                 )
             )
         ));
-        
+
         $static = file_get_contents(dirname(__FILE__) . '/templates/twig-include.html');
         $this->assertSame(trim($static), trim($rendered));
-        unlink($this->path . 'twig-include.twig.ready');
     }
 
     public function testInheritedTemplates()
     {
         $processor = $this->getProcessor($this->path . 'twig-child.twig');
-        $rendered = $processor->render(null, array(
+        $template = file_get_contents($this->path . 'twig-child.twig');
+        $rendered = $processor->render($template, array(
             'a_variable' => 'Aha!',
             'boxes' => array(
                 array(
@@ -136,20 +140,17 @@ class TwigTest
                 )
             )
         ));
-        
+
         $static = file_get_contents(dirname(__FILE__) . '/templates/twig-inherit.html');
         $this->assertSame(trim($static), trim($rendered));
-        unlink($this->path . 'twig-child.twig.ready');
     }
 
 
-    /**
-     * @group cur
-     */
     public function testStripFrontmatter()
     {
         $processor = $this->getProcessor($this->path . 'twig-child-with-fm.twig');
-        $rendered = $processor->render(null, array(
+        $template = file_get_contents($this->path . 'twig-child-with-fm.twig');
+        $rendered = $processor->render($template, array(
             'a_variable' => 'Aha!',
             'boxes' => array(
                 array(
@@ -162,10 +163,9 @@ class TwigTest
                 )
             )
         ));
-        
+
         $static = file_get_contents(dirname(__FILE__) . '/templates/twig-inherit.html');
         $this->assertSame(trim($static), trim($rendered));
-        unlink($this->path . 'twig-child-with-fm.twig.ready');
     }
 
     private function getProcessor($inputFile, $extraOpts = array())
