@@ -2,17 +2,17 @@
 /**
  * Copyright 2011 Victor Farazdagi
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Processor
@@ -34,7 +34,7 @@ use Phrozn\Autoloader as Loader,
  */
 class Twig
     extends Base
-    implements \Phrozn\Processor 
+    implements \Phrozn\Processor
 {
     /**
      * Reference to twig engine environment object
@@ -82,25 +82,21 @@ class Twig
      */
     public function render($tpl, $vars = array())
     {
-        $config = $this->getConfig();
-        $rendered = $this->getEnvironment()
-                         ->loadTemplate($config['phr_template_filename'] . '.ready') 
-                         ->render($vars);
-        $this->cleanup(); // post-process
-        return $rendered;
+        return $this->getEnvironment()
+                    ->loadTemplate($tpl)
+                    ->render($vars);
     }
 
     /**
      * Get (init if necessary) twig environment
      *
-     * @param boolean $reset Force re-initialization
+     * @param boolean $reset Force re-initialization (helpful for UTs)
      *
      * @return \Twig_Environment
      */
     protected function getEnvironment($reset = false)
     {
         if ($reset === true || null === $this->twig) {
-            $this->prepare();
             $this->twig = new \Twig_Environment(
                 $this->getLoader(), $this->getConfig());
             $this->twig->removeExtension('escaper');
@@ -110,55 +106,31 @@ class Twig
     }
 
     /**
-     * Get template loader
+     * Get template loader chain
      *
      * @return \Twig_LoaderInterface
      */
     protected function getLoader()
     {
         $config = $this->getConfig();
-        // template's directory
+        $chain = new \Twig_Loader_Chain();
+
+        // use template's own directory to search for templates
         $paths = array($config['phr_template_dir']);
 
+        // inject common paths
         $projectPath = new ProjectPath($config['phr_template_dir']);
         if ($projectPath = $projectPath->get()) {
             $paths[] = $projectPath . DIRECTORY_SEPARATOR . 'layouts';
             $paths[] = $projectPath;
         }
-        return new \Twig_Loader_Filesystem($paths);
+        $chain->addLoader(new \Twig_Loader_Filesystem($paths));
+
+        // add string template loader, which is responsible for loading templates
+        // and removing front-matter
+        $chain->addLoader(new \Phrozn\Twig\Loader\String);
+
+        return $chain;
     }
 
-    /**
-     * Prepare template for loading into twig (strip Front Matter etc)
-     *
-     * @return \Phrozn\Processor\Twig
-     */
-    protected function prepare()
-    {
-        $config = $this->getConfig();
-        $path = $config['phr_template_dir'] 
-              . DIRECTORY_SEPARATOR . $config['phr_template_filename'];
-        $source = \file_get_contents($path);
-        
-        // strip front matter
-        $parts = preg_split('/[\n]*[-]{3}[\n]/', $source, 2);
-        $template = (count($parts) === 2) ? $parts[1] : trim($source);
-        \file_put_contents($path . '.ready', $template);
-
-        return $this;
-    }
-
-    /**
-     * Post-process the rendering, removing any intermediary resources.
-     *
-     * @return \Phrozn\Processor\Twig
-     */
-    protected function cleanup()
-    {
-        $config = $this->getConfig();
-        $path = $config['phr_template_dir'] 
-              . DIRECTORY_SEPARATOR . $config['phr_template_filename'];
-        unlink($path . '.ready');
-        return $this;
-    }
 }
