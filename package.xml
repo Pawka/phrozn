@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-09-11</date>
- <time>19:46:24</time>
+ <date>2011-11-08</date>
+ <time>18:14:52</time>
  <version>
-  <release>0.3.1</release>
-  <api>0.3.1</api>
+  <release>0.3.2</release>
+  <api>0.3.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -167,6 +167,11 @@
      <file baseinstalldir="/" name="DefaultSite.php" role="php" />
      <file baseinstalldir="/" name="View.php" role="php" />
     </dir> <!-- /Phrozn/Site -->
+    <dir name="Twig">
+     <dir name="Loader">
+      <file baseinstalldir="/" name="String.php" role="php" />
+     </dir> <!-- /Phrozn/Twig/Loader -->
+    </dir> <!-- /Phrozn/Twig -->
     <dir name="Vendor">
      <dir name="Extra">
       <file baseinstalldir="/" name="lessc.inc.php" role="php" />
