@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 use Phrozn\Autoloader as Loader;
 error_reporting(E_ALL & ~E_NOTICE);
@@ -18,7 +19,7 @@ $e = $pack->setOptions(array(
     'baseinstalldir' => '/',
     'packagedirectory' => $inputDir,
     'ignore' => array(
-        'build/', 'tests/', 'extras/', 'plugin/',  
+        'build/', 'tests/', 'extras/', 'plugin/',
         'phrozn.png', '*.tgz', 'bin/release', 'tags',
     ),
     'outputdirectory' => $outputDir,
