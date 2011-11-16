@@ -465,7 +465,8 @@ class BundleTest
         }
         if (false === $justPurge) {
             $path = dirname($path);
-            `phr-dev init {$path}`;
+            $phrdev = dirname(dirname(dirname(dirname(dirname(__DIR__))))).'/bin/phrozn.php';
+            `{$phrdev} init {$path}`;
         }
     }
 }
