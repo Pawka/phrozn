@@ -477,7 +477,7 @@ abstract class Base
         $layout = $factory->create(); // essentially layout is Site\View as well
         $layout->hasLayout(false); // no nested layouts
 
-        return $layout->render(array('content' => $content));
+        return $layout->render(array('content' => $content, 'entry' => $vars['page']));
     }
 
     /**
