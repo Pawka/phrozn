@@ -38,7 +38,7 @@ class Server {
 
     public function acceptConnection() {
         $this->out("Waiting for connections..");
-        while ($this->connection = stream_socket_accept($this->socket)) {
+        while ($this->connection = stream_socket_accept($this->socket, 1800)) {
             $this->serve();
         }
         $this->closeSocket();
