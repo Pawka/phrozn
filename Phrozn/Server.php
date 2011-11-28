@@ -30,7 +30,8 @@ class Server {
     public function acceptConnection() {
         $this->out("Waiting for connections..");
         while ($this->connection = stream_socket_accept($this->socket, 1800)) {
-            $this->serve();
+            $this->sendResponse();
+            $this->closeConnection();        
         }
         $this->closeSocket();
     }
@@ -41,13 +42,6 @@ class Server {
 
     public function closeConnection() {
         return fclose($this->connection);
-    }
-
-    private function serve() {
-        $this->readRequest();
-        $this->out(sprintf("%s %s %s", time(), $this->request->getRequestMethod(), $this->request->getRequestUri()));
-        $this->sendResponse();
-        $this->out(sprintf("Response : %s", $this->response->getResponseCode()));
     }
 
     public function getRequest() {
@@ -61,11 +55,12 @@ class Server {
 
     public function getResponse() {
         $response = new Server\Response();
-        if (is_file($this->getResource())) {
+        $resource = $this->getResource();
+        if (is_file($resource)) {
             $response->setResponseCode(200);
-            $response->setContent($this->getContents($this->getResource()));
-            $response->setMimeType($this->getMime());
-        } elseif (is_dir($this->getResource())) {
+            $response->setContent($this->getContents($resource));
+            $response->setMimeType($this->getMimeType($resource));
+        } elseif (is_dir($resource)) {
             $response->setResponseCode(200);
             $response->setContent('<h3>Directory listing denied!<h3/>');
         } else {
@@ -77,18 +72,17 @@ class Server {
 
     public function sendResponse() {
         fwrite($this->connection, $this->getResponse()->getRawResponse());
-        $this->closeConnection();
     }
 
     public function getResource() {
-        return getcwd() . $this->request->getRequestUri();
+        return getcwd() . $this->getRequest()->getRequestUri();
     }
 
     public function out($value) {
         fwrite(STDOUT, $value . "\n");
     }
 
-    function getMimeTypeOfResource($resource) {
+    function getMimeType($resource) {
         $mime_types = array('323' => 'text/h323',
             'acx' => 'application/internet-property-stream',
             'ai' => 'application/postscript',
