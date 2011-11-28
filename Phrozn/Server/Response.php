@@ -1,5 +1,7 @@
 <?php
+
 namespace Phrozn\Server;
+
 /**
  * Class for creating HTTP responses
  *
@@ -12,12 +14,12 @@ class Response {
 
     private $headers = array();
     private $content = false;
-    private $status = 200;
+    private $responseCode = 200;
     private $charset = 'UTF-8';
     private $protocolVersion = 1.1;
     private $mimeType = 'text/plain';
     // Support for common status codes, will add other codes for future if needed
-    private $statuses = array(
+    private $responseCodes = array(
         200 => 'OK',
         403 => 'Forbidden',
         404 => 'Not Found',
@@ -36,15 +38,15 @@ class Response {
         return $this->headers[$key];
     }
 
-    public function setStatusCode($statusCode) {
-        if (array_key_exists($statusCode, $this->statuses)) {
-            $this->status = $statusCode;
+    public function setResponseCode($responseCode) {
+        if (array_key_exists($responseCode, $this->responseCodes)) {
+            $this->responseCode = $responseCode;
         }
         return false;
     }
 
-    public function getStatusCode() {
-        return $this->status;
+    public function getResponseCode() {
+        return $this->responseCode;
     }
 
     public function setProtocolVersion($protocolVersion) {
@@ -70,8 +72,8 @@ class Response {
     public function getHeaders() {
         $pieces = array_merge(
                 array(
-                    sprintf("HTTP/%s %s %s", $this->protocolVersion, $this->status, $this->statuses[$this->status]),
-                    sprintf("Content-Type: %s; charset=%s", $this->mimeType, $this->charset)
+            sprintf("HTTP/%s %s %s", $this->protocolVersion, $this->responseCode, $this->responseCodes[$this->responseCode]),
+            sprintf("Content-Type: %s; charset=%s", $this->mimeType, $this->charset)
                 ), $this->headers
         );
         return implode(self::DELIMITER, $pieces);
