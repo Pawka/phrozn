@@ -65,7 +65,7 @@ class Response {
         $this->content = $content;
     }
 
-    public function getResponse() {
+    public function getRawResponse() {
         return implode(self::DELIMITER . self::DELIMITER, array($this->getHeaders(), $this->getContent()));
     }
 

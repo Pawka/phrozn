@@ -1,4 +1,5 @@
 <?php
+
 namespace Phrozn;
 
 /**
@@ -12,8 +13,6 @@ class Server {
     private $socketAddress = 'tcp://0.0.0.0:8000';
     private $socket;
     private $connection;
-    private $request;
-    private $response;
 
     public function setSocketAddress($socketAddress) {
         $this->socketAddress = $socketAddress;
@@ -28,14 +27,6 @@ class Server {
         return true;
     }
 
-    private function closeSocket() {
-        return fclose($this->socket);
-    }
-
-    public function closeConnection() {
-        return fclose($this->connection);
-    }
-
     public function acceptConnection() {
         $this->out("Waiting for connections..");
         while ($this->connection = stream_socket_accept($this->socket, 1800)) {
@@ -44,45 +35,60 @@ class Server {
         $this->closeSocket();
     }
 
+    private function closeSocket() {
+        return fclose($this->socket);
+    }
+
+    public function closeConnection() {
+        return fclose($this->connection);
+    }
+
     private function serve() {
         $this->readRequest();
         $this->out(sprintf("%s %s %s", time(), $this->request->getRequestMethod(), $this->request->getRequestUri()));
         $this->sendResponse();
-        $this->out(sprintf("Response : %s", $this->response->getStatusCode()));
+        $this->out(sprintf("Response : %s", $this->response->getResponseCode()));
     }
 
-    public function readRequest() {
+    public function getRequest() {
         $rawRequest = trim(fread($this->connection, 8192));
-        $this->request = new Server\Request($rawRequest);
+        return new Server\Request($rawRequest);
     }
 
-    public function getResourceContents() {
-        return file_get_contents(__DIR__ . $this->request->getRequestUri());
+    public function getContents($resource) {
+        return file_get_contents($resource);
+    }
+
+    public function getResponse() {
+        $response = new Server\Response();
+        if (is_file($this->getResource())) {
+            $response->setResponseCode(200);
+            $response->setContent($this->getContents($this->getResource()));
+            $response->setMimeType($this->getMime());
+        } elseif (is_dir($this->getResource())) {
+            $response->setResponseCode(200);
+            $response->setContent('<h3>Directory listing denied!<h3/>');
+        } else {
+            $response->setContent('<h3>File not found<h3/>');
+            $response->setResponseCode(404);
+        }
+        return $response;
     }
 
     public function sendResponse() {
-        if ($this->resourceExists()) {
-            $this->response = new Server\Response();
-            $this->response->setStatusCode(200);
-            $this->response->setContent($this->getResourceContents());
-            $this->response->setMimeType($this->getMime());
-        } else {
-            $this->response = new Server\Response();
-            $this->response->setStatusCode(404);
-        }
-        fwrite($this->connection, $this->response->getResponse());
-        fclose($this->connection);
+        fwrite($this->connection, $this->getResponse()->getRawResponse());
+        $this->closeConnection();
     }
 
-    public function resourceExists() {
-        return is_readable(__DIR__ . $this->request->getRequestUri());
+    public function getResource() {
+        return getcwd() . $this->request->getRequestUri();
     }
 
     public function out($value) {
         fwrite(STDOUT, $value . "\n");
     }
 
-    function getMime() {
+    function getMimeTypeOfResource($resource) {
         $mime_types = array('323' => 'text/h323',
             'acx' => 'application/internet-property-stream',
             'ai' => 'application/postscript',
@@ -274,7 +280,7 @@ class Server {
             'xwd' => 'image/x-xwindowdump',
             'z' => 'application/x-compress',
             'zip' => 'application/zip');
-        $ext = pathinfo($this->request->getRequestUri(), PATHINFO_EXTENSION);
+        $ext = pathinfo($resource, PATHINFO_EXTENSION);
         return isset($mime_types[$ext]) ? $mime_types[$ext] : 'text/plain';
     }
 
