@@ -17,7 +17,7 @@ class Response {
     private $responseCode = 200;
     private $charset = 'UTF-8';
     private $protocolVersion = 1.1;
-    private $mimeType = 'text/plain';
+    private $mimeType = 'text/html';
     // Support for common status codes, will add other codes for future if needed
     private $responseCodes = array(
         200 => 'OK',
