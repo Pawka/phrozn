@@ -1,0 +1,19 @@
+# phr server 
+---
+command:
+    name: &name server
+    aliases: [server]
+    description: &desc Runs internal webserver
+
+# callback
+callback: [Server, execute]
+
+# documentation
+docs:
+    name: server 
+    summary: *desc
+    description: |
+        This command runs internal webserver for testing purposes.
+
+        It uses current directory for serving files.
+    usage: %bphrozn%n %gserver%n
