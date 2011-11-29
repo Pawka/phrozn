@@ -368,4 +368,23 @@ class Server {
         return isset($mime_types[$ext]) ? $mime_types[$ext] : 'text/plain';
     }
 
+    /**
+     * Returns HTML representation of folders/files in path
+     * 
+     * @param string $path
+     * @return string 
+     */
+    public function getIndexOfFolder($path) {
+        $directory = new \DirectoryIterator($path);
+        $result = new \ArrayObject();
+        foreach ($directory as $fileinfo) {
+            if ($fileinfo->isDir()) {
+                $result->append(sprintf('<li><strong><a href="%s/">%s</a></strong></li>', $fileinfo->getBasename(), $fileinfo->getFilename()));
+            } else {
+                $result->append(sprintf('<li><a href="%s">%s</a></li>', $fileinfo->getBasename(), $fileinfo->getFilename()));
+            }
+        }
+        return implode(PHP_EOL, iterator_to_array($result));
+    }
+
 }
