@@ -112,6 +112,12 @@ class Server {
         $resource = $this->getResource();
         $fileinfo = new \SplFileInfo($resource);
 
+        if (!$fileinfo->isReadable()) {
+            $response->setResponseCode(404);
+            $response->setContent('<h3>File not found<h3/>');
+            return $response;
+        }
+
         switch ($fileinfo->getType()) {
             case 'file':
                 $response->setResponseCode(200);
@@ -129,7 +135,7 @@ class Server {
                 $response->setContent('<h3>File not found<h3/>');
                 break;
         }
-        
+
         return $response;
     }
 
