@@ -10,14 +10,39 @@ namespace Phrozn;
  */
 class Server {
 
+    /**
+     *
+     * @var string
+     */
     private $socketAddress = 'tcp://0.0.0.0:8000';
+
+    /**
+     *
+     * @var resource
+     */
     private $socket;
+
+    /**
+     *
+     * @var resource
+     */
     private $connection;
 
+    /**
+     * Sets address of socket
+     * 
+     * @param string $socketAddress 
+     */
     public function setSocketAddress($socketAddress) {
         $this->socketAddress = $socketAddress;
     }
 
+    /**
+     * Creates stream socket for accepting connections
+     * 
+     * @return bool
+     * @throws ServerConnectionException
+     */
     public function createSocket() {
         $this->socket = stream_socket_server($this->socketAddress, $errno, $errstr);
         if (!$this->socket) {
@@ -27,61 +52,120 @@ class Server {
         return true;
     }
 
+    /**
+     * Accepts and response connections
+     */
     public function acceptConnection() {
         $this->out("Waiting for connections..");
         while ($this->connection = stream_socket_accept($this->socket, 1800)) {
             $this->sendResponse();
-            $this->closeConnection();        
+            $this->closeConnection();
         }
         $this->closeSocket();
     }
 
+    /**
+     * Closes stream socket
+     * 
+     * @return bool
+     */
     private function closeSocket() {
         return fclose($this->socket);
     }
 
+    /**
+     * Closes a socket created connection
+     * 
+     * @return bool
+     */
     public function closeConnection() {
         return fclose($this->connection);
     }
 
+    /**
+     * Returns current request object
+     * 
+     * @return Server\Request 
+     */
     public function getRequest() {
         $rawRequest = trim(fread($this->connection, 8192));
         return new Server\Request($rawRequest);
     }
 
+    /**
+     * Returns content of resource
+     * 
+     * @param string $resource
+     * @return string 
+     */
     public function getContents($resource) {
         return file_get_contents($resource);
     }
 
+    /**
+     * Creates and returns response object
+     * 
+     * @return Server\Response 
+     */
     public function getResponse() {
         $response = new Server\Response();
         $resource = $this->getResource();
-        if (is_file($resource)) {
-            $response->setResponseCode(200);
-            $response->setContent($this->getContents($resource));
-            $response->setMimeType($this->getMimeType($resource));
-        } elseif (is_dir($resource)) {
-            $response->setResponseCode(200);
-            $response->setContent('<h3>Directory listing denied!<h3/>');
-        } else {
-            $response->setContent('<h3>File not found<h3/>');
-            $response->setResponseCode(404);
+        $fileinfo = new \SplFileInfo($resource);
+
+        switch ($fileinfo->getType()) {
+            case 'file':
+                $response->setResponseCode(200);
+                $response->setContent($this->getContents($resource));
+                $response->setMimeType($this->getMimeType($resource));
+                break;
+
+            case 'dir':
+                $response->setResponseCode(200);
+                $response->setContent('<h3>Directory listing denied!<h3/>');
+                break;
+
+            default:
+                $response->setResponseCode(404);
+                $response->setContent('<h3>File not found<h3/>');
+                break;
         }
+        
         return $response;
     }
 
+    /**
+     * Writes contents of response to connection stream
+     * 
+     * @return int
+     */
     public function sendResponse() {
-        fwrite($this->connection, $this->getResponse()->getRawResponse());
+        return fwrite($this->connection, $this->getResponse()->getRawResponse());
     }
 
+    /**
+     * Returns resource path
+     * 
+     * @return string
+     */
     public function getResource() {
         return getcwd() . $this->getRequest()->getRequestUri();
     }
 
+    /**
+     * Writes messages to console
+     * 
+     * @param string $value 
+     */
     public function out($value) {
         fwrite(STDOUT, $value . "\n");
     }
 
+    /**
+     * Returns mime type by resource path
+     * 
+     * @param string $resource
+     * @return string
+     */
     function getMimeType($resource) {
         $mime_types = array('323' => 'text/h323',
             'acx' => 'application/internet-property-stream',
