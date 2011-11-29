@@ -126,13 +126,19 @@ class Server {
                 break;
 
             case 'dir':
-                $response->setResponseCode(200);
-                $response->setContent('<h3>Directory listing denied!<h3/>');
+                $indexfile = $resource . DIRECTORY_SEPARATOR . 'index.html';
+                if (is_file($indexfile)) {
+                    $response->setResponseCode(200);
+                    $response->setContent($this->getContents($indexfile));
+                } else {
+                    $response->setResponseCode(200);
+                    $response->setContent($this->getIndexOfFolder($resource));
+                }
                 break;
 
             default:
-                $response->setResponseCode(404);
-                $response->setContent('<h3>File not found<h3/>');
+                $response->setResponseCode(500);
+                $response->setContent('<h3>Internal server error<h3/>');
                 break;
         }
 
