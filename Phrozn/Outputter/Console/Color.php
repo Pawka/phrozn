@@ -1,23 +1,20 @@
 <?php
 /**
- * Copyright 2011 Victor Farazdagi
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Outputter\Console
  * @author      Victor Farazdagi
- * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -26,7 +23,7 @@ use Console_Color as ConsoleColorer;
 
 /**
  * Due to wrong documentation Console_Color methods were used as static.
- * Anticipating update in code rather than in docs (fix is trivial and 
+ * Anticipating update in code rather than in docs (fix is trivial and
  * BC will be honored) this class serves as adapter until this moment comes.
  *
  * @category    Phrozn
@@ -89,7 +86,7 @@ class Color
      * converts colorcodes in the format %y (for yellow) into ansi-control
      * codes. the conversion table is: ('bold' meaning 'light' on some
      * terminals). it's almost the same conversion table irssi uses.
-     * <pre> 
+     * <pre>
      *                  text      text            background
      *      ------------------------------------------------
      *      %k %k %0    black     dark grey       black
@@ -129,13 +126,13 @@ class Color
 
     /**
      * Escapes % so they don't get interpreted as color codes
-     * 
+     *
      * @param string $string String to escape
      *
      * @access public
      * @return string
      */
-    public static function escape($string) 
+    public static function escape($string)
     {
         return self::getInstance()
             ->getConsoleColorer()
@@ -150,7 +147,7 @@ class Color
      * @acess public
      * @return string
      */
-    public static function strip($string) 
+    public static function strip($string)
     {
         return self::getInstance()
             ->getConsoleColorer()

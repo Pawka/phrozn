@@ -1,23 +1,20 @@
 <?php
 /**
- * Copyright 2011 Victor Farazdagi
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Runner\CommandLine
  * @author      Victor Farazdagi
- * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -37,7 +34,7 @@ use Phrozn\Runner\CommandLine,
  * @package     Phrozn\Runner\CommandLine
  * @author      Victor Farazdagi
  */
-class Bundle 
+class Bundle
     extends Base
     implements CommandLine\Callback
 {
@@ -60,7 +57,7 @@ class Bundle
     }
 
     /**
-     * Executes the callback action 
+     * Executes the callback action
      *
      * @return void
      */
@@ -136,8 +133,8 @@ class Bundle
                 continue;
             }
             $tbl->addRow(array(
-                $this->service->getRegistryContainer()->isInstalled($bundle['id']) ? 'i' : 'p', 
-                $bundle['id'], 
+                $this->service->getRegistryContainer()->isInstalled($bundle['id']) ? 'i' : 'p',
+                $bundle['id'],
                 $bundle['version'],
                 $bundle['author'],
                 $bundle['description'],
@@ -153,8 +150,8 @@ class Bundle
     }
 
     /**
-     * Get info about specific bundle 
-     * 
+     * Get info about specific bundle
+     *
      * @return void
      */
     private function execInfo()
@@ -176,8 +173,8 @@ class Bundle
     }
 
     /**
-     * Apply bundle 
-     * 
+     * Apply bundle
+     *
      * @return void
      */
     private function execApply()
@@ -217,8 +214,8 @@ class Bundle
     }
 
     /**
-     * Clobber bundle 
-     * 
+     * Clobber bundle
+     *
      * @return void
      */
     private function execClobber()
@@ -242,7 +239,7 @@ class Bundle
             }
         }
 
-        $this->out( 
+        $this->out(
             "\nBundle files are to be removed.\n" .
             "This operation %rCAN NOT%n be undone.\n");
         if ($this->readLine() === 'yes') {
@@ -263,7 +260,7 @@ class Bundle
      */
     private function getTypeParam()
     {
-        $options = $this->getCommand()->options; 
+        $options = $this->getCommand()->options;
         $type = \Phrozn\Bundle::TYPE_ALL;
         if ($options['installed']) {
             $type = \Phrozn\Bundle::TYPE_INSTALLED;

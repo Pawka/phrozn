@@ -1,23 +1,20 @@
 <?php
 /**
- * Copyright 2011 Victor Farazdagi
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Runner\CommandLine\Callback
  * @author      Victor Farazdagi
- * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -32,7 +29,7 @@ use Phrozn\Runner\CommandLine\Callback\Bundle as Callback,
  * @package     Phrozn\Runner\CommandLine\Callback
  * @author      Victor Farazdagi
  */
-class BundleTest 
+class BundleTest
     extends \PHPUnit_Framework_TestCase
 {
     private $runner;
@@ -57,7 +54,7 @@ class BundleTest
         chdir($path);
 
         $this->resetProjectDirectory();
-        
+
         $this->outputter = new Outputter($this);
         $runner = new Callback();
         $data['paths'] = $paths; // inject paths
@@ -103,7 +100,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = '/wrong-path';
-        
+
         $result = $this->getParseResult("phr-dev bundle list test {$path}");
         $this->runner
             ->setUnitTestData('no')
@@ -134,7 +131,7 @@ class BundleTest
             ->execute();
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
-    
+
     public function testBundleInfoNotFound()
     {
         $out = $this->outputter;
@@ -170,7 +167,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        
+
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
@@ -255,7 +252,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        
+
         $result = $this->getParseResult("phr-dev bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('no')
@@ -274,7 +271,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        
+
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
@@ -299,7 +296,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = '/wrong-path';
-        
+
         $result = $this->getParseResult("phr-dev bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('no')
@@ -314,7 +311,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        
+
         $result = $this->getParseResult("phr-dev bundle apply empty.bundle {$path}");
         $this->runner
             ->setUnitTestData('yes')
@@ -328,7 +325,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        
+
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
@@ -345,7 +342,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        
+
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
@@ -386,7 +383,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
-        
+
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
@@ -427,7 +424,7 @@ class BundleTest
         $out = $this->outputter;
 
         $path = '/wrong-path';
-        
+
         $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
         $this->runner
             ->setUnitTestData('no')
@@ -436,7 +433,7 @@ class BundleTest
         $out->assertInLogs('[FAIL]    No project found at /wrong-path');
 
     }
-    
+
     public function testNoSubActionSpecified()
     {
         $out = $this->outputter;
