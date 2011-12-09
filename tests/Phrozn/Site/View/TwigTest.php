@@ -1,23 +1,20 @@
 <?php
 /**
- * Copyright 2011 Victor Farazdagi
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
- * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -29,7 +26,7 @@ use Phrozn\Site\View\Twig as View;
  * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class TwigTest 
+class TwigTest
     extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -76,7 +73,7 @@ class TwigTest
     {
         $twig = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-compile.twig';
         $html = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-compile.html';
-        $path = dirname(__FILE__) . '/out/'; 
+        $path = dirname(__FILE__) . '/out/';
         $view = new View($twig, $path);
 
         $this->assertSame('2011-02-24-compile.twig', basename($view->getInputFile()));
@@ -105,7 +102,7 @@ class TwigTest
     {
         $twig = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink-append-index.twig';
         $html = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink.html';
-        $path = dirname(__FILE__) . '/out/'; 
+        $path = dirname(__FILE__) . '/out/';
         $view = new View($twig, $path);
 
         $this->assertSame('compile-permalink-append-index.twig', basename($view->getInputFile()));
@@ -134,7 +131,7 @@ class TwigTest
     {
         $twig = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink-parametrized.twig';
         $html = dirname(__FILE__) . '/../project/.phrozn/entries/compile-permalink.html';
-        $path = dirname(__FILE__) . '/out/'; 
+        $path = dirname(__FILE__) . '/out/';
         $view = new View($twig, $path);
 
         $this->assertSame('compile-permalink-parametrized.twig', basename($view->getInputFile()));
