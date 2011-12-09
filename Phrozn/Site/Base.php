@@ -1,23 +1,20 @@
 <?php
 /**
- * Copyright 2011 Victor Farazdagi
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Site
  * @author      Victor Farazdagi
- * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -27,7 +24,7 @@ use Phrozn\Site\View,
     Symfony\Component\Yaml\Yaml;
 
 /**
- * Base implementation of Phrozn Site 
+ * Base implementation of Phrozn Site
  *
  * @category    Phrozn
  * @package     Phrozn\Site
@@ -43,7 +40,7 @@ abstract class Base
     private $views = array();
 
     /**
-     * Input directory path. 
+     * Input directory path.
      * Generally is a path with Phrozn project or Phrozn project directory itself.
      * @var string
      */
@@ -138,7 +135,7 @@ abstract class Base
     /**
      * Return list of queued views ready to be processed
      *
-     * @return array 
+     * @return array
      */
     public function getQueue()
     {
@@ -256,7 +253,7 @@ abstract class Base
         $dir = rtrim($this->getInputDir(), '/');
         if (is_dir($dir . '/.phrozn')) {
             $dir .= '/.phrozn/';
-        } 
+        }
 
         // see if we have entries folder present
         if (!is_dir($dir . '/entries')) {
