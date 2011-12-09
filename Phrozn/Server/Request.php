@@ -1,4 +1,23 @@
 <?php
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category    Phrozn
+ * @package     Phrozn\Server
+ * @author      Osman Ungur
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 namespace Phrozn\Server;
 
 /**
@@ -11,35 +30,35 @@ class Request {
 
     /**
      * Contains readed raw header
-     * 
+     *
      * @var string
      */
     private $rawHeader;
-    
+
     /**
      * Contains parsed header values
-     * 
+     *
      * @var array
      */
     private $headers = array();
-    
+
     /**
      * URI of parsed request
-     * 
+     *
      * @var string
      */
     private $requestUri;
-    
+
     /**
      * Method of request
-     * 
+     *
      * @var string
      */
     private $requestMethod;
-    
+
     /**
      * HTTP protocol version of request
-     * 
+     *
      * @var string
      */
     private $protocolVersion;
@@ -65,7 +84,7 @@ class Request {
 
     /**
      * Returns request uri
-     * 
+     *
      * @return string
      */
     public function getRequestUri() {
@@ -74,7 +93,7 @@ class Request {
 
     /**
      * Returns request method
-     * 
+     *
      * @return string
      */
     public function getRequestMethod() {
@@ -83,7 +102,7 @@ class Request {
 
     /**
      * Returns version of protocol
-     * 
+     *
      * @return string
      */
     public function getProtocolVersion() {
@@ -92,9 +111,9 @@ class Request {
 
     /**
      * Returns value of request header field
-     * 
+     *
      * @param string $fieldName
-     * @return string 
+     * @return string
      */
     public function getRequestField($fieldName) {
         if (array_key_exists($fieldName, $this->headers)) {

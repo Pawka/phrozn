@@ -1,4 +1,22 @@
 <?php
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category    Phrozn
+ * @package     Phrozn
+ * @author      Osman Ungur
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
+ */
 
 namespace Phrozn;
 
@@ -30,8 +48,8 @@ class Server {
 
     /**
      * Sets address of socket
-     * 
-     * @param string $socketAddress 
+     *
+     * @param string $socketAddress
      */
     public function setSocketAddress($socketAddress) {
         $this->socketAddress = $socketAddress;
@@ -39,7 +57,7 @@ class Server {
 
     /**
      * Creates stream socket for accepting connections
-     * 
+     *
      * @return bool
      * @throws ServerConnectionException
      */
@@ -66,7 +84,7 @@ class Server {
 
     /**
      * Closes stream socket
-     * 
+     *
      * @return bool
      */
     private function closeSocket() {
@@ -75,7 +93,7 @@ class Server {
 
     /**
      * Closes a socket created connection
-     * 
+     *
      * @return bool
      */
     public function closeConnection() {
@@ -84,8 +102,8 @@ class Server {
 
     /**
      * Returns current request object
-     * 
-     * @return Server\Request 
+     *
+     * @return Server\Request
      */
     public function getRequest() {
         $rawRequest = trim(fread($this->connection, 8192));
@@ -94,9 +112,9 @@ class Server {
 
     /**
      * Returns content of resource
-     * 
+     *
      * @param string $resource
-     * @return string 
+     * @return string
      */
     public function getContents($resource) {
         return file_get_contents($resource);
@@ -104,8 +122,8 @@ class Server {
 
     /**
      * Creates and returns response object
-     * 
-     * @return Server\Response 
+     *
+     * @return Server\Response
      */
     public function getResponse() {
         $response = new Server\Response();
@@ -147,7 +165,7 @@ class Server {
 
     /**
      * Writes contents of response to connection stream
-     * 
+     *
      * @return int
      */
     public function sendResponse() {
@@ -156,7 +174,7 @@ class Server {
 
     /**
      * Returns resource path
-     * 
+     *
      * @return string
      */
     public function getResource() {
@@ -165,8 +183,8 @@ class Server {
 
     /**
      * Writes messages to console
-     * 
-     * @param string $value 
+     *
+     * @param string $value
      */
     public function out($value) {
         fwrite(STDOUT, $value . "\n");
@@ -174,7 +192,7 @@ class Server {
 
     /**
      * Returns mime type by resource path
-     * 
+     *
      * @param string $resource
      * @return string
      */
@@ -187,9 +205,9 @@ class Server {
 
     /**
      * Returns HTML representation of folders/files in path
-     * 
+     *
      * @param string $path
-     * @return string 
+     * @return string
      */
     public function getIndexOfFolder($path) {
         $directory = new \DirectoryIterator($path);
@@ -203,5 +221,4 @@ class Server {
         }
         return implode(PHP_EOL, iterator_to_array($result));
     }
-
 }
