@@ -81,7 +81,7 @@ class Parametrized
         }
         $param = preg_replace('/[^a-zA-Z0-9 -]/', '', $param); 
         $param = strtolower($param);
-        $param = preg_replace('/[\s-]+/', '-', $param);
+        $param = preg_replace('/[\s-]+/', $space, $param);
 
         return $param;
     }
