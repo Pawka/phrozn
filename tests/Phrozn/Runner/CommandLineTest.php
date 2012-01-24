@@ -1,23 +1,20 @@
 <?php
 /**
- * Copyright 2011 Victor Farazdagi
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *          http://www.apache.org/licenses/LICENSE-2.0 
+ *          http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" BASIS, 
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
- * See the License for the specific language governing permissions and 
- * limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @category    Phrozn
  * @package     Phrozn\Runner\CommandLine
  * @author      Victor Farazdagi
- * @copyright   2011 Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -31,7 +28,7 @@ use Phrozn\Runner\CommandLine as Runner,
  * @package     Phrozn\Runner\CommandLine\Callback
  * @author      Victor Farazdagi
  */
-class CommandLineTest 
+class CommandLineTest
     extends \PHPUnit_Framework_TestCase
 {
     const STDOUT = '/tmp/CommandLineTestOut';
@@ -63,7 +60,7 @@ class CommandLineTest
             'update',
         ));
         $path = dirname(__FILE__) . '/output/phr-help-update.out';
-        $original = file_get_contents($path); 
+        $original = file_get_contents($path);
         $rendered = implode("", array_slice(file(self::STDOUT), 1));
         $this->assertSame($original, $rendered);
     }
@@ -75,7 +72,7 @@ class CommandLineTest
             '-h',
         ));
         $path = dirname(__FILE__) . '/output/phr-help.out';
-        $original = file_get_contents($path); 
+        $original = file_get_contents($path);
         $rendered = implode("", array_slice(file(self::STDOUT), 1));
         $this->assertSame($original, $rendered);
     }
