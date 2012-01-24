@@ -13,11 +13,11 @@
   <email>simple.square@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2011-11-16</date>
- <time>08:57:52</time>
+ <date>2012-01-24</date>
+ <time>12:38:49</time>
  <version>
-  <release>0.3.3</release>
-  <api>0.3.3</api>
+  <release>0.4.0</release>
+  <api>0.4.0</api>
  </version>
  <stability>
   <release>beta</release>
@@ -395,10 +395,19 @@
      <file baseinstalldir="/" name="README" role="data" />
     </dir> <!-- /skeleton/archive -->
     <dir name="entries">
+     <dir name="demos">
+      <file baseinstalldir="/" name="modal.twig" role="data" />
+      <file baseinstalldir="/" name="popup.twig" role="data" />
+      <file baseinstalldir="/" name="tabs.twig" role="data" />
+      <file baseinstalldir="/" name="twipsy.twig" role="data" />
+     </dir> <!-- /skeleton/entries/demos -->
+     <file baseinstalldir="/" name="about.twig" role="data" />
      <file baseinstalldir="/" name="index.twig" role="data" />
     </dir> <!-- /skeleton/entries -->
     <dir name="layouts">
      <file baseinstalldir="/" name="default.twig" role="data" />
+     <file baseinstalldir="/" name="footer.twig" role="data" />
+     <file baseinstalldir="/" name="topbar.twig" role="data" />
     </dir> <!-- /skeleton/layouts -->
     <dir name="media">
      <dir name="img">
@@ -413,11 +422,14 @@
      <file baseinstalldir="/" name="default.js" role="data" />
     </dir> <!-- /skeleton/scripts -->
     <dir name="styles">
+     <file baseinstalldir="/" name="bootstrap.less" role="data" />
      <file baseinstalldir="/" name="default.less" role="data" />
     </dir> <!-- /skeleton/styles -->
     <file baseinstalldir="/" name="config.yml" role="data" />
    </dir> <!-- /skeleton -->
+   <file baseinstalldir="/" name="CONTRIBUTORS" role="data" />
    <file baseinstalldir="/" name="LICENSE" role="doc" />
+   <file baseinstalldir="/" name="NOTICE" role="data" />
    <file baseinstalldir="/" name="README.textile" role="doc" />
   </dir> <!-- / -->
  </contents>
