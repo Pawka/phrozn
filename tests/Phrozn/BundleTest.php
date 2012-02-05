@@ -78,7 +78,7 @@ class BundleTest
 
     public function testGetInfoBundleNotFound()
     {
-        $this->setExpectedException('Exception', 'Bundle "wrong.bundle" not found..');
+        $this->setExpectedException('RuntimeException', 'Bundle "wrong.bundle" not found..');
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
         $bundle = new Bundle('wrong.bundle', new Config($bundlesConfig));
         $bundle->getInfo();
@@ -211,7 +211,7 @@ class BundleTest
 
     public function testInvalidConfigurationObjectException()
     {
-        $this->setExpectedException('Exception', 'Configuration object must be an instance of Phrozn\Config');
+        $this->setExpectedException('RuntimeException', 'Configuration object must be an instance of Phrozn\Config');
         $bundle = new Bundle('test', new \StdClass);
     }
 

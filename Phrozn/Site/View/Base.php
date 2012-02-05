@@ -131,7 +131,7 @@ abstract class Base
         if (!is_dir($outputFile)) {
             file_put_contents($outputFile, $out);
         } else {
-            throw new \Exception(sprintf(
+            throw new \RuntimeException(sprintf(
                 'Output path "%s" is directory.', $outputFile));
         }
 
@@ -528,12 +528,12 @@ abstract class Base
         if (null == $this->source) {
             $path = $this->getInputFile();
             if (null === $path) {
-                throw new \Exception("View input file not specified.");
+                throw new \RuntimeException("View input file not specified.");
             }
             try {
                 $this->source = \file_get_contents($path);
             } catch (\Exception $e) {
-                throw new \Exception(sprintf('View "%s" file can not be read', $path));
+                throw new \RuntimeException(sprintf('View "%s" file can not be read', $path));
             }
         }
         return $this->source;

@@ -108,7 +108,7 @@ class DefaultSite
                         mkdir($destinationDir, 0777, true);
                     }
                     if (!copy($inputFile, $outputFile)) {
-                        throw new \Exception(sprintf('Failed transfering "%s" from media folder', $inputFile));
+                        throw new \RuntimeException(sprintf('Failed transfering "%s" from media folder', $inputFile));
                     }
                     $inputFile = str_replace(getcwd(), '.', $inputFile);
                     $outputFile = str_replace(getcwd(), '.', realpath($outputFile));

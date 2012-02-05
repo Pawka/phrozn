@@ -89,7 +89,7 @@ class Service
             Bundle::TYPE_INSTALLED
         );
         if (!in_array($type, $types)) {
-            throw new \Exception(sprintf('Invalid bundle type "%s".', $type));
+            throw new \RuntimeException(sprintf('Invalid bundle type "%s".', $type));
         }
         $config = $this->getConfig();
         $registry = $this->getRegistryContainer();
@@ -152,7 +152,7 @@ class Service
         $registry = $this->getRegistryContainer();
 
         if ($registry->isInstalled($bundleId)) {
-            throw new \Exception(
+            throw new \RuntimeException(
                 sprintf('Bundle "%s" is already installed.', $bundleId));
         }
 
@@ -178,7 +178,7 @@ class Service
         $registry = $this->getRegistryContainer();
 
         if (false === $registry->isInstalled($bundleId)) {
-            throw new \Exception(
+            throw new \RuntimeException(
                 sprintf('Bundle "%s" is NOT installed.', $bundleId));
         }
 
@@ -213,7 +213,7 @@ class Service
     public function setConfig($config)
     {
         if (null !== $config && !($config instanceof \Phrozn\Config)) {
-            throw new \Exception('Configuration object must be an instance of Phrozn\Config');
+            throw new \RuntimeException('Configuration object must be an instance of Phrozn\Config');
         }
         $this->config = $config;
         return $this;

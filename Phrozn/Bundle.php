@@ -126,7 +126,7 @@ class Bundle
                     $filepath = realpath(
                         $path . DIRECTORY_SEPARATOR . $entry['filename']);
                     if (false === @unlink($filepath)) {
-                        throw new \Exception(
+                        throw new \RuntimeException(
                             'Error removing file "%s": %s',
                             $entry['filename'], \error_get_last());
                     }
@@ -166,7 +166,7 @@ class Bundle
             }
         }
         if (null === $this->bundleData) {
-            throw new \Exception(sprintf('Bundle "%s" not found..', $key));
+            throw new \RuntimeException(sprintf('Bundle "%s" not found..', $key));
         }
 
         return $option
@@ -253,7 +253,7 @@ class Bundle
     public function setConfig($config)
     {
         if (null !== $config && !($config instanceof \Phrozn\Config)) {
-            throw new \Exception('Configuration object must be an instance of Phrozn\Config');
+            throw new \RuntimeException('Configuration object must be an instance of Phrozn\Config');
         }
         $this->config = $config;
         return $this;

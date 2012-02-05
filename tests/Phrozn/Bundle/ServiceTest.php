@@ -30,7 +30,7 @@ use Phrozn\Bundle\Service as BundleService,
  * @package     Phrozn\Bundle
  * @author      Victor Farazdagi
  */
-class DefaultSiteTest
+class ServiceTest
     extends \PHPUnit_Framework_TestCase
 {
     private $service;
@@ -182,13 +182,13 @@ class DefaultSiteTest
 
     public function testSetConfigException()
     {
-        $this->setExpectedException('Exception', 'Configuration object must be an instance of Phrozn\Config');
+        $this->setExpectedException('RuntimeException', 'Configuration object must be an instance of Phrozn\Config');
         $this->service->setConfig('wrong');
     }
 
     public function testListWrongType()
     {
-        $this->setExpectedException('Exception', 'Invalid bundle type "invalid-type"');
+        $this->setExpectedException('RuntimeException', 'Invalid bundle type "invalid-type"');
         $bundles = $this->service->getBundles('invalid-type', 'processor'); // list all processors
     }
 
@@ -250,8 +250,7 @@ class DefaultSiteTest
 
     public function testClobberNotInstalledExcdeption()
     {
-        $this->setExpectedException(
-            'Exception', 'Bundle "processor.test" is NOT installed');
+        $this->setExpectedException('RuntimeException', 'Bundle "processor.test" is NOT installed');
         $path = dirname(__FILE__) . '/project/';
 
         $this->assertFalse($this->service->getRegistryContainer()->isInstalled('processor.test'));
@@ -286,8 +285,7 @@ class DefaultSiteTest
 
     public function testAlreadyInstalledException()
     {
-        $this->setExpectedException('Exception',
-            'Bundle "processor.test" is already installed.');
+        $this->setExpectedException('RuntimeException', 'Bundle "processor.test" is already installed.');
         $path = dirname(__FILE__) . '/project/';
         $bundle = 'test';
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));

@@ -97,7 +97,7 @@ class SerializedTest
 
     public function testNoPathException()
     {
-        $this->setExpectedException('Exception', 'No project path provided');
+        $this->setExpectedException('RuntimeException', 'No project path provided');
 
         $container = new Container();
         $dao = new Dao($container);
