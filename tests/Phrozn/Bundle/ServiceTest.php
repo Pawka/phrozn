@@ -63,6 +63,9 @@ class ServiceTest
         $this->assertArrayHasKey('processor.hatena', $bundles);
     }
 
+    /**
+     * @medium
+     */
     public function testListAll()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_ALL);
@@ -70,6 +73,9 @@ class ServiceTest
         $this->assertArrayHasKey('processor.hatena', $bundles);
     }
 
+    /**
+     * @medium
+     */
     public function testListAllSearch()
     {
         // test search exact (by id)
@@ -88,6 +94,9 @@ class ServiceTest
         $this->assertArrayHasKey('processor.hatena', $bundles);
     }
 
+    /**
+     * @large
+     */
     public function testListInstalled()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED);
@@ -111,6 +120,9 @@ class ServiceTest
 
     }
 
+    /**
+     * @large
+     */
     public function testListInstalledSearch()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED);
@@ -133,6 +145,9 @@ class ServiceTest
         $this->assertSame('processor.test', $bundles['processor.test']['id']);
    }
 
+    /**
+     * @large
+     */
     public function testListAvailable()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE);
@@ -156,6 +171,9 @@ class ServiceTest
         $this->assertTrue(isset($bundles['processor.hatena']));
    }
 
+    /**
+     * @large
+     */
     public function testListAvailableSearch()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE, 'test');
@@ -192,6 +210,9 @@ class ServiceTest
         $bundles = $this->service->getBundles('invalid-type', 'processor'); // list all processors
     }
 
+    /**
+     * @medium
+     */
     public function testGetBundleInfo()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -202,6 +223,9 @@ class ServiceTest
         $this->assertSame('Victor Farazdagi', $info['author']);
     }
 
+    /**
+     * @medium
+     */
     public function testGetBundleFiles()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -211,6 +235,9 @@ class ServiceTest
         $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
     }
 
+    /**
+     * @medium
+     */
     public function testRegistryValues()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -228,6 +255,9 @@ class ServiceTest
         $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
     }
 
+    /**
+     * @medium
+     */
     public function testRegistryValuesWithExternalContainer()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -258,6 +288,9 @@ class ServiceTest
     }
 
 
+    /**
+     * @large
+     */
     public function testApplyOfficialBundleByName()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -283,6 +316,9 @@ class ServiceTest
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Hatena.php'));
     }
 
+    /**
+     * @medium
+     */
     public function testAlreadyInstalledException()
     {
         $this->setExpectedException('RuntimeException', 'Bundle "processor.test" is already installed.');
