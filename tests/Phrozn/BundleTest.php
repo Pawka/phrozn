@@ -41,6 +41,9 @@ class BundleTest
         $this->resetProjectDirectory(true);
     }
 
+    /**
+     * @medium
+     */
     public function testGetInfo()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -60,6 +63,9 @@ class BundleTest
         $this->assertSame('Victor Farazdagi', $bundle->getInfo('author'));
     }
 
+    /**
+     * @medium
+     */
     public function testGetInfoById()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -76,6 +82,9 @@ class BundleTest
         $this->assertSame('Test', $data['name']);
     }
 
+    /**
+     * @medium
+     */
     public function testGetInfoBundleNotFound()
     {
         $this->setExpectedException('RuntimeException', 'Bundle "wrong.bundle" not found..');
@@ -84,6 +93,9 @@ class BundleTest
         $bundle->getInfo();
     }
 
+    /**
+     * @medium
+     */
     public function testListBundleFilesByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -93,6 +105,9 @@ class BundleTest
         $this->assertFileInBundle('./plugins/Processor/Test.php', $files);
     }
 
+    /**
+     * @medium
+     */
     public function testExtractByUri()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -115,6 +130,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @medium
+     */
     public function testExtractByFileNameCustom()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -137,6 +155,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @medium
+     */
     public function testExtractByFileNameConventional()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -159,6 +180,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @medium
+     */
     public function testExtractById()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -178,6 +202,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @medium
+     */
     public function testExtractByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -197,6 +224,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @medium
+     */
     private function assertFileInBundle($que, $files)
     {
         $result = false;
@@ -209,6 +239,9 @@ class BundleTest
         $this->assertTrue($result);
     }
 
+    /**
+     * @medium
+     */
     public function testInvalidConfigurationObjectException()
     {
         $this->setExpectedException('RuntimeException', 'Configuration object must be an instance of Phrozn\Config');
