@@ -9,6 +9,9 @@
          processIsolation="true"
          stopOnFailure="true"
          syntaxCheck="false"
+         timeoutForSmallTests="10"
+         timeoutForMediumTests="120"
+         timeoutForLargeTests="360"
          verbose="true"
          strict="true">
     <testsuites>
