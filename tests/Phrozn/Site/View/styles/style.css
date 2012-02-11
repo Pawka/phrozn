@@ -1,15 +1,71 @@
-.rounded-corners {
+body { color:red; }
+p {
+  font-family:"verdana";
+  color:red;
+  border-bottom:1px solid red;
+}
+.nav {
+  width:320px;
+  color:#aabbdd;
+}
+.body {
+  width:640px;
+  font-family:"helvetica";
+  margin:5px;
+}
+ol.list li.special { border:1px solid red; }
+ol.list li.plain { font-weight:bold; }
+a b { color:red; }
+b i { color:blue; }
+b i { color:blue; }
+div .child-class { color:purple; }
+div.isa-class { color:green; }
+div #child-id { height:200px; }
+div#div-id { height:400px; }
+div:hover { color:red; }
+div :link { color:blue; }
+.box #menu { color:blue; }
+.mymixin {
+  color:blue;
+  border:1px solid red;
+}
+.mymixin .special { font-weight:bold; }
+h5 { font-size:200px; }
+.header {
   border-radius:5px;
   -webkit-border-radius:5px;
   -moz-border-radius:5px;
 }
-#header {
-  border-radius:5px;
-  -webkit-border-radius:5px;
-  -moz-border-radius:5px;
+.info {
+  background:red;
+  border-radius:14px;
+  -webkit-border-radius:14px;
+  -moz-border-radius:14px;
 }
-#footer {
-  border-radius:10px;
-  -webkit-border-radius:10px;
-  -moz-border-radius:10px;
+.my_scope .some_color { color:red; }
+.my_scope .some_color .inner_block { text-decoration:underline; }
+.my_scope .bold {
+  font-weight:bold;
+  color:blue;
 }
+.a_block {
+  color:red;
+  text-decoration:underline;
+}
+.a_block .inner_block { text-decoration:underline; }
+.another_block {
+  font-weight:bold;
+  color:blue;
+}
+.menu {
+  box-shadow:1px 1px 5px #aaaaaa  ;
+  -webkit-box-shadow:1px 1px 5px #aaaaaa  ;
+  -moz-box-shadow:1px 1px 5px #aaaaaa  ;
+}
+pre { border:4px dotted black; }
+h1:before { content:">: "; }
+h2:before { content:">>: "; }
+p.bg { background:url(files/my_background.png); }
+h1.format { content:">: "; }
+h1.strings { strings:"hi 1 ok 'cool'"; }
+.class { color:red; }
