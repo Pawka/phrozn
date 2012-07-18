@@ -19,7 +19,7 @@
  */
 
 namespace Phrozn\Outputter\Console;
-use Console_Color as ConsoleColorer;
+use Console_Color2 as ConsoleColorer;
 
 /**
  * Due to wrong documentation Console_Color methods were used as static.
