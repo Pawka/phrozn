@@ -5,7 +5,7 @@ php:
 before_script:
   - pyrus install pear/PEAR
   - pyrus install pear/Console_CommandLine
-  - pyrus install pear/Console_Color
+  - pyrus install pear/Console_Color2-alpha
   - PATH=$PATH\:$(pwd) ; export PATH
   - ln -s $(pwd)/bin/phr.php $(pwd)/phr-dev
   - phpenv rehash
