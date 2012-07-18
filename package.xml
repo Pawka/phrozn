@@ -447,9 +447,9 @@
     <min>1.1.3</min>
    </package>
    <package>
-    <name>Console_Color</name>
+    <name>Console_Color2</name>
     <channel>pear.php.net</channel>
-    <min>1.0.3</min>
+    <min>0.1.1</min>
    </package>
    <package>
     <name>Console_Table</name>
