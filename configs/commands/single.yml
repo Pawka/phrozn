@@ -4,13 +4,6 @@ command:
     name: &name single
     aliases:
     description: &desc Phrozn usage manual
-    options:
-        regen:
-            short_name:  -R
-            long_name:   --regen
-            doc_name:    -R [--regen]
-            description: Re-generate just one file from scratch removing any previous content
-            action:      StoreTrue
     arguments:
         file:
             help_name: "FILE"
