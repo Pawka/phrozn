@@ -26,7 +26,7 @@ use Phrozn\Site\View;
  *
  * @category    Phrozn
  * @package     Phrozn\Site
- * @author      Victor Farazdagi
+ * @author      Walter Dal Mut
  */
 class PieceOfSite
     extends DefaultSite

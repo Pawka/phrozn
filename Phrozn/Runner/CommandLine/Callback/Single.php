@@ -29,7 +29,7 @@ use Phrozn\Outputter\Console\Color,
  *
  * @category    Phrozn
  * @package     Phrozn\Runner\CommandLine
- * @author      Victor Farazdagi
+ * @author      Walter Dal Mut
  */
 class Single
     extends Base
