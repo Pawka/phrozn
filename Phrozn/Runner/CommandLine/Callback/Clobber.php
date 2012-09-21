@@ -75,11 +75,27 @@ class Clobber
         }
 
         if ($this->readLine() === 'yes') {
-            `rm -rf $path`;
+            $this->rrmdir($path);
             $this->out(self::STATUS_DELETED . " {$path}");
         } else {
             $this->out(self::STATUS_FAIL . " Aborted..");
         }
         $this->out($this->getFooter());
+    }
+
+    /**
+     * Recursively remove a directory
+     * @link http://php.net/manual/en/function.rmdir.php#108113
+     */
+    private function rrmdir($dir)
+    {
+        foreach(glob($dir . '/*') as $file) {
+            if (is_dir($file)) {
+                self::rrmdir($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dir);
     }
 }
