@@ -72,6 +72,13 @@ class CommandLine
 
         // load main config
         $this->config = Yaml::load($this->paths['configs'] . 'phrozn.yml');
+
+        // auto detect platform that did not support console color (like windows)
+        if ($this->config['use_ansi_colors'] === true) {
+            $supportsColors = DIRECTORY_SEPARATOR != '\\'
+                && function_exists('posix_isatty') && @posix_isatty(STDOUT);
+            $this->config['use_ansi_colors'] = $supportsColors;
+        }
     }
 
     /**
@@ -144,11 +151,12 @@ class CommandLine
         list($class, $method) = $callback;
         $class = 'Phrozn\\Runner\\CommandLine\\Callback\\' . $class;
 
+        $useAnsiColors = (bool)$this->config['use_ansi_colors'];
 
         $runner = new $class;
         $data['paths'] = $this->paths; // inject paths
         $runner
-            ->setOutputter(new Outputter())
+            ->setOutputter(new Outputter($useAnsiColors))
             ->setParseResult($this->result)
             ->setConfig($data);
         $callback = array($runner, $method);

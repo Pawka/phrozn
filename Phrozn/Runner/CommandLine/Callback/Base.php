@@ -46,11 +46,6 @@ abstract class Base
     const STATUS_OK         = '  [%gOK%n]      ';
 
     /**
-     * Whether to spice output with ANSI colors
-     */
-    private $useAnsiColors;
-
-    /**
      * @var \Console_CommandLine_Outputter
      */
     private $outputter;
@@ -99,7 +94,10 @@ abstract class Base
     public function getOutputter()
     {
         if (null === $this->outputter) {
-            $this->outputter = new Outputter();
+            $config = $this->getConfig();
+            $meta = Yaml::load($config['paths']['configs'] . 'phrozn.yml');
+            $useAnsiColors = (bool)$meta['use_ansi_colors'];
+            $this->outputter = new Outputter($useAnsiColors);
         }
         return $this->outputter;
     }
@@ -159,10 +157,6 @@ abstract class Base
      */
     public function out($str)
     {
-        $str = Color::convert($str);
-        if ($this->useAnsiColors() === false) {
-            $str = Color::strip($str);
-        }
         $this->getOutputter()->stdout($str, '');
         if (count(\ob_get_status()) !== 0) {
             ob_flush();
@@ -350,16 +344,6 @@ abstract class Base
         }
 
         return $path;
-    }
-
-    private function useAnsiColors()
-    {
-        if (null === $this->useAnsiColors) {
-            $config = $this->getConfig();
-            $meta = Yaml::load($config['paths']['configs'] . 'phrozn.yml');
-            $this->useAnsiColors = (bool)$meta['use_ansi_colors'];
-        }
-        return $this->useAnsiColors;
     }
 
     private function getCommandMeta()
