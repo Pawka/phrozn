@@ -463,10 +463,11 @@ abstract class Base
         $layoutName = $this->getParam('page.layout', ViewFactory::DEFAULT_LAYOUT_SCRIPT);
 
         $inputFile = $this->getInputFile();
-        $pos = strpos($inputFile, '/entries');
+        $ds  = DIRECTORY_SEPARATOR;
+        $pos = strpos($inputFile, $ds . 'entries');
         // make sure that input path is normalized to root entries directory
         if (false !== $pos) {
-            $inputFile = substr($inputFile, 0, $pos + 8) . '/entry';
+            $inputFile = substr($inputFile, 0, $pos + 8) . $ds . 'entry';
         }
         $layoutPath = realpath(dirname($inputFile) . '/../layouts/' . $layoutName);
 
