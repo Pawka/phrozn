@@ -7,13 +7,13 @@
          convertNoticesToExceptions="false"
          convertWarningsToExceptions="false"
          processIsolation="true"
-         stopOnFailure="true"
          syntaxCheck="false"
          verbose="true"
 		timeoutForSmallTests="2"
 		timeoutForMediumTests="10"
 		timeoutForLargeTests="60"
          strict="true">
+<!--         stopOnFailure="true" -->
     <testsuites>
         <testsuite name="Phrozn Test Suite">
             <directory>./</directory>
