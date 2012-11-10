@@ -9,11 +9,12 @@
          processIsolation="true"
          syntaxCheck="false"
          verbose="true"
+        stopOnFailure="false"
 		timeoutForSmallTests="2"
 		timeoutForMediumTests="10"
 		timeoutForLargeTests="60"
          strict="true">
-<!--         stopOnFailure="true" -->
+
     <testsuites>
         <testsuite name="Phrozn Test Suite">
             <directory>./</directory>
