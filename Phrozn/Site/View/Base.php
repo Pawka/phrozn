@@ -484,7 +484,7 @@ abstract class Base
         $layout = $factory->create(); // essentially layout is Site\View as well
         $layout->hasLayout(false); // no nested layouts
 
-        return $layout->render(array('content' => $content, 'entry' => $vars['page']));
+        return $layout->render(array('content' => $content, 'entry' => $vars['page'], 'current' => $vars['current']));
     }
 
     /**
@@ -516,7 +516,7 @@ abstract class Base
 
         $source = $this->readSourceFile();
 
-        $parts = preg_split('/[\n]*[-]{3}[\n]/', $source, 2);
+        $parts = preg_split('/([\n\r]{1})---([\n\r])/', $source, 2);
         if (count($parts) === 2) {
             $this->frontMatter = Yaml::load($parts[0]);
             $this->template = trim($parts[1]);
