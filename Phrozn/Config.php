@@ -55,7 +55,7 @@ class Config
             foreach ($dir as $item) {
                 if ($item->isFile()) {
                     if (substr($item->getBasename(), -3) === 'yml') {
-                        $this->configs[$item->getBasename('.yml')] = Yaml::load($item->getRealPath());
+                        $this->configs[$item->getBasename('.yml')] = Yaml::parse($item->getRealPath());
                     }
                 }
             }
