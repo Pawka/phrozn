@@ -2,6 +2,8 @@
 __TwigTemplate*
 /build/pear/*
 /tests/code-coverage
+/tests/Phrozn/Bundle/project/.phrozn/
 .settings
 .buildpath
 .project
+phr-dev
