@@ -29,6 +29,7 @@ use Phrozn\Bundle\Service as BundleService,
  * @category    Phrozn
  * @package     Phrozn\Bundle
  * @author      Victor Farazdagi
+ * @medium
  */
 class DefaultSiteTest
     extends \PHPUnit_Framework_TestCase
@@ -132,7 +133,7 @@ class DefaultSiteTest
         $this->arrayHasKey('id', $bundles['processor.test']);
         $this->assertSame('processor.test', $bundles['processor.test']['id']);
    }
-
+   
     public function testListAvailable()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE);
@@ -258,7 +259,9 @@ class DefaultSiteTest
         $this->service->clobberBundle('test');
     }
 
-
+	/**
+	 * @large
+	 */
     public function testApplyOfficialBundleByName()
     {
         $path = dirname(__FILE__) . '/project/';
