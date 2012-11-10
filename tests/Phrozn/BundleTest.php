@@ -27,6 +27,7 @@ use Phrozn\Bundle,
  * @category    Phrozn
  * @package     Phrozn
  * @author      Victor Farazdagi
+ * @medium
  */
 class BundleTest
     extends \PHPUnit_Framework_TestCase
