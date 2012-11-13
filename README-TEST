@@ -1,0 +1,6 @@
+To execute the test you need to do the following stuff :
+install pear/Console_CommandLine, pear/Console_Color2-alpha and pear/PHP_CodeSniffer
+run following commands
+	PATH=$PATH:$(pwd) ; export PATH ; ln -s $(pwd)/bin/phr.php $(pwd)/phr-dev
+	phpunit --configuration tests/phpunit.xml
+
