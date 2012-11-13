@@ -3,6 +3,7 @@ __TwigTemplate*
 /build/pear/*
 /tests/code-coverage
 /tests/Phrozn/Bundle/project/.phrozn/
+tests/Phrozn/Site/View/out
 .settings
 .buildpath
 .project
