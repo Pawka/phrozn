@@ -43,6 +43,9 @@ class DefaultSiteTest
         $this->cleanOutputDirectory();
     }
 
+    /**
+     * @medium
+     */
     public function testSiteCompilation()
     {
         $path = dirname(__FILE__) . '/project/.phrozn/';
@@ -111,6 +114,9 @@ class DefaultSiteTest
         $this->assertSame($loaded, $parsed);
     }
 
+    /**
+     * @medium
+     */
     public function testSiteCompilationProjectGuess()
     {
         $path = dirname(__FILE__) . '/project/.phrozn/';
