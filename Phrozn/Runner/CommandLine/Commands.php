@@ -128,7 +128,7 @@ class Commands
     private function load($file)
     {
         if (!isset($this->commands[$file])) {
-            $this->commands[$file] = Yaml::load($file);
+            $this->commands[$file] = Yaml::parse($file);
         }
         return $this->commands[$file];
     }
