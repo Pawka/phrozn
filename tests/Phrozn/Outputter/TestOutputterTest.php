@@ -49,24 +49,24 @@ class TestOutputterTest
     {
         $fp = fopen('/tmp/stdout', 'w+');
         define('STDOUT', $fp);
-        fclose($fp);
 
         $outputter = new Outputter($this);
         $outputter->stdout('sending output', '');
 
         $this->assertSame('sending output', trim(file_get_contents('/tmp/stdout')));
+        fclose($fp);
     }
 
     public function testStdErrWithResource()
     {
         $fp = fopen('/tmp/stderr', 'w+');
         define('STDERR', $fp);
-        fclose($fp);
 
         $outputter = new Outputter($this);
         $outputter->stderr('sending output', '');
 
         $this->assertSame('sending output', trim(file_get_contents('/tmp/stderr')));
+        fclose($fp);
     }
 
     public function testAssertInLogsFail()

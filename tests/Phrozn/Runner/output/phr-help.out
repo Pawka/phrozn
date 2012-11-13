@@ -6,11 +6,11 @@ Type 'phrozn ? help' for help on using help.
 Type 'phrozn --version' to see the program version and installed plugins.
 
 Available commands:
-    update (build, up)
-    bundle
-    initialize (init)
-    help (h, ?)
     clobber
+    bundle
+    update (build, up)
+    help (h, ?)
+    initialize (init)
 
 
 Phrozn is extremely flexible static site generator for PHP.
