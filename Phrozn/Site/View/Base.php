@@ -341,6 +341,7 @@ abstract class Base
         if (false !== $pos)
         {
         	$params['current']['phr_template'] = substr($this->getInputFile(), $pos + 8 + 1);
+        	$params['current']['phr_templates'] = explode('.', $params['current']['phr_template']);
         }
 
         // also create merged configuration
