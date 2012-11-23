@@ -338,7 +338,8 @@ abstract class Base
         $params['current'] = array();
         $inputFile = $this->getInputFile();
         $pos = strpos($inputFile, '/entries');
-        if (false !== $pos) {
+        if (false !== $pos)
+        {
         	$params['current']['phr_template'] = substr($this->getInputFile(), $pos + 8 + 1);
         }
 
@@ -484,7 +485,7 @@ abstract class Base
         $layout = $factory->create(); // essentially layout is Site\View as well
         $layout->hasLayout(false); // no nested layouts
 
-        return $layout->render(array('content' => $content, 'entry' => $vars['page']));
+        return $layout->render(array('content' => $content, 'entry' => $vars['page'], 'current_page' => $vars['current']));
     }
 
     /**
