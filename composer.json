@@ -1,7 +1,6 @@
 {
     "name": "phrozn/phrozn",
     "description": "Static Site Generator for PHP",
-    "minimum-stability": "dev",
     "repositories": [
         {
             "type": "pear",
@@ -15,6 +14,9 @@
         "pear-pear/Console_Color": "*"
     },
     "autoload": {
-        "psr-0": { "Phrozn": "" }
+        "psr-0": {
+            "Phrozn": "" ,
+            "PhroznPlugin": "plugins/"
+        }
     }
 }

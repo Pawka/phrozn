@@ -71,7 +71,7 @@ class Command
     private function load($file)
     {
         if (null === $this->command) {
-            $this->command = Yaml::load($file);
+            $this->command = Yaml::parse($file);
         }
         return $this->command;
     }

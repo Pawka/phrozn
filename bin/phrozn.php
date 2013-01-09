@@ -8,7 +8,8 @@ if (strpos('@PHP-BIN@', '@PHP-BIN') === 0) { // stand-alone version is running
 
 require_once $base . '/app/bootstrap.php';
 
+$loader = Phrozn\Autoloader::getInstance();
 $runner = new Phrozn\Runner\CommandLine($loader);
 $runner->run();
 
-knset($runner, $loader);
+unset($runner, $loader);
