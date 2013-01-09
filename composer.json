@@ -1,0 +1,20 @@
+{
+    "name": "phrozn/phrozn",
+    "description": "Static Site Generator for PHP",
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net/"
+        }
+    ],
+    "require": {
+        "twig/twig": "1.*",
+        "symfony/yaml": "2.*",
+        "pear-pear/Console_CommandLine": "*",
+        "pear-pear/Console_Color": "*"
+    },
+    "autoload": {
+        "psr-0": { "Phrozn": "" }
+    }
+}

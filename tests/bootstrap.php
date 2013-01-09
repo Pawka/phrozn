@@ -13,6 +13,3 @@ $loader->getLoader(); // initialize autoloader
 // so fire up its own autoloader
 require_once $path . '/Phrozn/Vendor/Twig/Autoloader.php';
 \Twig_Autoloader::register();
-
-
-
