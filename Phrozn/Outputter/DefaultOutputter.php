@@ -32,6 +32,16 @@ class DefaultOutputter
     implements \Phrozn\Outputter
 {
     /**
+     * Whether to spice output with ANSI colors
+     */
+    private $useAnsiColors;
+
+    public function __construct($useAnsiColors = true)
+    {
+        $this->useAnsiColors = $useAnsiColors;
+    }
+
+    /**
      * Writes the message $msg to STDOUT.
      *
      * @param string $msg The message to output
@@ -42,6 +52,9 @@ class DefaultOutputter
     public function stdout($msg, $status = self::STATUS_OK)
     {
         $msg = Color::convert($status . $msg . "\n");
+        if ($this->useAnsiColors === false) {
+            $msg = Color::strip($msg);
+        }
         if (defined('STDOUT')) {
             fwrite(STDOUT, $msg);
         } else {
@@ -64,6 +77,9 @@ class DefaultOutputter
     public function stderr($msg, $status = self::STATUS_FAIL)
     {
         $msg = Color::convert($status . $msg . "\n");
+        if ($this->useAnsiColors === false) {
+            $msg = Color::strip($msg);
+        }
         if (defined('STDERR')) {
             fwrite(STDERR, $msg);
         } else {

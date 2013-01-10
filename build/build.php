@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 use Phrozn\Autoloader as Loader;
-error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
 
 // rely on configuration files
 require_once dirname(__FILE__) . '/../Phrozn/Autoloader.php';
@@ -34,6 +34,7 @@ $e = $pack->setOptions(array(
         'tests'     => 'test',
     ),
     'exceptions' => array(
+        'bin/phr.bat' => 'script',
         'bin/phrozn.php' => 'script',
         'bin/phr.php' => 'script',
         'LICENSE' => 'doc',
@@ -64,6 +65,12 @@ $pack->setLicense('Apache License, Version 2.0', 'http://www.apache.org/licenses
 $pack->addMaintainer('lead', 'victor', 'Victor Farazdagi', 'simple.square@gmail.com');
 
 $pack->addRelease();
+$pack->setOSInstallCondition('windows');
+$pack->addInstallAs('bin/phr.bat', 'phrozn.bat');
+$pack->addInstallAs('bin/phrozn.php', 'phrozn');
+
+$pack->addRelease();
+$pack->addIgnoreToRelease('bin/phr.bat');
 $pack->addInstallAs('bin/phr.php', 'phr');
 $pack->addInstallAs('bin/phrozn.php', 'phrozn');
 
@@ -81,6 +88,9 @@ $pack->addReplacement('bin/phrozn.php', 'pear-config', '/usr/bin/env php', 'php_
 $pack->addReplacement('bin/phrozn.php', 'pear-config', '@PHP-BIN@', 'php_bin');
 $pack->addReplacement('bin/phrozn.php', 'pear-config', '@DATA-DIR@', 'data_dir');
 $pack->addReplacement('bin/phrozn.php', 'pear-config', '@PEAR-DIR@', 'php_dir');
+
+$pack->addReplacement('bin/phr.bat', 'pear-config', '@php_bin@', 'php_bin');
+$pack->addReplacement('bin/phr.bat', 'pear-config', '@bin_dir@', 'bin_dir');
 
 $pack->addReplacement('bin/phr.php', 'pear-config', '/usr/bin/env php', 'php_bin');
 $pack->addReplacement('bin/phr.php', 'pear-config', '@PHP-BIN@', 'php_bin');
