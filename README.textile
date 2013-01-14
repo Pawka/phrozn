@@ -9,8 +9,14 @@ h2. Philosophy
 
 h2. Install
 
-bc.. $ curl -s https://getcomposer.org/installer | php
-$ composer.phar install
+Clone repository from github and change to cloned directory.
+
+bc. $ git clone https://github.com/farazdagi/phrozn.git && cd phrozn
+
+Download composer and install required dependencies.
+
+bc. $ curl -s https://getcomposer.org/installer | php
+$ php composer.phar install
 
 h2. Dev Notes
 
