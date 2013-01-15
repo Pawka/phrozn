@@ -71,14 +71,14 @@ class TestOutputterTest
 
     public function testAssertInLogsFail()
     {
-        $this->setExpectedException('Exception', 'this should produce error');
+        $this->setExpectedException('PHPUnit_Framework_AssertionFailedError', 'this should produce error');
         $outputter = new Outputter($this);
         $outputter->assertInLogs('not found', 'this should produce error');
     }
 
     public function testAssertNotInLogsFail()
     {
-        $this->setExpectedException('Exception', 'this should produce error');
+        $this->setExpectedException('PHPUnit_Framework_AssertionFailedError', 'this should produce error');
         $outputter = new Outputter($this);
         $outputter->stdout('this string exists');
         $outputter->assertNotInLogs('this string exists', 'this should produce error');

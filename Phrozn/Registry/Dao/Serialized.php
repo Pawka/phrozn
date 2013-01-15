@@ -45,7 +45,7 @@ class Serialized
             $path .= '/' . $this->getOutputFile();
             file_put_contents($path, serialize($this->getContainer()));
         } else {
-            throw new \Exception('No project path provided.');
+            throw new \RuntimeException('No project path provided.');
         }
         return $this;
     }

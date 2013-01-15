@@ -85,7 +85,7 @@ class ProjectTest
 
     public function testPathNotSetException()
     {
-        $this->setExpectedException('Exception', 'Path not set');
+        $this->setExpectedException('RuntimeException', 'Path not set');
         $path = new ProjectPath();
         $path->get();
     }

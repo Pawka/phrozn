@@ -257,7 +257,7 @@ abstract class Base
 
         // see if we have entries folder present
         if (!is_dir($dir . '/entries')) {
-            throw new \Exception('Entries folder not found');
+            throw new \RuntimeException('Entries folder not found');
         }
         return $dir;
     }

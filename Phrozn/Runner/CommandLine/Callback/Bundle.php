@@ -121,7 +121,7 @@ class Bundle
 
         $this->out("Located project folder: {$path->get()}\n");
         if (is_dir($path->get()) === false) {
-            throw new \Exception("No project found at {$pathArg}");
+            throw new \RuntimeException("No project found at {$pathArg}");
         }
 
         $tbl = new ConsoleTable();
@@ -185,12 +185,12 @@ class Bundle
 
         $files = $this->service->getBundleFiles($bundle);
         if (!is_array($files) || !count($files)) {
-            throw new \Exception('Invalid or empty bundle');
+            throw new \RuntimeException('Invalid or empty bundle');
         }
 
         $this->out("Located project folder: {$path->get()}\n");
         if (is_dir($path->get()) === false) {
-            throw new \Exception("No project found at {$pathArg}");
+            throw new \RuntimeException("No project found at {$pathArg}");
         }
 
         $this->out('Bundle content:');
@@ -228,7 +228,7 @@ class Bundle
 
         $this->out("Located project folder: {$path->get()}\n");
         if (is_dir($path->get()) === false) {
-            throw new \Exception("No project found at {$pathArg}");
+            throw new \RuntimeException("No project found at {$pathArg}");
         }
 
         $this->out('Bundle content:');

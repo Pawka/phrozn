@@ -59,7 +59,7 @@ class ProviderTest
 
     public function testProviderNotFoundException()
     {
-        $this->setExpectedException('Exception', "Provider of type 'SpeedyJoe' not found..");
+        $this->setExpectedException('RuntimeException', "Provider of type 'SpeedyJoe' not found..");
         $input = dirname(__FILE__) . '/data/LoadFromFile.txt';
         $options = array();
 
