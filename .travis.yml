@@ -1,4 +1,12 @@
 language: php
 php:
-    - 5.3
-    - 5.4
+  - 5.3
+  - 5.4
+before_script:
+  - pyrus install pear/PEAR
+  - pyrus install pear/Console_CommandLine
+  - pyrus install pear/Console_Color2-alpha
+  - PATH=$PATH\:$(pwd) ; export PATH
+  - ln -s $(pwd)/bin/phr.php $(pwd)/phr-dev
+  - phpenv rehash
+script: "phpunit --configuration tests/phpunit.xml"

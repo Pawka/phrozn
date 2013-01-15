@@ -14,6 +14,12 @@ processor.hatena:
     description: HatenaSyntax - Japanese diary service syntax (like wiki).
     version: "1.0"
     author: Kazusuke Sasezaki
+processor.rst:
+    id: processor.rst
+    name: reStructuredText
+    description: reStructuredText - a simple, unobtrusive markup language (depends on docutils).
+    version: "1.0"
+    author: Simon Holywell
 empty.bundle:
     id: empty.bundle
     name: EmptyBundle

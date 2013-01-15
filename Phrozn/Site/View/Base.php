@@ -330,14 +330,23 @@ abstract class Base
      */
     public function getParams($param = null, $default = array())
     {
+    	$params = array();
         $params['page'] = $this->getFrontMatter();
         $params['site'] = $this->getSiteConfig();
         $params['phr'] = $this->getAppConfig();
+
+        $params['current'] = array();
+        $inputFile = $this->getInputFile();
+        $pos = strpos($inputFile, '/entries');
+        if (false !== $pos) {
+        	$params['current']['phr_template'] = substr($this->getInputFile(), $pos + 8 + 1);
+        }
+
         // also create merged configuration
         if (isset($params['page'], $params['site'])) {
-            $params['this'] = array_merge($params['page'], $params['site']);
+            $params['this'] = array_merge($params['page'], $params['site'], $params['current']);
         } else {
-            $params['this'] = array();
+            $params['this'] = $params['current'];
         }
 
         if (null !== $param) {
@@ -468,6 +477,7 @@ abstract class Base
         if (false !== $pos) {
             $inputFile = substr($inputFile, 0, $pos + 8) . '/entry';
         }
+
         $layoutPath = realpath(dirname($inputFile) . '/../layouts/' . $layoutName);
 
         $factory = new ViewFactory($layoutPath);
