@@ -42,7 +42,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testGetInfo()
     {
@@ -64,7 +64,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testGetInfoById()
     {
@@ -83,7 +83,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testGetInfoBundleNotFound()
     {
@@ -94,7 +94,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testListBundleFilesByName()
     {
@@ -106,7 +106,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testExtractByUri()
     {
@@ -131,7 +131,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testExtractByFileNameCustom()
     {
@@ -156,7 +156,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testExtractByFileNameConventional()
     {
@@ -181,7 +181,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testExtractById()
     {
@@ -203,7 +203,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testExtractByName()
     {
@@ -225,7 +225,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     private function assertFileInBundle($que, $files)
     {
@@ -240,7 +240,7 @@ class BundleTest
     }
 
     /**
-     * @medium
+     * @large
      */
     public function testInvalidConfigurationObjectException()
     {

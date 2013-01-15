@@ -84,6 +84,9 @@ class DefaultSiteTest
             ->compile();
     }
 
+    /**
+     * @medium
+     */
     public function testSiteCompilationWithCustomOutputter()
     {
         $path = dirname(__FILE__) . '/project/.phrozn/';

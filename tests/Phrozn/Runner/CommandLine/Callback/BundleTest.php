@@ -73,6 +73,9 @@ class BundleTest
         chdir($this->previousPath);
     }
 
+    /**
+     * @large
+     */
     public function testBundleList()
     {
         $out = $this->outputter;
@@ -84,6 +87,9 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleListHiddenBundles()
     {
         $out = $this->outputter;
@@ -95,6 +101,9 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleListWrongProjectPath()
     {
         $out = $this->outputter;
@@ -110,6 +119,9 @@ class BundleTest
 
     }
 
+    /**
+     * @large
+     */
     public function testBundleInfoById()
     {
         $out = $this->outputter;
@@ -121,6 +133,9 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleInfoByQue()
     {
         $out = $this->outputter;
@@ -132,6 +147,9 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleInfoNotFound()
     {
         $out = $this->outputter;
@@ -143,6 +161,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]    Bundle "no-such-bundle" not found..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithNoWithImplicitPath()
     {
         $out = $this->outputter;
@@ -162,6 +183,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]     Aborted..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithYesWithImplicitPath()
     {
         $out = $this->outputter;
@@ -203,6 +227,9 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByNameWithNoWithImplicitPath()
     {
         $out = $this->outputter;
@@ -222,6 +249,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]     Aborted..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByNameWithYesWithImplicitPath()
     {
         $out = $this->outputter;
@@ -247,6 +277,9 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithNoWithExplicitPath()
     {
         $out = $this->outputter;
@@ -266,6 +299,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]     Aborted..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithYesWithExplicitPath()
     {
         $out = $this->outputter;
@@ -291,6 +327,9 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyWrongProjectPath()
     {
         $out = $this->outputter;
@@ -306,6 +345,9 @@ class BundleTest
 
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyEmptyBundle()
     {
         $out = $this->outputter;
@@ -320,6 +362,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]    Invalid or empty bundle');
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberNonInstalledBundle()
     {
         $out = $this->outputter;
@@ -337,6 +382,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]    Bundle "processor.test" is NOT installed.');
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberByIdWithYesWithExplicitPath()
     {
         $out = $this->outputter;
@@ -378,6 +426,9 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberByIdWithNoWithExplicitPath()
     {
         $out = $this->outputter;
@@ -419,6 +470,9 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberWrongProjectPath()
     {
         $out = $this->outputter;
@@ -434,6 +488,9 @@ class BundleTest
 
     }
 
+    /**
+     * @large
+     */
     public function testNoSubActionSpecified()
     {
         $out = $this->outputter;
