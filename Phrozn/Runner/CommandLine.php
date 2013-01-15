@@ -71,7 +71,7 @@ class CommandLine
         $this->loader = $loader;
 
         // load main config
-        $this->config = Yaml::load($this->paths['configs'] . 'phrozn.yml');
+        $this->config = Yaml::parse($this->paths['configs'] . 'phrozn.yml');
     }
 
     /**

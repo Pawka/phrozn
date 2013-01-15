@@ -58,11 +58,6 @@ class Twig
     {
         $path = Loader::getInstance()->getPath('library');
 
-        // Twig uses perverted file naming (due to absense of NSs at a time it was written)
-        // so fire up its own autoloader
-        require_once $path . '/Vendor/Twig/Autoloader.php';
-        \Twig_Autoloader::register();
-
         if (count($options)) {
             $this->setConfig($options)
                  ->getEnvironment();

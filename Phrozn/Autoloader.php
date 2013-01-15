@@ -19,7 +19,6 @@
  */
 
 namespace Phrozn;
-use Zend\Loader\StandardAutoloader as Loader;
 
 /**
  * Phrozn autoloader
@@ -38,7 +37,7 @@ class Autoloader
     private static $instance;
 
     /**
-     * @var \Zend\Loader\StandardAutoloader
+     * @var \Composer\Autoload\ClassLoader
      */
     private $loader;
 
@@ -58,7 +57,7 @@ class Autoloader
     /**
      * Get auto-loader instance
      *
-     * @return \Zend\Loader\StandardAutoloader
+     * @return \Composer\Autoload\ClassLoader
      */
     public function getLoader()
     {
@@ -108,15 +107,7 @@ class Autoloader
             $base = '@PEAR-DIR@/Phrozn/';
         }
 
-        require_once $base . 'Vendor/Zend/Loader/StandardAutoloader.php';
-        $loader = new Loader();
-        $loader
-            ->registerNamespace('Zend', $base . 'Vendor/Zend')
-            ->registerNamespace('Phrozn', $base)
-            ->registerNamespace('Symfony', $base . 'Vendor/Symfony')
-            ->registerNamespace('Twig', $base . 'Vendor/Twig')
-            ->setFallbackAutoloader(true)
-            ->register();
+        $loader = include $base . '../vendor/autoload.php';
 
         // allow to use plugins from project's .phrozn/plugins
         $plugins = getcwd();
@@ -125,7 +116,7 @@ class Autoloader
         }
         $plugins .= '/plugins/';
         if (is_dir($plugins)) {
-            $loader->registerNamespace('PhroznPlugin', $plugins);
+            $loader->add('PhroznPlugin', $plugins);
         }
 
         $this->loader = $loader;

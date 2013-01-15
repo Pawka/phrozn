@@ -518,7 +518,7 @@ abstract class Base
 
         $parts = preg_split('/[\n]*[-]{3}[\n]/', $source, 2);
         if (count($parts) === 2) {
-            $this->frontMatter = Yaml::load($parts[0]);
+            $this->frontMatter = Yaml::parse($parts[0]);
             $this->template = trim($parts[1]);
         } else {
             $this->frontMatter = array();
@@ -553,7 +553,7 @@ abstract class Base
     {
         if (null === $this->appConfig) {
             $path = Loader::getInstance()->getPath('configs'). '/phrozn.yml';
-            $this->appConfig = Yaml::load(file_get_contents($path));
+            $this->appConfig = Yaml::parse(file_get_contents($path));
         }
 
         return $this->appConfig;
