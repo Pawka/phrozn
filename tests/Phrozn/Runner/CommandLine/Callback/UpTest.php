@@ -32,12 +32,14 @@ use Phrozn\Runner\CommandLine\Callback\Up as Callback,
 class UpTest
     extends \PHPUnit_Framework_TestCase
 {
+    private $phr;
     private $runner;
     private $outputter;
     private $parser;
 
     public function setUp()
     {
+        $this->phr = realpath(__DIR__ . '/../../../../../bin/phrozn.php');
         // paths
         $base = realpath(dirname(__FILE__) . '/../../../../../') . '/';
         $paths = array(
@@ -80,12 +82,12 @@ class UpTest
         $this->assertFalse(is_dir($path . '/.phrozn'));
         $this->assertFalse(is_dir($path . '/.phrozn/entries'));
         $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
-        `phr-dev init {$path}`;
+        `{$this->phr} init {$path}`;
         $this->assertTrue(is_dir($path . '/.phrozn'));
         $this->assertTrue(is_dir($path . '/.phrozn/entries'));
         $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
 
-        $result = $this->getParseResult("phr-dev up {$path} {$path}");
+        $result = $this->getParseResult("{$this->phr} up {$path} {$path}");
 
         $this->runner
             ->setOutputter($out)

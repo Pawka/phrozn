@@ -1,5 +1,5 @@
 [0m
-usage: [34mphrozn[0m [32m<command>[0m [options] [args]
+usage: [0;34mphrozn[0m [0;32m<command>[0m [options] [args]
 
 Type 'phrozn help <command>' for help on a specific command.
 Type 'phrozn ? help' for help on using help.
