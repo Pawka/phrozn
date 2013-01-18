@@ -66,7 +66,7 @@ class Help
 
     private function getUsageHelp()
     {
-        $commands = CommandLine\Commands::getInstance();
+        $commands = $this->sortCommands(CommandLine\Commands::getInstance());
 
         $out = "usage: %bphrozn%n %g<command>%n [options] [args]\n\n";
         $out .= "Type 'phrozn help <command>' for help on a specific command.\n";
@@ -74,20 +74,25 @@ class Help
         $out .= "Type 'phrozn --version' to see the program version and installed plugins.\n";
 
         $out .= "\nAvailable commands:\n";
-        $displayed = array(); // array of already displayed comands
         foreach ($commands as $name => $data) {
-            if(isset($displayed[$name])) {
-                continue;
-            }
             $command = $data['command'];
             $out .= '    ' . $name;
             if (null !== $command['aliases']) {
                 $out .= ' (' . implode(', ', $command['aliases']) . ')';
             }
             $out .= "\n";
-            $displayed[$name] = $name;
         }
 
         return $out;
+    }
+
+    private function sortCommands($iter)
+    {
+        $commands = array();
+        foreach ($iter as $name => $data) {
+            $commands[$name] = $data;
+        }
+        ksort($commands);
+        return $commands;
     }
 }
