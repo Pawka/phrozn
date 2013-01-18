@@ -1,5 +1,5 @@
-[0m
-usage: [0;34mphrozn[0m [0;32m<command>[0m [options] [args]
+
+usage: phrozn <command> [options] [args]
 
 Type 'phrozn help <command>' for help on a specific command.
 Type 'phrozn ? help' for help on using help.
@@ -14,4 +14,4 @@ Available commands:
 
 
 Phrozn is extremely flexible static site generator for PHP.
-For additional information, see [1mhttp://phrozn.info[0m
+For additional information, see http://phrozn.info

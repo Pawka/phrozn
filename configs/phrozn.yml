@@ -8,7 +8,7 @@ stability: beta
 author: Victor Farazdagi
 
 # executable customization
-use_ansi_colors: true
+use_ansi_colors: false
 
 command:
     name: /usr/bin/phrozn
