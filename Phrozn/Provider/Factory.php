@@ -45,7 +45,7 @@ class Factory
         if (!class_exists($class)) {
             $class = 'Phrozn\\Provider\\' . ucfirst($type);
             if (!class_exists($class)) {
-                throw new \Exception("Provider of type '{$type}' not found..");
+                throw new \RuntimeException("Provider of type '{$type}' not found..");
             }
         }
         $object = new $class;

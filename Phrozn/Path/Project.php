@@ -40,7 +40,7 @@ class Project
     public function get()
     {
         if (null === $this->path) {
-            throw new \Exception('Path not set.');
+            throw new \RuntimeException('Path not set.');
         }
         $path = $this->path;
         for ($i = 0, $mx = substr_count($path, DIRECTORY_SEPARATOR); $i <= $mx; $i++) {

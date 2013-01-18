@@ -1,6 +1,6 @@
-[0m
+
 update (up): Phrozn usage manual
-usage: [34mphrozn[0m [32mup[0m [SRC] [DEST]
+usage: phrozn up [SRC] [DEST]
 
   This command compiles/updates static site.
   
@@ -17,4 +17,4 @@ Use help with -v or --verbose option to get more information.
 
 
 Phrozn is extremely flexible static site generator for PHP.
-For additional information, see [1mhttp://phrozn.info[0m
+For additional information, see http://phrozn.info

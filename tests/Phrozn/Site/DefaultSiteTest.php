@@ -77,13 +77,16 @@ class DefaultSiteTest
         $site = new Site($path, $path . 'site');
         $outputter = new TestOutputter($this);
 
-        $this->setExpectedException('Exception', "Entries folder not found");
+        $this->setExpectedException('RuntimeException', "Entries folder not found");
 
         $site
             ->setOutputter($outputter)
             ->compile();
     }
 
+    /**
+     * @medium
+     */
     public function testSiteCompilationWithCustomOutputter()
     {
         $path = dirname(__FILE__) . '/project/.phrozn/';

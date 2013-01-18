@@ -1,0 +1,28 @@
+{
+    "name": "farazdagi/phrozn",
+    "description": "Static Site Generator for PHP",
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net/"
+        },
+        {
+            "type": "composer",
+            "url": "http://packages.zendframework.com/"
+        }
+    ],
+    "require": {
+        "twig/twig": "1.*",
+        "symfony/yaml": "2.*",
+        "pear-pear/Console_CommandLine": "*",
+        "pear-pear/Archive_Tar": "*",
+        "pear/Console_Color2": "*",
+        "pear/Console_Table": "@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "Phrozn": "" ,
+            "PhroznPlugin": "plugins/"
+        }
+    }
+}

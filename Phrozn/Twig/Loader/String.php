@@ -19,7 +19,6 @@
  */
 
 namespace Phrozn\Twig\Loader;
-require_once(dirname(__FILE__) . '/../../Vendor/Twig/Loader/String.php');
 
 /**
  * Twig String Loader

@@ -92,7 +92,7 @@ class CssTest
 
     public function testNoSourcePathSpecified()
     {
-        $this->setExpectedException('Exception', "View input file not specified");
+        $this->setExpectedException('RuntimeException', "View input file not specified");
         $view = new View();
 
         $rendered = $view->render();

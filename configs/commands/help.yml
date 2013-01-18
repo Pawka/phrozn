@@ -6,7 +6,7 @@ command:
     description: &desc Phrozn usage manual
     options:
         verbose:
-           short_name: -v 
+           short_name: -v
            long_name: --verbose
            doc_name: -v [--verbose]
            action: StoreTrue

@@ -32,6 +32,7 @@ use Phrozn\Runner\CommandLine\Callback\Bundle as Callback,
 class BundleTest
     extends \PHPUnit_Framework_TestCase
 {
+    private $phr;
     private $runner;
     private $outputter;
     private $parser;
@@ -39,6 +40,7 @@ class BundleTest
 
     public function setUp()
     {
+        $this->phr = realpath(__DIR__ . '/../../../../../bin/phrozn.php');
         // paths
         $base = realpath(dirname(__FILE__) . '/../../../../../') . '/';
         $paths = array(
@@ -73,10 +75,13 @@ class BundleTest
         chdir($this->previousPath);
     }
 
+    /**
+     * @large
+     */
     public function testBundleList()
     {
         $out = $this->outputter;
-        $result = $this->getParseResult("phr-dev bundle list processor.test");
+        $result = $this->getParseResult("{$this->phr} bundle list processor.test");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -84,10 +89,13 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleListHiddenBundles()
     {
         $out = $this->outputter;
-        $result = $this->getParseResult("phr-dev bundle list");
+        $result = $this->getParseResult("{$this->phr} bundle list");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -95,13 +103,16 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleListWrongProjectPath()
     {
         $out = $this->outputter;
 
         $path = '/wrong-path';
 
-        $result = $this->getParseResult("phr-dev bundle list test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle list test {$path}");
         $this->runner
             ->setUnitTestData('no')
             ->setParseResult($result)
@@ -110,10 +121,13 @@ class BundleTest
 
     }
 
+    /**
+     * @large
+     */
     public function testBundleInfoById()
     {
         $out = $this->outputter;
-        $result = $this->getParseResult("phr-dev bundle info processor.test");
+        $result = $this->getParseResult("{$this->phr} bundle info processor.test");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -121,10 +135,13 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleInfoByQue()
     {
         $out = $this->outputter;
-        $result = $this->getParseResult("phr-dev bundle info test");
+        $result = $this->getParseResult("{$this->phr} bundle info test");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -132,10 +149,13 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleInfoNotFound()
     {
         $out = $this->outputter;
-        $result = $this->getParseResult("phr-dev bundle info no-such-bundle");
+        $result = $this->getParseResult("{$this->phr} bundle info no-such-bundle");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -143,13 +163,16 @@ class BundleTest
         $out->assertInLogs('[FAIL]    Bundle "no-such-bundle" not found..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithNoWithImplicitPath()
     {
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
 
-        $result = $this->getParseResult("phr-dev bundle apply processor.test");
+        $result = $this->getParseResult("{$this->phr} bundle apply processor.test");
         $this->runner
             ->setUnitTestData('no')
             ->setParseResult($result)
@@ -162,6 +185,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]     Aborted..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithYesWithImplicitPath()
     {
         $out = $this->outputter;
@@ -171,7 +197,7 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
-        $result = $this->getParseResult("phr-dev bundle apply processor.test");
+        $result = $this->getParseResult("{$this->phr} bundle apply processor.test");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -187,7 +213,7 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
         $out->resetLogs();
-        $result = $this->getParseResult("phr-dev bundle list -p test");
+        $result = $this->getParseResult("{$this->phr} bundle list -p test");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -195,7 +221,7 @@ class BundleTest
         $out->assertNotInLogs('Test processor plugin - used to demonstrate how');
 
         $out->resetLogs();
-        $result = $this->getParseResult("phr-dev bundle list -i test");
+        $result = $this->getParseResult("{$this->phr} bundle list -i test");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -203,13 +229,16 @@ class BundleTest
         $out->assertInLogs('Test processor plugin - used to demonstrate how');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByNameWithNoWithImplicitPath()
     {
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
 
-        $result = $this->getParseResult("phr-dev bundle apply test");
+        $result = $this->getParseResult("{$this->phr} bundle apply test");
         $this->runner
             ->setUnitTestData('no')
             ->setParseResult($result)
@@ -222,6 +251,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]     Aborted..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByNameWithYesWithImplicitPath()
     {
         $out = $this->outputter;
@@ -231,7 +263,7 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
-        $result = $this->getParseResult("phr-dev bundle apply test");
+        $result = $this->getParseResult("{$this->phr} bundle apply test");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -247,13 +279,16 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithNoWithExplicitPath()
     {
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
 
-        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('no')
             ->setParseResult($result)
@@ -266,6 +301,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]     Aborted..');
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyByIdWithYesWithExplicitPath()
     {
         $out = $this->outputter;
@@ -275,7 +313,7 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
-        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -291,13 +329,16 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyWrongProjectPath()
     {
         $out = $this->outputter;
 
         $path = '/wrong-path';
 
-        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('no')
             ->setParseResult($result)
@@ -306,13 +347,16 @@ class BundleTest
 
     }
 
+    /**
+     * @large
+     */
     public function testBundleApplyEmptyBundle()
     {
         $out = $this->outputter;
 
         $path = dirname(__FILE__) . '/project';
 
-        $result = $this->getParseResult("phr-dev bundle apply empty.bundle {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle apply empty.bundle {$path}");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -320,6 +364,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]    Invalid or empty bundle');
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberNonInstalledBundle()
     {
         $out = $this->outputter;
@@ -329,7 +376,7 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
-        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle clobber test {$path}");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -337,6 +384,9 @@ class BundleTest
         $out->assertInLogs('[FAIL]    Bundle "processor.test" is NOT installed.');
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberByIdWithYesWithExplicitPath()
     {
         $out = $this->outputter;
@@ -346,7 +396,7 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
-        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -362,7 +412,7 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
         $out->resetLogs();
-        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle clobber test {$path}");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -378,6 +428,9 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberByIdWithNoWithExplicitPath()
     {
         $out = $this->outputter;
@@ -387,7 +440,7 @@ class BundleTest
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Processor/Test.php'));
         $this->assertFalse(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
-        $result = $this->getParseResult("phr-dev bundle apply test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle apply test {$path}");
         $this->runner
             ->setUnitTestData('yes')
             ->setParseResult($result)
@@ -403,7 +456,7 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
 
         $out->resetLogs();
-        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle clobber test {$path}");
         $this->runner
             ->setUnitTestData('no')
             ->setParseResult($result)
@@ -419,13 +472,16 @@ class BundleTest
         $this->assertTrue(file_exists($path . '/.phrozn/plugins/Site/View/Test.php'));
     }
 
+    /**
+     * @large
+     */
     public function testBundleClobberWrongProjectPath()
     {
         $out = $this->outputter;
 
         $path = '/wrong-path';
 
-        $result = $this->getParseResult("phr-dev bundle clobber test {$path}");
+        $result = $this->getParseResult("{$this->phr} bundle clobber test {$path}");
         $this->runner
             ->setUnitTestData('no')
             ->setParseResult($result)
@@ -434,10 +490,13 @@ class BundleTest
 
     }
 
+    /**
+     * @large
+     */
     public function testNoSubActionSpecified()
     {
         $out = $this->outputter;
-        $result = $this->getParseResult("phr-dev bundle");
+        $result = $this->getParseResult("{$this->phr} bundle");
         $this->runner
             ->setOutputter($out)
             ->setParseResult($result)
@@ -462,7 +521,7 @@ class BundleTest
         }
         if (false === $justPurge) {
             $path = dirname($path);
-            `phr-dev init {$path}`;
+            `{$this->phr} init {$path}`;
         }
     }
 }

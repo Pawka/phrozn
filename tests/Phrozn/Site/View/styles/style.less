@@ -1,12 +1,188 @@
-.rounded-corners (@radius: 5px) {
+/**
+ * Line comments
+ */
+
+// this is a comment
+body {
+  color: red; // as is this
+  /* block comments still work also */
+}
+
+/**
+ * Variables
+ */
+@family: "verdana";
+@color: red;
+p {
+  @mycolor: red;
+  font-family: @family;
+  color: @color;
+  border-bottom: 1px solid @color;
+}
+
+/**
+ * Expressions
+ */
+@width: 960px;
+.nav {
+  width: @width / 3;
+  color: #001 + #abc;
+}
+.body {
+  width: 2 * @width / 3;
+  font-family: "hel" + "vetica";
+  margin: (10px -5px);
+}
+
+/**
+ * Nested Blocks
+ */
+ol.list {
+  li.special {
+    border: 1px solid red; 
+  }
+
+  li.plain {
+    font-weight: bold;
+  }
+}
+b {
+  a & {
+    color: red;
+  }
+
+  // the following have the same effect
+
+  & i {
+    color: blue;
+  }
+
+  i {
+    color: blue;
+  }
+}
+div {
+  .child-class { color: purple; }
+
+  &.isa-class { color: green; }
+
+  #child-id { height: 200px; }
+
+  &#div-id { height: 400px; }
+
+  &:hover { color: red; }
+
+  :link { color: blue; }
+}
+.within_box_style() {
+  .box & {
+    color: blue;
+  }
+}
+
+#menu {
+  .within_box_style;
+}
+
+/**
+ * Mixins
+ */
+.mymixin {
+  color: blue;
+  border: 1px solid red;
+
+  .special {
+    font-weight: bold;
+  }
+}
+
+
+h5 {
+  font-size: 200px;
+  .mixin;
+}
+.rounded-corners(@radius: 5px) {
   border-radius: @radius;
   -webkit-border-radius: @radius;
   -moz-border-radius: @radius;
 }
 
-#header {
-  .rounded-corners;
+.header {
+  .rounded-corners();
 }
-#footer {
-  .rounded-corners(10px);
+
+.info {
+  background: red;
+  .rounded-corners(14px);
+}
+.my_scope  {
+  .some_color {
+    color: red;
+    .inner_block {
+      text-decoration: underline;
+    }
+  }
+  .bold {
+    font-weight: bold;
+    color: blue;
+  }
+}
+
+.a_block {
+  .my_scope .some_color;
+  .my_scope .some_color .inner_block;
+}
+
+.another_block {
+  // the alternative syntax
+  .my_scope > .bold;
+}
+.box-shadow(@inset, @x, @y, @blur, @spread, @color) {
+  box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+}
+.menu {
+  .box-shadow(1px, 1px, 5px, #aaa);
+}
+.border-mixin(@width, @style: solid, @color: black) {
+  border: @arguments;
+}
+pre {
+  .border-mixin(4px, dotted);
+}
+
+/**
+ * String Interpolation
+ */
+@symbol: ">";
+h1:before {
+  content: "@{symbol}: ";
+}
+
+h2:before {
+  content: "@{symbol}@{symbol}: ";
+}
+@path: "files/";
+p.bg {
+  background: url(@{path}my_background.png);
+}
+
+/**
+ * String format functions
+ */
+@symbol: ">";
+h1.format {
+  content: %("%s: ", @symbol);
+}
+h1.strings {
+    strings: %("%a %d %s %a", hi, 1, 'ok', 'cool');
+} 
+
+/**
+ * String unquoting
+ */
+@color: "red";
+.class {
+  color: e(@color);
 }

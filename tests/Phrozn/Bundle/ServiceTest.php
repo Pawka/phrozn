@@ -30,14 +30,16 @@ use Phrozn\Bundle\Service as BundleService,
  * @package     Phrozn\Bundle
  * @author      Victor Farazdagi
  */
-class DefaultSiteTest
+class ServiceTest
     extends \PHPUnit_Framework_TestCase
 {
+    private $phr;
     private $service;
     private $container;
 
     public function setUp()
     {
+        $this->phr = realpath(__DIR__ . '/../../../bin/phrozn.php');
         $this->resetProjectDirectory();
 
         $path = dirname(__FILE__) . '/project';
@@ -63,6 +65,9 @@ class DefaultSiteTest
         $this->assertArrayHasKey('processor.hatena', $bundles);
     }
 
+    /**
+     * @medium
+     */
     public function testListAll()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_ALL);
@@ -70,6 +75,9 @@ class DefaultSiteTest
         $this->assertArrayHasKey('processor.hatena', $bundles);
     }
 
+    /**
+     * @medium
+     */
     public function testListAllSearch()
     {
         // test search exact (by id)
@@ -88,6 +96,9 @@ class DefaultSiteTest
         $this->assertArrayHasKey('processor.hatena', $bundles);
     }
 
+    /**
+     * @large
+     */
     public function testListInstalled()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED);
@@ -111,6 +122,9 @@ class DefaultSiteTest
 
     }
 
+    /**
+     * @large
+     */
     public function testListInstalledSearch()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_INSTALLED);
@@ -133,6 +147,9 @@ class DefaultSiteTest
         $this->assertSame('processor.test', $bundles['processor.test']['id']);
    }
 
+    /**
+     * @large
+     */
     public function testListAvailable()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE);
@@ -156,6 +173,9 @@ class DefaultSiteTest
         $this->assertTrue(isset($bundles['processor.hatena']));
    }
 
+    /**
+     * @large
+     */
     public function testListAvailableSearch()
     {
         $bundles = $this->service->getBundles(Bundle::TYPE_AVAILABLE, 'test');
@@ -182,16 +202,19 @@ class DefaultSiteTest
 
     public function testSetConfigException()
     {
-        $this->setExpectedException('Exception', 'Configuration object must be an instance of Phrozn\Config');
+        $this->setExpectedException('RuntimeException', 'Configuration object must be an instance of Phrozn\Config');
         $this->service->setConfig('wrong');
     }
 
     public function testListWrongType()
     {
-        $this->setExpectedException('Exception', 'Invalid bundle type "invalid-type"');
+        $this->setExpectedException('RuntimeException', 'Invalid bundle type "invalid-type"');
         $bundles = $this->service->getBundles('invalid-type', 'processor'); // list all processors
     }
 
+    /**
+     * @medium
+     */
     public function testGetBundleInfo()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -202,6 +225,9 @@ class DefaultSiteTest
         $this->assertSame('Victor Farazdagi', $info['author']);
     }
 
+    /**
+     * @medium
+     */
     public function testGetBundleFiles()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -211,6 +237,9 @@ class DefaultSiteTest
         $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
     }
 
+    /**
+     * @medium
+     */
     public function testRegistryValues()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -228,6 +257,9 @@ class DefaultSiteTest
         $this->assertSame('./plugins/Site/View/Test.php', $files[6]['filename']);
     }
 
+    /**
+     * @medium
+     */
     public function testRegistryValuesWithExternalContainer()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -250,8 +282,7 @@ class DefaultSiteTest
 
     public function testClobberNotInstalledExcdeption()
     {
-        $this->setExpectedException(
-            'Exception', 'Bundle "processor.test" is NOT installed');
+        $this->setExpectedException('RuntimeException', 'Bundle "processor.test" is NOT installed');
         $path = dirname(__FILE__) . '/project/';
 
         $this->assertFalse($this->service->getRegistryContainer()->isInstalled('processor.test'));
@@ -259,6 +290,9 @@ class DefaultSiteTest
     }
 
 
+    /**
+     * @large
+     */
     public function testApplyOfficialBundleByName()
     {
         $path = dirname(__FILE__) . '/project/';
@@ -284,10 +318,12 @@ class DefaultSiteTest
         $this->assertTrue(file_exists($path . '.phrozn/plugins/Site/View/Hatena.php'));
     }
 
+    /**
+     * @medium
+     */
     public function testAlreadyInstalledException()
     {
-        $this->setExpectedException('Exception',
-            'Bundle "processor.test" is already installed.');
+        $this->setExpectedException('RuntimeException', 'Bundle "processor.test" is already installed.');
         $path = dirname(__FILE__) . '/project/';
         $bundle = 'test';
         $this->assertFalse(file_exists($path . '.phrozn/plugins/Processor/Test.php'));
@@ -310,7 +346,7 @@ class DefaultSiteTest
         }
         if (false === $justPurge) {
             $path = dirname($path);
-            `phr-dev init {$path}`;
+            `{$this->phr} init {$path}`;
         }
     }
 }

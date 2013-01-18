@@ -71,7 +71,7 @@ class Clobber
             "This operation %rCAN NOT%n be undone.\n");
 
         if (is_dir($path) === false) {
-            throw new \Exception("No project found at {$path}");
+            throw new \RuntimeException("No project found at {$path}");
         }
 
         if ($this->readLine() === 'yes') {

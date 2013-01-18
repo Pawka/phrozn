@@ -2,3 +2,8 @@
 __TwigTemplate*
 /build/pear/*
 /tests/code-coverage
+.settings
+.buildpath
+.project
+composer.lock
+/vendor/
