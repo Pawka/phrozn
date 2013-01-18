@@ -1,4 +1,4 @@
-h1. Phrozn
+h1. Phrozn !https://travis-ci.org/farazdagi/phrozn.png?branch=master!:https://travis-ci.org/farazdagi/phrozn/builds
 
 Phrozn is extremely flexible static site generator in PHP.
 
@@ -23,7 +23,7 @@ h2. Dev Notes
 * "Unit tested":http://test.phrozn.info
 * API Documentation
 * User manual
-* Relies on SPL, Zend Framework 2, Symfony 2
+* Relies on SPL, Symfony 2 Components
 
 h2. Runtime Dependencies:
 
