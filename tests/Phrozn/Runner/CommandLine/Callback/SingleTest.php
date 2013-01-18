@@ -96,10 +96,9 @@ class SingleTest
 
         $out->assertInLogs("[OK]      Source directory located: {$path}/.phrozn");
         $out->assertInLogs("[OK]      Destination directory located: {$path}/");
-        $out->assertInLogs("./Phrozn/Runner/CommandLine/Callback/project/subpath/.phrozn/entries/about.twig parsed");
-        $out->assertInLogs("./Phrozn/Runner/CommandLine/Callback/project/subpath/about/index.html written");
-        $out->assertNotInLogs("./Phrozn/Runner/CommandLine/Callback/project/subpath/.phrozn/entries/index.twig parsed");
 
+        $this->assertFileExists($path . '/about/index.html');
+        $this->assertFileNotExists($path . '/index.html');
     }
 
     private function getParseResult($cmd)
