@@ -55,22 +55,23 @@ class DefaultOutputterTest
     {
         $fp = fopen('/tmp/stdout', 'w+');
         define('STDOUT', $fp);
-        fclose($fp);
 
         $outputter = new Outputter();
-        $outputter->stdout('sending output', '');
+        $outputter->stdout('sending output');
+        fclose($fp);
 
-        $this->assertSame('sending output', trim(file_get_contents('/tmp/stdout')));
+        $this->assertStringEndsWith('sending output', trim(file_get_contents('/tmp/stdout')));
     }
 
     public function testStdErrWithResource()
     {
         $fp = fopen('/tmp/stderr', 'w+');
         define('STDERR', $fp);
-        fclose($fp);
 
         $outputter = new Outputter();
         $outputter->stderr('sending output', '');
+
+        fclose($fp);
 
         $this->assertSame('sending output', trim(file_get_contents('/tmp/stderr')));
     }

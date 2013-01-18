@@ -142,6 +142,11 @@ abstract class Base
         return $this->views;
     }
 
+    protected function addView($view)
+    {
+        $this->views[] = $view;
+    }
+
     /**
      * Set outputter
      *
