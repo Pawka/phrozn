@@ -28,7 +28,11 @@ h2. Dev Notes
 h2. Runtime Dependencies:
 
 * PEAR::Console_CommandLine
-* PEAR::Console_Color
+* PEAR::Console_Color2
+* PEAR::Console_Table
+* PEAR::Archive_Tar
+* Twig
+* Symfony/Yaml
 
 h2. Developer Dependencies
 
