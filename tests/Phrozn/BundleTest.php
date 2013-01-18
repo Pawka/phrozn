@@ -31,8 +31,11 @@ use Phrozn\Bundle,
 class BundleTest
     extends \PHPUnit_Framework_TestCase
 {
+    private $phr;
+
     public function setUp()
     {
+        $this->phr = realpath(__DIR__ . '/../../bin/phrozn.php');
         $this->resetProjectDirectory();
     }
 
@@ -259,7 +262,7 @@ class BundleTest
         }
         if (false === $justPurge) {
             $path = dirname($path);
-            `phr-dev init {$path}`;
+            `{$this->phr} init {$path}`;
         }
     }
 }

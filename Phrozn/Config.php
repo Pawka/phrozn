@@ -49,13 +49,13 @@ class Config
     public function __construct($path)
     {
         if (is_file($path)) {
-            $this->configs[basename($path, '.yml')] = Yaml::load($path);
+            $this->configs[basename($path, '.yml')] = Yaml::parse($path);
         } else {
             $dir = new \DirectoryIterator($path);
             foreach ($dir as $item) {
                 if ($item->isFile()) {
                     if (substr($item->getBasename(), -3) === 'yml') {
-                        $this->configs[$item->getBasename('.yml')] = Yaml::load($item->getRealPath());
+                        $this->configs[$item->getBasename('.yml')] = Yaml::parse($item->getRealPath());
                     }
                 }
             }

@@ -33,11 +33,13 @@ use Phrozn\Bundle\Service as BundleService,
 class ServiceTest
     extends \PHPUnit_Framework_TestCase
 {
+    private $phr;
     private $service;
     private $container;
 
     public function setUp()
     {
+        $this->phr = realpath(__DIR__ . '/../../../bin/phrozn.php');
         $this->resetProjectDirectory();
 
         $path = dirname(__FILE__) . '/project';
@@ -344,7 +346,7 @@ class ServiceTest
         }
         if (false === $justPurge) {
             $path = dirname($path);
-            `phr-dev init {$path}`;
+            `{$this->phr} init {$path}`;
         }
     }
 }
