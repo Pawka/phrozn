@@ -24,5 +24,18 @@
             "Phrozn": "" ,
             "PhroznPlugin": "plugins/"
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "rm -f configs/commands/initialize.yml",
+            "rm -f configs/commands/build.yml",
+            "rm -f configs/commands/update.yml",
+            "ln -s init.yml configs/commands/initialize.yml",
+            "ln -s up.yml configs/commands/build.yml",
+            "ln -s up.yml configs/commands/update.yml",
+            "rm -f bin/phr.php",
+            "ln -s phrozn.php bin/phr.php",
+            "chmod +x bin/phrozn.php"
+        ]
     }
 }
