@@ -31,8 +31,11 @@ use Phrozn\Bundle,
 class BundleTest
     extends \PHPUnit_Framework_TestCase
 {
+    private $phr;
+
     public function setUp()
     {
+        $this->phr = realpath(__DIR__ . '/../../bin/phrozn.php');
         $this->resetProjectDirectory();
     }
 
@@ -41,6 +44,9 @@ class BundleTest
         $this->resetProjectDirectory(true);
     }
 
+    /**
+     * @large
+     */
     public function testGetInfo()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -60,6 +66,9 @@ class BundleTest
         $this->assertSame('Victor Farazdagi', $bundle->getInfo('author'));
     }
 
+    /**
+     * @large
+     */
     public function testGetInfoById()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -76,14 +85,20 @@ class BundleTest
         $this->assertSame('Test', $data['name']);
     }
 
+    /**
+     * @large
+     */
     public function testGetInfoBundleNotFound()
     {
-        $this->setExpectedException('Exception', 'Bundle "wrong.bundle" not found..');
+        $this->setExpectedException('RuntimeException', 'Bundle "wrong.bundle" not found..');
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
         $bundle = new Bundle('wrong.bundle', new Config($bundlesConfig));
         $bundle->getInfo();
     }
 
+    /**
+     * @large
+     */
     public function testListBundleFilesByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -93,6 +108,9 @@ class BundleTest
         $this->assertFileInBundle('./plugins/Processor/Test.php', $files);
     }
 
+    /**
+     * @large
+     */
     public function testExtractByUri()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -115,6 +133,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @large
+     */
     public function testExtractByFileNameCustom()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -137,6 +158,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @large
+     */
     public function testExtractByFileNameConventional()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -159,6 +183,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @large
+     */
     public function testExtractById()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -178,6 +205,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @large
+     */
     public function testExtractByName()
     {
         $bundlesConfig = dirname(__FILE__) . '/../../configs/bundles.yml';
@@ -197,6 +227,9 @@ class BundleTest
         @unlink($path . '/plugins/Site/View/Test.php');
     }
 
+    /**
+     * @large
+     */
     private function assertFileInBundle($que, $files)
     {
         $result = false;
@@ -209,9 +242,12 @@ class BundleTest
         $this->assertTrue($result);
     }
 
+    /**
+     * @large
+     */
     public function testInvalidConfigurationObjectException()
     {
-        $this->setExpectedException('Exception', 'Configuration object must be an instance of Phrozn\Config');
+        $this->setExpectedException('RuntimeException', 'Configuration object must be an instance of Phrozn\Config');
         $bundle = new Bundle('test', new \StdClass);
     }
 
@@ -226,7 +262,7 @@ class BundleTest
         }
         if (false === $justPurge) {
             $path = dirname($path);
-            `phr-dev init {$path}`;
+            `{$this->phr} init {$path}`;
         }
     }
 }

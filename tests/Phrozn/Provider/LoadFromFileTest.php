@@ -43,14 +43,14 @@ class LoadFromFileProviderTest
 
     public function testProviderNoInputSet()
     {
-        $this->setExpectedException('Exception', 'No input file provided');
+        $this->setExpectedException('RuntimeException', 'No input file provided');
         $provider = new Provider();
         $provider->get();
     }
 
     public function testProviderInvalidInputFile()
     {
-        $this->setExpectedException('Exception', 'Input file "/some-unreadable-file" not found');
+        $this->setExpectedException('RuntimeException', 'Input file "/some-unreadable-file" not found');
         $provider = new Provider();
         $provider->setConfig(array(
             'input' => 'some-unreadable-file'

@@ -33,11 +33,13 @@ class CommandLineTest
 {
     const STDOUT = '/tmp/CommandLineTestOut';
 
+    private $phr;
     private $outputter;
     private $runner;
 
     public function setUp()
     {
+        $this->phr = realpath(__DIR__ . '/../../../bin/phrozn.php');
         $this->outputter = new Outputter($this);
         $this->fout = fopen(self::STDOUT, 'w+');
         define('STDOUT', $this->fout);
@@ -55,7 +57,7 @@ class CommandLineTest
     public function testRunHelpUpdate()
     {
         $this->runner->run(array(
-            '/usr/bin/phr-dev',
+            $this->phr,
             'help',
             'update',
         ));
@@ -68,7 +70,7 @@ class CommandLineTest
     public function testRunHUpdate()
     {
         $this->runner->run(array(
-            '/usr/bin/phr-dev',
+            $this->phr,
             '-h',
         ));
         $path = dirname(__FILE__) . '/output/phr-help.out';
@@ -83,7 +85,7 @@ class CommandLineTest
     public function testRunWithNoArgs()
     {
         $this->runner->run(array(
-            '/usr/bin/phr-dev',
+            $this->phr,
         ));
         $path = dirname(__FILE__) . '/output/phr-no-params.out';
         $this->assertSame(

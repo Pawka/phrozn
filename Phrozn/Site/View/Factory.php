@@ -85,7 +85,7 @@ class Factory
     {
         if (null !== $path) {
             if (!is_readable($path)) {
-                throw new \Exception("View source file cannot be read: {$path}");
+                throw new \RuntimeException("View source file cannot be read: {$path}");
             }
             $this->inputFile = $path;
         }
@@ -117,7 +117,7 @@ class Factory
         if (!class_exists($class)) {
             $class = 'Phrozn\\Site\\View\\' . ucfirst($type);
             if (!class_exists($class)) {
-                //throw new \Exception("View of type '{$type}' not found..");
+                //throw new \RuntimeException("View of type '{$type}' not found..");
                 $class = 'Phrozn\\Site\\View\\Plain';
             }
         }

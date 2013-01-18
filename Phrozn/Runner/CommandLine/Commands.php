@@ -128,7 +128,7 @@ class Commands
     private function load($file)
     {
         if (!isset($this->commands[$file])) {
-            $this->commands[$file] = Yaml::load($file);
+            $this->commands[$file] = Yaml::parse($file);
         }
         return $this->commands[$file];
     }
@@ -141,7 +141,7 @@ class Commands
     private function getIterator()
     {
         if (null === $this->getPath()) {
-            throw new \Exception('Commands config path not set');
+            throw new \RuntimeException('Commands config path not set');
         }
         if (null === $this->it) {
             $this->it =  new \DirectoryIterator($this->getPath());

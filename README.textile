@@ -7,6 +7,17 @@ h2. Philosophy
 * Configurable: you should be able to tune it to your needs
 * SCM-Enabled: no extra work to make your site git-enabled
 
+h2. Install
+
+Clone repository from github and change to cloned directory.
+
+bc. $ git clone https://github.com/farazdagi/phrozn.git && cd phrozn
+
+Download composer and install required dependencies.
+
+bc. $ curl -s https://getcomposer.org/installer | php
+$ php composer.phar install
+
 h2. Dev Notes
 
 * "Unit tested":http://test.phrozn.info

@@ -40,11 +40,11 @@ class LoadFromFile
     {
         $config = $this->getConfig();
         if (!isset($config['input'])) {
-            throw new \Exception('No input file provided.');
+            throw new \RuntimeException('No input file provided.');
         }
         $path = $this->getProjectPath() . '/' . $config['input'];
         if (!is_readable($path)) {
-            throw new \Exception(sprintf('Input file "%s" not found.', $path));
+            throw new \RuntimeException(sprintf('Input file "%s" not found.', $path));
         }
         return file_get_contents($path);
     }

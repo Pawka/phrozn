@@ -51,7 +51,7 @@ class FactoryTest
         $path = dirname(__FILE__) . '/../project/.phrozn/entries/';
         $input = $path . 'not-found.twig';
 
-        $this->setExpectedException('Exception',
+        $this->setExpectedException('RuntimeException',
             "View source file cannot be read: {$input}");
 
         $factory = new Factory();
