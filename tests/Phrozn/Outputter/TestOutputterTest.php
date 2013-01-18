@@ -49,10 +49,11 @@ class TestOutputterTest
     {
         $fp = fopen('/tmp/stdout', 'w+');
         define('STDOUT', $fp);
-        fclose($fp);
 
         $outputter = new Outputter($this);
         $outputter->stdout('sending output', '');
+
+        fclose($fp);
 
         $this->assertSame('sending output', trim(file_get_contents('/tmp/stdout')));
     }
@@ -61,10 +62,11 @@ class TestOutputterTest
     {
         $fp = fopen('/tmp/stderr', 'w+');
         define('STDERR', $fp);
-        fclose($fp);
 
         $outputter = new Outputter($this);
         $outputter->stderr('sending output', '');
+
+        fclose($fp);
 
         $this->assertSame('sending output', trim(file_get_contents('/tmp/stderr')));
     }
