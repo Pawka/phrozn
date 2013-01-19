@@ -143,6 +143,17 @@ abstract class Base
     }
 
     /**
+     * Adds view to the list of queued views
+     *
+     * @return \Phrozn\Site
+     */
+    protected function addView($view)
+    {
+        $this->views[] = $view;
+        return $this;
+    }
+
+    /**
      * Set outputter
      *
      * @param \Phrozn\Outputter $outputter Outputter instance
