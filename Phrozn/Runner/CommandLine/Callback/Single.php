@@ -19,6 +19,7 @@
  */
 
 namespace Phrozn\Runner\CommandLine\Callback;
+
 use Phrozn\Outputter\Console\Color,
     Symfony\Component\Yaml\Yaml,
     Phrozn\Runner\CommandLine,
@@ -80,7 +81,6 @@ class Single
         } else {
             $this->out(self::STATUS_OK . "Source file located: {$file}");
         }
-
 
         if ($proceed === false) {
             $this->out($this->getFooter());

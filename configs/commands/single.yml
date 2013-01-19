@@ -1,4 +1,4 @@
-# phr up
+# phr single
 ---
 command:
     name: &name single
@@ -33,5 +33,5 @@ docs:
         %bphrozn%n %gsingle%n FILE
 
         To compile one file to specified directory DEST:
-        %bphrozn%n %gsingle%n FILE SRC DEST .
+        %bphrozn%n %gsingle%n FILE SRC DEST
 

@@ -142,9 +142,15 @@ abstract class Base
         return $this->views;
     }
 
+    /**
+     * Adds view to the list of queued views
+     *
+     * @return \Phrozn\Site
+     */
     protected function addView($view)
     {
         $this->views[] = $view;
+        return $this;
     }
 
     /**
