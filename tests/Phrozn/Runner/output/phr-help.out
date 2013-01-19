@@ -10,6 +10,7 @@ Available commands:
     clobber
     help (h, ?)
     initialize (init)
+    single
     update (build, up)
 
 
