@@ -60,7 +60,7 @@ class DefaultOutputterTest
         $outputter->stdout('sending output', '');
         fclose($fp);
 
-        $this->assertSame('sending output', trim(file_get_contents('/tmp/stderr')));
+        $this->assertSame('sending output', trim(file_get_contents('/tmp/stdout')));
     }
 
     public function testStdErrWithResource()
