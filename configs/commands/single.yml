@@ -1,0 +1,37 @@
+# phr single
+---
+command:
+    name: &name single
+    aliases:
+    description: &desc Phrozn usage manual
+    arguments:
+        file:
+            help_name: "FILE"
+            description: Source file
+            optional: false
+        in:
+            help_name: "[SRC]"
+            description: Source directory
+            optional: true
+        out:
+            help_name: "[DEST]"
+            description: Destination directory
+            optional: true
+
+# callback
+callback: [Single, execute]
+
+# documentation
+docs:
+    name: single
+    summary: *desc
+    description: |
+        This command compiles/updates just one file.
+    usage: %bphrozn%n %gsingle%n FILE [SRC] [DEST]
+    examples: |
+        To compile one file in current directory:
+        %bphrozn%n %gsingle%n FILE
+
+        To compile one file to specified directory DEST:
+        %bphrozn%n %gsingle%n FILE SRC DEST
+
