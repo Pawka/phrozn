@@ -9,9 +9,9 @@ Available commands:
     bundle
     clobber
     help (h, ?)
-    initialize (init)
+    init (initialize)
     single
-    update (build, up)
+    up (build, update)
 
 
 Phrozn is extremely flexible static site generator for PHP.

@@ -57,9 +57,9 @@ class ParserTest
 
     public function testSubcommands()
     {
-        $this->subcommand('initialize');
+        $this->subcommand('init');
         $this->subcommand('clobber');
-        $this->subcommand('update');
+        $this->subcommand('up');
         $this->subcommand('help');
     }
 

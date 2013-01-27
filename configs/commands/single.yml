@@ -2,7 +2,7 @@
 ---
 command:
     name: &name single
-    aliases: [single]
+    aliases:
     description: &desc Phrozn usage manual
     arguments:
         file:
