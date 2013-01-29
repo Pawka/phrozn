@@ -40,6 +40,7 @@ class Parametrized
     {
         $path = $this->getView()->getParam('this.permalink');
         $params = $this->getView()->getParams();
+        $permalink = $this->getView()->getParam('this.permalink', null);
 
         $params = array_merge($params['site'], $params['page']);
         foreach ($params as $name => $param) {
@@ -54,7 +55,7 @@ class Parametrized
 
         if (substr($path, -1) === '/') {
             $path .= 'index.html';
-        } else if (substr($path, -5) !== '.html') {
+        } else if (is_null($permalink) && substr($path, -5) !== '.html') {
             $path .= '.html';
         }
 
