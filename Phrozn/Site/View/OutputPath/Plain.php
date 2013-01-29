@@ -52,6 +52,7 @@ class Plain
         }
 
         $object = new $class($this->getView());
-        return rtrim($object->get(), '.html');
+        return preg_replace("/\.html?/", "", $object->get());
+
     }
 }
