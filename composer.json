@@ -1,23 +1,13 @@
 {
     "name": "farazdagi/phrozn",
     "description": "Static Site Generator for PHP",
-    "repositories": [
-        {
-            "type": "pear",
-            "url": "http://pear.php.net/"
-        },
-        {
-            "type": "composer",
-            "url": "http://packages.zendframework.com/"
-        }
-    ],
     "require": {
-        "twig/twig": "1.*",
-        "symfony/yaml": "2.*",
-        "pear-pear/Console_CommandLine": "*",
-        "pear-pear/Archive_Tar": "*",
+        "twig/twig": "1.12.*",
+        "symfony/yaml": "2.0.*",
         "pear/Console_Color2": "*",
-        "pear/Console_Table": "@dev"
+        "pear/Console_Table": "*",
+        "pear/archive_tar": "*",
+        "pear/console_commandline": "*"
     },
     "autoload": {
         "psr-0": {
@@ -37,5 +27,6 @@
             "ln -s phrozn.php bin/phr.php",
             "chmod +x bin/phrozn.php"
         ]
-    }
+    },
+    "minimum-stability": "dev"
 }
