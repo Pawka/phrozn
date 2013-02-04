@@ -55,7 +55,7 @@ class Clobber
                ? $this->getParseResult()->command->args['path'] : \getcwd() . '/.phrozn';
 
         if (!$this->isAbsolute($path)) { // not an absolute path
-            $path = \getcwd() . '/./' . $path;
+            $path = realpath(\getcwd() . '/./' . $path);
         }
 
         $config = $this->getConfig();
@@ -67,7 +67,7 @@ class Clobber
             "Project folder is to be removed.\n" .
             "This operation %rCAN NOT%n be undone.\n");
 
-        if (is_dir($path) === false) {
+        if (!$path || is_dir($path) === false) {
             throw new \RuntimeException("No project found at \"{$path}\"");
         }
 
