@@ -109,16 +109,6 @@ class Autoloader
 
         $loader = include $base . '../vendor/autoload.php';
 
-        // allow to use plugins from project's .phrozn/plugins
-        $plugins = getcwd();
-        if (strpos($plugins, '.phrozn') === false) {
-            $plugins .= '/.phrozn';
-        }
-        $plugins .= '/plugins/';
-        if (is_dir($plugins)) {
-            $loader->add('PhroznPlugin', $plugins);
-        }
-
         $this->loader = $loader;
     }
 
