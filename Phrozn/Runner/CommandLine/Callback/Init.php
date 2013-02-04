@@ -47,16 +47,13 @@ class Init
     private function initializeNewProject()
     {
         $path = isset($this->getParseResult()->command->args['path'])
-               ? $this->getParseResult()->command->args['path'] : \getcwd();
+               ? $this->getParseResult()->command->args['path'] : \getcwd() . '/.phrozn';
 
         $config = $this->getConfig();
 
         if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
-        $path = realpath($path);
-
-        $path .= '/.phrozn/'; // where to copy skeleton
 
         ob_start();
         $this->out($this->getHeader());
