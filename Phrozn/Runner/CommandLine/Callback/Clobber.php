@@ -52,16 +52,13 @@ class Clobber
     private function purgeProject()
     {
         $path = isset($this->getParseResult()->command->args['path'])
-               ? $this->getParseResult()->command->args['path'] : \getcwd();
+               ? $this->getParseResult()->command->args['path'] : \getcwd() . '/.phrozn';
 
         if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
-        $path = realpath($path);
 
         $config = $this->getConfig();
-
-        $path .= '/.phrozn/'; // where to find skeleton
 
         $this->out($this->getHeader());
         $this->out("Purging project data..");
@@ -71,7 +68,7 @@ class Clobber
             "This operation %rCAN NOT%n be undone.\n");
 
         if (is_dir($path) === false) {
-            throw new \RuntimeException("No project found at {$path}");
+            throw new \RuntimeException("No project found at \"{$path}\"");
         }
 
         if ($this->readLine() === 'yes') {
