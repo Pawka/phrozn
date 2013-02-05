@@ -109,7 +109,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:pear/Archive_Tar.git",
+                "url": "https://github.com/pear/Archive_Tar",
                 "reference": "d4f8bd75185b78bf4e6f1b274db2efff2d460c2e"
             },
             "dist": {
@@ -206,7 +206,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:pear/PEAR_Exception.git",
+                "url": "https://github.com/pear/PEAR_Exception",
                 "reference": "34a32e5abdc8eeaaf148a2a8732af82db76ff07e"
             },
             "dist": {
