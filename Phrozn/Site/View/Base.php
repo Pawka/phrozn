@@ -148,7 +148,7 @@ abstract class Base
     public function render($vars = array())
     {
         // inject front matter options into template
-        $vars = array_merge($vars, $this->getParams());
+        $vars = array_merge_recursive($vars, $this->getParams());
 
         // inject providers content
         if ($providers = $this->getParam('page.providers', false)) {
@@ -484,7 +484,9 @@ abstract class Base
         $layout = $factory->create(); // essentially layout is Site\View as well
         $layout->hasLayout(false); // no nested layouts
 
-        return $layout->render(array('content' => $content, 'entry' => $vars['page']));
+        $vars['content'] = $content;
+        $vars['page'] = $page;
+        return $layout->render($vars);
     }
 
     /**
