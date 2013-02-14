@@ -66,7 +66,7 @@ class HelpTest
     {
         $out = $this->outputter;
 
-        $config = $this->getConfigData('initialize');
+        $config = $this->getConfigData('init');
 
         $result = $this->getParseResult("phr help initialize");
 
@@ -83,7 +83,7 @@ class HelpTest
     {
         $out = $this->outputter;
 
-        $config = $this->getConfigData('initialize');
+        $config = $this->getConfigData('init');
 
         $result = $this->getParseResult("phr help initialize --verbose");
 
@@ -101,7 +101,7 @@ class HelpTest
     {
         $out = $this->outputter;
 
-        $config = $this->getConfigData('initialize');
+        $config = $this->getConfigData('init');
 
         $result = $this->getParseResult("phr help initialize -v");
 
@@ -168,7 +168,7 @@ class HelpTest
     {
         $out = $this->outputter;
 
-        $config = $this->getConfigData('update');
+        $config = $this->getConfigData('up');
 
         $result = $this->getParseResult("phr help update");
 
@@ -219,7 +219,7 @@ class HelpTest
     {
         $out = $this->outputter;
 
-        $config = $this->getConfigData('initialize');
+        $config = $this->getConfigData('init');
 
         $result = $this->getParseResult("phr ? initialize");
 
@@ -270,7 +270,7 @@ class HelpTest
     {
         $out = $this->outputter;
 
-        $config = $this->getConfigData('update');
+        $config = $this->getConfigData('up');
 
         $result = $this->getParseResult("phr ? update");
 

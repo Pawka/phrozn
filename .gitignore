@@ -5,6 +5,5 @@ __TwigTemplate*
 .settings
 .buildpath
 .project
-composer.lock
-composer.phar
+*.phar
 /vendor/

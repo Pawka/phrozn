@@ -1,8 +1,8 @@
-# phr up 
+# phr up
 ---
 command:
-    name: &name update
-    aliases: [build, up]
+    name: &name up
+    aliases: [build, update]
     description: &desc Phrozn usage manual
     options:
         regen:
@@ -10,7 +10,7 @@ command:
             long_name:   --regen
             doc_name:    -R [--regen]
             description: Re-generate the site from scratch removing any previous content
-            action:      StoreTrue 
+            action:      StoreTrue
     arguments:
         in:
             help_name: "[SRC]"
@@ -26,7 +26,7 @@ callback: [Up, execute]
 
 # documentation
 docs:
-    name: update (up) 
+    name: update (up)
     summary: *desc
     description: |
         This command compiles/updates static site.
@@ -35,7 +35,7 @@ docs:
     usage: %bphrozn%n %gup%n [SRC] [DEST]
     examples: |
         To compile project in current directory:
-        %bphrozn%n %gup%n 
+        %bphrozn%n %gup%n
 
         To compile project to specified directory DEST:
         %bphrozn%n %ginit%n DEST
