@@ -485,7 +485,7 @@ abstract class Base
         $layout->hasLayout(false); // no nested layouts
 
         $vars['content'] = $content;
-        $vars['page'] = $page;
+        $vars['entry'] = $vars['page'];
         return $layout->render($vars);
     }
 
