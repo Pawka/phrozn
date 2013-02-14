@@ -77,11 +77,10 @@ class ClobberTest
         mkdir($path . '/.phrozn');
         touch($path . '/.phrozn/config.yml');
 
-
-        $result = $this->getParseResult("phr clobber {$path}");
-
         $this->assertTrue(is_dir($path . '/.phrozn'));
         $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
+
+        $result = $this->getParseResult("phr clobber {$path}/.phrozn");
 
         $this->runner
             ->setUnitTestData('yes')
@@ -92,8 +91,7 @@ class ClobberTest
         $out->assertInLogs("Located project folder: {$path}/.phrozn");
         $out->assertInLogs("[DELETED]  {$path}/.phrozn");
 
-
-        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(file_exists($path . '/.phrozn'));
         $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
     }
 
@@ -106,7 +104,7 @@ class ClobberTest
         touch($path . '/.phrozn/config.yml');
 
 
-        $result = $this->getParseResult("phr clobber {$path}");
+        $result = $this->getParseResult("phr clobber {$path}/.phrozn");
 
         $this->assertTrue(is_dir($path . '/.phrozn'));
         $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
@@ -148,7 +146,7 @@ class ClobberTest
         $out->assertInLogs("Located project folder: {$path}/.phrozn");
         $out->assertInLogs("[DELETED]  {$path}/.phrozn");
 
-        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(file_exists($path . '/.phrozn'));
         $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
     }
 
@@ -162,7 +160,7 @@ class ClobberTest
         touch($path . '/.phrozn/config.yml');
 
 
-        $result = $this->getParseResult("phr clobber project");
+        $result = $this->getParseResult("phr clobber project/.phrozn");
 
         $this->assertTrue(is_dir($path . '/.phrozn'));
         $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
@@ -176,7 +174,7 @@ class ClobberTest
         $out->assertInLogs("Located project folder: {$path}/.phrozn");
         $out->assertInLogs("[DELETED]  {$path}/.phrozn");
 
-        $this->assertFalse(is_dir($path . '/.phrozn'));
+        $this->assertFalse(file_exists($path . '/.phrozn'));
         $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
     }
 

@@ -106,7 +106,7 @@ class Single
         $in  = $this->getPathArgument('in');
         $out = $this->getPathArgument('out');
 
-        if (strpos($in, '.phrozn') === false) {
+        if (file_exists($in . DIRECTORY_SEPARATOR . '/.phrozn')) {
             return array(
                 $in . '/.phrozn/entries/' . $file,
                 $in . '/.phrozn/',
@@ -114,9 +114,9 @@ class Single
             );
         } else {
             return array(
-                $in . '/' . $file,
+                $in . '/entries/' . $file,
                 $in . '/',
-                $out . '/../'
+                $out . '/'
             );
         }
     }

@@ -6,7 +6,6 @@ Type 'phrozn ? help' for help on using help.
 Type 'phrozn --version' to see the program version and installed plugins.
 
 Available commands:
-    bundle
     clobber
     help (h, ?)
     init (initialize)

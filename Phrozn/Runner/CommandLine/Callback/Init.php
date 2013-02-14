@@ -47,16 +47,13 @@ class Init
     private function initializeNewProject()
     {
         $path = isset($this->getParseResult()->command->args['path'])
-               ? $this->getParseResult()->command->args['path'] : \getcwd();
+               ? $this->getParseResult()->command->args['path'] : \getcwd() . '/.phrozn';
 
         $config = $this->getConfig();
 
         if (!$this->isAbsolute($path)) { // not an absolute path
             $path = \getcwd() . '/./' . $path;
         }
-        $path = realpath($path);
-
-        $path .= '/.phrozn/'; // where to copy skeleton
 
         ob_start();
         $this->out($this->getHeader());
@@ -64,7 +61,7 @@ class Init
         $this->out("\n  Project path: {$path}");
 
         if (is_dir($path)) {
-            $this->out(self::STATUS_FAIL . "Project directory '.phrozn' already exists..");
+            $this->out(self::STATUS_FAIL . "Project directory '" . basename($path) . "' already exists..");
             $this->out($this->pad(self::STATUS_FAIL) . "Type 'phrozn help clobber' to get help on removing existing project.");
             return $this->out($this->getFooter());
         } else {

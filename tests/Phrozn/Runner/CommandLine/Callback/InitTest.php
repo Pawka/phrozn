@@ -75,7 +75,7 @@ class InitTest
 
         $path = dirname(__FILE__) . '/project';
 
-        $result = $this->getParseResult("phr init {$path}");
+        $result = $this->getParseResult("phr init {$path}/.phrozn");
 
         $this->assertFalse(is_dir($path . '/.phrozn'));
         $this->assertFalse(is_dir($path . '/.phrozn/entries'));
@@ -90,9 +90,9 @@ class InitTest
             ->execute();
 
         $out->assertInLogs('Initializing new project');
-        $out->assertInLogs('[ADDED]   config.yml');
-        $out->assertInLogs('[ADDED]   entries/index.twig');
-        $out->assertInLogs('[ADDED]   layouts/default.twig');
+        $out->assertInLogs('[ADDED]   /config.yml');
+        $out->assertInLogs('[ADDED]   /entries/index.twig');
+        $out->assertInLogs('[ADDED]   /layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/.phrozn'));
@@ -126,9 +126,9 @@ class InitTest
             ->execute();
 
         $out->assertInLogs('Initializing new project');
-        $out->assertInLogs('[ADDED]   config.yml');
-        $out->assertInLogs('[ADDED]   entries/index.twig');
-        $out->assertInLogs('[ADDED]   layouts/default.twig');
+        $out->assertInLogs('[ADDED]   /config.yml');
+        $out->assertInLogs('[ADDED]   /entries/index.twig');
+        $out->assertInLogs('[ADDED]   /layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/.phrozn'));
@@ -147,7 +147,7 @@ class InitTest
         $path = dirname(__FILE__) . '/';
         $this->assertTrue(chdir($path));
 
-        $result = $this->getParseResult("phr init project");
+        $result = $this->getParseResult("phr init project/.phrozn");
 
         $this->assertFalse(is_dir($path . '/project/.phrozn'));
         $this->assertFalse(is_dir($path . '/project/.phrozn/entries'));
@@ -163,9 +163,9 @@ class InitTest
 
 
         $out->assertInLogs('Initializing new project');
-        $out->assertInLogs('[ADDED]   config.yml');
-        $out->assertInLogs('[ADDED]   entries/index.twig');
-        $out->assertInLogs('[ADDED]   layouts/default.twig');
+        $out->assertInLogs('[ADDED]   /config.yml');
+        $out->assertInLogs('[ADDED]   /entries/index.twig');
+        $out->assertInLogs('[ADDED]   /layouts/default.twig');
         $out->assertInLogs("Project path: {$path}");
 
         $this->assertTrue(is_dir($path . '/project/.phrozn'));
@@ -185,7 +185,7 @@ class InitTest
 
         $this->assertTrue(is_dir($path));
 
-        $result = $this->getParseResult("phr init {$path}");
+        $result = $this->getParseResult("phr init {$path}/.phrozn");
 
         $this->assertFalse(is_dir($path . '/.phrozn'));
         mkdir($path . '/.phrozn');
@@ -208,7 +208,7 @@ class InitTest
 
         $this->assertTrue(is_dir($path));
 
-        $result = $this->getParseResult("phr init {$path}");
+        $result = $this->getParseResult("phr init {$path}/.phrozn");
 
         $this->assertFalse(is_dir($path . '/.phrozn'));
 
