@@ -201,6 +201,33 @@ abstract class Base
     }
 
     /**
+     * Search if an alias exists for this command
+     *
+     * @param string $file Command name (could be an alias)
+     * @return string The real command file name
+     *
+     */
+    private function getRealCommandName($file)
+    {
+        $iter = CommandLine\Commands::getInstance();
+        $commands = array();
+        foreach ($iter as $name => $data) {
+            $commands[$name] = $data;
+        }
+        ksort($commands);
+
+        if (!file_exists($file)) {
+            foreach ($commands as $command) {
+                if (is_array($command["command"]["aliases"]) && in_array($file, $command["command"]["aliases"])) {
+                    return $command["command"]["name"];
+                }
+            }
+        }
+
+        return $file;
+    }
+
+    /**
      * Combine command documentation
      *
      * @param string $file Command file to combine
@@ -210,6 +237,8 @@ abstract class Base
      */
     protected function combine($file, $verbose = false)
     {
+
+        $file = $this->getRealCommandName($file);
         $config = $this->getConfig();
         $file = $config['paths']['configs'] . 'commands/' . $file . '.yml';
         $data = Yaml::parse($file);
@@ -217,6 +246,9 @@ abstract class Base
         if ($data === $file) {
             return false;
         }
+
+
+
         $docs = $data['docs'];
         $command = $data['command'];
 
