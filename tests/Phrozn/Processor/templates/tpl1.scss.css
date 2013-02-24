@@ -1,0 +1,33 @@
+#wrap {
+  background: #f0f0f0;
+  border: 2px solid #201a16;
+  margin: 0 auto;
+  overflow: hidden;
+  width: 1000px; }
+
+h1 {
+  background: #1d5a50;
+  border-bottom: 1px solid #508d83;
+  border-top: 1px solid #00271d;
+  color: white;
+  font-family: Helvetica, sans-serif;
+  padding: 3px; }
+
+h2 {
+  color: #a1915f; }
+
+#content, #skyscraper {
+  float: left; }
+
+#content {
+  border-right: 1px solid #dfdfdf;
+  width: 750px; }
+  #content h2 {
+    background: #201a16; }
+  #content p {
+    background: #fff; }
+
+#skyscraper {
+  width: 250px; }
+  #skyscraper h2 {
+    background: #3b3128; }
