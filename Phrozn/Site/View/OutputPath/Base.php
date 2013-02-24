@@ -80,9 +80,26 @@ abstract class Base
     protected function getInputFileWithoutExt()
     {
         $info = pathinfo($this->getView()->getInputFile());
+
         return $info['dirname']
             . DIRECTORY_SEPARATOR
             . ($info['filename']?:$info['basename']); // allow dot files
+    }
+
+    /**
+     * Get the file extension for the input file
+     *
+     * @return string
+     */
+    protected function getInputFileExtension($includeDot = true)
+    {
+        $extension = pathinfo($this->getView()->getInputFile(), PATHINFO_EXTENSION);
+
+        if ($includeDot && $extension != '') {
+            return '.' . $extension;
+        }
+
+        return $extension;
     }
 
     /**
@@ -93,17 +110,21 @@ abstract class Base
      *
      * @return string
      */
-    protected function getRelativeFile($base, $prepend = true)
+    protected function getRelativeFile($base = '', $prepend = true)
     {
         // find file path w/o extension
         $inputFile = $this->getInputFileWithoutExt();
+        $inputRoot = $this->getView()->getInputRootDir();
 
-        // find relative path, wrt to scripts
-        $pos = strpos($inputFile, '/' . $base);
-        if ($pos !== false) {
-            $inputFile = substr($inputFile, $pos + ($prepend ? 0 : 1 + strlen($base)));
-        } else {
-            $inputFile = ($prepend ? '/' . $base : ''). '/' . basename($inputFile);
+        // Remove the input root from the input filename
+        $inputFile = str_replace($inputRoot, '', $inputFile);
+
+        // find relative path, wrt to output root dir
+        if ($base) {
+            $pos = strpos($inputFile, $base);
+            if ($pos !== false) {
+                $inputFile = substr($inputFile, $pos + ($prepend ? 0 : 1 + strlen($base)));
+            }
         }
 
         return $inputFile;
