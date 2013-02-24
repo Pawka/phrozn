@@ -1,0 +1,52 @@
+$pageWidth: 1000px;
+$color1: #F0F0F0;
+$color2: #201A16;
+$color3: #3B3128;
+$color4: #1D5A50;
+
+#wrap {
+    background: $color1;
+    border: 2px solid $color2;
+    margin: 0 auto;
+    overflow: hidden;
+    width: $pageWidth;
+}
+
+h1 {
+    background: $color4;
+    border-bottom: 1px solid $color4 + #333;
+    border-top: 1px solid $color4 - #333;
+    color: white;
+    font-family: Helvetica, sans-serif;
+    padding: 3px;
+}
+
+h2 {
+    color: #A1915F;
+}
+
+#content, #skyscraper {
+    float: left;
+}
+
+#content {
+    border-right: 1px solid $color1 - #111;
+    width: $pageWidth * .75;
+
+    h2 {
+        background: $color2;
+    }
+
+    p {
+        background: #FFF;
+    }
+}
+
+#skyscraper {
+    width: $pageWidth * .25;
+
+    h2 {
+        background: $color3;
+    }
+}
+
