@@ -47,8 +47,6 @@ class Markdown
      */
     public function __construct($options = array())
     {
-        $path = Loader::getInstance()->getPath('library');
-        require_once $path . '/Vendor/Extra/markdown.php';
         $this->markdown = new \Markdown_Parser();
     }
 
