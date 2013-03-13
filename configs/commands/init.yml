@@ -1,12 +1,12 @@
-# phr init 
+# phr init
 ---
 command:
-    name: &name initialize
-    aliases: [init]
+    name: &name init
+    aliases: [initialize]
     description: &desc Initialize Phrozn project
     options:
         verbose:
-           short_name: -v 
+           short_name: -v
            long_name: --verbose
            doc_name: -v [--verbose]
            action: StoreTrue
@@ -22,7 +22,7 @@ callback: [Init, execute]
 
 # documentation
 docs:
-    name: initialize (init) 
+    name: initialize (init)
     summary: *desc
     description: |
         This command creates empty phrozn site.
@@ -31,7 +31,7 @@ docs:
     usage: %bphrozn%n %ginit%n [PATH]
     examples: |
         To create project in current directory:
-        %bphrozn%n %ginit%n 
+        %bphrozn%n %ginit%n
 
         To create project in specified directory PATH:
         %bphrozn%n %ginit%n PATH
