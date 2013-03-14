@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<server>
-  <name>pear.phrozn.info</name>
-  <summary>Phrozn Project: PEAR channel</summary>
-  <alias>phrozn</alias>
-  <url>http://pear.phrozn.info</url>
-</server>
-
