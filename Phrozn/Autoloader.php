@@ -61,6 +61,30 @@ class Autoloader
      */
     public function getLoader()
     {
+        if (null === $this->loader) {
+            if (strpos('@PHP-BIN@', '@PHP-BIN') === 0) {
+                $base = dirname(__FILE__) . '/';
+                set_include_path($base . PATH_SEPARATOR . get_include_path());
+            } else {
+                $base = '@PEAR-DIR@/Phrozn/';
+            }
+
+            //Autoload candidates.
+            $dirs = array($base . '..', getcwd());
+
+            foreach ($dirs as $dir) {
+                $file = $dir . '/vendor/autoload.php';
+                if (file_exists($file)) {
+                    $this->loader = include $file;
+                    break;
+                }
+            }
+
+            if (null === $this->loader) {
+                throw new \RuntimeException("Unable to locate autoloader.");
+            }
+        }
+
         return $this->loader;
     }
 
@@ -94,30 +118,13 @@ class Autoloader
     }
 
     /**
-     * Setup autoloader. Phrozn uses Zend Framework 2 autoloader.
+     * Setup autoloader.
      *
      * @return void
      */
     private function __construct()
     {
-        if (strpos('@PHP-BIN@', '@PHP-BIN') === 0) {
-            $base = dirname(__FILE__) . '/';
-            set_include_path($base . PATH_SEPARATOR . get_include_path());
-        } else {
-            $base = '@PEAR-DIR@/Phrozn/';
-        }
-
-        $loader = include $base . '../vendor/autoload.php';
-
-        // allow to use plugins from project's .phrozn/plugins
-        $plugins = getcwd();
-        if (strpos($plugins, '.phrozn') === false) {
-            $plugins .= '/.phrozn';
-        }
-        $plugins .= '/plugins/';
-        if (is_dir($plugins)) {
-            $loader->add('PhroznPlugin', $plugins);
-        }
+        $loader = $this->getLoader();
 
         $this->loader = $loader;
     }

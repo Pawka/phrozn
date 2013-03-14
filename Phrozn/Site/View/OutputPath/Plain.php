@@ -43,7 +43,8 @@ class Plain
         if ($permalink === null) {
             return rtrim($this->getView()->getOutputDir(), '/')
                 . '/'
-                . ltrim($this->getRelativeFile('entries', false), '/');
+                . ltrim($this->getRelativeFile('entries', false), '/')
+                . $this->getInputFileExtension();
         }
 
         $class = 'Phrozn\\Site\\View\\OutputPath\\Entry\\' . ucfirst($permalink);

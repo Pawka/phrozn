@@ -13,33 +13,35 @@
  * limitations under the License.
  *
  * @category    Phrozn
- * @package     Phrozn\Site\View
+ * @package     Phrozn\Has
  * @author      Victor Farazdagi
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-namespace Phrozn\Site\View\OutputPath;
-use Phrozn\Site\View;
+namespace Phrozn\Has;
 
 /**
- * Output path builder for site styles
+ * Entity has input root dir property
  *
  * @category    Phrozn
- * @package     Phrozn\Site\View
+ * @package     Phrozn\Has
  * @author      Victor Farazdagi
  */
-class Style
-    extends Base
+interface InputRootDir
 {
     /**
-     * Get calculated path
+     * Set input root directory path
+     *
+     * @param string $path Directory path
+     *
+     * @return \Phrozn\Has\InputRootDir
+     */
+    public function setInputRootDir($path);
+
+    /**
+     * Get input root directory path
      *
      * @return string
      */
-    public function get()
-    {
-        return rtrim($this->getView()->getOutputDir(), '/')
-             . '/'
-             . ltrim($this->getRelativeFile(), '/') . '.css';
-    }
+    public function getInputRootDir();
 }

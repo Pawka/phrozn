@@ -27,7 +27,7 @@ use Phrozn\Site\View\OutputPath,
  * @package     Phrozn\Site
  * @author      Victor Farazdagi
  */
-class OuputPathTest
+class OutputPathTest
     extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -36,6 +36,8 @@ class OuputPathTest
     public function testEntriesPaths()
     {
         $view = new View\Twig();
+        $view->setInputRootDir('/var/www/phrozn-test/');
+
         $view
             ->setInputFile('/var/www/phrozn-test/entries/some-entry.twig')
             ->setOutputDir('/var/www/output');
@@ -52,12 +54,14 @@ class OuputPathTest
             ->setInputFile('/var/www/phrozn-test/sub/folder/some-entry.twig')
             ->setOutputDir('/var/www/output');
         $path->setView($view);
-        $this->assertSame('/var/www/output/some-entry.html', $path->get());
+        $this->assertSame('/var/www/output/sub/folder/some-entry.html', $path->get());
     }
 
     public function testStylesPaths()
     {
         $view = new View\Less();
+        $view->setInputRootDir('/var/www/phrozn-test/');
+
         $view
             ->setInputFile('/var/www/phrozn-test/styles/some-entry.less')
             ->setOutputDir('/var/www/output');
@@ -74,12 +78,14 @@ class OuputPathTest
             ->setInputFile('/var/www/phrozn-test/sub/folder/some-entry.less')
             ->setOutputDir('/var/www/output');
         $path->setView($view);
-        $this->assertSame('/var/www/output/styles/some-entry.css', $path->get());
+        $this->assertSame('/var/www/output/sub/folder/some-entry.css', $path->get());
     }
 
     public function testScriptsPaths()
     {
         $view = new View\Less();
+        $view->setInputRootDir('/var/www/phrozn-test/');
+
         $view
             ->setInputFile('/var/www/phrozn-test/scripts/some-entry.js')
             ->setOutputDir('/var/www/output');
@@ -96,7 +102,7 @@ class OuputPathTest
             ->setInputFile('/var/www/phrozn-test/sub/folder/some-entry.js')
             ->setOutputDir('/var/www/output');
         $path->setView($view);
-        $this->assertSame('/var/www/output/scripts/some-entry.js', $path->get());
+        $this->assertSame('/var/www/output/sub/folder/some-entry.js', $path->get());
     }
 
 }

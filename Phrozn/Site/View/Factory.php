@@ -43,6 +43,13 @@ class Factory
     const DEFAULT_LAYOUT_SCRIPT = 'default.twig';
 
     /**
+     * Path to input root dir
+     *
+     * @var string
+     */
+    private $inputRootDir;
+
+    /**
      * Path to input file
      * @var string
      */
@@ -72,6 +79,29 @@ class Factory
         $type = $ext ? : self::DEFAULT_VIEW_TYPE;
 
         return $this->constructFile($type);
+    }
+
+    /**
+     * Set input root dir
+     *
+     * @param string $path Input root directory
+     *
+     * @return \Phrozn\Site\View\Factory
+     */
+    public function setInputRootDir($path)
+    {
+        $this->inputRootDir = $path;
+        return $this;
+    }
+
+    /**
+     * Get input root directory
+     *
+     * @return string
+     */
+    public function getInputRootDir()
+    {
+        return $this->inputRootDir;
     }
 
     /**
@@ -122,6 +152,7 @@ class Factory
             }
         }
         $object = new $class;
+        $object->setInputRootDir($this->getInputRootDir());
         $object->setInputFile($this->getInputFile());
         return $object;
     }

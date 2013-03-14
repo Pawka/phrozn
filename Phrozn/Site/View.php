@@ -33,6 +33,7 @@ use Phrozn\Has;
 interface View
     extends
         Has\SiteConfig,
+        Has\InputRootDir,
         Has\InputFile,
         Has\OutputFile,
         Has\OutputDir,

@@ -82,7 +82,7 @@ class SingleTest
         $this->assertFalse(is_dir($path . '/.phrozn'));
         $this->assertFalse(is_dir($path . '/.phrozn/entries'));
         $this->assertFalse(is_readable($path . '/.phrozn/config.yml'));
-        `{$this->phr} init {$path}`;
+        `{$this->phr} init {$path}/.phrozn`;
         $this->assertTrue(is_dir($path . '/.phrozn'));
         $this->assertTrue(is_dir($path . '/.phrozn/entries'));
         $this->assertTrue(is_readable($path . '/.phrozn/config.yml'));
@@ -100,6 +100,38 @@ class SingleTest
         $this->assertFileExists($path . '/about/index.html');
         $this->assertFileNotExists($path . '/index.html');
     }
+
+    public function testProjectCompileNotStandardFolder()
+    {
+        $out = $this->outputter;
+
+        $path = dirname(__FILE__) . '/project/subpath';
+        mkdir($path);
+
+        // initialize project
+        $this->assertFalse(is_dir($path . '/src'));
+        $this->assertFalse(is_dir($path . '/src/entries'));
+        $this->assertFalse(is_readable($path . '/src/config.yml'));
+        `{$this->phr} init {$path}/src`;
+        mkdir($path . '/htdocs');
+        $this->assertTrue(is_dir($path . '/src'));
+        $this->assertTrue(is_dir($path . '/src/entries'));
+        $this->assertTrue(is_readable($path . '/src/config.yml'));
+
+        $result = $this->getParseResult("{$this->phr} single about.twig {$path}/src {$path}/htdocs");
+
+        $this->runner
+            ->setOutputter($out)
+            ->setParseResult($result)
+            ->execute();
+
+        $out->assertInLogs("[OK]      Source directory located: {$path}/src");
+        $out->assertInLogs("[OK]      Destination directory located: {$path}/htdocs");
+
+        $this->assertFileExists($path . '/htdocs/about/index.html');
+        $this->assertFileNotExists($path . '/htdocs/index.html');
+    }
+
 
     private function getParseResult($cmd)
     {
