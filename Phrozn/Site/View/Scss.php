@@ -20,17 +20,17 @@
 
 namespace Phrozn\Site\View;
 use Phrozn\Site,
-    Phrozn\Site\View\OutputPath\Entry as OutputFile,
-    Phrozn\Processor\Textile as Processor;
+    Phrozn\Site\View\OutputPath\Style as OutputFile,
+    Phrozn\Processor\Scss as Processor;
 
 /**
- * Textile View
+ * SCSS View
  *
  * @category    Phrozn
  * @package     Phrozn\Site\View
  * @author      Victor Farazdagi
  */
-class Textile
+class Scss
     extends Base
     implements Site\View
 {
@@ -50,35 +50,14 @@ class Textile
     }
 
     /**
-     * Render view. Textile views are rendered within layout.
-     *
-     * @param array $vars List of variables passed to text processors
-     *
-     * @return string
-     */
-    public function render($vars = array())
-    {
-        $view = parent::render($vars);
-        if ($this->hasLayout()) {
-            // inject global site and front matter options into template
-            $vars = array_merge_recursive($vars, $this->getParams());
-            $view = $this->applyLayout($view, $vars);
-        }
-        return $view;
-    }
-
-    /**
      * Get output file path
      *
      * @return string
      */
     public function getOutputFile()
     {
-        if (!$this->outputFile) {
-            $path = new OutputFile($this);
-            $this->setOutputFile($path->get());
-        }
-
-        return $this->outputFile;
+        $path = new OutputFile($this);
+        return $path->get();
     }
+
 }
