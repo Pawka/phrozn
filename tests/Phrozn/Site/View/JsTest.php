@@ -59,6 +59,7 @@ class JsTest
         $jsOut = dirname(__FILE__) . '/scripts/jquery/test.js';
         $path = dirname(__FILE__) . '/out';
         $view = new View($jsIn, $path);
+        $view->setInputRootDir(dirname(__FILE__));
 
         $this->assertSame('test.js', basename($view->getInputFile()));
         $this->assertSame('test.js', basename($view->getOutputFile()));

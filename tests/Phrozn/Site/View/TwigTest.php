@@ -75,6 +75,7 @@ class TwigTest
         $html = dirname(__FILE__) . '/../project/.phrozn/entries/2011-02-24-compile.html';
         $path = dirname(__FILE__) . '/out/';
         $view = new View($twig, $path);
+        $view->setInputRootDir(dirname(__FILE__) . '/../project/.phrozn');
 
         $this->assertSame('2011-02-24-compile.twig', basename($view->getInputFile()));
         $this->assertSame('2011-02-24-compile.html', basename($view->getOutputFile()));
