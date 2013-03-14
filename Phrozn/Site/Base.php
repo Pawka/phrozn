@@ -238,6 +238,7 @@ abstract class Base
                 if ($item->isFile()) {
                     try {
                         $factory = new View\Factory($item->getRealPath());
+                        $factory->setInputRootDir($projectDir);
                         $view = $factory->create();
                         $view
                             ->setSiteConfig($this->getSiteConfig())
@@ -270,6 +271,7 @@ abstract class Base
         if (!is_dir($dir . '/entries')) {
             throw new \RuntimeException('Entries folder not found');
         }
+
         return $dir;
     }
 

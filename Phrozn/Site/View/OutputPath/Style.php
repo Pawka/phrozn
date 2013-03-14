@@ -40,6 +40,6 @@ class Style
     {
         return rtrim($this->getView()->getOutputDir(), '/')
              . '/'
-             . ltrim($this->getRelativeFile('styles'), '/') . '.css';
+             . ltrim($this->getRelativeFile(), '/') . '.css';
     }
 }

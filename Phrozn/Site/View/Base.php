@@ -38,6 +38,12 @@ abstract class Base
     implements \Phrozn\Site\View
 {
     /**
+     * Input root dir
+     * @var string
+     */
+    private $inputRootDir;
+
+    /**
      * Input file path
      * @var string
      */
@@ -53,7 +59,7 @@ abstract class Base
      * Output file path
      * @var string
      */
-    private $outputFile;
+    protected $outputFile;
 
     /**
      * Registered text processors
@@ -122,12 +128,12 @@ abstract class Base
     {
         $out = $this->render($vars);
 
-        $destinationDir = dirname($this->getOutputFile());
+        $outputFile = $this->getOutputFile();
+        $destinationDir = dirname($outputFile);
         if (!is_dir($destinationDir)) {
             mkdir($destinationDir, 0777, true);
         }
 
-        $outputFile = $this->getOutputFile();
         if (!is_dir($outputFile)) {
             file_put_contents($outputFile, $out);
         } else {
@@ -219,8 +225,35 @@ abstract class Base
      */
     public function getOutputFile()
     {
-        $path = new OutputFile($this);
-        return $path->get();
+        if (!$this->outputFile) {
+            $path = new OutputFile($this);
+            $this->setOutputFile($path->get());
+        }
+
+        return $this->outputFile;
+    }
+
+    /**
+     * Set input root directory path
+     *
+     * @param string $path Directory path
+     *
+     * @return \Phrozn\Site\View
+     */
+    public function setInputRootDir($path)
+    {
+        $this->inputRootDir = $path;
+        return $this;
+    }
+
+    /**
+     * Get input root directory path
+     *
+     * @return string
+     */
+    public function getInputRootDir()
+    {
+        return $this->inputRootDir;
     }
 
     /**

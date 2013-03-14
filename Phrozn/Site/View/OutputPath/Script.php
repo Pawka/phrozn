@@ -40,6 +40,6 @@ class Script
     {
         return rtrim($this->getView()->getOutputDir(), '/')
              . '/'
-             . ltrim($this->getRelativeFile('scripts'), '/') . '.js';
+             . ltrim($this->getRelativeFile(), '/') . '.js';
     }
 }
