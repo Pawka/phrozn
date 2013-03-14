@@ -59,6 +59,7 @@ class MarkdownTest
         $html = dirname(__FILE__) . '/../project/.phrozn/entries/markdown.html';
         $path = dirname(__FILE__) . '/out/';
         $view = new View($entry, $path);
+        $view->setInputRootDir(dirname(__FILE__) . '/../project/.phrozn');
 
         $this->assertSame('markdown.markdown', basename($view->getInputFile()));
         $this->assertSame('markdown.html', basename($view->getOutputFile()));

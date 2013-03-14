@@ -101,7 +101,7 @@ class DefaultSiteTest
         $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
 
-        $outputter->assertInLogs("2011-02-24-wrong-file-type written");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong written");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
 
@@ -126,11 +126,12 @@ class DefaultSiteTest
         $site
             ->setOutputter($outputter)
             ->compile();
+
         $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
         $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
         $this->assertTrue(is_readable($path . 'site/media/img/test.png'));
 
-        $outputter->assertInLogs("2011-02-24-wrong-file-type written");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong written");
         $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
 

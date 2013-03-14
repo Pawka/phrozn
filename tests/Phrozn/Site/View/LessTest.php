@@ -59,6 +59,7 @@ class LessTest
         $css = dirname(__FILE__) . '/styles/style.css';
         $path = dirname(__FILE__) . '/out';
         $view = new View($less, $path);
+        $view->setInputRootDir(dirname(__FILE__));
 
         $this->assertSame('style.less', basename($view->getInputFile()));
         $this->assertSame('style.css', basename($view->getOutputFile()));

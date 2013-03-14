@@ -60,6 +60,7 @@ class TextileTest
         $html = dirname(__FILE__) . '/../project/.phrozn/entries/textile.html';
         $path = dirname(__FILE__) . '/out/';
         $view = new View($entry, $path);
+        $view->setInputRootDir(dirname(__FILE__));
 
         $this->assertSame('textile.textile', basename($view->getInputFile()));
         $this->assertSame('textile.html', basename($view->getOutputFile()));

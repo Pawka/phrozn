@@ -57,6 +57,7 @@ class CssTest
         $css = dirname(__FILE__) . '/styles/style.css';
         $path = dirname(__FILE__) . '/out';
         $view = new View($css, $path);
+        $view->setInputRootDir(dirname(__FILE__));
 
         $this->assertSame('style.css', basename($view->getInputFile()));
         $this->assertSame('style.css', basename($view->getOutputFile()));

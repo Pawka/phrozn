@@ -68,7 +68,11 @@ class Plain
      */
     public function getOutputFile()
     {
-        $path = new OutputFile($this);
-        return $path->get();
+        if (!$this->outputFile) {
+            $path = new OutputFile($this);
+            $this->setOutputFile($path->get());
+        }
+
+        return $this->outputFile;
     }
 }

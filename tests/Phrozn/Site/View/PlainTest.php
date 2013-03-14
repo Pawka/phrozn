@@ -57,6 +57,7 @@ class PlainTest
         $content = dirname(__FILE__) . '/entries/htaccess';
         $path = dirname(__FILE__) . '/out';
         $view = new View($content, $path);
+        $view->setInputRootDir(dirname(__FILE__));
 
         $this->assertSame('htaccess', basename($view->getInputFile()));
         $this->assertSame('.htaccess', basename($view->getOutputFile()));
