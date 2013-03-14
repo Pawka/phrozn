@@ -3,7 +3,7 @@
 name: Phrozn
 summary: Static web-site generator for PHP.
 description: &desc Phrozn is extremely flexible static site generator for PHP.
-version: &ver "0.5.3DEV"
+version: &ver "0.5.4"
 stability: beta
 author: Victor Farazdagi
 
