@@ -51,4 +51,16 @@ class LessTest
         $this->assertSame($processor->getConfig(), $configSample);
     }
 
+    public function testRenderImportLessDirective()
+    {
+        $tpl = file_get_contents($this->path . 'tpl2.less');
+        $expectedResult = file_get_contents($this->path . 'tpl1.css');
+
+        $processor = new Processor();
+        $processor->setLessImportDir($this->path);
+
+        $rendered = $processor->render($tpl);
+        $this->assertSame($rendered, $expectedResult);
+    }
+
 }
