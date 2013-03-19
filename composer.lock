@@ -1,6 +1,134 @@
 {
-    "hash": "d1b707b896ea7d5b91f6dd659670dd8b",
+    "hash": "2ad7a8108331e396cd57bea692f9db01",
     "packages": [
+        {
+            "name": "dflydev/markdown",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dflydev/dflydev-markdown.git",
+                "reference": "11f8faa2d17f717a038b4d372abd22a6ac4a15dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dflydev/dflydev-markdown/zipball/11f8faa2d17f717a038b4d372abd22a6ac4a15dc",
+                "reference": "11f8faa2d17f717a038b4d372abd22a6ac4a15dc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "time": "2012-07-15 16:31:27",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "dflydev\\markdown": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Dragonfly Development Inc.",
+                    "email": "info@dflydev.com",
+                    "homepage": "http://dflydev.com"
+                },
+                {
+                    "name": "Beau Simensen",
+                    "email": "beau@dflydev.com",
+                    "homepage": "http://beausimensen.com"
+                },
+                {
+                    "name": "Michel Fortin",
+                    "homepage": "http://michelf.com"
+                },
+                {
+                    "name": "John Gruber",
+                    "homepage": "http://daringfireball.net"
+                }
+            ],
+            "description": "PHP Markdown & Extra",
+            "homepage": "http://github.com/dflydev/dflydev-markdown",
+            "keywords": [
+                "markdown"
+            ]
+        },
+        {
+            "name": "leafo/lessphp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafo/lessphp.git",
+                "reference": "e53c4ebb352c312af6a08dcfe183805dca16b992"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/e53c4ebb352c312af6a08dcfe183805dca16b992",
+                "reference": "e53c4ebb352c312af6a08dcfe183805dca16b992",
+                "shasum": ""
+            },
+            "time": "2013-03-02 22:57:32",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "lessc.inc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Leaf Corcoran",
+                    "email": "leafot@gmail.com",
+                    "homepage": "http://leafo.net"
+                }
+            ],
+            "description": "lessphp is a compiler for LESS written in PHP.",
+            "homepage": "http://leafo.net/lessphp/"
+        },
+        {
+            "name": "netcarver/textile",
+            "version": "2.5.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netcarver/textile.git",
+                "reference": "60313834cd4a2f3bedfabbf0291507b837b631f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netcarver/textile/zipball/60313834cd4a2f3bedfabbf0291507b837b631f0",
+                "reference": "60313834cd4a2f3bedfabbf0291507b837b631f0",
+                "shasum": ""
+            },
+            "time": "2013-01-28 00:22:52",
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "classTextile.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A lightweight markup language that takes (almost) plaintext and converts it into well formed HTML.",
+            "homepage": "https://github.com/netcarver/textile"
+        },
         {
             "name": "pear/Console_Color2",
             "version": "dev-master",
@@ -109,19 +237,19 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pear/Archive_Tar",
-                "reference": "d4f8bd75185b78bf4e6f1b274db2efff2d460c2e"
+                "url": "https://github.com/pear/Archive_Tar.git",
+                "reference": "1.3.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/d4f8bd75185b78bf4e6f1b274db2efff2d460c2e",
-                "reference": "d4f8bd75185b78bf4e6f1b274db2efff2d460c2e",
+                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/1.3.11",
+                "reference": "1.3.11",
                 "shasum": ""
             },
             "require": {
                 "php": ">=4.3.0"
             },
-            "time": "2013-01-23 12:05:57",
+            "time": "2013-02-09 11:44:32",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -168,8 +296,8 @@
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.1.0",
-                "pear/pear_exception": "dev-master"
+                "pear/pear_exception": "dev-master",
+                "php": ">=5.1.0"
             },
             "time": "2013-02-02 21:07:53",
             "type": "library",
@@ -292,19 +420,19 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git://github.com/fabpot/Twig.git",
-                "reference": "c6445fb5cd6823f7bd65108a717064957b6eafd5"
+                "url": "https://github.com/fabpot/Twig.git",
+                "reference": "39d94faabcea7d60b90c2996d51e1b6691ab39d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/c6445fb5cd6823f7bd65108a717064957b6eafd5",
-                "reference": "c6445fb5cd6823f7bd65108a717064957b6eafd5",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/39d94faabcea7d60b90c2996d51e1b6691ab39d2",
+                "reference": "39d94faabcea7d60b90c2996d51e1b6691ab39d2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2013-02-01 09:44:45",
+            "time": "2013-02-28 14:08:49",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -342,7 +470,9 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "leafo/lessphp": 20,
+        "dflydev/markdown": 20,
+        "netcarver/textile": 20
+    }
 }
