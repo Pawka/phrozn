@@ -55,9 +55,6 @@ class Less
      */
     public function __construct($options = array())
     {
-        $path = Loader::getInstance()->getPath('library');
-        require_once $path . '/Vendor/Extra/lessc.inc.php';
-
         if (count($options)) {
             $this->setConfig($options)
                  ->getEnvironment();

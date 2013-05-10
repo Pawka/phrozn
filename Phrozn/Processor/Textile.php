@@ -19,6 +19,7 @@
  */
 
 namespace Phrozn\Processor;
+use Netcarver\Textile\Parser as TextileParser;
 use Phrozn\Autoloader as Loader;
 
 /**
@@ -47,9 +48,7 @@ class Textile
      */
     public function __construct($options = array())
     {
-        $path = Loader::getInstance()->getPath('library');
-        require_once $path . '/Vendor/Extra/textile.php';
-        $this->textile = new \Textile;
+        $this->textile = new TextileParser();
     }
 
     /**

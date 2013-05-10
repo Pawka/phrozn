@@ -2,6 +2,9 @@
     "name": "farazdagi/phrozn",
     "description": "Static Site Generator for PHP",
     "require": {
+        "leafo/lessphp": "0.3.*",
+        "michelf/php-markdown": "1.3.*",
+        "netcarver/textile": "3.5.*",
         "twig/twig": "1.12.*",
         "symfony/yaml": "2.0.*",
         "pear/Console_Color2": "*",
