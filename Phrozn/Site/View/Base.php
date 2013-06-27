@@ -529,7 +529,7 @@ abstract class Base
      *
      * @return boolean
      */
-    protected function hasLayout($value = null)
+    public function hasLayout($value = null)
     {
         if (null !== $value) {
             $this->hasLayout = $value;
