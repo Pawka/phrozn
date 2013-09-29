@@ -116,6 +116,14 @@ abstract class Base
         $inputFile = $this->getInputFileWithoutExt();
         $inputRoot = $this->getView()->getInputRootDir();
 
+        // Normalize direcotry separators so comparison works
+        $trans = array(
+            '/' => DIRECTORY_SEPARATOR,
+            '\\' => DIRECTORY_SEPARATOR
+        );
+        $inputFile = strtr($inputFile, $trans);
+        $inputRoot = strtr($inputRoot, $trans);
+
         // Remove the input root from the input filename
         $inputFile = str_replace($inputRoot, '', $inputFile);
 
