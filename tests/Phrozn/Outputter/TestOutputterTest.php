@@ -47,28 +47,34 @@ class TestOutputterTest
 
     public function testStdOutWithResource()
     {
-        $fp = fopen('/tmp/stdout', 'w+');
+        $fp = tmpfile();
         define('STDOUT', $fp);
 
         $outputter = new Outputter($this);
         $outputter->stdout('sending output', '');
 
+        rewind($fp);
+        $contents = fread($fp, 8096);
+
         fclose($fp);
 
-        $this->assertSame('sending output', trim(file_get_contents('/tmp/stdout')));
+        $this->assertSame('sending output', trim($contents));
     }
 
     public function testStdErrWithResource()
     {
-        $fp = fopen('/tmp/stderr', 'w+');
+        $fp = tmpfile();
         define('STDERR', $fp);
 
         $outputter = new Outputter($this);
         $outputter->stderr('sending output', '');
 
+        rewind($fp);
+        $contents = fread($fp, 8096);
+
         fclose($fp);
 
-        $this->assertSame('sending output', trim(file_get_contents('/tmp/stderr')));
+        $this->assertSame('sending output', trim($contents));
     }
 
     public function testAssertInLogsFail()

@@ -31,8 +31,6 @@ use Phrozn\Runner\CommandLine as Runner,
 class CommandLineTest
     extends \PHPUnit_Framework_TestCase
 {
-    const STDOUT = '/tmp/CommandLineTestOut';
-
     private $phr;
     private $outputter;
     private $runner;
@@ -41,7 +39,7 @@ class CommandLineTest
     {
         $this->phr = realpath(__DIR__ . '/../../../bin/phrozn.php');
         $this->outputter = new Outputter($this);
-        $this->fout = fopen(self::STDOUT, 'w+');
+        $this->fout = tmpfile();
         define('STDOUT', $this->fout);
 
         require_once 'Phrozn/Autoloader.php';
@@ -63,7 +61,8 @@ class CommandLineTest
         ));
         $path = dirname(__FILE__) . '/output/phr-help-update.out';
         $original = file_get_contents($path);
-        $rendered = implode("", array_slice(file(self::STDOUT), 1));
+        $rendered = $this->getTempFileContents();
+        $rendered = substr($rendered, strpos($rendered, "\n") + 1);
         $this->assertSame($original, $rendered);
     }
 
@@ -75,7 +74,8 @@ class CommandLineTest
         ));
         $path = dirname(__FILE__) . '/output/phr-help.out';
         $original = file_get_contents($path);
-        $rendered = implode("", array_slice(file(self::STDOUT), 1));
+        $rendered = $this->getTempFileContents();
+        $rendered = substr($rendered, strpos($rendered, "\n") + 1);
         $this->assertSame($original, $rendered);
     }
 
@@ -89,7 +89,7 @@ class CommandLineTest
         ));
         $path = dirname(__FILE__) . '/output/phr-no-params.out';
         $this->assertSame(
-            file_get_contents($path), file_get_contents(self::STDOUT));
+            file_get_contents($path), $this->getTempFileContents());
     }
 
     private function getParseResult($cmd)
@@ -98,5 +98,9 @@ class CommandLineTest
         return $this->parser->parse(count($args), $args);
     }
 
-
+    private function getTempFileContents()
+    {
+        rewind($this->fout);
+        return fread($this->fout, 8096);
+    }
 }
