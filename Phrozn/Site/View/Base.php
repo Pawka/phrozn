@@ -159,13 +159,12 @@ abstract class Base
         // inject providers content
         if ($providers = $this->getParam('page.providers', false)) {
             $factory = new ProviderFactory();
-            $projectPath = new ProjectPath($this->getOutputDir());
             foreach ($providers as $varname => $data) {
                 if (!isset($data['provider'])) {
                     continue;
                 }
                 $provider = $factory->create($data['provider'], $data);
-                $provider->setProjectPath($projectPath->get());
+                $provider->setProjectPath($this->getInputRootDir());
                 $providedContent = $provider->get();
                 $vars['page']['providers'][$varname] = $providedContent;
                 $vars['this']['providers'][$varname] = $providedContent;

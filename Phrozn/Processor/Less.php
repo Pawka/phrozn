@@ -34,23 +34,20 @@ class Less
 {
     /**
      * Reference to LESS compiler
-     * @var \
+     * @var \lessc
      */
     protected $lessc;
 
     /**
-     * If configuration options are passes then twig environment
-     * is initialized right away
+     * If configuration options are passed
+     * then less environment is initialized right away
      *
      * @param array $options Processor options
      *
-     * @return void
+     * @return \Phrozn\Processor\Less
      */
     public function __construct($options = array())
     {
-        $path = Loader::getInstance()->getPath('library');
-        require_once $path . '/Vendor/Extra/lessc.inc.php';
-
         if (count($options)) {
             $this->setConfig($options)
                  ->getEnvironment();
@@ -75,6 +72,7 @@ class Less
     {
         if ($reset === true || null === $this->lessc) {
             $this->lessc = new \lessc;
+            $this->lessc->addImportDir($this->getConfigFor('phr_template_dir'));
         }
 
         return $this->lessc;

@@ -7,7 +7,10 @@
         "pear/Console_Color2": "*",
         "pear/Console_Table": "*",
         "pear/archive_tar": "*",
-        "pear/console_commandline": "*"
+        "pear/console_commandline": "*",
+        "leafo/lessphp": "0.4.*",
+        "michelf/php-markdown": "1.3.*",
+        "netcarver/textile": "3.5.*"
     },
     "autoload": {
         "psr-0": {
