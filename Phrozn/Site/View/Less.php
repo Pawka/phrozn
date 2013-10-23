@@ -46,7 +46,14 @@ class Less
     {
         parent::__construct($inputFile, $outputDir);
 
-        $this->addProcessor(new Processor());
+        $options = array();
+        if (null !== $inputFile) {
+            $options = array(
+                'phr_template_filename' => basename($inputFile),
+                'phr_template_dir'      => dirname($inputFile),
+            );
+        }
+        $this->addProcessor(new Processor($options));
     }
 
     /**
