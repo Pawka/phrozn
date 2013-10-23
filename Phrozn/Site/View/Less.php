@@ -57,6 +57,28 @@ class Less
     }
 
     /**
+     * Set input file path. Overriden to update processor options.
+     *
+     * @param string $file Path to file
+     *
+     * @return \Phrozn\Site\View
+     */
+    public function setInputFile($path)
+    {
+        parent::setInputFile($path);
+        $processors = $this->getProcessors();
+        if (count($processors)) {
+            $options = array(
+                'phr_template_filename' => basename($path),
+                'phr_template_dir'      => dirname($path),
+            );
+            $processor = array_pop($processors);
+            $processor->setConfig($options);
+        }
+        return $this;
+    }
+
+    /**
      * Get output file path
      *
      * @return string
