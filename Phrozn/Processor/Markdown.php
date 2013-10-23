@@ -19,6 +19,7 @@
  */
 
 namespace Phrozn\Processor;
+use Michelf\MarkdownExtra as MarkdownParser;
 use Phrozn\Autoloader as Loader;
 
 /**
@@ -34,7 +35,7 @@ class Markdown
 {
     /**
      * Reference to procesor class
-     * @var \Markdown_Parser
+     * @var MarkdownParser
      */
     protected $markdown;
 
@@ -47,9 +48,7 @@ class Markdown
      */
     public function __construct($options = array())
     {
-        $path = Loader::getInstance()->getPath('library');
-        require_once $path . '/Vendor/Extra/markdown.php';
-        $this->markdown = new \Markdown_Parser();
+        $this->markdown = new MarkdownParser;
     }
 
     /**
