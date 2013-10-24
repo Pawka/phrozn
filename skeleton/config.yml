@@ -4,3 +4,6 @@ entries:
 
 # Files to skip - list of preg expressions is expected
 skip: [/\.swp$/, /\.bak$/, /.DS_Store/]
+
+# Folders to copy without processing
+copy: []

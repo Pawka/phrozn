@@ -80,19 +80,43 @@ class DefaultSite
 
     /**
      * Media files are just copied over w/o any additional processing
+     * You can add more folders to be processed using `config.yml` `copy` option.
      *
      * @return \Phrozn\Site
      */
     private function processMedia()
     {
-        $projectDir = $this->getProjectDir();
+        $config = $this->getSiteConfig();
+
+        $folders = array('media');
+        if (isset($config['copy'])) {
+            $folders = array_merge($folders, (array)$config['copy']);
+        }
+
+        foreach ($folders as $folder) {
+            $this->processFolderCopy($folder);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Files are just copied over w/o any additional processing
+     * Some files are skipped, as per `config.yml` `skip` regexes
+     * @param string $folder
+     *
+     * @return void
+     */
+    private function processFolderCopy($folder)
+    {
+        $inputDir = $this->getInputDir();
         $outputDir = $this->getOutputDir();
         $config = $this->getSiteConfig();
 
         // configure skip files options
         $skipToken = '-!SKIP!-';
 
-        $dir = new \RecursiveDirectoryIterator($projectDir . '/media');
+        $dir = new \RecursiveDirectoryIterator($inputDir . DIRECTORY_SEPARATOR . $folder);
         $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
         foreach ($it as $item) {
             $baseName = $item->getBaseName();
@@ -107,9 +131,9 @@ class DefaultSite
 
                 $path = $it->getSubPath();
 
-                $outputFile = $outputDir . '/media/' . $path
-                            . (!empty($path) ? '/' : '')
-                            . basename($inputFile);
+                $outputFile = $outputDir . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $path
+                        . (!empty($path) ? '/' : '')
+                        . basename($inputFile);
 
                 // copy media files
                 try {
@@ -130,6 +154,5 @@ class DefaultSite
                 }
             }
         }
-
     }
 }
