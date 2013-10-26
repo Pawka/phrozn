@@ -99,7 +99,7 @@ div {
 
 h5 {
   font-size: 200px;
-  .mixin;
+  .mymixin;
 }
 .rounded-corners(@radius: 5px) {
   border-radius: @radius;
@@ -137,10 +137,20 @@ h5 {
   // the alternative syntax
   .my_scope > .bold;
 }
-.box-shadow(@inset, @x, @y, @blur, @spread, @color) {
+.box-shadow(@x, @y, @color) {
   box-shadow: @arguments;
-  -webkit-box-shadow: @arguments;
   -moz-box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
+}
+.box-shadow(@x, @y, @blur, @color) {
+  box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
+}
+.box-shadow(@x, @y, @blur, @spread, @color, @inset) {
+  box-shadow: @arguments;
+  -moz-box-shadow: @arguments;
+  -webkit-box-shadow: @arguments;
 }
 .menu {
   .box-shadow(1px, 1px, 5px, #aaa);
