@@ -89,14 +89,19 @@ class DefaultSite
     {
         $config = $this->getSiteConfig();
 
-        // make sure media folder is added (BC break otherwise!)
-        $folders = array('media');
         if (isset($config['copy'])) {
-            $folders = array_merge($folders, (array)$config['copy']);
+            $to_copy = (array) $config['copy'];
+        } else {
+            $to_copy = array();
         }
-        $folders = array_unique($folders);
 
-        foreach ($folders as $folder) {
+        // media folder is hardcoded into copy
+        // maybe we should remove this when we can break BC
+        $to_copy = array_merge(array('media'), $to_copy);
+
+        $to_copy = array_unique($to_copy);
+
+        foreach ($to_copy as $folder) {
             $folderInfo = new \SplFileInfo($this->getProjectDir() . DIRECTORY_SEPARATOR . $folder);
             $this->copyFolder($folderInfo);
         }
@@ -132,6 +137,9 @@ class DefaultSite
     /**
      * Tries to copy $file as-is from the input directory to the output directory.
      * It will skip copy if filename matches one of $skip regexes, or if $file is a folder.
+     *
+     * Introduces a dependency on the SPL extension, but as the doc states :
+     * "As of PHP 5.3.0 this extension can no longer be disabled and is therefore always available."
      *
      * @param \SplFileInfo $file
      * @param \SplFileInfo $inDir
