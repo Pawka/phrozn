@@ -23,7 +23,6 @@ use Symfony\Component\Yaml\Yaml,
     Phrozn\Path\Project as ProjectPath,
     Phrozn\Site\View\Factory as ViewFactory,
     Phrozn\Provider\Factory as ProviderFactory,
-    Phrozn\Site\Layout\DefaultLayout as Layout,
     Phrozn\Site\View\OutputPath\Entry as OutputFile,
     Phrozn\Autoloader as Loader;
 
@@ -504,6 +503,8 @@ abstract class Base
         $layoutName = $this->getParam('page.layout', ViewFactory::DEFAULT_LAYOUT_SCRIPT);
 
         $inputFile = $this->getInputFile();
+        $inputFile = str_replace('\\', '/', $inputFile);
+
         $pos = strpos($inputFile, '/entries');
         // make sure that input path is normalized to root entries directory
         if (false !== $pos) {
