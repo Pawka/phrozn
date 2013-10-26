@@ -91,6 +91,7 @@ class DefaultSite
 
         $inDir  = new \SplFileInfo($this->getProjectDir());
         $outDir = new \SplFileInfo($this->getOutputDir());
+        $skip   = isset($config['skip']) ? $config['skip'] : array();
 
         if (isset($config['copy'])) {
             $to_copy = (array) $config['copy'];
@@ -102,15 +103,14 @@ class DefaultSite
         // we should remove this when we can break BC
         // this is better located in the skeleton config.yml
         $to_copy = array_merge(array('media'), $to_copy);
-
         $to_copy = array_unique($to_copy);
 
         foreach ($to_copy as $file) {
-            $fileInfo = new \SplFileInfo($this->getProjectDir() . DIRECTORY_SEPARATOR . $file);
+            $fileInfo = new \SplFileInfo($inDir->getPathname() . DIRECTORY_SEPARATOR . $file);
             if ($fileInfo->isDir()) {
-                $this->copyFolder($fileInfo);
+                $this->tryToCopyFolder($fileInfo, $inDir, $outDir, $skip);
             } else {
-                $this->tryToCopyFile($fileInfo, $inDir, $outDir, isset($config['skip']) ? $config['skip'] : array());
+                $this->tryToCopyFile($fileInfo, $inDir, $outDir, $skip);
             }
         }
 
@@ -119,26 +119,23 @@ class DefaultSite
 
     /**
      * Files are just copied over w/o any additional processing.
-     * Some files are skipped, as per `config.yml` `skip` regexes.
-     * @param \SplFileInfo $folder
+     * See #tryToCopyFile for more information.
      *
-     * @return void
+     * @param \SplFileInfo $folder
+     * @param \SplFileInfo $inDir
+     * @param \SplFileInfo $outDir
+     * @param string[] $skip Array of regexes
      */
-    private function copyFolder($folder)
+    private function tryToCopyFolder($folder, $inDir, $outDir, $skip=array())
     {
         if (!$folder->isDir()) {
             return;
         }
 
-        $config = $this->getSiteConfig();
-
-        $inDir  = new \SplFileInfo($this->getProjectDir());
-        $outDir = new \SplFileInfo($this->getOutputDir());
-
         $dir = new \RecursiveDirectoryIterator($folder->getRealPath());
         $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
         foreach ($it as $item) {
-            $this->tryToCopyFile($item, $inDir, $outDir, isset($config['skip']) ? $config['skip'] : array());
+            $this->tryToCopyFile($item, $inDir, $outDir, $skip);
         }
     }
 
