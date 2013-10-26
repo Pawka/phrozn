@@ -128,14 +128,16 @@ class DefaultSite
      */
     private function tryToCopyFolder($folder, $inDir, $outDir, $skip=array())
     {
+        // skip if not a folder
         if (!$folder->isDir()) {
             return;
         }
 
+        // iterate recursively on all files
         $dir = new \RecursiveDirectoryIterator($folder->getRealPath());
         $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
-        foreach ($it as $item) {
-            $this->tryToCopyFile($item, $inDir, $outDir, $skip);
+        foreach ($it as $file) {
+            $this->tryToCopyFile($file, $inDir, $outDir, $skip);
         }
     }
 
@@ -155,7 +157,6 @@ class DefaultSite
     private function tryToCopyFile($file, $inDir, $outDir, $skip=array())
     {
         // collect info
-        $baseName  = $file->getBaseName();
         $inputFile = $file->getRealPath();
         $inputDir  = $inDir->getRealPath();
         $outputDir = $outDir->getRealPath();
@@ -165,13 +166,13 @@ class DefaultSite
             return;
         }
 
-        // skip if matches any skip regex
+        // skip if file matches any skip regex
         if (count($skip)) {
-            // this is smart, but not cool. What if I want foo-!SKIP!-bar.jpg ? Speed does not matter THAT much !
-            $skipToken = '-!SKIP!-';
-            $baseName = preg_replace($skip, array_fill(0, count($skip), $skipToken), $baseName);
-            if (strpos($baseName, $skipToken) !== false) {
-                return;
+            foreach ($skip as $skipRegex) {
+                // inspect the whole path, not just the basename
+                if (preg_match($skipRegex, $inputFile)) {
+                    return;
+                }
             }
         }
 

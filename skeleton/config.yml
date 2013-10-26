@@ -3,7 +3,8 @@ entries:
     layout: default.twig
 
 # Files to skip - list of preg expressions is expected
-skip: [/\.swp$/, /\.bak$/, /.DS_Store/]
+# These are matched against the whole path of the files
+skip: [/\.swp$/, /\.bak$/, /\.DS_Store$/]
 
 # Folders and files to copy without processing
 # Note that `media` will be copied regardless of this option,
