@@ -46,29 +46,44 @@ class DefaultSiteTest
     public function testSiteCompilation()
     {
         $path = dirname(__FILE__) . '/project/.phrozn/';
-        $site = new Site($path, $path . 'site');
+        $in  = $path;
+        $out = $path . 'site/';
+        $site = new Site($in, $out);
 
         $outputter = new TestOutputter($this);
-        $this->assertFalse(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertFalse(is_readable($path . 'site/markdown.html'));
-        $this->assertFalse(is_readable($path . 'site/textile.html'));
+
+        // sanity checks
+        $this->assertFileNotExists($out . '2011-02-24-default-site.html');
+        $this->assertFileNotExists($out . 'markdown.html');
+        $this->assertFileNotExists($out . 'textile.html');
+        $this->assertFileNotExists($out . 'media/skipped.bak');
+
         $site
             ->setOutputter($outputter)
             ->compile();
-        $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertTrue(is_readable($path . 'site/markdown.html'));
-        $this->assertTrue(is_readable($path . 'site/textile.html'));
+
+        // test existence of generated files
+        $this->assertFileExists($out . '2011-02-24-default-site.html',
+            "Process Twig files into HTML files");
+        $this->assertFileExists($out . 'markdown.html',
+            "Process Markdown files into HTML files");
+        $this->assertFileExists($out . 'textile.html',
+            "Process Textile files into HTML files");
+        $this->assertFileNotExists($out . 'media/skipped.bak',
+            "Skip files whose name match at least one of config.yml skip regexes");
+
 
         // test processor renderers
-        $static = file_get_contents($path . 'test/markdown.html');
-        $rendered = file_get_contents($path . 'site/markdown.html');
-        $this->assertSame($static, $rendered);
+        $expected = file_get_contents($path . 'test/markdown.html');
+        $rendered = file_get_contents($out . 'markdown.html');
+        $this->assertSame($expected, $rendered);
 
-        $static = file_get_contents($path . 'test/textile.html');
-        $rendered = file_get_contents($path . 'site/textile.html');
-        $this->assertSame($static, $rendered);
+        $expected = file_get_contents($path . 'test/textile.html');
+        $rendered = file_get_contents($out . 'textile.html');
+        $this->assertSame($expected, $rendered);
 
-        $outputter->assertInLogs(str_replace(dirname(__FILE__), '', $path) . 'entries/skipped.twig SKIPPED');
+        $outputter->assertInLogs('entries/skipped.twig SKIPPED',
+            "Skip files with skip:true in the frontmatter : expected to find '%s' in logs:\n\n%s");
     }
 
     public function testSiteCompilationEntriesNotFound()
