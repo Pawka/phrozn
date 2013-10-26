@@ -5,3 +5,6 @@ entries:
 
 # Files to skip - list of preg expressions is expected
 skip: [/\.swp$/, /\.bak$/, /.DS_Store/]
+
+# Folders and files to copy without processing
+copy: [media, favicon.ico]

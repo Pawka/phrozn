@@ -68,6 +68,7 @@ class DefaultSiteTest
             ->compile();
 
         // test existence of generated files
+        // -> redundant with assertFileEquals below
         $this->assertFileExists($out . '2011-02-24-default-site.html',
             "Process Twig files into HTML files");
         $this->assertFileExists($out . 'markdown.html',
@@ -78,15 +79,18 @@ class DefaultSiteTest
             "Copy files in media folder");
 
         // test processor renderers
+        $this->assertFileEquals($path.'expected/2011-02-24-default-site.html', $out.'2011-02-24-default-site.html',
+            "Compile Twig files as expected");
         $this->assertFileEquals($path.'expected/markdown.html', $out.'markdown.html',
             "Compile Markdown files as expected");
         $this->assertFileEquals($path.'expected/textile.html', $out.'textile.html',
             "Compile Textile files as expected");
 
         // test copy integrity
-        $actual = trim(file_get_contents($out . 'media/img/test.png'));
-        $expect = 'PNG Image Pretender';
-        $this->assertEquals($expect, $actual, "Fully copy file contents");
+        $this->assertFileEquals($in.'media/img/test.png', $out.'media/img/test.png',
+            "Fully copy file contents");
+        $this->assertFileEquals($in.'favicon.ico', $out.'favicon.ico',
+            "Copy files specified in config.yml `copy` array");
 
         // test skipping
         $this->assertFileNotExists($out . 'media/skipped.bak',
@@ -97,6 +101,8 @@ class DefaultSiteTest
         // test outputter
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.html written");
+        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong written");
+        //$outputter->assertNotInLogs("2011-02-24-wrong-file-type.wrong parsed");
     }
 
     public function testSiteCompilationEntriesNotFound()
@@ -112,14 +118,13 @@ class DefaultSiteTest
             ->compile();
     }
 
-
     public function testSiteCompilationProjectGuess()
     {
         $path = $this->getMockProjectPath();
-        //$in  = $path . '.phrozn/'; // will guess that
+        $in  = $path . '.phrozn/'; // will guess that
         $out = $path . 'public/';
 
-        $site = new Site(realpath($path), $out);
+        $site = new Site($path, $out);
         $outputter = new TestOutputter($this);
 
         // sanity checks
@@ -130,20 +135,18 @@ class DefaultSiteTest
             ->setOutputter($outputter)
             ->compile();
 
+        // It may be enough here to simply test that no Exception is thrown
+        // Still... TESTS TESTS TESTS
+
         // test existence of generated files
         $this->assertFileExists($out . '2011-02-24-default-site.html',
             "Process Twig files into HTML files");
         $this->assertFileExists($out . 'media/img/test.png',
             "Copy files in media folder");
 
-        // test outputter
-        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong written");
-        $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
-
         // test copy integrity
-        $actual = trim(file_get_contents($out . 'media/img/test.png'));
-        $expect = 'PNG Image Pretender';
-        $this->assertEquals($expect, $actual, "Fully copy file contents");
+        $this->assertFileEquals($in.'media/img/test.png', $out.'media/img/test.png',
+            "Fully copy file contents");
 
         // test processor renderers
         $this->assertFileEquals($path.'expected/2011-02-24-default-site.html', $out.'2011-02-24-default-site.html',
@@ -154,7 +157,7 @@ class DefaultSiteTest
     {
         $outputDir = $this->getMockProjectPath() . 'public/';
         if (is_dir($outputDir)) {
-            `rm -rf {$outputDir}`; // WHAT THE HELL ?!
+            `rm -rf {$outputDir}`; // DANGER ZONE ™
             mkdir($outputDir);
             touch($outputDir . '/README');
         }
