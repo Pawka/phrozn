@@ -1,0 +1,5 @@
+This is our mock project for testing.
+
+The tested input directory is `.phrozn`.
+The tested output directory is `public`, which is cleaned between tests.
+The pre-compiled resources directory (for comparison) is `expected`.

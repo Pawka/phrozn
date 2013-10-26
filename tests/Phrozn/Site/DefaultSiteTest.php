@@ -32,30 +32,35 @@ class DefaultSiteTest
 {
     public function setUp()
     {
-        // purge project directory
+        // purge project's output directory
         $this->cleanOutputDirectory();
-
     }
 
     public function tearDown()
     {
-        // purge project directory
+        // purge project's output directory
         $this->cleanOutputDirectory();
+    }
+
+    protected function getMockProjectPath()
+    {
+        return dirname(__FILE__) . '/project/';
     }
 
     public function testSiteCompilation()
     {
-        $path = dirname(__FILE__) . '/project/.phrozn/';
-        $in  = $path;
-        $out = $path . 'site/';
-        $site = new Site($in, $out);
+        $path = $this->getMockProjectPath();
+        $in  = $path . '.phrozn/';
+        $out = $path . 'public/';
 
+        $site = new Site($in, $out);
         $outputter = new TestOutputter($this);
 
         // sanity checks
         $this->assertFileNotExists($out . '2011-02-24-default-site.html');
         $this->assertFileNotExists($out . 'markdown.html');
         $this->assertFileNotExists($out . 'textile.html');
+        $this->assertFileNotExists($out . 'media/img/test.png');
         $this->assertFileNotExists($out . 'media/skipped.bak');
 
         $site
@@ -69,27 +74,35 @@ class DefaultSiteTest
             "Process Markdown files into HTML files");
         $this->assertFileExists($out . 'textile.html',
             "Process Textile files into HTML files");
-        $this->assertFileNotExists($out . 'media/skipped.bak',
-            "Skip files whose name match at least one of config.yml skip regexes");
-
+        $this->assertFileExists($out . 'media/img/test.png',
+            "Copy files in media folder");
 
         // test processor renderers
-        $expected = file_get_contents($path . 'test/markdown.html');
-        $rendered = file_get_contents($out . 'markdown.html');
-        $this->assertSame($expected, $rendered);
+        $this->assertFileEquals($path.'expected/markdown.html', $out.'markdown.html',
+            "Compile Markdown files as expected");
+        $this->assertFileEquals($path.'expected/textile.html', $out.'textile.html',
+            "Compile Textile files as expected");
 
-        $expected = file_get_contents($path . 'test/textile.html');
-        $rendered = file_get_contents($out . 'textile.html');
-        $this->assertSame($expected, $rendered);
+        // test copy integrity
+        $actual = trim(file_get_contents($out . 'media/img/test.png'));
+        $expect = 'PNG Image Pretender';
+        $this->assertEquals($expect, $actual, "Fully copy file contents");
 
+        // test skipping
+        $this->assertFileNotExists($out . 'media/skipped.bak',
+            "Skip files whose name match at least one of config.yml skip regexes");
         $outputter->assertInLogs('entries/skipped.twig SKIPPED',
             "Skip files with skip:true in the frontmatter : expected to find '%s' in logs:\n\n%s");
+
+        // test outputter
+        $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
+        $outputter->assertInLogs("2011-02-24-default-site.html written");
     }
 
     public function testSiteCompilationEntriesNotFound()
     {
         $path = dirname(__FILE__) . '/not/found/';
-        $site = new Site($path, $path . 'site');
+        $site = new Site($path, $path . 'public');
         $outputter = new TestOutputter($this);
 
         $this->setExpectedException('RuntimeException', "Entries folder not found");
@@ -99,77 +112,51 @@ class DefaultSiteTest
             ->compile();
     }
 
-    /**
-     * @medium
-     */
-    public function testSiteCompilationWithCustomOutputter()
-    {
-        $path = dirname(__FILE__) . '/project/.phrozn/';
-        $site = new Site($path, $path . 'site');
-        $outputter = new TestOutputter($this);
-
-        $this->assertFalse(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertFalse(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
-        $site
-            ->setOutputter($outputter)
-            ->compile();
-        $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
-
-        $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong written");
-        $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
-        $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
-
-        $parsed = file_get_contents($path .  'site/2011-02-24-default-site.html');
-        $loaded = file_get_contents($path .  'test/2011-02-24-default-site.html');
-        $this->assertSame($loaded, $parsed);
-
-        $parsed = file_get_contents($path .  'site/2011-02-21-phrozn-generated-first-page-today.html');
-        $loaded = file_get_contents($path .  'test/2011-02-21-phrozn-generated-first-page-today.html');
-        $this->assertSame($loaded, $parsed);
-    }
 
     public function testSiteCompilationProjectGuess()
     {
-        $path = dirname(__FILE__) . '/project/.phrozn/';
-        $site = new Site(realpath($path . '/../'), $path . 'site');
+        $path = $this->getMockProjectPath();
+        //$in  = $path . '.phrozn/'; // will guess that
+        $out = $path . 'public/';
+
+        $site = new Site(realpath($path), $out);
         $outputter = new TestOutputter($this);
 
-        $this->assertFalse(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertFalse(is_readable($path . 'site/media/img/test.png'));
-        $this->assertFalse(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
+        // sanity checks
+        $this->assertFileNotExists($out . '2011-02-24-default-site.html');
+        $this->assertFileNotExists($out . 'media/img/test.png');
+
         $site
             ->setOutputter($outputter)
             ->compile();
 
-        $this->assertTrue(is_readable($path . 'site/2011-02-24-default-site.html'));
-        $this->assertTrue(is_readable($path . 'site/2011-02-21-phrozn-generated-first-page-today.html'));
-        $this->assertTrue(is_readable($path . 'site/media/img/test.png'));
+        // test existence of generated files
+        $this->assertFileExists($out . '2011-02-24-default-site.html',
+            "Process Twig files into HTML files");
+        $this->assertFileExists($out . 'media/img/test.png',
+            "Copy files in media folder");
 
+        // test outputter
         $outputter->assertInLogs("2011-02-24-wrong-file-type.wrong written");
-        $outputter->assertInLogs("2011-02-21-phrozn-generated-first-page-today.twig parsed");
         $outputter->assertInLogs("2011-02-24-default-site.twig parsed");
 
-        $parsed = trim(file_get_contents($path .  'site/media/img/test.png'));
-        $loaded = 'PNG Image Pretender';
-        $this->assertSame($loaded, $parsed);
+        // test copy integrity
+        $actual = trim(file_get_contents($out . 'media/img/test.png'));
+        $expect = 'PNG Image Pretender';
+        $this->assertEquals($expect, $actual, "Fully copy file contents");
 
-        $parsed = file_get_contents($path .  'site/2011-02-24-default-site.html');
-        $loaded = file_get_contents($path .  'test/2011-02-24-default-site.html');
-        $this->assertSame($loaded, $parsed);
-
-        $parsed = file_get_contents($path .  'site/2011-02-21-phrozn-generated-first-page-today.html');
-        $loaded = file_get_contents($path .  'test/2011-02-21-phrozn-generated-first-page-today.html');
-        $this->assertSame($loaded, $parsed);
+        // test processor renderers
+        $this->assertFileEquals($path.'expected/2011-02-24-default-site.html', $out.'2011-02-24-default-site.html',
+            "Compile Twig files as expected");
     }
 
     private function cleanOutputDirectory()
     {
-        $path = dirname(__FILE__) . '/project/.phrozn/site';
-        if (is_dir($path)) {
-            `rm -rf {$path}`;
-            mkdir($path);
-            touch($path . '/README');
+        $outputDir = $this->getMockProjectPath() . 'public/';
+        if (is_dir($outputDir)) {
+            `rm -rf {$outputDir}`; // WHAT THE HELL ?!
+            mkdir($outputDir);
+            touch($outputDir . '/README');
         }
     }
 }
