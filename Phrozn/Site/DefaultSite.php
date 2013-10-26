@@ -89,6 +89,9 @@ class DefaultSite
     {
         $config = $this->getSiteConfig();
 
+        $inDir  = new \SplFileInfo($this->getProjectDir());
+        $outDir = new \SplFileInfo($this->getOutputDir());
+
         if (isset($config['copy'])) {
             $to_copy = (array) $config['copy'];
         } else {
@@ -96,14 +99,19 @@ class DefaultSite
         }
 
         // media folder is hardcoded into copy
-        // maybe we should remove this when we can break BC
+        // we should remove this when we can break BC
+        // this is better located in the skeleton config.yml
         $to_copy = array_merge(array('media'), $to_copy);
 
         $to_copy = array_unique($to_copy);
 
-        foreach ($to_copy as $folder) {
-            $folderInfo = new \SplFileInfo($this->getProjectDir() . DIRECTORY_SEPARATOR . $folder);
-            $this->copyFolder($folderInfo);
+        foreach ($to_copy as $file) {
+            $fileInfo = new \SplFileInfo($this->getProjectDir() . DIRECTORY_SEPARATOR . $file);
+            if ($fileInfo->isDir()) {
+                $this->copyFolder($fileInfo);
+            } else {
+                $this->tryToCopyFile($fileInfo, $inDir, $outDir, isset($config['skip']) ? $config['skip'] : array());
+            }
         }
 
         return $this;

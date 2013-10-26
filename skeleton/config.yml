@@ -5,5 +5,7 @@ entries:
 # Files to skip - list of preg expressions is expected
 skip: [/\.swp$/, /\.bak$/, /.DS_Store/]
 
-# Folders to copy without processing
-copy: []
+# Folders and files to copy without processing
+# Note that `media` will be copied regardless of this option,
+# as long as we don't want to break BC (v0.6 ?)
+copy: [media, favicon.ico]
