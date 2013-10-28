@@ -350,7 +350,7 @@ abstract class Base
     protected function isAbsolute($path)
     {
         if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32') {
-            $pattern = '/^[a-zA-z]:.*[^.lnk]$/';
+            $pattern = '/^[a-zA-Z]:[\\\\\/]/';
             return preg_match($pattern, $path);
         } else {
             return $path{0} == '/';
