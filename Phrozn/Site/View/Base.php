@@ -503,6 +503,8 @@ abstract class Base
         $layoutName = $this->getParam('page.layout', ViewFactory::DEFAULT_LAYOUT_SCRIPT);
 
         $inputFile = $this->getInputFile();
+        $inputFile = str_replace('\\', '/', $inputFile);
+
         $pos = strpos($inputFile, '/entries');
         // make sure that input path is normalized to root entries directory
         if (false !== $pos) {
