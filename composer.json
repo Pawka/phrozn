@@ -25,7 +25,8 @@
             "ln -s up.yml configs/commands/update.yml",
             "rm -f bin/phr.php",
             "ln -s phrozn.php bin/phr.php",
-            "chmod +x bin/phrozn.php"
+            "chmod +x bin/phrozn.php",
+            "cp -r vendor/pear/pear_exception/PEAR vendor/pear/console_commandline/Console/CommandLine"
         ]
     },
     "minimum-stability": "dev"
