@@ -19,7 +19,6 @@
  */
 
 namespace Phrozn\Outputter;
-use Console_Color as Color;
 
 /**
  * Plain outputter
