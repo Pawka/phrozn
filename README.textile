@@ -1,4 +1,4 @@
-h1. Phrozn !https://travis-ci.org/farazdagi/phrozn.png?branch=master!:https://travis-ci.org/farazdagi/phrozn/builds
+h1. Phrozn !https://travis-ci.org/Pawka/phrozn.png?branch=master!:https://travis-ci.org/Pawka/phrozn
 
 Phrozn is extremely flexible static site generator in PHP.
 
