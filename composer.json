@@ -1,5 +1,5 @@
 {
-    "name": "farazdagi/phrozn",
+    "name": "Pawka/phrozn",
     "description": "Static Site Generator for PHP",
     "require": {
         "twig/twig": "1.12.*",
