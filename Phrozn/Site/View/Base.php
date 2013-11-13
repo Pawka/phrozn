@@ -23,7 +23,6 @@ use Symfony\Component\Yaml\Yaml,
     Phrozn\Path\Project as ProjectPath,
     Phrozn\Site\View\Factory as ViewFactory,
     Phrozn\Provider\Factory as ProviderFactory,
-    Phrozn\Site\Layout\DefaultLayout as Layout,
     Phrozn\Site\View\OutputPath\Entry as OutputFile,
     Phrozn\Autoloader as Loader;
 
@@ -154,18 +153,17 @@ abstract class Base
     public function render($vars = array())
     {
         // inject front matter options into template
-        $vars = array_merge($vars, $this->getParams());
+        $vars = array_merge_recursive($vars, $this->getParams());
 
         // inject providers content
         if ($providers = $this->getParam('page.providers', false)) {
             $factory = new ProviderFactory();
-            $projectPath = new ProjectPath($this->getOutputDir());
             foreach ($providers as $varname => $data) {
                 if (!isset($data['provider'])) {
                     continue;
                 }
                 $provider = $factory->create($data['provider'], $data);
-                $provider->setProjectPath($projectPath->get());
+                $provider->setProjectPath($this->getInputRootDir());
                 $providedContent = $provider->get();
                 $vars['page']['providers'][$varname] = $providedContent;
                 $vars['this']['providers'][$varname] = $providedContent;
@@ -505,6 +503,8 @@ abstract class Base
         $layoutName = $this->getParam('page.layout', ViewFactory::DEFAULT_LAYOUT_SCRIPT);
 
         $inputFile = $this->getInputFile();
+        $inputFile = str_replace('\\', '/', $inputFile);
+
         $pos = strpos($inputFile, '/entries');
         // make sure that input path is normalized to root entries directory
         if (false !== $pos) {
@@ -517,7 +517,9 @@ abstract class Base
         $layout = $factory->create(); // essentially layout is Site\View as well
         $layout->hasLayout(false); // no nested layouts
 
-        return $layout->render(array('content' => $content, 'entry' => $vars['page']));
+        $vars['content'] = $content;
+        $vars['entry'] = $vars['page'];
+        return $layout->render($vars);
     }
 
     /**
@@ -527,7 +529,7 @@ abstract class Base
      *
      * @return boolean
      */
-    protected function hasLayout($value = null)
+    public function hasLayout($value = null)
     {
         if (null !== $value) {
             $this->hasLayout = $value;

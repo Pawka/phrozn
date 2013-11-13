@@ -90,7 +90,7 @@ class Twig
         $view = parent::render($vars);
         if ($this->hasLayout()) {
             // inject global site and front matter options into template
-            $vars = array_merge($vars, $this->getParams());
+            $vars = array_merge_recursive($vars, $this->getParams());
             $view = $this->applyLayout($view, $vars);
         }
         return $view;

@@ -49,12 +49,29 @@ abstract class Base
     }
 
     /**
-     * Get processor configuration
+     * Get processor configuration, as array
      *
      * @return array
      */
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Get a specific processor configuration, or null if unset
+     * Alternative API : getConfigValue ?
+     *
+     * @param  string $key
+     * @return mixed|null
+     */
+    public function getConfigFor($key)
+    {
+        $config = null;
+        if (isset($this->config[$key])) {
+            $config = $this->config[$key];
+        }
+
+        return $config;
     }
 }

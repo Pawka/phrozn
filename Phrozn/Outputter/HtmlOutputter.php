@@ -19,16 +19,22 @@
  */
 
 namespace Phrozn\Outputter;
+use Phrozn\Outputter;
 
 /**
- * Plain outputter
+ * HTML outputter
+ * This is a very simple implementation,
+ * it basically only does the following :
+ * - output <br> tags before linebreaks
+ * - removes %X color directives
  *
  * @category    Phrozn
  * @package     Phrozn\Outputter
  * @author      Victor Farazdagi
+ * @author      Antoine Goutenoir
  */
-class PlainOutputter
-    implements \Phrozn\Outputter
+class HtmlOutputter
+    implements Outputter
 {
     /**
      * Writes the message $msg to STDOUT.
@@ -36,10 +42,13 @@ class PlainOutputter
      * @param string $msg The message to output
      * @param string $status Ignored
      *
-     * @return \Phrozn\Outputter
+     * @return Outputter
      */
     public function stdout($msg, $status = self::STATUS_OK)
     {
+        $msg = $this->removeColors($msg);
+        $msg = $this->replaceEOLs($msg);
+
         if (defined('STDOUT')) {
             fwrite(STDOUT, $msg);
         } else {
@@ -57,10 +66,14 @@ class PlainOutputter
      * @param string $msg The message to output
      * @param string $status Output status
      *
-     * @return \Phrozn\Outputter
+     * @return Outputter
      */
     public function stderr($msg, $status = self::STATUS_FAIL)
     {
+        $msg = "<strong>".$msg."</strong>";
+        $msg = $this->removeColors($msg);
+        $msg = $this->replaceEOLs($msg);
+
         if (defined('STDERR')) {
             fwrite(STDERR, $msg);
         } else {
@@ -70,5 +83,15 @@ class PlainOutputter
             }
         }
         return $this;
+    }
+
+    private function removeColors($msg)
+    {
+        return preg_replace("!%[a-z0-9]!i", "", $msg);
+    }
+
+    protected function replaceEOLs($msg)
+    {
+        return nl2br($msg,false) . "<br>\n";
     }
 }

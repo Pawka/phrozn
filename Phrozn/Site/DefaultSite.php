@@ -43,7 +43,7 @@ class DefaultSite
         $this
             ->buildQueue()
             ->processQueue()
-            ->processMedia();
+            ->copyStatic();
     }
 
     /**
@@ -79,57 +79,128 @@ class DefaultSite
     }
 
     /**
-     * Media files are just copied over w/o any additional processing
+     * Some files are just copied over w/o any additional processing.
+     * Media files, for example.
+     * You can add more folders and files to be processed using `config.yml` `copy` option.
      *
      * @return \Phrozn\Site
      */
-    private function processMedia()
+    private function copyStatic()
     {
-        $projectDir = $this->getProjectDir();
-        $outputDir = $this->getOutputDir();
         $config = $this->getSiteConfig();
 
-        // configure skip files options
-        $skipToken = '-!SKIP!-';
+        $inDir  = new \SplFileInfo($this->getProjectDir());
+        $outDir = new \SplFileInfo($this->getOutputDir());
+        $skip   = isset($config['skip']) ? $config['skip'] : array();
 
-        $dir = new \RecursiveDirectoryIterator($projectDir . '/media');
-        $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
-        foreach ($it as $item) {
-            $baseName = $item->getBaseName();
-            if (isset($config['skip'])) {
-                $baseName = preg_replace($config['skip'], array_fill(0, count($config['skip']), $skipToken), $baseName);
-                if (strpos($baseName, $skipToken) !== false) {
-                    continue;
-                }
+        if (isset($config['copy'])) {
+            $to_copy = (array) $config['copy'];
+        } else {
+            $to_copy = array();
+        }
+
+        // media folder is hardcoded into copy
+        // we should remove this when we can break BC
+        // this is better located in the skeleton config.yml
+        $to_copy = array_merge(array('media'), $to_copy);
+        $to_copy = array_unique($to_copy);
+
+        foreach ($to_copy as $file) {
+            $fileInfo = new \SplFileInfo($inDir->getPathname() . DIRECTORY_SEPARATOR . $file);
+            if ($fileInfo->isDir()) {
+                $this->tryToCopyFolder($fileInfo, $inDir, $outDir, $skip);
+            } else {
+                $this->tryToCopyFile($fileInfo, $inDir, $outDir, $skip);
             }
-            if ($item->isFile()) {
-                $inputFile = $item->getRealPath();
+        }
 
-                $path = $it->getSubPath();
+        return $this;
+    }
 
-                $outputFile = $outputDir . '/media/' . $path
-                            . (!empty($path) ? '/' : '')
-                            . basename($inputFile);
+    /**
+     * Files are just copied over w/o any additional processing.
+     * See #tryToCopyFile for more information.
+     *
+     * @param \SplFileInfo $folder
+     * @param \SplFileInfo $inDir
+     * @param \SplFileInfo $outDir
+     * @param string[] $skip Array of regexes
+     */
+    private function tryToCopyFolder($folder, $inDir, $outDir, $skip=array())
+    {
+        // skip if not a folder
+        if (!$folder->isDir()) {
+            return;
+        }
 
-                // copy media files
-                try {
-                    $destinationDir = dirname($outputFile);
-                    if (!is_dir($destinationDir)) {
-                        mkdir($destinationDir, 0777, true);
-                    }
-                    if (!copy($inputFile, $outputFile)) {
-                        throw new \RuntimeException(sprintf('Failed transfering "%s" from media folder', $inputFile));
-                    }
-                    $inputFile = str_replace(getcwd(), '.', $inputFile);
-                    $outputFile = str_replace(getcwd(), '.', realpath($outputFile));
-                    $this->getOutputter()
-                         ->stdout('%b' . $outputFile . '%n copied');
-                } catch (\Exception $e) {
-                    $this->getOutputter()
-                         ->stderr($inputFile . ': ' . $e->getMessage());
+        // iterate recursively on all files
+        $dir = new \RecursiveDirectoryIterator($folder->getRealPath());
+        $it = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
+        foreach ($it as $file) {
+            $this->tryToCopyFile($file, $inDir, $outDir, $skip);
+        }
+    }
+
+    /**
+     * Tries to copy $file as-is from the input directory to the output directory.
+     * It will skip copy if filename matches one of $skip regexes, or if $file is a folder.
+     *
+     * Introduces a dependency on the SPL extension, but as the doc states :
+     * "As of PHP 5.3.0 this extension can no longer be disabled and is therefore always available."
+     *
+     * @param \SplFileInfo $file
+     * @param \SplFileInfo $inDir
+     * @param \SplFileInfo $outDir
+     * @param string[] $skip Array of regexes
+     * @throws \RuntimeException
+     */
+    private function tryToCopyFile($file, $inDir, $outDir, $skip=array())
+    {
+        // collect info
+        $inputFile = $file->getRealPath();
+        $inputDir  = $inDir->getRealPath();
+        $outputDir = $outDir->getRealPath();
+
+        // skip if not a file
+        if (!$file->isFile()) {
+            return;
+        }
+
+        // skip if file matches any skip regex
+        if (count($skip)) {
+            foreach ($skip as $skipRegex) {
+                // inspect the whole path, not just the basename
+                if (preg_match($skipRegex, $inputFile)) {
+                    return;
                 }
             }
         }
 
+        // sanity check -- REALLY not supposed to happen
+        if (strpos($inputFile, $inputDir) !== 0) {
+            throw new \RuntimeException(sprintf('File "%s" is not a child of input folder "%s"', $inputFile, $inputDir));
+        }
+
+        $relativePath = substr($inputFile, strlen($inputDir)+1);
+        $outputFile = $outputDir . DIRECTORY_SEPARATOR . $relativePath;
+
+        // copy the file
+        try {
+            $destinationDir = dirname($outputFile);
+            if (!is_dir($destinationDir)) {
+                mkdir($destinationDir, 0777, true);
+            }
+            if (!copy($inputFile, $outputFile)) {
+                throw new \RuntimeException(sprintf('Failed copy to "%s"', $outputFile));
+            }
+            $cwd = realpath(getcwd());
+            $inputFile  = str_replace($cwd, '.', $inputFile);
+            $outputFile = str_replace($cwd, '.', $outputFile);
+            $this->getOutputter()
+                ->stdout('%b' . $outputFile . '%n copied');
+        } catch (\Exception $e) {
+            $this->getOutputter()
+                ->stderr($inputFile . ': ' . $e->getMessage());
+        }
     }
 }

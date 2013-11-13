@@ -19,28 +19,28 @@
  */
 
 namespace Phrozn\Processor;
-use Michelf\MarkdownExtra as MarkdownParser;
 use Phrozn\Autoloader as Loader;
 
 /**
- * Markdown markup processor
+ * SCSS styles processor
  *
  * @category    Phrozn
  * @package     Phrozn\Processor
  * @author      Victor Farazdagi
  */
-class Markdown
+class Scss
     extends Base
     implements \Phrozn\Processor
 {
     /**
-     * Reference to procesor class
-     * @var MarkdownParser
+     * Reference to SCSS compiler
+     * @var \
      */
-    protected $markdown;
+    protected $scssc;
 
     /**
-     * Processor can be setup at initialization time
+     * If configuration options are passes then twig environment
+     * is initialized right away
      *
      * @param array $options Processor options
      *
@@ -48,7 +48,13 @@ class Markdown
      */
     public function __construct($options = array())
     {
-        $this->markdown = new MarkdownParser;
+        $path = Loader::getInstance()->getPath('library');
+        require_once $path . '/Vendor/Extra/scss.inc.php';
+
+        if (count($options)) {
+            $this->setConfig($options)
+                 ->getEnvironment();
+        }
     }
 
     /**
@@ -61,6 +67,16 @@ class Markdown
      */
     public function render($tpl, $vars = array())
     {
-        return $this->markdown->transform($tpl);
+        return $this->getEnvironment()
+                    ->compile($tpl);
+    }
+
+    protected function getEnvironment($reset = false)
+    {
+        if ($reset === true || null === $this->scssc) {
+            $this->scssc = new \scssc;
+        }
+
+        return $this->scssc;
     }
 }
