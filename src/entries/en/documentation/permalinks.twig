@@ -1,0 +1,59 @@
+layout: default.twig
+permalink: /en/documentation/permalinks/
+---
+<h1 id="main">Permalinks Strategies</h1>
+<p>
+Currently there's only one permalink strategy implemented.
+</p>
+<p>
+However, Phrozn was designed in a way to allow any number of them - more info on this in successive releases.
+</p>
+
+<h2 id="parametrized">Parametrized Permalink</h2>
+<p>
+Basically, you can specify explicitly where to output any given entry:
+</p>
+
+<table>
+    <tr>
+        <th width="35%">Permalink Setting</th>
+        <th>Output File</th>
+    </tr>
+    <tr>
+        <td><code>/some/path/</code></td>
+        <td>/some/path/index.html</td>
+    </tr>
+    <tr>
+        <td><code>/some/path.html</code></td>
+        <td>/some/path.html</td>
+    </tr>
+    <tr>
+        <td><code>/some/path/:var/</code><br />provided that var is set to "value"</td>
+        <td>/some/path/value/index.html</td>
+    </tr>
+    <tr>
+        <td><code>/some/path/:var.html</code><br />provided that var is set to "value"</td>
+        <td>/some/path/value.html</td>
+    </tr>
+</table>
+<p>
+So, in order to output a given entry into <code>/sub/folder/</code>, all you need to do is to include
+<code>permalink: /sub/folder/</code> variable into entry's <a href="/en/documentation/front-matter/">YAML Front Matter</a>:
+</p>
+<pre>
+permalink: /sub/folder/
+---&nbsp;
+&lt;p&gt;My first entry&lt;/p&gt;
+</pre>
+
+Example of using parameters in <code>permalink</code>:
+</p>
+<pre>
+date: "2011-04-01"
+permalink: /sub/folder/:date/
+---&nbsp;
+&lt;p&gt;My first entry&lt;/p&gt;
+</pre>
+
+<p>Above entry will be written into <code>/sub/folder/2011-04-01/index.html</code> file.</p>
+

@@ -1,0 +1,40 @@
+layout: default.twig
+permalink: /en/documentation/site-config/
+---
+<h1>Site Configuration</h1>
+<div class="toc-box">&nbsp;</div>
+
+<p>You can configure how your particular entries are parsed and compiled into static html pages
+via <a href="/en/documentation/front-matter/">YAML Front Matter</a>. Additionally, Phrozn allows you to specify global options in
+<code>config.yml</code> (which is automatically created on <code>phr init</code>).</p>
+
+<h2 id="variables" class="in-toc">Variables</h2>
+
+<table>
+    <tr>
+        <th width="20%">Variable</th>
+        <th>Description</th>
+        <th>Default</th>
+    </tr>
+    <tr>
+        <td><code>entries.layout</code></td>
+        <td>Default layout to use when parsing entries.</td>
+        <td>default.twig</td>
+    </tr>
+    <tr>
+        <td><code>skip</code></td>
+        <td>List of filename patterns to skip. Each item is passed to <a href="http://php.net/preg_match">preg_match</a>, and should be given in PCRE format.</td>
+        <td>n/a</td>
+    </tr>
+</table>
+
+<h2 id="default-config" class="in-toc">Default config.yml</h2>
+<p>By default, Phrozn generates following configuration file:</p>
+<pre>
+---&nbsp;# Site configuration
+entries:
+    layout: default.twig
+
+# Files to skip - list of preg expressions is expected
+skip: [/\.swp$/, /\.bak$/]
+</pre>

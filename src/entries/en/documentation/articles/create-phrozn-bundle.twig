@@ -1,0 +1,130 @@
+permalink: /en/documentation/articles/create-phrozn-bundle/
+---
+<h1 id="main">Create Phrozn Bundle</h1>
+<div class="toc-box" style="width:330px;">&nbsp;</div>
+
+<p>
+One of the main priorities when developing Phrozn's core was making contribution process as straight-forward 
+as possible. In an effort to provide easier way to create add-on code, Phrozn supports bundles.
+</p>
+
+<p>
+The idea is really simple. Phrozn already supports 
+<a href="/en/documentation/articles/create-custom-processor/">pluggable code</a>, so that custom functionality
+can be injected without hacking the core. Still moving plugin code from project to project might be tedious.
+So, instead of manual file transfers from project to project, you create a releasable and easily 
+deployable archive with all the plugin code required for particular 
+functionality. The final result (typically a tgz archive) is to be pushed it into some place where others 
+can access it (like official <a href="https://github.com/farazdagi/phrozn-bundles">Phrozn Bundles Repository</a>).
+</p>
+
+<p class="note">
+Bundle is nothing more but archived directory (in pre-defined format) containing your custom functionality.
+</p>
+<p class="warning">
+If you want to know how to use bundles, visit documentation page for 
+<a href="/en/documentation/cli-phr/#phr-bundle">phr bundle</a> command.
+</p>
+
+<p>Time to create our first Phrozn bundle!</p>
+
+<h2 id="fork-phrozn-bundles-repo" class="in-toc">Step1. Fork the official bundles repository</h2>
+<p class="warning">
+Strictly speaking you are not required to fork the official bundles repository, and can proceed with your
+own distribution model. As long as resultant archive file can be read, Phrozn will be able to apply the bundle.
+</p>
+
+<p>
+If you want to share your code with the rest of Phrozn community, best way to do so is to distribute your code
+using <a href="https://github.com/farazdagi/phrozn-bundles">Phrozn Bundles Repository</a>. Once your code hits
+the repository, others will be able to apply it without any additional legwork.
+</p>
+<p>So, go and <a href="https://github.com/farazdagi/phrozn-bundles/">fork the repository</a> right now, I will be here waiting..</p>
+
+<p class="note">
+It is preferred that you create a "topic/feature" branches and not committing directly into your 
+fork's master branch. That way merging is a more straight-forward process.
+</p>
+<p class="note">
+If the only reaction to previous note is "what the heck does it mean??", I really suggest you to go through
+well-written and very useful 
+<a href="http://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a> article.
+</p>
+
+<h2 id="package-your-custom-code" class="in-toc">Step2. Create and package your plugin code</h2>
+<p>
+Once you clone forked repository locally, you can start putting your shiny plugin code together.</p>
+<p>First, create uniquely named directory which will contain your bundle.
+Right now there's no restrictions on how you name your bundle, but in future, once plugin architecture 
+is solidified, your bundle might be renamed (put into differently named directory).
+</p>
+<p>
+Since contents of your bundle will be put into project's directory (that's <code>.phrozn</code> directory)
+anything you can put into <code>.phrozn</code>, you can put into bundle folder: entries, styles, scripts, plugins etc.
+</p>
+<p>
+Let's consider you crafted some theme and want to be able to apply it to another Phrozn projects <i>easily</i>. 
+</p>
+<p>Let's say your theme is described by following files (WRT to <code>.phrozn</code> folder):
+</p>
+<ul>
+    <li>layouts/cool-theme.twig</li>
+    <li>scripts/cool-theme.js</li>
+    <li>media/img/cool-theme/some-icon.png</li>
+    <li>media/img/cool-theme/some-other-icon.png</li>
+    <li>styles/cool-theme.less</li>
+    <li>plugins/Processor/MyCustomProcessor.php</li>
+    <li>plugins/View/MyCustomProcessor.php</li>
+</ul>
+<p>
+As you see, there are quite a few files (both static and dynamic plugin code). 
+</p>
+<p>One way to apply those files to another project is to copy all these files manually. Granted, it works.
+But it is not funny at all (and we are here for fun, right?). Plus, it doesn't sound like a suitable method 
+if you want some basic style applied to <i>every</i> Phrozn project you create. Luckily, Phrozn supports bundles :)
+</p>
+
+<p>So, all those files go into your bundle directory, and as such can be applied <i>en masse</i>.</p>
+
+<h2 id="prepare-bundle-metadata" class="in-toc">Step3. Prepare bundle meta-data</h2>
+<p class="warning">
+Again, this step is not required if you do not plan to contribute your bundle into 
+<a href="https://github.com/farazdagi/phrozn-bundles">Phrozn Bundles Repository</a>.
+</p>
+<p>This step is simple, just create <i>your-bundle-name.yml</i> file with following contents (with place-holders filled):</p>
+<pre class="yaml">
+name: YourBundleName
+description: |
+    Some description of your bundle.
+version: 1.0
+author: Your Name
+url: https://github.com/farazdagi/phrozn-bundles/raw/master/your-bundle-name.tgz
+</pre>
+
+<h2 id="send-pull-request" class="in-toc">Step4. Send pull request</h2>
+<p>Now, the only thing left to do is sending pull request via GitHub. As said before, once your bundle will be 
+pulled and merged into master branch, everyone having <code>phr</code> running will be able to use it.</p>
+
+<p>If you are working on private bundle (that's the one you do not plan to share via Bundles Repo), all you need to do
+is archiving the bundle folder.</p>
+<p>
+Internally, Phrozn uses <a href="http://phing.info">Phing</a> project to automate any task worth automating (including bundle archiving), but you can
+archive manually of course:
+</p>
+<pre class="bash">
+$ cd my-bundle-folder
+$ tar -czvf ../my-bundle-folder.tgz .
+</pre>
+<p class="note">If you are interested in how Phing is used to create bundles check  out
+<a href="https://github.com/farazdagi/phrozn-bundles/blob/master/build.xml">build.xml</a> on GitHub.</p>
+
+<h2 id="summary" class="in-toc">Summary</h2>
+<ul>
+    <li>You fork the official repo (<a href="http://help.github.com/fork-a-repo/">how?</a>)</li>
+    <li>Prepare your bundle directory 
+        (<a href="/en/documentation/articles/create-phrozn-bundle/#package-your-custom-code">how?</a>)</li>
+    <li>Prepare your bundle meta-data 
+        (<a href="/en/documentation/articles/create-phrozn-bundle/#prepare-bundle-metadata">how?</a>)</li>
+    <li>Send pull request (<a href="http://help.github.com/send-pull-requests/">how?</a>)</li>
+    <li>Tweet with <code>#phrozn</code> tag, letting the world know of your contribution.</li>
+</ul>

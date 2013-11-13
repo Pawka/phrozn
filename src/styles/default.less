@@ -1,0 +1,401 @@
+@color: #ccc;
+
+@bodyBgColor: #FFF;
+@bodyBgColor: #E6E6E6;
+
+@pageColor:  #3E4349;
+@pageBgColor: #E6E6E6;
+@pageWidth: 1000px;
+@pageFontSize: 17px;
+
+@contentBgColor: #FFF;
+
+@padding: 5px;
+
+/**
+ * Colors
+ */
+@colorBorder: #A4DFEF;
+@colorSectionAnchor: #AFAFAF;
+
+/**
+ * Fonts
+ */
+@monospaceFont: 'Bitstream Vera Sans Mono','Courier', monospace;
+
+/**
+ * Mixin helpers
+ */
+.rounded-corners (@radius: 5px) {
+    border-radius: @radius;
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+}
+#test (@color: red) {
+    border: 1px solid @color;
+}
+.transparent (@opacity: 0.5) {
+    filter:alpha(@opacity*100);
+    -moz-opacity: @opacity;
+    -khtml-opacity: @opacity;
+    opacity: @opacity;
+}
+
+#centerMe () {
+    margin: 0px auto;
+}
+
+*{
+    padding: 0px;
+    margin: 0px;
+}
+body {
+    background-color: @bodyBgColor;
+}
+p {
+    margin: 10px 0px;
+}
+img {
+    border: none;
+}
+.clear {
+    clear: both;
+}
+#page {
+    position: relative;
+    width: @pageWidth;
+    color: @pageColor;
+    font-family: 'Georgia',serif;
+    font-size: @pageFontSize;
+    line-height: 26px;
+    #centerMe;
+    padding: 15px;
+
+    #header {
+        height: 220px;
+        color: @color;
+        background: url('/media/img/background.png') repeat scroll 0 0 @pageBgColor;
+        border-bottom: 2px dotted @colorBorder;
+        a {
+            outline: 0 none;
+        }
+        h1 {
+            a {
+                display: block;
+                width: 280px;
+                height: 112px;
+                overflow: hidden;
+                background: url("/media/img/logo.png") no-repeat scroll 0 0 transparent;
+                text-indent: -9999px;
+                z-index: 2;
+                position: absolute;
+                top: 25px;
+                left: 70px;
+            }
+        }
+        h2 {
+            float: left;
+            position: absolute;
+            left: 115px;
+            top: 115px;
+            color: #4baddb;
+            font-size: 16px;
+            font-family: "Lucida Grande",Helvetica,Arial,Sans-serif;
+            line-height: 1.2em;
+        }
+
+        #thingy {
+            background: url("/media/img/elephanto-sprite.png") no-repeat 0 0;
+            position: absolute;
+            width: 326px;
+            height: 266px;
+            right: 15px;
+            top: 47px;
+
+            &.breathing { background-position: -1px -266px; }
+        }
+
+        ul#nav {
+            position: absolute;
+            font-size: @pageFontSize - 4;
+            float: right;
+            top: 155px;
+            left: 75px;
+            li {
+                float: left;
+                list-style: none outside none;
+                a {
+                    .rounded-corners(6px);
+                    color: #888888;
+                    display: block;
+                    font-weight: bold;
+                    font-family: "Lucida Grande",Helvetica,Arial,Sans-serif;
+                    line-height: 32px;
+                    padding: 0 15px;
+                    text-decoration: none;
+                    text-shadow: 0 1px 1px #FFFFFF;
+                    background: none repeat scroll 0 0 #B9EDFC;
+                    border: 1px solid #B9EDFC;
+                    margin-right: 10px;
+                }
+                a:hover {
+                    color: #666666;
+                    border: 1px solid @colorBorder;
+                }
+            }
+        }
+    }
+    #content {
+        min-height: 400px;
+        background: none repeat scroll 0 0 @contentBgColor;
+        padding: 25px 75px;
+        h1, h2, h3 {
+            color: #3B8DBF;
+            padding: 30px 0px 20px 0px;
+        }
+        h3 {
+            padding-top: 10px;
+        }
+        p {
+            font-size: 1em;
+            line-height: 1.45em;
+            margin: 10px 0px;
+            text-align: justify;
+            //text-indent: 1.5em;
+        }
+        p.first:first-letter {
+            font-size: 1.5em;
+            line-height: 1em;
+        }
+        .toc-box {
+            .rounded-corners (5px);
+            width: 250px;
+            float: right;
+            margin: 15px 0px 15px 20px;
+            background-color: #F8F8F8;
+            border: 1px solid #DEDEDE;
+            padding-bottom:10px;
+            .toc-header {
+                text-align: center;
+                border-bottom: 1px dotted #DEDEDE;
+                margin-bottom: 5px;
+            }
+            .toc-entry {
+                padding: 0px 10px 0px 20px;
+                font-size: 14px;
+                line-height: 18px;
+                margin-bottom: 5px;
+            }
+        }
+        a {
+            color: #3681AF;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #578EAF;
+        }
+        a.anchor {
+            color: #DFDFDF;
+            font-size: 80%;
+            padding: 2px;
+            text-decoration: none;
+        }
+        a.anchor:hover {
+            color: @colorSectionAnchor;
+        }
+        .vspacer {
+            height: 40px;
+        }
+        ol, ul {
+            margin-left: 1.5em;
+        }
+        ul li {
+            list-style: square outside none;
+            margin-left: 20px;
+            padding-bottom: 10px;
+        }
+        ol li {
+            margin-left: 20px;
+            padding-bottom: 10px;
+            font-weight: bold;
+            span {
+                font-weight: normal;
+            }
+        }
+        li.icon-ruby {
+            list-style: none;
+            background: url('/media/img/icons/ruby.png') no-repeat 0 5px;
+            padding-left: 25px;
+        }
+        li.icon-python {
+            list-style: none;
+            background: url('/media/img/icons/python.png') no-repeat 0 5px;
+            padding-left: 25px;
+        }
+        p.warning {
+            .rounded-corners (5px);
+            background-color: #F8F8F8;
+            border: 1px solid #FAA98C;
+            font-size: 16px;
+            padding: 20px;
+            margin: 25px auto;
+        }
+        p.note {
+            color: @pageColor;
+            .rounded-corners (5px);
+            background-color: #F8F8F8;
+            border: 1px solid #6BBF7E;
+            font-size: 16px;
+            padding: 20px;
+            margin: 25px auto;
+        }
+        p.listing-caption {
+            padding-top: 15px;
+            font-style: italic;
+        }
+    }
+    #footer {
+        position: relative;
+        height: 130px;
+        background: url('/media/img/footer.png') repeat scroll 0 0 @pageBgColor;
+        color: #FFF;
+        font-size: @pageFontSize - 4;
+        font-family: "Lucida Grande",Helvetica,Arial,Sans-serif;
+        padding: 25px;
+        #farazdagi {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            height: 38px;
+            width: 273px;
+            a {
+                background: url('/media/img/farazdagi.png') no-repeat scroll 0 0 transparent;
+                .transparent(0.6);
+                display: block;
+                line-height: 45px;
+                text-indent: -9999px;
+                outline: 0 none;
+            }
+            a:hover {
+                opacity: 1;
+            }
+        }
+        #snow-flakes {
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            background: url('/media/img/snow-flakes.png') no-repeat scroll 0 0 transparent;
+            height: 115px;
+            width: 150px;
+            .transparent(0.3);
+        }
+        div#validators {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            .transparent(0.8);
+        }
+        div#back-to-top {
+            .rounded-corners(3px);
+            text-align: center;
+            font-weight: bold;
+            font-size: @pageFontSize - 3;
+            position: absolute;
+            top: -15px;
+            color: #000;
+            background-color: #7edcfb;
+            right: 70px;
+            width: 75px;
+            a {
+                color: #000;
+                text-decoration: none;
+                border-bottom: 1px dotted #000;
+            }
+        }
+        div.right {
+            position: absolute;
+            top: 65px;
+            right: 35px;
+            clear: both;
+            color: #337296;
+            a {
+                color: #337296;
+                text-decoration: none;
+                border-bottom: 1px dotted @colorHeader;
+            }
+            a:hover {
+                border-bottom: 1px dotted #0A5A7F;
+            }
+        }
+    }
+    table {
+        .rounded-corners(3px);
+        border: 1px dotted silver;
+        width: 100%;
+        margin: 10px 0px;
+        th {
+            text-align: left;
+            padding: 5px;
+            border-bottom: 1px dotted silver;
+        }
+        td {
+            padding: 5px;
+        }
+    }
+    pre,
+    code {
+        .rounded-corners (5px);
+        background-color: #F8F8F8;
+        border: 1px solid #DEDEDE;
+        font-size: 16px;
+        padding: 0 4px;
+    }
+    pre {
+        display: block;
+        font-size: 13px;
+        padding: 15px 15px;
+        background-color: #333;
+        line-height: 18px;
+        color:#dcdcdc;
+    }
+    pre {
+        margin: 10px 0px;
+    }
+    .note {
+        font-size: @pageFontSize - 5;
+        color: @colorSectionAnchor;
+    }
+    div.hr {
+        margin-top: 25px;
+        border-top: 1px dashed #AFAFAF;
+    }
+    div#install {
+        position: absolute;
+        top: 350px;
+        right: 85px;
+        a.button {
+            .rounded-corners(6px);
+            -moz-box-shadow: 0 0 2px #000000 inset;
+            background: none repeat scroll 0 0 #EFEFEF;
+            border: 3px solid #DDD;
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666666;
+            color: #0B7BBF;
+            padding: 0px 20px;
+            text-decoration: none;
+            height: 36px;
+            line-height: 36px;
+            opacity: 0.8;
+            text-align: center;
+            text-shadow: 0 1px 1px #FFFFFF;
+        }
+        a {
+            outline: 0 none;
+        }
+        a.button:hover {
+            opacity: 1;
+        }
+    }
+}

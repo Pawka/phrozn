@@ -1,0 +1,91 @@
+layout: default.twig
+permalink: /en/documentation/front-matter/
+---
+<h1 id="front-matter">YAML Front Matter</h1>
+<div class="toc-box">&nbsp;</div>
+
+<p>Each entry file may contain front matter in YAML format.</p>
+<p>Front matter is used for either setting predefined parameters with which entry will be parsed, or setting your own custom variables.</p>
+
+<p>When present, front matter must be the first thing in file and delimited from the file's content with three
+consecutive dashes (on their own line):</p>
+<pre>
+layout: default.twig
+permalink: /sub/section/
+---&nbsp;
+&lt;p&gt;entry content&lt;/p&gt;
+</pre>
+
+<h2 id="predefined-variables" class="in-toc">Predefined Variables</h2>
+
+<table>
+    <tr>
+        <th width="20%">Variable</th>
+        <th>Description</th>
+        <th>Default</th>
+    </tr>
+    <tr>
+        <td><code>layout</code></td>
+        <td>If set, specifies which layout to use.</td>
+        <td>default.twig</td>
+    </tr>
+    <tr>
+        <td><code>tags</code></td>
+        <td>
+            If set, allows to specify tags attributed to given entry. Tag pages are generated automatically.
+            Entry may belong to more than one tag, use <a href="http://en.wikipedia.org/wiki/YAML#Lists">YAML List</a>
+            to specify multiple tags.
+        </td>
+        <td>n/a</td>
+    </tr>
+
+    <tr>
+        <td><code>skip</code></td>
+        <td>Whether to skip given entry from site generation. Allows omitting certain entries while still having
+            them in <code>entries</code> folder.</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td><code>permalink</code></td>
+        <td>Allows to set the output path of parsed entry wrt site's main output path. See <a
+                href="/en/documentation/permalinks/">available permalinks
+                strategies</a></td>
+        <td>n/a</td>
+    </tr>
+</table>
+
+<h2 id="custom-variables" class="in-toc">Custom Variables</h2>
+<p>
+Phrozn allows you to define your own data structures within front matter.
+Once defined they are accessible via <code>this</code> container variable.
+</p>
+<p>Depending on text processor you rely on, the way you access <code>this</code> varies.
+Here is how to do so within entries in Twig format: </p>
+<pre>
+author: Vic Farazdagi
+---&nbsp;
+&lt;p&gt;{{ '{{' }} this.author {{ '}}' }}&lt;/p&gt;
+
+</pre>
+
+<h3 id="config-entry-vars-in-layout" class="in-toc">Entry Variables in Layouts</h3>
+<p>
+Sometimes it is necessary to refer to variables defined in entries from within the layout. For example,
+assume that you want to set HTML page title inside some entry (while actual HTML tag for the title is defined in layout).
+</p>
+<p>
+In this case, special container <code>entry</code> is used in layout:
+</p>
+<pre>
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;{{ '{{' }} entry.title {{ '}}' }}&lt;/title&gt;
+    &lt;/head&gt;
+&lt;/html&gt;
+</pre>
+
+<h3 id="config-moreinfo" class="in-toc">Variable access</h3>
+<p>
+All variables defined in <code>config.yml</code> are accessible with <code>this.[VARIABLE_NAME]</code>.
+</p>
+

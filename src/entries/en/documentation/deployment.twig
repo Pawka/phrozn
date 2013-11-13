@@ -1,0 +1,61 @@
+layout: default.twig
+permalink: /en/documentation/deployment/
+---
+<h1 id="main">Project Deployment</h1>
+<div class="toc-box">&nbsp;</div>
+
+<p>Since Phrozn generates simple HTML pages as output, pushing project to your web host is <i>trivial</i>:<br />
+All you need to do is to copy over generated files.</p>
+
+<p>
+Depending on your needs, there are several ways to automate this process.
+</p>
+
+<h2 id="manual" class="in-toc">Manual Deployment</h2>
+<p>Supposing that Phrozn directory is controlled by Git and you have shell access to production server, most
+straight-forward approach will be:</p>
+<p>
+<ol>
+    <li><span>Compile site with <code>phr up</code>.</span></li>
+    <li><span><code>git-commit</code> and <code>git-push</code> to some central repository (say GitHub).</span></li>
+    <li><span>On production server, <code>git-pull</code> the update from that central repository.</span></li>
+</ol>
+</p>
+<p>
+    Obviously, the same approach can be used with Subversion or any other SCM tool. This process can be further
+    automated using some build tool, such as <a href="http://phing.info/">Phing</a>.
+</p>
+<p>
+Alternatively, you can <code>phr up</code> directly on production server (if you have full control over it, so that
+Phrozn can be installed there).
+</p>
+
+{#
+<h2 id="phing" class="in-toc">Deploy Using Phing</h2>
+<p>You need to add <a href="http://phing.info">Phing</a> phr task</p>
+#}
+
+{#
+<h2 id="git-post-update" class="in-toc">Git post-update Hook</h2>
+<p>
+You can automate the deployment by using git's <a href="http://www.kernel.org/pub/software/scm/git/docs/githooks.html#post-update">post-update</a> hook.
+See <a href="/en/documentation/articles/deploy-using-git-post-update/">detailed walkthrough</a> on how to do it.
+</p>
+
+<h2 id="git-post-receive" class="in-toc">Git post-receive Hook</h2>
+<p>..</p>
+#}
+
+<h2 id="rsync" class="in-toc">Synchronize using rsync</h2>
+<p>Again, since Phrozn site is just a collection of static pages, you can use <code>rsync</code>. Assuming that
+generated site lives in <code>public_html</code> on your developer box, here is simple shell script to push files to
+remote production server:</p>
+<pre>
+#!/usr/bin/env bash
+phr up &amp;&amp; rsync -avz --delete public_html/ my:/path/on/remote/host
+</pre>
+
+{#
+<h2 id="ftp" class="in-toc">ftp</h2>
+<p>..</p>
+#}

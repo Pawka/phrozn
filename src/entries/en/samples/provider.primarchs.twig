@@ -1,0 +1,30 @@
+providers:
+    all_primarchs:
+        provider: Primarchs
+    traitor_primarchs:
+        provider: Primarchs
+        allegiance: Traitor # pass parameter
+    loyal_primarchs:
+        provider: Primarchs
+        allegiance: Loyal
+---
+<h1 id="all-primarchs">All Primarchs:</h1>
+<ul>
+{% for primarch in this.providers.all_primarchs %}
+    <li><b>{{ primarch.name }}</b> of {{ primarch.legion }} ({{ primarch.allegiance}})</li>
+{% endfor %}
+</ul>
+
+<h1 id="loyal-primarchs">Loyal Primarchs:</h1>
+<ol>
+{% for primarch in this.providers.loyal_primarchs %}
+    <li><b>{{ primarch.name }}</b> of {{ primarch.legion }} ({{ primarch.allegiance}})</li>
+{% endfor %}
+</ol>
+
+<h1 id="traitor-primarchs">Traitor Primarchs:</h1>
+<ol>
+{% for primarch in this.providers.traitor_primarchs %}
+    <li><b>{{ primarch.name }}</b> of {{ primarch.legion }} ({{ primarch.allegiance}})</li>
+{% endfor %}
+</ol>

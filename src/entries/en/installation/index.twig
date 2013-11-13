@@ -1,0 +1,45 @@
+<h1 id="installation">Installation</h1>
+<div class="toc-box">&nbsp;</div>
+
+<p>Depending on your purposes there are several ways to install Phrozn:</p>
+<p>
+If you plan to extend Phrozn it is suggested to
+fork official repository, otherwise proceed with installation via <a href="http://getcomposer.org/">Composer</a>. Should you need raw sources,
+you can have them too.</p>
+
+
+<h2 id="requirements" class="in-toc">System Requirements</h2>
+<ul>
+    <li>PHP 5.3+</li>
+</ul>
+
+<h2 id="composer" class="in-toc">Use Composer</h2>
+<p>
+If you do not have Composer installed, install it first:
+</p>
+<pre>
+  curl -s https://getcomposer.org/installer | php
+</pre>
+<p>
+  Once Composer is installed, proceed with Phrozn installation:
+</p>
+<pre>
+  php composer.phar create-project farazdagi/phrozn phrozn
+  cd phrozn
+</pre>
+
+<p>You can then symlink <code>phr</code> executable located in <code>bin</code> folder:</p>
+<pre>
+  sudo ln -s `pwd`/bin/phrozn.php /usr/local/bin/phr
+</pre>
+
+<br />
+<p>That's it! Read <a href="/en/documentation/articles/getting-started/">Getting Started</a> guide for a quick start.</p>
+
+<h2 id="github-fork" class="in-toc">Fork on GitHub</h2>
+<p>Project's official repository is hosted on GitHub: <a href="http://github.com/farazdagi/phrozn">http://github.com/farazdagi/phrozn</a></p>
+
+<h2 id="download" class="in-toc">Download Sources</h2>
+<p>Download "master" branch in
+<a href="http://github.com/farazdagi/phrozn/tarball/master">.tar.gz</a> or in
+<a href="http://github.com/farazdagi/phrozn/zipball/master">.zip</a> format.</p>

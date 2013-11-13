@@ -1,0 +1,76 @@
+/**
+ * see http://code.google.com/p/google-code-prettify/source/browse/trunk/styles/desert.css
+ */
+
+pre .keyword,
+pre .tag,
+pre .css .class,
+pre .css .id
+{
+    color: #f0e68c; font-weight: bold;
+}
+
+pre .number,
+pre .date{
+    color:#8cd0d3
+}
+pre .dos .envvar,
+pre .dos .stream,
+pre .variable,
+pre .apache .sqbracket{
+    color:#ffa0a0
+}
+
+pre .dos .flow,
+pre .diff .change,
+pre .python .exception,
+pre .python .built_in,
+pre .literal,
+pre .tex .special{color:#cd5c5c}
+
+pre .diff .chunk,
+pre .ruby .subst{color:#8f8f8f}
+
+pre .dos .keyword,
+pre .python .decorator,
+pre .class .title,
+pre .function .title,
+pre .ini .title,
+pre .diff .header,
+pre .ruby .class .parent,
+pre .apache .tag,
+pre .nginx .built_in,
+pre .tex .command{color:#efef8f}
+
+pre .diff .deletion,
+pre .string,
+pre .tag .value,
+pre .preprocessor,
+pre .built_in,
+pre .sql .aggregate,
+pre .javadoc,
+pre .css .rules .value,
+pre .attr_selector,
+pre .pseudo,
+pre .apache .cbracket,
+pre .tex .formula{color:#98fb98}
+
+pre .shebang,
+pre .diff .addition,
+pre .comment,
+pre .java .annotation,
+pre .template_comment,
+pre .pi,
+pre .doctype{color:#87ceeb}
+
+pre .command 
+{color:#87ceeb}
+
+pre .phpdoc {
+color:#afd9ea;
+    font-weight: bold;
+}
+
+pre .cli-comment {
+    color: #E8DBB4;
+}

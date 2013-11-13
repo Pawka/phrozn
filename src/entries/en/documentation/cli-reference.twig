@@ -1,0 +1,211 @@
+permalink: /en/documentation/cli-phr/
+---
+<h1 id="main">Command Line Reference</h1>
+<div class="toc-box" style="width:200px;">&nbsp;</div>
+
+<p>Phrozn executable <code>phr</code> comes with extensive documentation by itself.</p>
+<p> When in doubt:</p>
+<pre class="no-highlight" style="width:590px;">
+  <span class="variable">$</span> <span class="command">phr help</span>
+  usage: phrozn &lt;command&gt; [options] [args]
+
+  Type 'phrozn help &lt;command&gt;' for help on a specific command.
+  Type 'phrozn ? help' for help on using help.
+</pre>
+
+<p class="note">You can use <code>phr</code> and <code>phrozn</code> executables interchangeably.<br />Personally, I prefer much shorter <code>phr</code> alternative.</p>
+
+<h2 id="help" class="in-toc">phr help</h2>
+<p>To get help on particular command use <code>phr help &lt;command&gt;</code> or <code>phr ? &lt;command&gt;</code>.</p>
+
+<p>So, to get help on using <code>help</code> command:</p>
+<pre class="bash">
+    <span class="variable">$</span> <span class="command">phr</span> ? <span class="command">help</span>
+</pre>
+
+<p>Help on specific commands also contains verbose mode, which produce more elaborated version of docs:</p>
+<pre class="bash">
+    <span class="variable">$</span> <span class="command">phr</span> ? -v <span class="command">help</span>
+    <span class="variable">$</span> <span class="command">phr</span> help -v <span class="command">help</span>
+    <span class="variable">$</span> <span class="command">phr</span> help -v <span class="command">init</span>
+    <span class="variable">$</span> <span class="command">phr</span> help -v <span class="command">up</span>
+</pre>
+
+<h2 id="phr-init" class="in-toc">phr init</h2>
+<p>This command is used to initialize Phrozn project. It creates necessary folder structure and config files:</p>
+<pre class="no-highlight">
+    <span class="variable">$</span> <span class="command">mkdir</span> my-phrozn-project
+    <span class="variable">$</span> <span class="command">cd</span> my-phrozn-project
+    <span class="variable">$</span> <span class="command">phr init</span>
+</pre>
+<p>Or you can specify project directory explicitly:</p>
+<pre class="no-highlight">
+    <span class="variable">$</span> <span class="command">mkdir</span> my-phrozn-project
+    <span class="variable">$</span> <span class="command">phr init</span> my-phrozn-project
+</pre>
+
+<p>As you see, if project directory not specified current one is assumed.</p>
+
+<p>For further info:</p>
+<pre class="no-highlight">
+    <span class="variable">$</span> <span class="command">phr</span> ? <span class="command">init</span>
+</pre>
+
+<h2 id="phr-up" class="in-toc">phr update</h2>
+<p>
+Update command is used to create/update static site representation of your project. By far, this is a command you will invoke most often.
+</p>
+<p><code>phr up</code> accepts two arguments: the first one is input directory containing Phrozn project, and the second one
+is output directory. However, since both arguments default to current working directory, you generally omit them
+altogether:</p>
+<pre>
+    <span class="variable">$</span> <span class="command">cd</span> my-phrozn-project
+    <span class="variable">$</span> <span class="command">phr up</span>
+</pre>
+
+<p>For further info:</p>
+<pre class="no-highlight">
+    <span class="variable">$</span> <span class="command">phr</span> ? <span class="command">up</span>
+</pre>
+
+<h2 id="phr-single" class="in-toc">phr single</h2>
+<p>
+Single command is used to create/update a single static page.
+</p>
+<p><code>phr single</code> accepts three arguments: the first one is input file to process, the second one
+is the source directory and the third one is the output folder. However, latest two arguments are optional and
+use the current working directory, you generally omit them altogether:</p>
+<pre>
+    <span class="variable">$</span> <span class="command">cd</span> my-phrozn-project
+    <span class="variable">$</span> <span class="command">phr single path/to/my/file.ext</span>
+</pre>
+
+<p>For further info:</p>
+<pre class="no-highlight">
+    <span class="variable">$</span> <span class="command">phr</span> ? <span class="command">single</span>
+</pre>
+
+<h2 id="phr-clobber" class="in-toc">phr clobber</h2>
+<p>
+This command locates and removes Phrozn project directory, effectively deleting all user generated content.
+</p>
+<pre>
+    $ <span class="command">cd</span> my-phrozn-project
+    $ <span class="command">phr clobber</span>
+</pre>
+
+<p>
+You can manually simulate the clobber command by removing project directory <code>.phrozn</code> manually.
+</p>
+<p class="warning">USE WITH CAUTION!! Once you purge the project, all changes are lost (albeit they are preserved in
+repo).</p>
+<p>For further info:</p>
+<pre>
+    <span class="variable">$</span> <span class="command">phr</span> ? <span class="command">clobber</span>
+</pre>
+
+<h2 id="phr-bundle" class="in-toc">phr bundle</h2>
+<p>
+Phrozn bundles are just archived directories with pluggable code that can be
+applied to any Phrozn project. Functionality contained within bundle is decoupled
+from the rest of the project, thus can be effortlessly reused.</p>
+<p>For instance, consider that you've <a href="/en/documentation/articles/create-custom-processor/">implemented some processor</a>
+for Project A. Moving that implementation to bundle will allow you to apply
+the very same processor to any future project using single <code>phr bundle</code> command.
+</p>
+<p class="note">
+Make sure you run <code>phr bundle</code> command from within Phrozn project
+directory (directory containing <code>.phrozn</code>) or from within <code>.phrozn</code> folder itself.</p>
+<p>
+Bundle command accepts 4 different subcommands:
+<code>list</code>,
+<code>info</code>,
+<code>apply</code>,
+<code>clobber</code>
+</p>
+<h3 id="phr-bundle-list">phr bundle list</h3>
+<p>Used to list bundles. Common use cases include:</p>
+<pre class="ruby">
+    $ <span class="command">cd</span> my-phrozn-project
+
+    <span class="disable-highlight cli-comment">List all available bundles (both installed and not installed):</span>
+    $ <span class="command">phr bundle list</span>
+    $ <span class="command">phr bundle list -a</span>
+    $ <span class="command">phr bundle list --all</span>
+
+    <span class="disable-highlight cli-comment"># List all installed bundles:</span>
+    $ <span class="command">phr bundle list -i</span>
+    $ <span class="command">phr bundle list --installed</span>
+
+    <span class="disable-highlight cli-comment"># List all not yet installed bundles:</span>
+    $ <span class="command">phr bundle list -i</span>
+    $ <span class="command">phr bundle list --installed</span>
+</pre>
+
+<p>
+When listing bundles you may pass <i>bundle name</i> as additional parameter.
+<code>bundle list</code> command is smart enough to filter results using provided search string.
+</p>
+<p>
+For example, to list all <i>installed</i> bundles having "test" sting in their names:
+</p>
+<pre>
+    $ <span class="command">phr bundle list -i test</span>
+    $ <span class="command">phr bundle list --installed test</span>
+</pre>
+
+<h3 id="phr-bundle-info">phr bundle info</h3>
+<p>This command is used to get full info about bundle:</p>
+<pre class="no-highlight">
+    <span class="variable">$</span> <span class="command">phr bundle info test</span>
+    Phrozn 0.1.38 by Victor Farazdagi
+
+    +-------------+--------------------------------------------------------------------+
+    | Param       | Value                                                              |
+    +-------------+--------------------------------------------------------------------+
+    | id          | processor.test                                                     |
+    | name        | Test                                                               |
+    | description | Test processor plugin - used to demonstrate how new text processor |
+    |             | might be added to Phrozn                                           |
+    |             |                                                                    |
+    | version     | 1.0                                                                |
+    | author      | Victor Farazdagi                                                   |
+    +-------------+--------------------------------------------------------------------+
+</pre>
+
+<h3 id="phr-bundle-apply">phr bundle apply</h3>
+<p>Apply bundle to the current Phrozn project:</p>
+<pre>
+    $ <span class="command">cd</span> my-phrozn-project
+
+    <span class="disable-highlight cli-comment"># Install bundle from official repository:</span>
+    $ <span class="command">phr bundle apply processor.test</span>
+
+    <span class="disable-highlight cli-comment"># Install bundle from file:</span>
+    $ <span class="command">phr bundle apply /path/to/bundle.tgz</span>
+
+    <span class="disable-highlight cli-comment"># Install bundle from URL:</span>
+    $ <span class="command">phr bundle apply https://domain.com/path/to/bundle/bundle.name.tgz</span>
+</pre>
+<p>Phrozn will download, extract and copy files located in bundle into project directory.</p>
+
+<h3 id="phr-bundle-clobber">phr bundle clobber</h3>
+<p>Phrozn keeps track of what files have been installed/copied on <code>bundle apply</code> step.</p>
+<p>Should you need to remove previously installed bundle - it is trivial:</p>
+<pre>
+    $ <span class="command">cd</span> my-phrozn-project
+    $ <span class="command">phr bundle clobber processor.test</span>
+</pre>
+
+
+
+<div class="clear" style="height:20px;"></div>
+<p>For further info:</p>
+<pre>
+    <span class="variable">$</span> <span class="command">phr</span> ? <span class="command">bundle</span>
+</pre>
+<p>Alternatively, if you want to see <code>phr bundle</code> examples as well:</p>
+<pre>
+    <span class="variable">$</span> <span class="command">phr</span> ? <span class="command">bundle</span> -v
+</pre>
+
