@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Phrozn - Static Site Generator for PHP</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/default.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/prettify.css" type="text/css" rel="stylesheet" />
+
+        <link rel="shortcut icon" type="image/x-icon" href="/media/favicon.ico" />
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://yandex.st/highlightjs/5.16/highlight.min.js"></script>
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script type="text/javascript" src="/scripts/default.js"></script>
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-22641839-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </head>
+    <body>
+        <div id="page">
+            <div class="ui-corner-top" id="header">
+                <h1><a href="/">phrozn</a></h1>
+                <h2>Static site generator for PHP</h2>
+                <div id="thingy"></div>
+                <ul id="nav">
+                    <li><a href="/en/">Summary</a></li>
+                    <li><a href="/en/installation/">Installation</a></li>
+                    <li><a href="/en/documentation/">Documentation</a></li>
+                    <li><a href="/en/community/">Community</a></li>
+                    <li><a href="https://github.com/farazdagi/phrozn/contributors">Contributors</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div id="content">
+                <h1 id="main">Deploy Using Git's post-update hook</h1>
+
+<p>Git supports various hooks, which are basically CLI scripts that are executed at different points of git
+workflow.</p>
+<p>
+For easy site deployment we can use <code><a
+        href="http://www.kernel.org/pub/software/scm/git/docs/githooks.html#post-update">post-update</a></code> hook,
+which is executed on our remote production host everytime we push branches in our local/dev copy of Phrozn site.</p>
+
+<p>The algorithm is simple:</p>
+<ol>
+    <li><span>Create a Git repository of your Phrozn project.</span></li>
+    <li><span>Clone that repository on production host.</span></li>
+    <li><span>Activate <code>post-update</code> hook on production host, it will be responsible for pulling/updating the
+        site everytime something is pushed to project repository.</span></li>
+    <li><span>Clone repository you created at <code>step 1</code> into your dev box, where you can update site as you
+        see suitable.</span></li>
+</ol>
+<p>
+Now when you update the code on your dev box, then <code>git-commit</code> and <code>git-push</code> it to production
+host, once push is done <code>post-update</code> hook is invoked, which basically contains instructions to syncronize
+by pulling changes.
+</p>
+
+<p class="warning">
+    You should note that automatic pushing to live production server is something that is frowned upon unless you know
+    what you are doing. Basically, you must understand that once you push changes they are live on your production host.
+    If that's what you want - got with it!
+</p>
+
+<h2 id="walkthrough">Step-by-step instructions</h2>
+<p>Instructions below should help you setting up <code>post-update</code> hook.</p>
+<h3>Create git repository</h3>
+
+<div class="hr"></div>
+<p>
+Human-friendly docs are coming soon, refer to <a
+    href="http://stackoverflow.com/questions/2413804/how-to-deploy-jekyll-on-slicehost">this SoF answer</a> for time being.
+</p>
+<p>
+<a href="http://danielmiessler.com/blog/using-git-to-maintain-your-website">Good article on the post-update.</a>
+</p>
+                <div class="clear vspacer"></div>
+                <div class="note">
+                    Generated on 13 Nov, 2013 at 09:03 using Phrozn 0.5.5.
+                </div>
+            </div>
+            <div class="ui-corner-bottom" id="footer">
+                <div id="farazdagi"><a href="http://twitter.com/#!/farazdagi">f</a></div>
+                <div id="snow-flakes"></div>
+                <div id="back-to-top"><a href="#page">TOP</a></div>
+                <div id="validators">
+                    <p>
+                        <a href="http://validator.w3.org/check?uri=referer"><img
+                            src="http://www.w3.org/Icons/valid-xhtml10"
+                            alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+                    </p>
+                </div>
+                <div class="right">
+                    <div>
+                        Copyright &copy; 2013 <a href="http://twitter.com/#!/farazdagi">Victor Farazdagi</a>
+                    </div>
+                    <div>
+                        Elephant logo created by <a href="http://wizardcat.com/eng">Wizardcat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            <a href="https://github.com/farazdagi/phrozn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        </p>
+    </body>
+</html>

@@ -1,0 +1,30 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^phrozn\.info$
+RewriteRule (.*) http://www.phrozn.info/$1 [R=301,L]
+RewriteRule ^$ en [L]
+
+<IfModule mod_expires.c>
+    # Turn on Expires and set default expires to 3 days
+    ExpiresActive On
+    ExpiresDefault A259200
+</IfModule>
+
+<IfModule mod_headers.c>
+
+    # 1 Year
+    <FilesMatch "\.(ico|pdf|flv)$">
+    Header set Cache-Control "max-age=29030400, public"
+    </FilesMatch>
+    # 1 Week
+    <FilesMatch "\.(jpg|jpeg|png|gif|swf)$">
+    Header set Cache-Control "max-age=604800, public"
+    </FilesMatch>
+    # 3 Days
+    <FilesMatch "\.(xml|txt|css|js)$">
+    Header set Cache-Control "max-age=259200, proxy-revalidate"
+    </FilesMatch>
+    # 3 Days
+    <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "max-age=259200, private, proxy-revalidate"
+    </FilesMatch>
+</IfModule>

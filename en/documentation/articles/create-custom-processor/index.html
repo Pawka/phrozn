@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Phrozn - Static Site Generator for PHP</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/default.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/prettify.css" type="text/css" rel="stylesheet" />
+
+        <link rel="shortcut icon" type="image/x-icon" href="/media/favicon.ico" />
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://yandex.st/highlightjs/5.16/highlight.min.js"></script>
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script type="text/javascript" src="/scripts/default.js"></script>
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-22641839-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </head>
+    <body>
+        <div id="page">
+            <div class="ui-corner-top" id="header">
+                <h1><a href="/">phrozn</a></h1>
+                <h2>Static site generator for PHP</h2>
+                <div id="thingy"></div>
+                <ul id="nav">
+                    <li><a href="/en/">Summary</a></li>
+                    <li><a href="/en/installation/">Installation</a></li>
+                    <li><a href="/en/documentation/">Documentation</a></li>
+                    <li><a href="/en/community/">Community</a></li>
+                    <li><a href="https://github.com/farazdagi/phrozn/contributors">Contributors</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div id="content">
+                <h1 id="main">Create custom markup processor</h1>
+<div class="toc-box">&nbsp;</div>
+
+<p>
+    Phrozn was created with plugin architecture in mind, so extending it should be
+    relatively simple process.
+</p>
+<div class="clear"></div>
+<p class="warning">
+    All extension classes MUST reside in <code>.phrozn/plugins/PhroznPlugin</code> folder.<br />
+    Base namespace used for plugin code is <code>PhroznPlugin</code>.
+</p>
+
+<h2 id="create-processor" class="in-toc">1. Create Processor Class</h2>
+<p>
+    In order for your class to be used as drop-in replacement for some standard
+    text processor it MUST implement <code>\Phrozn\Processor</code> interface:
+</p>
+<pre class="php">
+namespace Phrozn;
+interface Processor
+{
+    /**
+     * Parse the incoming template
+     *
+     * @param string $tpl Source template content
+     * @param array $vars List of variables passed to template engine
+     *
+     * @return string Processed template
+     */
+    public function render($tpl, $vars = array());
+
+    /**
+     * Gateway to pass concrete Processor some configuration options
+     *
+     * @param array $options Options to pass to engine
+     *
+     * @return \Phrozn\Processor
+     */
+    public function setConfig($options);
+
+    /**
+     * Get processor configuration
+     *
+     * @return array
+     */
+    public function getConfig();
+}
+</pre>
+<p>
+Standard location for processor classes is <code>plugins/PhroznPlugin/Processor</code>:
+</p>
+
+<pre class="php">
+// .phrozn/plugins/Processor/Test.php
+namespace PhroznPlugin\Processor;
+
+class Test
+    extends \Phrozn\Processor\Base
+    implements \Phrozn\Processor
+{
+    public function render($tpl, $vars = array())
+    {
+        return '&lt;b>' . $tpl . '&lt;/b>';
+    }
+}
+</pre>
+
+<p>
+As you see, Test processor inherits from <code>\Phrozn\Processor\Base</code>
+- base class which simplifies things by implementing some accessor/mutator methods
+(fancy names for getters/setters).
+</p>
+<p>
+Thus, if you rely on <code>\Phrozn\Processor\Base</code>, the only method you need to implement is
+<code>render()</code>.
+</p>
+
+<p>
+So far we have Test processor which simply wraps incoming template into &lt;b&gt; tags.
+</p>
+
+<h2 id="create-view" class="in-toc">2. Create View</h2>
+<p>
+For rendering given entry into static HTML page, you need to create content rendering View class.
+Basically, whenever Phrozn encounters file with extension that matches name of some
+registered View class, object of this class is used for rendering.
+</p>
+<p>
+So, all *.twig files, for instance, are actually compiled using
+<code>\Phrozn\Site\View\Twig</code> class, which in turn uses
+<code>\Phrozn\Processor\Twig</code> text processor for rendering.
+</p>
+
+<p>
+    Views actually can rely on as many processors as you like, but for now, let's
+    create trivial view which will simply proxy our Test processor.
+</p>
+
+<p>
+View classes MUST implement <code>\Phrozn\Site\View</code> interface:
+</p>
+<pre class="php">
+namespace Phrozn\Site;
+use Phrozn\Has;
+interface View
+    extends
+        Has\SiteConfig,
+        Has\InputFile,
+        Has\OutputFile,
+        Has\OutputDir,
+        Has\Param,
+        Has\Processors,
+        Has\FrontMatter,
+        Has\Template
+{
+
+    /**
+     * Render and save static version of a concrete view
+     *
+     * @param array $vars List of variables passed to text processors
+     *
+     * @return \Phrozn\Site\View
+     */
+    public function compile($vars = array());
+
+    /**
+     * Render input template
+     *
+     * @param array $vars List of variables passed to text processors
+     *
+     * @return string
+     */
+    public function render($vars = array());
+}
+</pre>
+
+<p>As you can see, this interface relies on many other interfaces
+(yep, I am fan of <a href="http://en.wikipedia.org/wiki/Interface_segregation_principle">ISP</a>),
+which makes it harder for clients to implement <code>\Phrozn\Site\View</code> directly.
+Fortunately, as with processors, we have base implementation <code>\Phrozn\Site\View\Base</code>
+which takes care of most of the auxiliary methods, thus
+allowing to concentrate only on methods directly related to rendering.
+</p>
+
+<p>
+    Standard location for your View renderers is <code>plugins/PhroznPlugin/Site/View</code>:
+</p>
+<pre class="php">
+// .phrozn/plugins/Site/View/Test.php
+namespace PhroznPlugin\Site\View;
+use PhroznPlugin\Processor;
+
+class Test
+    extends \Phrozn\Site\View\Base
+    implements \Phrozn\Site\View
+{
+    /**
+     * Initialize view
+     *
+     * @param string $inputFile Path to view source file
+     * @param string $outputDir File destination path
+     *
+     * @return \Phrozn\Site\View
+     */
+    public function __construct($inputFile = null, $outputDir = null)
+    {
+        parent::__construct($inputFile, $outputDir); // manners
+
+        // assign processors used by this renderer
+        $this-&gt;addProcessor(new Processor\Test());
+    }
+}
+</pre>
+
+<p>
+    For basic proxy view, all we needed to do is to assign our custom text processor to the view, all the
+    rest is handled <i>automagically</i> - basically base view fetches registered
+    processors and applies them in FIFO order.
+</p>
+<p>Now, let's actually test the whole thing.</p>
+
+<h2 id="register-view" class="in-toc">3. Register View Renderer</h2>
+<p>
+    As mentioned before, Phrozn matches extensions of entries to view names, so
+    our Test view will be used every time entry with ".test" extension is located.
+    Time to add one:
+</p>
+<pre class="html">
+# .phrozn/entries/tmp/sample.test
+---&nbsp;
+This entry should be rendered with \PhroznPlugin\Site\View\Test View renderer.
+</pre>
+
+<p>
+As you will immediately notice your entry was rendered without layout applied.
+In order to enable entry rendering within layout
+(which layout to use with given entry is settable via front matter) we will need
+to override <code>render()</code> method:
+</p>
+<pre>
+// .phrozn/plugins/PhroznPlugin/Site/View/Test.php
+namespace PhroznPlugin\Site\View;
+use PhroznPlugin\Processor;
+
+class Test
+    extends \Phrozn\Site\View\Base
+    implements \Phrozn\Site\View
+{
+    /**
+     * Initialize view
+     *
+     * @param string $inputFile Path to view source file
+     * @param string $outputDir File destination path
+     *
+     * @return \Phrozn\Site\View
+     */
+    public function __construct($inputFile = null, $outputDir = null)
+    {
+        parent::__construct($inputFile, $outputDir); // manners
+
+        // assign processors used by this renderer
+        $this-&gt;addProcessor(new Processor\Test());
+    }
+
+    /**
+     * Render view. Twig views are rendered within layout.
+     *
+     * @param array $vars List of variables passed to text processors
+     *
+     * @return string
+     */
+    public function render($vars = array())
+    {
+        $view = parent::render($vars);
+        if ($this-&gt;hasLayout()) {
+            // inject global site and front matter options into template
+            $vars = array_merge($vars, $this-&gt;getParams());
+            $view = $this-&gt;applyLayout($view, $vars);
+        }
+        return $view;
+    }
+}
+</pre>
+
+<p>
+This summarizes the usage and implementation of custom processors, for inspiration
+make sure you check <code>\Phrozn\Processor</code> classes which come out-of-box
+with every Phrozn installation.
+</p>
+                <div class="clear vspacer"></div>
+                <div class="note">
+                    Generated on 13 Nov, 2013 at 09:03 using Phrozn 0.5.5.
+                </div>
+            </div>
+            <div class="ui-corner-bottom" id="footer">
+                <div id="farazdagi"><a href="http://twitter.com/#!/farazdagi">f</a></div>
+                <div id="snow-flakes"></div>
+                <div id="back-to-top"><a href="#page">TOP</a></div>
+                <div id="validators">
+                    <p>
+                        <a href="http://validator.w3.org/check?uri=referer"><img
+                            src="http://www.w3.org/Icons/valid-xhtml10"
+                            alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+                    </p>
+                </div>
+                <div class="right">
+                    <div>
+                        Copyright &copy; 2013 <a href="http://twitter.com/#!/farazdagi">Victor Farazdagi</a>
+                    </div>
+                    <div>
+                        Elephant logo created by <a href="http://wizardcat.com/eng">Wizardcat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            <a href="https://github.com/farazdagi/phrozn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        </p>
+    </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Phrozn - Static Site Generator for PHP</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/default.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/prettify.css" type="text/css" rel="stylesheet" />
+
+        <link rel="shortcut icon" type="image/x-icon" href="/media/favicon.ico" />
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://yandex.st/highlightjs/5.16/highlight.min.js"></script>
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script type="text/javascript" src="/scripts/default.js"></script>
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-22641839-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </head>
+    <body>
+        <div id="page">
+            <div class="ui-corner-top" id="header">
+                <h1><a href="/">phrozn</a></h1>
+                <h2>Static site generator for PHP</h2>
+                <div id="thingy"></div>
+                <ul id="nav">
+                    <li><a href="/en/">Summary</a></li>
+                    <li><a href="/en/installation/">Installation</a></li>
+                    <li><a href="/en/documentation/">Documentation</a></li>
+                    <li><a href="/en/community/">Community</a></li>
+                    <li><a href="https://github.com/farazdagi/phrozn/contributors">Contributors</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div id="content">
+                <h1 id="installation">Installation</h1>
+<div class="toc-box">&nbsp;</div>
+
+<p>Depending on your purposes there are several ways to install Phrozn:</p>
+<p>
+If you plan to extend Phrozn it is suggested to
+fork official repository, otherwise proceed with installation via <a href="http://getcomposer.org/">Composer</a>. Should you need raw sources,
+you can have them too.</p>
+
+
+<h2 id="requirements" class="in-toc">System Requirements</h2>
+<ul>
+    <li>PHP 5.3+</li>
+</ul>
+
+<h2 id="composer" class="in-toc">Use Composer</h2>
+<p>
+If you do not have Composer installed, install it first:
+</p>
+<pre>
+  curl -s https://getcomposer.org/installer | php
+</pre>
+<p>
+  Once Composer is installed, proceed with Phrozn installation:
+</p>
+<pre>
+  php composer.phar create-project farazdagi/phrozn phrozn
+  cd phrozn
+</pre>
+
+<p>You can then symlink <code>phr</code> executable located in <code>bin</code> folder:</p>
+<pre>
+  sudo ln -s `pwd`/bin/phrozn.php /usr/local/bin/phr
+</pre>
+
+<br />
+<p>That's it! Read <a href="/en/documentation/articles/getting-started/">Getting Started</a> guide for a quick start.</p>
+
+<h2 id="github-fork" class="in-toc">Fork on GitHub</h2>
+<p>Project's official repository is hosted on GitHub: <a href="http://github.com/farazdagi/phrozn">http://github.com/farazdagi/phrozn</a></p>
+
+<h2 id="download" class="in-toc">Download Sources</h2>
+<p>Download "master" branch in
+<a href="http://github.com/farazdagi/phrozn/tarball/master">.tar.gz</a> or in
+<a href="http://github.com/farazdagi/phrozn/zipball/master">.zip</a> format.</p>
+                <div class="clear vspacer"></div>
+                <div class="note">
+                    Generated on 13 Nov, 2013 at 09:03 using Phrozn 0.5.5.
+                </div>
+            </div>
+            <div class="ui-corner-bottom" id="footer">
+                <div id="farazdagi"><a href="http://twitter.com/#!/farazdagi">f</a></div>
+                <div id="snow-flakes"></div>
+                <div id="back-to-top"><a href="#page">TOP</a></div>
+                <div id="validators">
+                    <p>
+                        <a href="http://validator.w3.org/check?uri=referer"><img
+                            src="http://www.w3.org/Icons/valid-xhtml10"
+                            alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+                    </p>
+                </div>
+                <div class="right">
+                    <div>
+                        Copyright &copy; 2013 <a href="http://twitter.com/#!/farazdagi">Victor Farazdagi</a>
+                    </div>
+                    <div>
+                        Elephant logo created by <a href="http://wizardcat.com/eng">Wizardcat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            <a href="https://github.com/farazdagi/phrozn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        </p>
+    </body>
+</html>

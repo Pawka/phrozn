@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Phrozn - Static Site Generator for PHP</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/default.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/prettify.css" type="text/css" rel="stylesheet" />
+
+        <link rel="shortcut icon" type="image/x-icon" href="/media/favicon.ico" />
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://yandex.st/highlightjs/5.16/highlight.min.js"></script>
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script type="text/javascript" src="/scripts/default.js"></script>
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-22641839-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </head>
+    <body>
+        <div id="page">
+            <div class="ui-corner-top" id="header">
+                <h1><a href="/">phrozn</a></h1>
+                <h2>Static site generator for PHP</h2>
+                <div id="thingy"></div>
+                <ul id="nav">
+                    <li><a href="/en/">Summary</a></li>
+                    <li><a href="/en/installation/">Installation</a></li>
+                    <li><a href="/en/documentation/">Documentation</a></li>
+                    <li><a href="/en/community/">Community</a></li>
+                    <li><a href="https://github.com/farazdagi/phrozn/contributors">Contributors</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div id="content">
+                <h1 id="main">Content Providers</h1>
+<div class="toc-box" style="width:280px;">&nbsp;</div>
+
+<h2 id="core" class="in-toc">Introduction</h2>
+<p>
+Sometimes you need to use external data within your Phrozn pages.
+For the most obvious example, let's assume you have an RSS feed and want to display it's contents
+on some Phrozn page. Content providers are exactly for this kind of tasks.
+</p>
+<p class="note">
+Content providers are classes that inject content within your otherwise static pages. Roughly, they represent Data Access
+Layer between your entity templates and whatever data you need to feature on those templates.
+</p>
+
+<p>
+Content providers may be as simple as some array of elements you want to traverse within your templates.
+They can be more quite complex as well, involving fetching data from some external service, process it and
+then inject into templates.
+</p>
+
+
+<h2 id="provider-class" class="in-toc">Content Provider Class</h2>
+<p class="warning">
+All extension classes MUST reside in <code>.phrozn/plugins</code> folder.<br>
+Base namespace used for plugin code is <code>PhroznPlugin</code>.
+</p>
+
+<p>In order for your class to be used as Content Provider it MUST implement <code>Phrozn\Provider</code> interface.</p>
+<pre class="php">
+namespace Phrozn;
+use Phrozn\Has;
+
+interface Provider
+    extends Has\Config,
+            Has\ProjectPath
+{
+    /**
+     * Get generated content
+     *
+     * @return mixed
+     */
+    public function get();
+}
+</pre>
+<p>As you see, interface is pretty simple with only one relevant method - that's <code>get()</code> method.
+Other methods are inherited from <code>Has\Config</code> and <code>Has\ProjectPath</code> interfaces and are
+used to inject extra configuration and project path respectively.</p>
+<p>
+In order to simplify the creation of new content providers, Phrozn comes with base class that implements
+all this auxiliary functionality, and the only method you generally need to implement is <code>\Phrozn\Provider::get()</code>.
+</p>
+<p>
+Any data returned from <code>get()</code> method can be injected into templates. While you can return scalars,
+it is more common to return arrays, and if you need scalar it is more convinient to expose it via
+Front Matter's <a href="/en/documentation/front-matter/#custom-variables">custom variables</a>.
+</p>
+
+<h2 id="inject-provider-content" class="in-toc">Injecting Content Into Entries</h2>
+<p>
+To use inside entries Content Providers must be included into <a href="/en/documentation/front-matter/#custom-variables">Front Matter</a>
+using special variable <code>providers</code>:
+</p>
+<pre>
+providers:
+    key:
+        provider: ProviderClass
+        param: paramValue
+        another_param: paramValue
+</pre>
+<p>Where, </p>
+<table>
+    <tr>
+        <th width="20%">Entity</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>key</code></td>
+        <td>Anything you like to use when referring to provider within your entry.</td>
+    </tr>
+    <tr>
+        <td><code>provider</code></td>
+        <td>
+        Class name of the Content Provider class.
+        <br />This class must implement <code>\Phrozn\Provider</code> interface.
+        </td>
+    </tr>
+    <tr>
+        <td><code>param(s)</code></td>
+        <td>
+            You can pass any named parameters to provider class, thus allowing parametrization.
+            Parameters are optional, and if passed can be accessed within provider class by
+            using <code>\Phrozn\Provider::getConfig()</code> method.
+        </td>
+    </tr>
+</table>
+
+<p>
+As you can see, <code>providers</code> variable is a list, implying that you may have several
+different providers within the single entry. You can even expose the very same provider under
+different keys (and using different parameters). See example below, which does exactly that.
+</p>
+
+
+<h2 id="primarchs-list-example" class="in-toc">Simple Example (List of Primarchs)</h2>
+<p>
+Let's start simple and create very basic Content Provider, the one that will only inject bunch of strings into
+our template.
+</p>
+
+<p>Here is our simple provider that injects the
+names of <a href="http://warhammer40k.wikia.com/wiki/Primarch">Primarchs</a> into an entry.
+Standard location for processor classes is <code>plugins/Provider</code>, so we save this as
+<code>plugins/Provider/Primarchs.php</code>:</p>
+
+<pre class="php">
+namespace PhroznPlugin\Provider;
+
+class Primarchs
+    extends \Phrozn\Provider\Base
+    implements \Phrozn\Provider
+{
+    private $primarchs = array(
+        array("Lion El'Jonson",           "Dark Angels",                  "Loyal"),
+        array("Fulgrim",                  "Emperor's Children",           "Traitor"),
+        array("Perturabo",                "Iron Warriors",                "Traitor"),
+        array("Jaghatai Khan",            "White Scars",                  "Loyal"),
+        array("Leman Russ",               "Space Wolves",                 "Loyal"),
+        array("Rogal Dorn",               "Imperial Fists",               "Loyal"),
+        array("Night Haunter",            "Night Lords",                  "Traitor"),
+        array("Sanguinius",               "Blood Angels",                 "Loyal"),
+        array("Ferrus Manus",             "Iron Hands",                   "Loyal"),
+        array("Angron",                   "World Eaters",                 "Traitor"),
+        array("Roboute Guilliman",        "Ultramarines",                 "Loyal"),
+        array("Mortarion",                "Death Guard",                  "Traitor"),
+        array("Magnus the Red",           "Thousand Sons",                "Traitor"),
+        array("Horus",                    "Luna Wolves/Sons of Horus",    "Traitor"),
+        array("Lorgar",                   "Word Bearers",                 "Traitor"),
+        array("Vulkan",                   "Salamanders",                  "Loyal"),
+        array("Corax",                    "Raven Guard",                  "Loyal"),
+        array("Alpharius1 &nbsp; Omegeon2",    "Alpha Legion",                 "Complicated"),
+    );
+
+    public function get()
+    {
+        // get reference to configuration object (it holds passed vars, if any)
+        $config = $this-&gt;getConfig();
+
+        // form list, replacing numeric keys with associative
+        // you can get rid of this by updating original array
+        $primarchs = array_map(function ($item) {
+            return array(
+                'name'          =&gt; $item[0],
+                'legion'        =&gt; $item[1],
+                'allegiance'    =&gt; $item[2],
+            );
+        }, $this-&gt;primarchs);
+
+        // find who is loyal and who is not!
+        if (isset($config['allegiance']) &amp;&amp; $allegiance = $config['allegiance']) {
+            $primarchs = array_filter($primarchs, function ($primarch) use ($allegiance) {
+                return $allegiance === $primarch['allegiance'];
+            });
+        }
+
+        return $primarchs;
+    }
+}
+</pre>
+
+<p>If it doesn't make sense just yet, don't worry it will in a minute. Here is corresponding entry file
+<code>provider.primarchs.twig</code>:</p>
+<pre class="html">
+providers:
+    all_primarchs:
+        provider: Primarchs
+    traitor_primarchs:
+        provider: Primarchs
+        allegiance: Traitor # pass parameter
+    loyal_primarchs:
+        provider: Primarchs
+        allegiance: Loyal
+---&nbsp;
+&lt;h1 id=&quot;all-primarchs&quot;&gt;All Primarchs:&lt;/h1&gt;
+&lt;ul&gt;
+{% for primarch in this.providers.all_primarchs %}
+    &lt;li&gt;&lt;b&gt;{{ primarch.name }}&lt;/b&gt; of {{ primarch.legion }} ({{ primarch.allegiance}})&lt;/li&gt;
+{% endfor %}
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;loyal-primarchs&quot;&gt;Loyal Primarchs:&lt;/h1&gt;
+&lt;ol&gt;
+{% for primarch in this.providers.loyal_primarchs %}
+    &lt;li&gt;&lt;b&gt;{{ primarch.name }}&lt;/b&gt; of {{ primarch.legion }} ({{ primarch.allegiance}})&lt;/li&gt;
+{% endfor %}
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;traitor-primarchs&quot;&gt;Traitor Primarchs:&lt;/h1&gt;
+&lt;ol&gt;
+{% for primarch in this.providers.traitor_primarchs %}
+    &lt;li&gt;&lt;b&gt;{{ primarch.name }}&lt;/b&gt; of {{ primarch.legion }} ({{ primarch.allegiance}})&lt;/li&gt;
+{% endfor %}
+&lt;/ol&gt;
+</pre>
+<p>
+As you see I exposed the same provider class <code>Primarchs</code> under different keys/names.
+The only difference is parameter (or its absence) passed.
+</p>
+<p>
+Now, it is a good time to scroll up and review the implemetation of <code>Primarchs::get()</code> method.
+Pretty simple stuff, right?
+<a href="/en/samples/provider.primarchs.html">Check the result page</a> and see for yourself :)
+</p>
+
+<h2 id="conclusion" class="in-toc">Conclusion</h2>
+<p>
+As you see, Phrozn has quite a good support for dynamic content (if you are ok with putting
+that data into static form).
+</p>
+<p>
+So, whenever you need to get access to some external data within your entries, the answer is almost always will be
+Content Providers.
+</p>
+<p>
+Finally, you can check the code in context on GitHub:
+</p>
+<ul>
+    <li><a href="https://github.com/farazdagi/phrozn-site/blob/master/plugins/Provider/Primarchs.php">plugins/Provider/Primarchs.php</a></li>
+    <li><a href="https://github.com/farazdagi/phrozn-site/blob/master/entries/en/samples/provider.primarchs.twig">entries/en/samples/provider.primarchs.twig</a></li>
+</ul>
+                <div class="clear vspacer"></div>
+                <div class="note">
+                    Generated on 13 Nov, 2013 at 09:03 using Phrozn 0.5.5.
+                </div>
+            </div>
+            <div class="ui-corner-bottom" id="footer">
+                <div id="farazdagi"><a href="http://twitter.com/#!/farazdagi">f</a></div>
+                <div id="snow-flakes"></div>
+                <div id="back-to-top"><a href="#page">TOP</a></div>
+                <div id="validators">
+                    <p>
+                        <a href="http://validator.w3.org/check?uri=referer"><img
+                            src="http://www.w3.org/Icons/valid-xhtml10"
+                            alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+                    </p>
+                </div>
+                <div class="right">
+                    <div>
+                        Copyright &copy; 2013 <a href="http://twitter.com/#!/farazdagi">Victor Farazdagi</a>
+                    </div>
+                    <div>
+                        Elephant logo created by <a href="http://wizardcat.com/eng">Wizardcat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            <a href="https://github.com/farazdagi/phrozn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        </p>
+    </body>
+</html>

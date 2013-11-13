@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Phrozn - Static Site Generator for PHP</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/default.css" rel="stylesheet" media="screen, projection" type="text/css" />
+        <link href="/styles/prettify.css" type="text/css" rel="stylesheet" />
+
+        <link rel="shortcut icon" type="image/x-icon" href="/media/favicon.ico" />
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://yandex.st/highlightjs/5.16/highlight.min.js"></script>
+        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        <script type="text/javascript" src="/scripts/default.js"></script>
+        <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-22641839-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+        </script>
+    </head>
+    <body>
+        <div id="page">
+            <div class="ui-corner-top" id="header">
+                <h1><a href="/">phrozn</a></h1>
+                <h2>Static site generator for PHP</h2>
+                <div id="thingy"></div>
+                <ul id="nav">
+                    <li><a href="/en/">Summary</a></li>
+                    <li><a href="/en/installation/">Installation</a></li>
+                    <li><a href="/en/documentation/">Documentation</a></li>
+                    <li><a href="/en/community/">Community</a></li>
+                    <li><a href="https://github.com/farazdagi/phrozn/contributors">Contributors</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div id="content">
+                <h1 id="main">Getting Started</h1>
+<div class="toc-box">&nbsp;</div>
+
+<p>
+    This guide should let you start with Phrozn in no time.
+</p>
+
+<h2 id="install" class="in-toc">Installation</h2>
+<p>
+    Before you will be able to proceed, you need to install Phrozn. Please, make sure that you meet system requirements
+    outlined on <a href="/en/installation/">Installation</a> page.
+</p>
+
+<h2 id="create-new-project" class="in-toc">Your first Phrozn project</h2>
+<p>Let's create our first Phrozn project:</p>
+<pre class="no-highlight">
+<span class="variable">$</span> <span class="command">mkdir</span> public_html
+<span class="variable">$</span> <span class="command">cd</span> public_html
+<span class="variable">$</span> <span class="command">phr init</span>
+</pre>
+<p>Here we create <code>public_html</code> folder and within it initialize our new Phrozn project. The output will look
+something like this:</p>
+<pre class="no-highlight">
+Initializing new project
+
+  Project path: ./public_html/.phrozn/
+  [<span class="string">ADDED</span>]   config.yml
+  [<span class="string">ADDED</span>]   entries/index.twig
+  [<span class="string">ADDED</span>]   scripts/default.js
+  [<span class="string">ADDED</span>]   media/README
+  [<span class="string">ADDED</span>]   media/img/README
+  [<span class="string">ADDED</span>]   styles/default.less
+  [<span class="string">ADDED</span>]   plugins/README
+  [<span class="string">ADDED</span>]   archive/README
+  [<span class="string">ADDED</span>]   layouts/default.twig
+</pre>
+<p>
+All those files/directories are created in <code>public_html/.phrozn</code> folder.
+</p>
+<table>
+    <tr>
+        <th width="20%">Folder</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><code>config.yml</code></td>
+        <td>Site wide configuration file. For details see
+        <a href="/en/documentation/site-config/">Site Configuration</a> page.</td>
+    </tr>
+    <tr>
+        <td><code>layouts</code></td>
+        <td>Folder containing site's layouts.</td>
+    </tr>
+    <tr>
+        <td><code>entries</code></td>
+        <td>Folder containing posts/entries of your site. You can create entries in one of the <a
+                href="/en/documentation/processors/">supported input formats</a>.
+            Alternatively, you can <a href="/en/documentation/articles/create-custom-processor/">define your own</a>.</td>
+    </tr>
+    <tr>
+        <td><code>scripts</code></td>
+        <td>Folder containing client-side scripts (JavaScript).</td>
+    </tr>
+    <tr>
+        <td><code>styles</code></td>
+        <td>Folder containing stylesheets (CSS, LESS).</td>
+    </tr>
+    <tr>
+        <td><code>media</code></td>
+        <td>Any media in binary format: flash, images, video files. You can create folder hierarchies which will be
+            transfered to compiled site's <code>media</code> folder as is.</td>
+    </tr>
+    <tr>
+        <td><code>plugins</code></td>
+        <td>Folder containing plugins.</td>
+    </tr>
+</table>
+
+<h2 id="create-project-entries" class="in-toc">Create some content</h2>
+<p class="note">
+You can skip this step and jump to <a href="/en/documentation/articles/getting-started/#project-compilation">Site
+Compilation</a> immediately. Then once you have static site compiled and
+want to tweak it more - get back and read this section.<br /><br />
+For those of you who want to see the output immediately, sample site has been created: <a target="_blank" href="http://sample.phrozn.info">sample.phrozn.info</a>.
+</p>
+<p>
+First of all, let's start with creating our main layout file, <code>.phrozn/layouts/main.twig</code>
+</p>
+<pre class="html">
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot;&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Webpage&lt;/title&gt;
+    &lt;link href=&quot;/styles/default.css&quot;
+          rel=&quot;stylesheet&quot; media=&quot;screen, projection&quot; type=&quot;text/css&quot; /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;My Webpage&lt;/h1&gt;
+    {{content}}
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+The only special thing here is <code>{{content}}</code> place-holder, which defines the place
+where entry's content is to be injected into layout.
+</p>
+<p>
+Phrozn comes with default layout, called (surprize!!) <code>default.twig</code>, and it is probably more common to
+edit it than to create new layout, but for purposes of demonstration, let's proceed with newly created layout
+<code>main.twig</code>.
+</p>
+
+<p>
+In order to have client-side scripts or styles parsed and compiled into <code>scripts</code> and <code>styles</code>
+folders respectively all you need to do is to add them into <code>.phrozn/scripts</code> and
+<code>.phrozn/styles</code>. Right now, all JavaScript code is passed without modification, minifying
+processors already planned. When it comes to styles you can add them in CSS or LESS format (use "css" and "less" extensions
+to distinguish between two).
+</p>
+
+<p>
+Now, it is time to create our first entry. All entries go to folder <code>.phrozn/entries</code> and you can have multi-level
+directory hierarchies which (depending on your settings) can be preserved in your static site. Source of
+<code>.phrozn/entries/test.twig</code>:
+</p>
+<pre>
+layout: main.twig
+---&nbsp;
+&lt;p&gt;My first entry&lt;/p&gt;
+</pre>
+
+<p>Entry above is in Twig format (see "twig" extension") but can be in Markdown or Textile. Just change the extension
+of entry file (twig, textile, markdown etc), and Phrozn will apply respective processor.
+As mentioned before, you can have your own formats as well
+- see documentation on <a href="/en/documentation/articles/create-custom-processor/">creation of custom text processors.</a>
+</p>
+<p>
+Now let's review front matter.
+<code>layout</code> setting is completely optional, it defaults to <code>default.twig</code>, which means
+<code>.phrozn/layouts/default.twig</code> is to be used as layout file. Since we created our custom layout file, we set
+this option to <code>main.twig</code>.
+</p>
+
+
+<h2 id="project-compilation" class="in-toc">Compile your project</h2>
+<p>
+Now, time to have phrozn version of our project!
+</p>
+<pre class="no-highlight">
+<span class="variable">$</span> <span class="command">cd</span> public_html
+<span class="variable">$</span> <span class="command">phr up</span>
+</pre>
+<p>You should get output similar to following:</p>
+<pre class="no-highlight">
+Starting static site compilation.
+
+  [<span class="string">OK</span>]      Source directory located: /tmp/public_html/.phrozn/
+  [<span class="string">OK</span>]      Destination directory located: /tmp/public_html/
+  [<span class="string">OK</span>]      ./.phrozn/entries/test.twig parsed
+  [<span class="string">OK</span>]      ./test.html written
+  [<span class="string">OK</span>]      ./.phrozn/styles/default.less parsed
+  [<span class="string">OK</span>]      ./styles/default.css written
+  [<span class="string">OK</span>]      ./.phrozn/scripts/default.js parsed
+  [<span class="string">OK</span>]      ./scripts/default.js written
+  [<span class="string">OK</span>]      ./media/README copied
+  [<span class="string">OK</span>]      ./media/img/README copied
+</pre>
+<p>
+If <code>public_html</code> is exposed as some web address, say as <code>http://www.domain.com/</code> then our newly
+created page <code>test.html</code> is available at <code>http://www.domain.com/test.html</code>.
+</p>
+<p>
+If you want to have more readable URLs, just update <code>.phrozn/entries/test.twig</code>, to include permalink
+setting:
+</p>
+<pre>
+layout: main.twig
+title: My readable page title
+permalink: /sub/folder/:title/
+---&nbsp;
+&lt;p&gt;My first entry&lt;/p&gt;
+</pre>
+<p>When you re-run <code>phr up</code> the entry will be written into<br />
+<code>public_html/sub/folder/my-readable-page-title/index.html</code><br /> file, and is available as
+<br /><code>http://www.domain.com/sub/folder/my-readable-page-title/</code>.
+</p>
+<p>
+As you see, other front matter variables are
+available in default permalink strategy (see <a href="/en/documentation/permalinks/">Permalink Strategies</a>).
+In this case <code>:title</code> variable was used as a part of final string (additional filtering applied to make it valid URL).</p>
+<p>
+There are number of <a href="/en/documentation/front-matter/">other options</a> available in entry's front matter.
+</p>
+
+<h2 id="project-update" class="in-toc">Keep your project up to date</h2>
+<p>
+In order to update your project, all you need to do is call <code>phr up</code>
+command. By default, all output files are written into directory containing <code>.phrozn</code> folder, in our case to
+<code>public_html</code>:
+</p>
+<pre class="no-highlight">
+<span class="variable">$</span> <span class="command">cd</span> public_html
+<span class="comment"># update or add some content</span>
+<span class="variable">$</span> <span class="command">phr up</span>
+<span class="comment"># by default all ouput will be written to current folder</span>
+</pre>
+<h2 id="project-removal" class="in-toc">Purge project</h2>
+<p>
+Not the most common thing to do, but should you need to purge the project files you can always do so with clobber
+command:
+</p>
+<pre class="no-highlight">
+<span class="variable">$</span> <span class="command">cd</span> public_html
+<span class="variable">$</span> <span class="command">phr clobber</span>
+Purging project data..
+
+Located project folder: /tmp/public_html/.phrozn/
+Project folder is to be removed.
+This operation <span class="variable">CAN NOT</span> be undone.
+
+Type 'yes' to continue:
+</pre>
+
+<p>Make sure you double check the folder to be purged before typing <code>yes</code>!</p>
+<p>Only project folder <code>.phrozn</code> will be removed, your generated content will stay intact.</p>
+<h2 id="summary" class="in-toc">Summary</h2>
+<p>Let's summarize what you have learned so far.</p>
+
+<p>
+You create project using <code>phr init</code>, add some entries/styles/scripts, and compile everything with
+<code>phr up</code>. Once you update some source file, you need to update static version of your site, again with
+<code>phr up</code>.
+</p>
+<p>
+Should you create project by mistake, it's always simple to purge it with <code>phr clobber</code>, and start over with
+<code>phr init</code>.
+</p>
+
+<p>Need some samples? Check out git repository of <a href="http://github.com/farazdagi/phrozn-site">Phrozn's own site</a>.</p>
+                <div class="clear vspacer"></div>
+                <div class="note">
+                    Generated on 13 Nov, 2013 at 09:03 using Phrozn 0.5.5.
+                </div>
+            </div>
+            <div class="ui-corner-bottom" id="footer">
+                <div id="farazdagi"><a href="http://twitter.com/#!/farazdagi">f</a></div>
+                <div id="snow-flakes"></div>
+                <div id="back-to-top"><a href="#page">TOP</a></div>
+                <div id="validators">
+                    <p>
+                        <a href="http://validator.w3.org/check?uri=referer"><img
+                            src="http://www.w3.org/Icons/valid-xhtml10"
+                            alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+                    </p>
+                </div>
+                <div class="right">
+                    <div>
+                        Copyright &copy; 2013 <a href="http://twitter.com/#!/farazdagi">Victor Farazdagi</a>
+                    </div>
+                    <div>
+                        Elephant logo created by <a href="http://wizardcat.com/eng">Wizardcat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            <a href="https://github.com/farazdagi/phrozn"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        </p>
+    </body>
+</html>
