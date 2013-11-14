@@ -15,7 +15,7 @@ can be injected without hacking the core. Still moving plugin code from project 
 So, instead of manual file transfers from project to project, you create a releasable and easily 
 deployable archive with all the plugin code required for particular 
 functionality. The final result (typically a tgz archive) is to be pushed it into some place where others 
-can access it (like official <a href="https://github.com/farazdagi/phrozn-bundles">Phrozn Bundles Repository</a>).
+can access it (like official <a href="https://github.com/Pawka/phrozn-bundles">Phrozn Bundles Repository</a>).
 </p>
 
 <p class="note">
@@ -36,10 +36,10 @@ own distribution model. As long as resultant archive file can be read, Phrozn wi
 
 <p>
 If you want to share your code with the rest of Phrozn community, best way to do so is to distribute your code
-using <a href="https://github.com/farazdagi/phrozn-bundles">Phrozn Bundles Repository</a>. Once your code hits
+using <a href="https://github.com/Pawka/phrozn-bundles">Phrozn Bundles Repository</a>. Once your code hits
 the repository, others will be able to apply it without any additional legwork.
 </p>
-<p>So, go and <a href="https://github.com/farazdagi/phrozn-bundles/">fork the repository</a> right now, I will be here waiting..</p>
+<p>So, go and <a href="https://github.com/Pawka/phrozn-bundles/">fork the repository</a> right now, I will be here waiting..</p>
 
 <p class="note">
 It is preferred that you create a "topic/feature" branches and not committing directly into your 
@@ -89,7 +89,7 @@ if you want some basic style applied to <i>every</i> Phrozn project you create. 
 <h2 id="prepare-bundle-metadata" class="in-toc">Step3. Prepare bundle meta-data</h2>
 <p class="warning">
 Again, this step is not required if you do not plan to contribute your bundle into 
-<a href="https://github.com/farazdagi/phrozn-bundles">Phrozn Bundles Repository</a>.
+<a href="https://github.com/Pawka/phrozn-bundles">Phrozn Bundles Repository</a>.
 </p>
 <p>This step is simple, just create <i>your-bundle-name.yml</i> file with following contents (with place-holders filled):</p>
 <pre class="yaml">
@@ -98,7 +98,7 @@ description: |
     Some description of your bundle.
 version: 1.0
 author: Your Name
-url: https://github.com/farazdagi/phrozn-bundles/raw/master/your-bundle-name.tgz
+url: https://github.com/Pawka/phrozn-bundles/raw/master/your-bundle-name.tgz
 </pre>
 
 <h2 id="send-pull-request" class="in-toc">Step4. Send pull request</h2>
@@ -116,7 +116,7 @@ $ cd my-bundle-folder
 $ tar -czvf ../my-bundle-folder.tgz .
 </pre>
 <p class="note">If you are interested in how Phing is used to create bundles check  out
-<a href="https://github.com/farazdagi/phrozn-bundles/blob/master/build.xml">build.xml</a> on GitHub.</p>
+<a href="https://github.com/Pawka/phrozn-bundles/blob/master/build.xml">build.xml</a> on GitHub.</p>
 
 <h2 id="summary" class="in-toc">Summary</h2>
 <ul>
