@@ -79,22 +79,6 @@ class Less
     }
 
     /**
-     * Set the input file into processors configuration
-     *
-     * @param $inputFile
-     */
-    public function setInputFile($inputFile)
-    {
-        if (null !== $processors = $this->getProcessors()) {
-            foreach ($processors as $processor) {
-                $processor->setLessImportDir(dirname($inputFile));
-            }
-        }
-
-        return parent::setInputFile($inputFile);
-    }
-
-    /**
      * Get output file path
      *
      * @return string

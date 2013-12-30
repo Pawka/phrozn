@@ -57,10 +57,12 @@ class LessTest
         $expectedResult = file_get_contents($this->path . 'tpl1.css');
 
         $processor = new Processor();
-        $processor->setLessImportDir($this->path);
+        $processor->setConfig(array(
+            'phr_template_dir' => $this->path
+        ));
 
         $rendered = $processor->render($tpl);
-        $this->assertSame($rendered, $expectedResult);
+        $this->assertSame(trim($rendered), trim($expectedResult));
     }
 
 }

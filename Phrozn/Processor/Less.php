@@ -39,13 +39,6 @@ class Less
     protected $lessc;
 
     /**
-     * The path where the LESS compiler will search for @import directives
-     *
-     * @var string
-     */
-    protected $lessImportDir;
-
-    /**
      * If configuration options are passes then twig environment
      * is initialized right away
      *
@@ -59,16 +52,6 @@ class Less
             $this->setConfig($options)
                  ->getEnvironment();
         }
-    }
-
-    /**
-     * Store the input file if given
-     *
-     * @param $options
-     */
-    public function setLessImportDir($lessImportDir)
-    {
-        $this->lessImportDir = $lessImportDir;
     }
 
     /**
