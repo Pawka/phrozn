@@ -21,6 +21,7 @@
 namespace PhroznTest;
 
 use Phrozn\Phrozn;
+use Phrozn\Autoloader;
 
 class PhroznTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,7 +29,8 @@ class PhroznTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->phrozn = new Phrozn;
+        $loader = Autoloader::getInstance();
+        $this->phrozn = new Phrozn($loader);
     }
 
     public function testGetDefaultCommands()

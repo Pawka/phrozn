@@ -20,22 +20,32 @@
 
 namespace Phrozn;
 
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
 use Phrozn\Command\InitCommand;
 use Phrozn\Command\ClobberCommand;
 use Phrozn\Command\SingleCommand;
 use Phrozn\Command\BuildCommand;
+use Phrozn\Has;
+use Phrozn\Autoloader;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Phrozn Application
  */
 class Phrozn extends Application
 {
+    protected $loader;
 
-    public function __construct()
+    public function __construct(Autoloader $loader)
     {
-        parent::__construct("Phrozn", "1.0");
+        $this->paths = $loader->getPaths();
+        $this->loader = $loader;
+
+        // load main config
+        $this->config = Yaml::parse($this->paths['configs'] . 'phrozn.yml');
+
+        parent::__construct($this->config['name'], $this->config['version']);
     }
 
     /**
@@ -51,6 +61,12 @@ class Phrozn extends Application
         $list[] = new ClobberCommand;
         $list[] = new SingleCommand;
         $list[] = new BuildCommand;
+
+        foreach ($list as $command) {
+            if ($command instanceof Has\Config) {
+                $command->setConfig($this->config);
+            }
+        }
 
         return $list;
     }

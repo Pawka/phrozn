@@ -20,11 +20,10 @@
 
 namespace Phrozn\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InitCommand extends Command
+class InitCommand extends AbstractCommand
 {
     protected function configure()
     {

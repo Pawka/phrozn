@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "8d0a3b95f96357b33177f790ae685078",
+    "hash": "c581b01a1818e5a41b7b80e29d950b60",
     "packages": [
         {
             "name": "leafo/lessphp",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "bc4f33b4bfc889018ebe53611050729641b82dc6"
+                "reference": "33a82c3d65d8004872f2f560a4d35eca8b85762b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/bc4f33b4bfc889018ebe53611050729641b82dc6",
-                "reference": "bc4f33b4bfc889018ebe53611050729641b82dc6",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/33a82c3d65d8004872f2f560a4d35eca8b85762b",
+                "reference": "33a82c3d65d8004872f2f560a4d35eca8b85762b",
                 "shasum": ""
             },
             "type": "library",
@@ -44,7 +44,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2013-10-17 16:23:00"
+            "time": "2013-12-05 20:49:10"
         },
         {
             "name": "michelf/php-markdown",
@@ -52,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "9dbd8352deac7d3a00ba9e2360b0d9f1c31b4b4c"
+                "reference": "6f952ee180e9bd345f3dd6005aa11e0f5dcbd1b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/9dbd8352deac7d3a00ba9e2360b0d9f1c31b4b4c",
-                "reference": "9dbd8352deac7d3a00ba9e2360b0d9f1c31b4b4c",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/6f952ee180e9bd345f3dd6005aa11e0f5dcbd1b8",
+                "reference": "6f952ee180e9bd345f3dd6005aa11e0f5dcbd1b8",
                 "shasum": ""
             },
             "require": {
@@ -66,7 +66,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-lib": "1.3.x-dev"
+                    "dev-lib": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -95,7 +95,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2013-08-02 10:50:14"
+            "time": "2013-11-29 21:49:31"
         },
         {
             "name": "netcarver/textile",
@@ -103,12 +103,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/textile/php-textile.git",
-                "reference": "8c0983955cbda950bae412b4c29c4c3ab1f2f2b8"
+                "reference": "ebf78075d1db0339970e201e9f8cd202f627bcc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/textile/php-textile/zipball/8c0983955cbda950bae412b4c29c4c3ab1f2f2b8",
-                "reference": "8c0983955cbda950bae412b4c29c4c3ab1f2f2b8",
+                "url": "https://api.github.com/repos/textile/php-textile/zipball/ebf78075d1db0339970e201e9f8cd202f627bcc9",
+                "reference": "ebf78075d1db0339970e201e9f8cd202f627bcc9",
                 "shasum": ""
             },
             "require": {
@@ -116,6 +116,8 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "3.7.*",
+                "satooshi/php-coveralls": "0.6.*",
+                "squizlabs/php_codesniffer": "1.5.*",
                 "symfony/yaml": "2.3.*"
             },
             "type": "library",
@@ -133,9 +135,20 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "description": "A lightweight markup language that takes (almost) plaintext and converts it into well formed HTML.",
+            "description": "Textile markup language parser",
             "homepage": "https://github.com/textile/php-textile",
-            "time": "2013-10-23 14:47:54"
+            "keywords": [
+                "document",
+                "format",
+                "html",
+                "language",
+                "markup",
+                "parser",
+                "php-textile",
+                "plaintext",
+                "textile"
+            ],
+            "time": "2013-12-24 00:26:14"
         },
         {
             "name": "pear/Console_Color2",
@@ -191,12 +204,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Archive_Tar.git",
-                "reference": "23341344e19bbab1056cf2d2773f28cfccf787a3"
+                "reference": "617573c4444d23a5c67faf10e6c861c7c4b2ba73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/23341344e19bbab1056cf2d2773f28cfccf787a3",
-                "reference": "23341344e19bbab1056cf2d2773f28cfccf787a3",
+                "url": "https://api.github.com/repos/pear/Archive_Tar/zipball/617573c4444d23a5c67faf10e6c861c7c4b2ba73",
+                "reference": "617573c4444d23a5c67faf10e6c861c7c4b2ba73",
                 "shasum": ""
             },
             "require": {
@@ -232,7 +245,7 @@
                 "archive",
                 "tar"
             ],
-            "time": "2013-02-09 11:44:32"
+            "time": "2013-11-21 10:57:51"
         },
         {
             "name": "pear/console_commandline",
@@ -384,6 +397,59 @@
                 "exception"
             ],
             "time": "2013-04-28 13:00:16"
+        },
+        {
+            "name": "symfony/console",
+            "version": "dev-master",
+            "target-dir": "Symfony/Component/Console",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Console.git",
+                "reference": "9a65fe233d3fa0460d0945f9bad08fdf950a932f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/9a65fe233d3fa0460d0945f9bad08fdf950a932f",
+                "reference": "9a65fe233d3fa0460d0945f9bad08fdf950a932f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-12-29 20:34:05"
         },
         {
             "name": "symfony/yaml",

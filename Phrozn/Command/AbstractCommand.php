@@ -20,20 +20,37 @@
 
 namespace Phrozn\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
+use Phrozn\Has;
 
-class BuildCommand extends AbstractCommand
+/**
+ * Phrozn command abstraction.
+ */
+abstract class AbstractCommand
+    extends Command
+    implements Has\Config
 {
-    protected function configure()
+    protected $config;
+
+    /**
+     * Set configuration
+     *
+     * @param array $config Array of options
+     *
+     * @return \Phrozn\Has\Config
+     */
+    public function setConfig($config)
     {
-        $this->setName('build')
-            ->setDescription('Compile and build website');
-    }   
-    
-    protected function execute(InputInterface $input, OutputInterface $output)
+        $this->config = $config;
+    }
+
+    /**
+     * Get configuration
+     *
+     * @return array
+     */
+    public function getConfig()
     {
+        return $this->config;
     }
 }
-
-
