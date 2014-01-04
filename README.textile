@@ -11,7 +11,7 @@ h2. Install
 
 Clone repository from github and change to cloned directory.
 
-bc. $ git clone https://github.com/farazdagi/phrozn.git && cd phrozn
+bc. $ git clone https://github.com/Pawka/phrozn.git && cd phrozn
 
 Download composer and install required dependencies.
 
@@ -20,7 +20,7 @@ $ php composer.phar install
 
 h2. Dev Notes
 
-* "Unit tested":http://test.phrozn.info
+* "Unit tested":https://travis-ci.org/Pawka/phrozn/builds
 * API Documentation
 * User manual
 * Relies on SPL, Symfony 2 Components
