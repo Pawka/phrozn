@@ -42,6 +42,13 @@ class TextileTest
         $tpl = file_get_contents($this->path . 'tpl1.textile');
         $rendered = $processor->render($tpl);
         $static = file_get_contents($this->path . 'tpl1.textile.html');
+
+        //Remove spaces from begining of lines. Only content is important for
+        //us.
+        $rendered = preg_replace('/\\n\s+/', "\n", $rendered);
+        $static = preg_replace('/\\n\s+/', "\n", $static);
+
         $this->assertSame(trim($static), trim($rendered));
     }
+
 }
