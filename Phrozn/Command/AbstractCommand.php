@@ -53,4 +53,21 @@ abstract class AbstractCommand
     {
         return $this->config;
     }
+
+    /**
+     * See whether given path is absolute or relative
+     *
+     * @param string $path Path to check
+     *
+     * @return boolean
+     */
+    protected function isAbsolute($path)
+    {
+        if (PHP_OS == 'WINNT' || PHP_OS == 'WIN32') {
+            $pattern = '/^[a-zA-Z]:[\\\\\/]/';
+            return preg_match($pattern, $path);
+        } else {
+            return $path{0} == '/';
+        }
+    }
 }

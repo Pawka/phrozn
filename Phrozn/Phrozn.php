@@ -64,7 +64,9 @@ class Phrozn extends Application
 
         foreach ($list as $command) {
             if ($command instanceof Has\Config) {
-                $command->setConfig($this->config);
+                $config = $this->config;
+                $config['paths'] = $this->paths;
+                $command->setConfig($config);
             }
         }
 
