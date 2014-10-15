@@ -34,6 +34,31 @@ class Markdown
     implements \Phrozn\Processor
 {
     /**
+     * List of permitted Markdown configuration variables
+     *
+     * Taken from https://michelf.ca/projects/php-markdown/configuration/
+     * @var array
+     */
+    private static $markdownConfigVars=array(
+        'empty_element_suffix',
+        'tab_width',
+        'no_markup',
+        'no_entities',
+        'predef_urls',
+        'predef_titles',
+        'fn_id_prefix',
+        'fn_link_title',
+        'fn_backlink_title',
+        'fn_link_class',
+        'fn_backlink_class',
+        'code_class_prefix',
+        'code_attr_on_pre',
+        'predef_abbr',
+        'code_class_prefix',
+        'code_attr_on_pre'
+    );
+
+    /**
      * Reference to procesor class
      * @var MarkdownParser
      */
@@ -51,6 +76,61 @@ class Markdown
         $this->markdown = new MarkdownParser;
     }
 
+
+    /**
+    * Helper for setting markdown configuration values
+    *
+    * @param string $name name of config variable
+    * @param string $value value of config variable
+    * @return void
+    */
+    protected function setMarkdownConfig($name, $value)
+    {
+        $this->markdown->$name = $value;
+    }
+
+    /**
+    * Configure Markdown with options from the page and config.yml
+    *
+    * You can add markdown: entry to your config.yml or page front
+    * matter which contains values for any of the Markdown Extra
+    * configuration options.
+    *
+    * See https://michelf.ca/projects/php-markdown/configuration/ for
+    * a complete list of options. An example to support marking up
+    * code blocks for the Google Prettify script would be this:
+    *
+    * <code>
+    * markdown:
+    *     code_class_prefix: "prettyprint "
+    *     code_attr_on_pre: true
+    * </code>
+    *
+    * The space in the prefix is important in the case of prettyprint,
+    * as you can specify extra styles on markdown fenced code blocks,
+    * allowing you to specify the language, for example:
+    *
+    * <code>
+    * ~~~~~~~~~ .lang-js
+    * {"foo":"bar"}
+    * ~~~~~~~~~
+    * </code>
+    *
+    * @param array $vars List of variables passed to template engine
+    */
+    protected function configureMarkdown($vars)
+    {
+
+        foreach (self::$markdownConfigVars as $name) {
+            //if variable set in front matter, use that, but if not present
+            //use site-wide configuration from config.yml
+            if (isset($vars['page']['markdown'][$name])) {
+                $this->setMarkdownConfig($name, $vars['page']['markdown'][$name]);
+            } elseif (isset($vars['site']['markdown'][$name])) {
+                $this->setMarkdownConfig($name, $vars['site']['markdown'][$name]);
+            }
+        }
+    }
     /**
      * Parse the incoming template
      *
@@ -61,6 +141,7 @@ class Markdown
      */
     public function render($tpl, $vars = array())
     {
+        $this->configureMarkdown($vars);
         return $this->markdown->transform($tpl);
     }
 }
