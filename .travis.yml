@@ -7,4 +7,4 @@ php:
 before_script:
   - wget http://getcomposer.org/composer.phar
   - php composer.phar install
-script: "phpunit --configuration tests/phpunit.xml"
+script: "bin/phpunit --configuration tests/phpunit.xml"
