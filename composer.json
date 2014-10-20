@@ -18,6 +18,7 @@
             "PhroznPlugin": "plugins/"
         }
     },
+    "bin": ["bin/phrozn.php"],
     "scripts": {
         "post-install-cmd": [
             "rm -f configs/commands/initialize.yml",
