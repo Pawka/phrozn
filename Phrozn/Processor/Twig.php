@@ -120,7 +120,7 @@ class Twig
 
         // add string template loader, which is responsible for loading templates
         // and removing front-matter
-        $chain->addLoader(new \Phrozn\Twig\Loader\String);
+        $chain->addLoader(new \Phrozn\Twig\Loader\StringClass);
 
         return $chain;
     }

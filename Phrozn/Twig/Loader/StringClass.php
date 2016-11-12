@@ -27,7 +27,7 @@ namespace Phrozn\Twig\Loader;
  * @package     Phrozn\Processor
  * @author      Victor Farazdagi
  */
-class String
+class StringClass
     extends \Twig_Loader_String
     implements \Twig_LoaderInterface
 {
